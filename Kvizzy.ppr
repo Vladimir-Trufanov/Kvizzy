@@ -1,0 +1,190 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.CompileOnBackground=0
+Compilator.ProgSaveAll=0
+Compilator.ProgRunSelection=0
+Compilator.LogType=0
+Compilator.LogEncoding=0
+DefaultDir=C:\Kvizzy
+DefaultCP=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+Extensions=*.*
+[Project tree]
+Kvizzy
+	+Kvizzy
+		-Icons
+			-TinyMCE для IttveME
+				Icons\TinyMCE для IttveME\TinyMCE.png
+				Icons\TinyMCE для IttveME\tveTiny.png
+				Icons\TinyMCE для IttveME\tveTiny.svg
+				Icons\TinyMCE для IttveME\tveTiny2.png
+				Icons\TinyMCE для IttveME\tveTiny21.png
+				Icons\TinyMCE для IttveME\tveTiny22.png
+				Icons\TinyMCE для IttveME\tveTiny23.png
+				Icons\TinyMCE для IttveME\tveTiny24.png
+				Icons\TinyMCE для IttveME\tveTiny31.png
+				Icons\TinyMCE для IttveME\tveTiny32.png
+				Icons\TinyMCE для IttveME\tveTiny33.png
+				Icons\TinyMCE для IttveME\tveTiny34.png
+				Icons\TinyMCE для IttveME\tveTiny35.png
+				Icons\TinyMCE для IttveME\tveTiny36.png
+				Icons\TinyMCE для IttveME\tveTiny37.png
+				Icons\TinyMCE для IttveME\tveTiny38.png
+				Icons\TinyMCE для IttveME\tveTiny39.png
+				Icons\TinyMCE для IttveME\tveTiny40.png
+			-tveMenu и favicon для IttveME
+				Icons\tveMenu и favicon для IttveME\ex1-SegoePrint.png
+				Icons\tveMenu и favicon для IttveME\fav.png
+				Icons\tveMenu и favicon для IttveME\IconFav.png
+				Icons\tveMenu и favicon для IttveME\Menu.svg
+				Icons\tveMenu и favicon для IttveME\tve.psd
+				Icons\tveMenu и favicon для IttveME\tveMenu.png
+				Icons\tveMenu и favicon для IttveME\tveMenu.svg
+				Icons\tveMenu и favicon для IttveME\tveMenuB.png
+				Icons\tveMenu и favicon для IttveME\tveMenuC.png
+				Icons\tveMenu и favicon для IttveME\tveMenuCicon.png
+				Icons\tveMenu и favicon для IttveME\tveMenuD.png
+			Icons\Icons.md
+			Icons\Icons.md.backup
+		+IRremote
+			+ReceiveDump
+				IRremote\ReceiveDump\PinDefinitionsAndMore.h
+				IRremote\ReceiveDump\ReceiveDump.ino
+			IRremote\IRremote.md
+			IRremote\IRremote.md.backup
+		-IRremote 3.5.2
+			-examples
+				-ControlRelay
+					IRremote 3.5.2\examples\ControlRelay\ControlRelay.ino
+					IRremote 3.5.2\examples\ControlRelay\PinDefinitionsAndMore.h
+				-IRDispatcherDemo
+					IRremote 3.5.2\examples\IRDispatcherDemo\IRCommandDispatcher.h
+					IRremote 3.5.2\examples\IRDispatcherDemo\IRCommandDispatcher.hpp
+					IRremote 3.5.2\examples\IRDispatcherDemo\IRCommandMapping.h
+					IRremote 3.5.2\examples\IRDispatcherDemo\IRDispatcherDemo.ino
+					IRremote 3.5.2\examples\IRDispatcherDemo\PinDefinitionsAndMore.h
+				-IRremoteExtensionTest
+					IRremote 3.5.2\examples\IRremoteExtensionTest\IRremoteExtensionClass.cpp
+					IRremote 3.5.2\examples\IRremoteExtensionTest\IRremoteExtensionClass.h
+					IRremote 3.5.2\examples\IRremoteExtensionTest\IRremoteExtensionTest.ino
+					IRremote 3.5.2\examples\IRremoteExtensionTest\PinDefinitionsAndMore.h
+				-IRremoteInfo
+					IRremote 3.5.2\examples\IRremoteInfo\IRremoteInfo.ino
+				-MicroGirs
+					IRremote 3.5.2\examples\MicroGirs\MicroGirs.ino
+					IRremote 3.5.2\examples\MicroGirs\PinDefinitionsAndMore.h
+				-MinimalReceiver
+					IRremote 3.5.2\examples\MinimalReceiver\MinimalReceiver.ino
+				-ReceiveAndSend
+					IRremote 3.5.2\examples\ReceiveAndSend\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\ReceiveAndSend\ReceiveAndSend.ino
+				-ReceiveDemo
+					IRremote 3.5.2\examples\ReceiveDemo\IRremote_SendDemo_ReceiveDemo.log
+					IRremote 3.5.2\examples\ReceiveDemo\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\ReceiveDemo\ReceiveDemo.ino
+				-ReceiveDump
+					IRremote 3.5.2\examples\ReceiveDump\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\ReceiveDump\ReceiveDump.ino
+				-ReceiveOneAndSendMultiple
+					IRremote 3.5.2\examples\ReceiveOneAndSendMultiple\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\ReceiveOneAndSendMultiple\ReceiveOneAndSendMultiple.ino
+				-ReceiverTimingAnalysis
+					IRremote 3.5.2\examples\ReceiverTimingAnalysis\ReceiverTimingAnalysis.ino
+				-SendAndReceive
+					IRremote 3.5.2\examples\SendAndReceive\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\SendAndReceive\SendAndReceive.ino
+					IRremote 3.5.2\examples\SendAndReceive\SendAndReceive.log
+				-SendBoseWaveDemo
+					IRremote 3.5.2\examples\SendBoseWaveDemo\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\SendBoseWaveDemo\SendBoseWaveDemo.ino
+				-SendDemo
+					IRremote 3.5.2\examples\SendDemo\IRremote_SendDemo_ReceiveDemo.log
+					IRremote 3.5.2\examples\SendDemo\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\SendDemo\SendDemo.ino
+				-SendLGAirConditionerDemo
+					IRremote 3.5.2\examples\SendLGAirConditionerDemo\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\SendLGAirConditionerDemo\Readme.md
+					IRremote 3.5.2\examples\SendLGAirConditionerDemo\SendLGAirConditionerDemo.ino
+				-SendProntoDemo
+					IRremote 3.5.2\examples\SendProntoDemo\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\SendProntoDemo\SendProntoDemo.ino
+				-SendRawDemo
+					IRremote 3.5.2\examples\SendRawDemo\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\SendRawDemo\SendRawDemo.ino
+				-SimpleReceiver
+					IRremote 3.5.2\examples\SimpleReceiver\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\SimpleReceiver\SimpleReceiver.ino
+				-SimpleSender
+					IRremote 3.5.2\examples\SimpleSender\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\SimpleSender\SimpleSender.ino
+				-UnitTest
+					IRremote 3.5.2\examples\UnitTest\PinDefinitionsAndMore.h
+					IRremote 3.5.2\examples\UnitTest\UnitTest.ino
+					IRremote 3.5.2\examples\UnitTest\UnitTest.log
+			-pictures
+				IRremote 3.5.2\pictures\IR_PWM_by_software_detail.png
+				IRremote 3.5.2\pictures\IR_PWM_by_software_jitter.png
+				IRremote 3.5.2\pictures\LG_AKB73315611.jpg
+				IRremote 3.5.2\pictures\LG_AKB75415316.jpg
+				IRremote 3.5.2\pictures\LGRemote1.jpg
+				IRremote 3.5.2\pictures\SloeberDefineSymbols.png
+			-src
+				-private
+					IRremote 3.5.2\src\private\IRFeedbackLEDDefs.h
+					IRremote 3.5.2\src\private\IRTimer.hpp
+				IRremote 3.5.2\src\ac_LG.h
+				IRremote 3.5.2\src\ac_LG.hpp
+				IRremote 3.5.2\src\digitalWriteFast.h
+				IRremote 3.5.2\src\ir_BoseWave.hpp
+				IRremote 3.5.2\src\ir_Denon.hpp
+				IRremote 3.5.2\src\ir_Dish.hpp
+				IRremote 3.5.2\src\ir_DistanceProtocol.hpp
+				IRremote 3.5.2\src\ir_JVC.hpp
+				IRremote 3.5.2\src\ir_Kaseikyo.hpp
+				IRremote 3.5.2\src\ir_Lego.hpp
+				IRremote 3.5.2\src\ir_LG.hpp
+				IRremote 3.5.2\src\ir_MagiQuest.hpp
+				IRremote 3.5.2\src\ir_NEC.hpp
+				IRremote 3.5.2\src\ir_Pronto.hpp
+				IRremote 3.5.2\src\ir_RC5_RC6.hpp
+				IRremote 3.5.2\src\ir_Samsung.hpp
+				IRremote 3.5.2\src\ir_Sony.hpp
+				IRremote 3.5.2\src\ir_Template.hpp
+				IRremote 3.5.2\src\ir_Whynter.hpp
+				IRremote 3.5.2\src\IRFeedbackLED.hpp
+				IRremote 3.5.2\src\IRProtocol.h
+				IRremote 3.5.2\src\IRReceive.hpp
+				IRremote 3.5.2\src\IRremote.h
+				IRremote 3.5.2\src\IRremote.hpp
+				IRremote 3.5.2\src\IRremoteInt.h
+				IRremote 3.5.2\src\IRSend.hpp
+				IRremote 3.5.2\src\LongUnion.h
+				IRremote 3.5.2\src\TinyIRReceiver.h
+				IRremote 3.5.2\src\TinyIRReceiver.hpp
+			IRremote 3.5.2\changelog.md
+			IRremote 3.5.2\Contributing.md
+			IRremote 3.5.2\Contributors.md
+			IRremote 3.5.2\Doxyfile
+			IRremote 3.5.2\keywords.txt
+			IRremote 3.5.2\library.json
+			IRremote 3.5.2\library.properties
+			IRremote 3.5.2\LICENSE.txt
+			IRremote 3.5.2\README.md
+		-Kvizzy
+			Kvizzy\Kvizzy.md
+			Kvizzy\Kvizzy.md.backup
+		README.md
+		README.md.backup
+[Open project files]
+0=IRremote\ReceiveDump\ReceiveDump.ino
+[Selected Project Files]
+Main=
+Selected=IRremote\ReceiveDump\ReceiveDump.ino
+[IRremote\ReceiveDump\ReceiveDump.ino]
+TopLine=86
+Caret=31,116
