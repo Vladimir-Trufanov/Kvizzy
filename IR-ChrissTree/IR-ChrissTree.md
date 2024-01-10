@@ -32,7 +32,30 @@
 -
 </i>
 
-### CУниверсальный пульт для домашней техники на смартфоне ("ещё одно" приложение для смартфона
+#### Сборка информации:
+
+[Как работает инфракрасный пульт? Поясняем](https://vc.ru/tech/868613-kak-rabotaet-infrakrasnyy-pult-poyasnyaem)
+
+[КАК ПОДКЛЮЧИТЬ ИНФРАКРАСНЫЙ СЕНСОР К ARDUINO](https://soltau.ru/index.php/arduino/item/553-kak-podklyuchit-infrakrasnyj-sensor-k-arduino)
+
+[Ардуино: инфракрасный пульт и приемник](https://robotclass.ru/tutorials/arduino-ir-remote-control/)
+
+---
+
+[Подключение реле к Ардуино (SRD-05VDC-SL-C)](https://arduino-site.ru/modul-rele/)
+
+[HOW TO SET UP A 5V RELAY ON THE ARDUINO](https://www.circuitbasics.com/setting-up-a-5v-relay-on-the-arduino/)
+
+[Поиск "arduino и SRD 05VDC-SL-C"](https://yandex.ru/search/?text=arduino+и+SRD+05VDC-SL-C&clid=2261451&banerid=6301000000%3ASW-694005a33c95&win=513&lr=18)
+
+---
+
+[Fritzing  1.0.1](https://pikabu.ru/story/fritzing_101_10994263)
+
+[Fritzing 0.9.9](https://vk.com/wall-97877471_760378)
+
+
+#### Универсальный пульт для домашней техники на смартфоне ("ещё одно" приложение для смартфона
 
 Никаких необходимых внешних аппаратных средств. Не требуется сетевое подключения. Разрешения не требуется!
 
