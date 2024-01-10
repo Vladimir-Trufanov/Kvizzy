@@ -58,13 +58,14 @@
 // C:/Users/Евгеньевич/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino/Arduino.h
 #include <Arduino.h>
 
-// Ограничение для пультов дистанционного управления кондиционером
+// По умолчанию RAW_BUFFER_LENGTH=112, 
+// следует изменить для пультов дистанционного управления кондиционером
 // #define RAW_BUFFER_LENGTH  750  
 
 // Define macros for input and output pin etc.
 #include "PinDefinitionsAndMore.h"
 
-// Рекомендуется для недорогихх модулей VS1838.
+// Рекомендуется для недорогих модулей VS1838.
 // Можно изменить это значение в зависимости от используемого модуля приемника.
 // Требуемое значение может быть получено из приведенных здесь значений времени.
 // Имейте в виду, что значения времени могут меняться в зависимости от расстояния
@@ -80,7 +81,6 @@
 
 #include <IRremote.hpp>
 
-// Configure the Arduino
 void setup() 
 {
    Serial.begin(115200);   // Status message will be sent to PC at 115200 baud
@@ -88,10 +88,14 @@ void setup()
    delay(2000); 
    String MYCORE=setMYCORE();
 
+   String cs="MYCORE              = "+MYCORE;
+
    Serial.print(F("MYCORE              = ")); Serial.println(MYCORE);
    Serial.print(F("IR_RECEIVE_PIN      = ")); Serial.println(IR_RECEIVE_PIN);
    Serial.print(F("LED_BUILTIN         = ")); Serial.println(LED_BUILTIN);
    Serial.print(F("ENABLE_LED_FEEDBACK = ")); Serial.println(ENABLE_LED_FEEDBACK);
+   Serial.print(F("RAW_BUFFER_LENGTH   = ")); Serial.println(RAW_BUFFER_LENGTH);
+   Serial.print(F("MARK_EXCESS_MICROS  = ")); Serial.println(MARK_EXCESS_MICROS);
 
    pinMode(LED_BUILTIN, OUTPUT);
    // Обеспечиваем возможность подключаться последовательному монитору после 
@@ -117,64 +121,81 @@ void setup()
    Serial.println(IR_RECEIVE_PIN);
 }
 
-//+=============================================================================
-// The repeating section of the code
-//
 void loop() 
 {
+   // Если пришел IR-код
+   if (IrReceiver.decode()) 
+   { 
+      // Если буфер переполнен, то выводим сообщение
+      // see also https://github.com/Arduino-IRremote/Arduino-IRremote#modifying-compile-options-with-sloeber-ide
+      if (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_WAS_OVERFLOW) 
+      {
+         Serial.println(F("Обнаружено переполнение буфера"));
+         Serial.println(F("Попробуйте значение \"RAW_BUFFER_LENGTH\" сделать больше чем " STR(RAW_BUFFER_LENGTH) " в " __FILE__));
+      } 
+      else 
+      {
+         Serial.println();                               
 
-
-  /*
-    if (IrReceiver.decode()) {  // Grab an IR code
-        // Check if the buffer overflowed
-        if (IrReceiver.decodedIRData.flags & IRDATA_FLAGS_WAS_OVERFLOW) {
-            Serial.println(F("Overflow detected"));
-            Serial.println(F("Try to increase the \"RAW_BUFFER_LENGTH\" value of " STR(RAW_BUFFER_LENGTH) " in " __FILE__));
-            // see also https://github.com/Arduino-IRremote/Arduino-IRremote#modifying-compile-options-with-sloeber-ide
-        } else {
-            Serial.println();                               // 2 blank lines between entries
-            Serial.println();
-            IrReceiver.printIRResultShort(&Serial);
-            Serial.println();
-            Serial.println(F("Raw result in internal ticks (50 us) - with leading gap"));
-            IrReceiver.printIRResultRawFormatted(&Serial, false); // Output the results in RAW format
-            Serial.println(F("Raw result in microseconds - with leading gap"));
-            IrReceiver.printIRResultRawFormatted(&Serial, true);  // Output the results in RAW format
-            Serial.println();                               // blank line between entries
-            Serial.print(F("Result as internal ticks (50 us) array - compensated with MARK_EXCESS_MICROS="));
-            Serial.println(MARK_EXCESS_MICROS);
-            IrReceiver.compensateAndPrintIRResultAsCArray(&Serial, false); // Output the results as uint8_t source code array of ticks
-            Serial.print(F("Result as microseconds array - compensated with MARK_EXCESS_MICROS="));
-            Serial.println(MARK_EXCESS_MICROS);
-            IrReceiver.compensateAndPrintIRResultAsCArray(&Serial, true); // Output the results as uint16_t source code array of micros
-            IrReceiver.printIRResultAsCVariables(&Serial);  // Output address and data as source code variables
-
-            IrReceiver.compensateAndPrintIRResultAsPronto(&Serial);
-            */
-
+         // Выводим информацию по коду нажатой кнопки
+         Serial.println();
+         IrReceiver.printIRResultShort(&Serial);
+         
+         // Выводим результаты в RAW формате
+         /*
+         Serial.println();
+         Serial.println(F("Таблица результата во внутренних тиках (50 us) с управляющим интервалом"));
+         IrReceiver.printIRResultRawFormatted(&Serial, false); 
+         Serial.println(F("Таблица результата в микросекундах с управляющим интервалом"));
+         IrReceiver.printIRResultRawFormatted(&Serial, true);  
+         Serial.println(); 
+         */
+         
+         // Выводим результат нажатой кнопки:
+         /*
+         // а) как массив чисел типа uint8_t, представляющих коды тиков                           
+         Serial.print(F("Результат в виде массива внутренних тиков (50 us) с компенсацией MARK_EXCESS_MICROS="));
+         Serial.println(MARK_EXCESS_MICROS);
+         IrReceiver.compensateAndPrintIRResultAsCArray(&Serial, false); 
+         // б) как массив чисел типа uint16_t, представляющих микросекунды
+         Serial.print(F("Результат в виде массива микросекунд с компенсацией MARK_EXCESS_MICROS="));
+         Serial.println(MARK_EXCESS_MICROS);
+         IrReceiver.compensateAndPrintIRResultAsCArray(&Serial, true); 
+         
+         // Выводим отдельно адрес, команду и исходный код клавиши  
+         IrReceiver.printIRResultAsCVariables(&Serial);  
+         
+         // Выводим последовательность Pronto HEX двумя способами:
+         
+         // а) с помощью compensateAndPrintIRResultAsPronto()
+         IrReceiver.compensateAndPrintIRResultAsPronto(&Serial);
+         */
+         
+         // б) с использованием функции compensateAndStorePronto()
+         // (эти значения предназначены для Arduino UNO)
+         String ProntoHEX = F("Pronto HEX contains: \r\n");        // Assign string to ProtoHex string object
+         ProntoHEX = F("");
+         if (int size = IrReceiver.compensateAndStorePronto(&ProntoHEX)) 
+         {
             /*
-             * Example for using the compensateAndStorePronto() function.
-             * Creating this String requires 2210 bytes program memory and 10 bytes RAM for the String class.
-             * The String object itself requires additional 440 Bytes RAM from the heap.
-             * This values are for an Arduino UNO.
-             */
-//        Serial.println();                                     // blank line between entries
-//        String ProntoHEX = F("Pronto HEX contains: ");        // Assign string to ProtoHex string object
-//        if (int size = IrReceiver.compensateAndStorePronto(&ProntoHEX)) {   // Dump the content of the IReceiver Pronto HEX to the String object
-//            // Append compensateAndStorePronto() size information to the String object (requires 50 bytes heap)
-//            ProntoHEX += F("\r\nProntoHEX is ");              // Add codes size information to the String object
-//            ProntoHEX += size;
-//            ProntoHEX += F(" characters long and contains "); // Add codes count information to the String object
-//            ProntoHEX += size / 5;
-//            ProntoHEX += F(" codes");
-//            Serial.println(ProntoHEX.c_str());                // Print to the serial console the whole String object
-//            Serial.println();                                 // blank line between entries
-//        }
-/*
-        }
-        IrReceiver.resume();                            // Prepare for the next value
-    }
-    */
+            ProntoHEX += F("\r\nProntoHEX is ");              // Add codes size information to the String object
+            ProntoHEX += size;
+            ProntoHEX += F(" characters long and contains "); // Add codes count information to the String object
+            ProntoHEX += size / 5;
+            ProntoHEX += F(" codes");
+            */
+            Serial.println(ProntoHEX.c_str());                // Print to the serial console the whole String object
+            Serial.println(); // blank line between entries
+            //String ccc="0000 006D 0022 0000 0191 00AC 0018 0018 0018 0016 001A 0014 0018 0018 0018 0016 0018 0016 0018 0018 0018 0016 0018 0043 0018 0041 0018 0043 001A 0041 0018 0041 001A 0041 001A 0041 0018 0043 0018 0016 0018 0016 001A 0016 0018 0041 001A 0041 0018 0016 001A 0041 0018 0016 001A 0041 0018 0043 0018 0041 001A 0016 0018 0016 0018 0041 0018 0018 0018 0041 0018 06C3";
+            //String sPronto = ProntoHEX.c_str();       
+            //Serial.println(sPronto); Serial.println(ccc);  
+            //if (sPronto==ccc) Serial.println("Получилось!");                              
+          }
+         
+      }
+      // Готовим прием следующего значения
+      IrReceiver.resume();                          
+   }
 }
 
 // ****************************************************************************

@@ -13,10 +13,11 @@ DontOpen=0
 AbsolutePath=0
 FileFormat=0
 ProjectFilesOnly=0
+HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	+Kvizzy
+	-Kvizzy
 		-Icons
 			-TinyMCE для IttveME
 				Icons\TinyMCE для IttveME\TinyMCE.png
@@ -51,8 +52,8 @@ Kvizzy
 				Icons\tveMenu и favicon для IttveME\tveMenuD.png
 			Icons\Icons.md
 			Icons\Icons.md.backup
-		+IRremote
-			+ReceiveDump
+		-IRremote
+			-ReceiveDump
 				IRremote\ReceiveDump\PinDefinitionsAndMore.h
 				IRremote\ReceiveDump\ReceiveDump.ino
 			IRremote\IRremote.md
@@ -178,13 +179,18 @@ Kvizzy
 		-Kvizzy
 			Kvizzy\Kvizzy.md
 			Kvizzy\Kvizzy.md.backup
+		Kvizzy.ppr
 		README.md
 		README.md.backup
 [Open project files]
 0=IRremote\ReceiveDump\ReceiveDump.ino
+1=GalaxyS4UniversalRemote\IR_ChrisTree.txt
 [Selected Project Files]
 Main=
-Selected=IRremote\ReceiveDump\ReceiveDump.ino
+Selected=GalaxyS4UniversalRemote\IR_ChrisTree.txt
 [IRremote\ReceiveDump\ReceiveDump.ino]
-TopLine=86
-Caret=31,116
+TopLine=109
+Caret=35,109
+[GalaxyS4UniversalRemote\IR_ChrisTree.txt]
+TopLine=36
+Caret=1,74

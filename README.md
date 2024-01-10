@@ -6,6 +6,12 @@
 
 ### [Kvizzy - универсальный пульт для домашней техники на смартфоне](#kvizzy) 
 
+### [Galaxy S4 Universal Remote - универсальный пульт для домашней техники на смартфоне ("ещё одно" приложение для смартфона)](GalaxyS4UniversalRemote/GalaxyS4UniversalRemote.md)
+
+### [IR-ChrissTree - инфракрасный пульт на смартфоне для всего и Arduino](IR-ChrissTree/IR-ChrissTree.md) 
+
+### [IrPlus - универсальный пульт для домашней техники на смартфоне ("первое" приложение для смартфона)](IrPlus/IrPlus.md) 
+
 ### [IRremote - дополнительное изучение библиотеки IRremote 3.5.2](#irremote)
 
 ### [Icons - черновая работа над значками, изображениями](#icons)

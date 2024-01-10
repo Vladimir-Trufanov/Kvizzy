@@ -1,0 +1,50 @@
+<irplus>
+ <device manufacturer="SAMSUNG" model="SmartRemote TV FHD UHD" columns="12" format="WINLIRC_SPACEENC" one-pulse="628" one-space="1691" zero-pulse="628" zero-space="523" header-pulse="4523" header-space="4517" gap-space="46053" gap-pulse="629" bits="16" pre-bits="16" repeat="2">
+  <button label="&#61457;" labelSize="25.0" span="6" backgroundColor="FFC84334">0xE0E0 0x40BF</button>
+  <button label="SOURCE" labelSize="18.0" span="6">0xE0E0 0x807F</button>
+  <button label="1" labelSize="25.0" span="4">0xE0E0 0x20DF</button>
+  <button label="2" labelSize="25.0" span="4">0xE0E0 0xA05F</button>
+  <button label="3" labelSize="25.0" span="4">0xE0E0 0x609F</button>
+  <button label="4" labelSize="25.0" span="4">0xE0E0 0x10EF</button>
+  <button label="5" labelSize="25.0" span="4">0xE0E0 0x906F</button>
+  <button label="6" labelSize="25.0" span="4">0xE0E0 0x50AF</button>
+  <button label="7" labelSize="25.0" span="4">0xE0E0 0x30CF</button>
+  <button label="8" labelSize="25.0" span="4">0xE0E0 0xB04F</button>
+  <button label="9" labelSize="25.0" span="4">0xE0E0 0x708F</button>
+  <button label="TTX/MIX" labelSize="12.0" span="4">0xE0E0 0x34CB</button>
+  <button label="0" labelSize="25.0" span="4">0xE0E0 0x8877</button>
+  <button label="PRE-CH" labelSize="18.0" span="4">0xE0E0 0xC837</button>
+  <button label="VOL+" labelSize="18.0" span="4" backgroundColor="FF2766DC">0xE0E0 0xE01F</button>
+  <button label="&#1045889;" labelSize="25.0" span="4">0xE0E0 0xF00F</button>
+  <button label="CH+" labelSize="18.0" span="4" backgroundColor="FF2766DC">0xE0E0 0x48B7</button>
+  <button label="VOL-" labelSize="18.0" span="4" backgroundColor="FF2766DC">0xE0E0 0xD02F</button>
+  <button label="CH LIST" labelSize="12.0" span="4">0xE0E0 0xD629</button>
+  <button label="CH-" labelSize="18.0" span="4" backgroundColor="FF2766DC">0xE0E0 0x08F7</button>
+  <button label="MENU" labelSize="18.0" span="4">0xE0E0 0x58A7</button>
+  <button label="&#61461;" labelSize="25.0" span="4">0xE0E0 0x9E61</button>
+  <button label="GUIDE" labelSize="18.0" span="4">0xE0E0 0xF20D</button>
+  <button label="TOOLS" labelSize="18.0" span="4">0xE0E0 0xD22D</button>
+  <button label="&#61656;" labelSize="25.0" span="4">0xE0E0 0x06F9</button>
+  <button label="INFO" labelSize="18.0" span="4">0xE0E0 0xF807</button>
+  <button label="&#61657;" labelSize="25.0" span="4">0xE0E0 0xA659</button>
+  <button label="ENTER" labelSize="18.0" span="4">0xE0E0 0x16E9</button>
+  <button label="&#61658;" labelSize="25.0" span="4">0xE0E0 0x46B9</button>
+  <button label="RETURN" labelSize="18.0" span="4">0xE0E0 0x1AE5</button>
+  <button label="&#61655;" labelSize="25.0" span="4">0xE0E0 0x8679</button>
+  <button label="EXIT" labelSize="18.0" span="4">0xE0E0 0xB44B</button>
+  <button label="A" labelSize="25.0" span="3" backgroundColor="FFC84334">0xE0E0 0x36C9</button>
+  <button label="B" labelSize="25.0" span="3" backgroundColor="FF29A58B">0xE0E0 0x28D7</button>
+  <button label="C" labelSize="25.0" span="3" backgroundColor="FFF2B731">0xE0E0 0xA857</button>
+  <button label="D" labelSize="25.0" span="3" backgroundColor="FF2766DC">0xE0E0 0x6897</button>
+  <button label="SEARCH" labelSize="18.0" span="3">0xE0E0 0xCE31</button>
+  <button label="e-Manual" labelSize="12.0" span="3">0xE0E0 0xFC03</button>
+  <button label="P.SIZE" labelSize="18.0" span="3">0xE0E0 0x7C83</button>
+  <button label="Accessibility" labelSize="12.0" span="3">0xE0E0 0xA45B</button>
+  <button label="&#61514;" labelSize="25.0" span="4">0xE0E0 0xA25D</button>
+  <button label="&#61516;" labelSize="25.0" span="4">0xE0E0 0x52AD</button>
+  <button label="&#61518;" labelSize="25.0" span="4">0xE0E0 0x12ED</button>
+  <button label="&#61713;" labelSize="25.0" span="4" labelColor="FFC84334">0xE0E0 0x926D</button>
+  <button label="&#61515;" labelSize="25.0" span="4">0xE0E0 0xE21D</button>
+  <button label="&#61517;" labelSize="25.0" span="4">0xE0E0 0x629D</button>
+ </device>
+</irplus>
