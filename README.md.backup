@@ -1,6 +1,8 @@
-## Универсальный пульт для домашней техники
+## Рабочая тетрадь
 
 ### Содержание
+
+### Первый подход к Raspberry Pi Zero W/WH(RaspberryPiZeroW/.md)
 
 ---
 
@@ -8,7 +10,7 @@
 
 ### [Galaxy S4 Universal Remote - универсальный пульт для домашней техники на смартфоне ("ещё одно" приложение для смартфона)](GalaxyS4UniversalRemote/GalaxyS4UniversalRemote.md)
 
-### [IR-ChrissTree - инфракрасный пульт на смартфоне для всего и Arduino](IR-ChrissTree/IrPlus.md) 
+### [IR-ChrissTree - инфракрасный пульт на смартфоне для всего и Arduino](IR-ChrissTree/IR-ChrissTree.md) 
 
 ### [IrPlus - универсальный пульт для домашней техники на смартфоне ("первое" приложение для смартфона)](IrPlus/IrPlus.md) 
 
