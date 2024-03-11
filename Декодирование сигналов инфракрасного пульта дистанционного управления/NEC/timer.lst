@@ -1,0 +1,391 @@
+   1               		.file	"timer.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	TIM_Init
+  18               	TIM_Init:
+  19               	.LFB6:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	.LM2:
+  24 0000 8E98      		cbi 49-32,6
+  25               	.LM3:
+  26 0002 969A      		sbi 50-32,6
+  27               	.LM4:
+  28 0004 80E2      		ldi r24,lo8(32)
+  29 0006 89BF      		out 89-32,r24
+  30               	.LM5:
+  31 0008 1FBC      		out 79-32,__zero_reg__
+  32               	.LM6:
+  33 000a 83E0      		ldi r24,lo8(3)
+  34 000c 8EBD      		out 78-32,r24
+  35               	.LM7:
+  36 000e 1DBC      		out (76)+1-32,__zero_reg__
+  37 0010 1CBC      		out 76-32,__zero_reg__
+  38               	.LM8:
+  39 0012 1092 0000 		sts currentState,__zero_reg__
+  40               	/* epilogue start */
+  41               	.LM9:
+  42 0016 0895      		ret
+  43               	.LFE6:
+  45               	.global	__vector_5
+  47               	__vector_5:
+  48               	.LFB7:
+  49               	.LM10:
+  50 0018 1F92      		push __zero_reg__
+  51 001a 0F92      		push r0
+  52 001c 0FB6      		in r0,__SREG__
+  53 001e 0F92      		push r0
+  54 0020 1124      		clr __zero_reg__
+  55 0022 8F93      		push r24
+  56 0024 9F93      		push r25
+  57               	/* prologue: Signal */
+  58               	/* frame size = 0 */
+  59               	.LM11:
+  60 0026 8091 0000 		lds r24,icr2
+  61 002a 9091 0000 		lds r25,(icr2)+1
+  62 002e 9093 0000 		sts (icr1)+1,r25
+  63 0032 8093 0000 		sts icr1,r24
+  64               	.LM12:
+  65 0036 86B5      		in r24,70-32
+  66 0038 97B5      		in r25,(70)+1-32
+  67 003a 9093 0000 		sts (icr2)+1,r25
+  68 003e 8093 0000 		sts icr2,r24
+  69               	.LM13:
+  70 0042 8091 0000 		lds r24,flag
+  71 0046 8160      		ori r24,lo8(1)
+  72 0048 8093 0000 		sts flag,r24
+  73               	/* epilogue start */
+  74               	.LM14:
+  75 004c 9F91      		pop r25
+  76 004e 8F91      		pop r24
+  77 0050 0F90      		pop r0
+  78 0052 0FBE      		out __SREG__,r0
+  79 0054 0F90      		pop r0
+  80 0056 1F90      		pop __zero_reg__
+  81 0058 1895      		reti
+  82               	.LFE7:
+  84               	.global	TIM_CalcPeriod
+  86               	TIM_CalcPeriod:
+  87               	.LFB8:
+  88               	.LM15:
+  89               	/* prologue: function */
+  90               	/* frame size = 0 */
+  91               	.LM16:
+  92               	/* #APP */
+  93               	 ;  52 "timer.c" 1
+  94 005a F894      		cli
+  95               	 ;  0 "" 2
+  96               	.LM17:
+  97               	/* #NOAPP */
+  98 005c 8091 0000 		lds r24,icr1
+  99 0060 9091 0000 		lds r25,(icr1)+1
+ 100               	.LVL0:
+ 101               	.LM18:
+ 102 0064 4091 0000 		lds r20,icr2
+ 103 0068 5091 0000 		lds r21,(icr2)+1
+ 104               	.LVL1:
+ 105               	.LM19:
+ 106               	/* #APP */
+ 107               	 ;  55 "timer.c" 1
+ 108 006c 7894      		sei
+ 109               	 ;  0 "" 2
+ 110               	.LM20:
+ 111               	/* #NOAPP */
+ 112 006e 8417      		cp r24,r20
+ 113 0070 9507      		cpc r25,r21
+ 114 0072 00F0      		brlo .L10
+ 115               	.LM21:
+ 116 0074 9C01      		movw r18,r24
+ 117               	.LVL2:
+ 118 0076 2095      		com r18
+ 119 0078 3095      		com r19
+ 120 007a 240F      		add r18,r20
+ 121 007c 351F      		adc r19,r21
+ 122               	.LM22:
+ 123 007e C901      		movw r24,r18
+ 124               	.LVL3:
+ 125               	/* epilogue start */
+ 126 0080 0895      		ret
+ 127               	.LVL4:
+ 128               	.L10:
+ 129               	.LM23:
+ 130 0082 9A01      		movw r18,r20
+ 131 0084 281B      		sub r18,r24
+ 132 0086 390B      		sbc r19,r25
+ 133               	.LVL5:
+ 134               	.LM24:
+ 135 0088 C901      		movw r24,r18
+ 136               	.LVL6:
+ 137 008a 0895      		ret
+ 138               	.LFE8:
+ 140               	.global	TIM_Handle
+ 142               	TIM_Handle:
+ 143               	.LFB9:
+ 144               	.LM25:
+ 145               	/* prologue: function */
+ 146               	/* frame size = 0 */
+ 147               	.LM26:
+ 148 008c 8091 0000 		lds r24,flag
+ 149 0090 80FF      		sbrs r24,0
+ 150 0092 00C0      		rjmp .L21
+ 151               	.LBB4:
+ 152               	.LBB5:
+ 153               	.LM27:
+ 154               	/* #APP */
+ 155               	 ;  52 "timer.c" 1
+ 156 0094 F894      		cli
+ 157               	 ;  0 "" 2
+ 158               	.LM28:
+ 159               	/* #NOAPP */
+ 160 0096 8091 0000 		lds r24,icr1
+ 161 009a 9091 0000 		lds r25,(icr1)+1
+ 162               	.LVL7:
+ 163               	.LM29:
+ 164 009e 2091 0000 		lds r18,icr2
+ 165 00a2 3091 0000 		lds r19,(icr2)+1
+ 166               	.LVL8:
+ 167               	.LM30:
+ 168               	/* #APP */
+ 169               	 ;  55 "timer.c" 1
+ 170 00a6 7894      		sei
+ 171               	 ;  0 "" 2
+ 172               	.LM31:
+ 173               	/* #NOAPP */
+ 174 00a8 8217      		cp r24,r18
+ 175 00aa 9307      		cpc r25,r19
+ 176 00ac 00F0      		brlo .L24
+ 177               	.LM32:
+ 178 00ae 8095      		com r24
+ 179 00b0 9095      		com r25
+ 180               	.LVL9:
+ 181 00b2 820F      		add r24,r18
+ 182 00b4 931F      		adc r25,r19
+ 183               	.LBE5:
+ 184               	.LBE4:
+ 185               	.LM33:
+ 186 00b6 2091 0000 		lds r18,currentState
+ 187               	.LVL10:
+ 188 00ba 2223      		tst r18
+ 189 00bc 01F4      		brne .L25
+ 190               	.L16:
+ 191               	.LM34:
+ 192 00be 5EE0      		ldi r21,hi8(3750)
+ 193 00c0 863A      		cpi r24,lo8(3750)
+ 194 00c2 9507      		cpc r25,r21
+ 195 00c4 00F4      		brsh .L15
+ 196               	.LM35:
+ 197 00c6 895B      		subi r24,lo8(3001)
+ 198 00c8 9B40      		sbci r25,hi8(3001)
+ 199 00ca 00F0      		brlo .L18
+ 200               	.LM36:
+ 201 00cc 1092 0000 		sts data.1412,__zero_reg__
+ 202               	.LM37:
+ 203 00d0 1092 0000 		sts countBit.1413,__zero_reg__
+ 204               	.LM38:
+ 205 00d4 1092 0000 		sts countByte.1414,__zero_reg__
+ 206               	.LM39:
+ 207 00d8 1092 0000 		sts buf+4,__zero_reg__
+ 208               	.LM40:
+ 209 00dc 81E0      		ldi r24,lo8(1)
+ 210               	.LVL11:
+ 211 00de 8093 0000 		sts currentState,r24
+ 212               	.LVL12:
+ 213               	.L15:
+ 214               	.LM41:
+ 215 00e2 8091 0000 		lds r24,flag
+ 216               	.LVL13:
+ 217 00e6 8E7F      		andi r24,lo8(-2)
+ 218 00e8 8093 0000 		sts flag,r24
+ 219               	.L21:
+ 220 00ec 0895      		ret
+ 221               	.LVL14:
+ 222               	.L24:
+ 223               	.LBB7:
+ 224               	.LBB6:
+ 225               	.LM42:
+ 226 00ee A901      		movw r20,r18
+ 227 00f0 481B      		sub r20,r24
+ 228 00f2 590B      		sbc r21,r25
+ 229 00f4 CA01      		movw r24,r20
+ 230               	.LVL15:
+ 231               	.LBE6:
+ 232               	.LBE7:
+ 233               	.LM43:
+ 234 00f6 2091 0000 		lds r18,currentState
+ 235               	.LVL16:
+ 236 00fa 2223      		tst r18
+ 237 00fc 01F0      		breq .L16
+ 238               	.L25:
+ 239 00fe 2130      		cpi r18,lo8(1)
+ 240 0100 01F4      		brne .L15
+ 241               	.LM44:
+ 242 0102 42E0      		ldi r20,hi8(750)
+ 243 0104 8E3E      		cpi r24,lo8(750)
+ 244 0106 9407      		cpc r25,r20
+ 245 0108 00F4      		brsh .L15
+ 246               	.LM45:
+ 247 010a 8857      		subi r24,lo8(376)
+ 248 010c 9140      		sbci r25,hi8(376)
+ 249 010e 00F4      		brsh .L23
+ 250 0110 9091 0000 		lds r25,data.1412
+ 251               	.L19:
+ 252               	.LM46:
+ 253 0114 8091 0000 		lds r24,countBit.1413
+ 254               	.LVL17:
+ 255 0118 8F5F      		subi r24,lo8(-(1))
+ 256 011a 8093 0000 		sts countBit.1413,r24
+ 257               	.LM47:
+ 258 011e 8830      		cpi r24,lo8(8)
+ 259 0120 01F0      		breq .L26
+ 260               	.L20:
+ 261               	.LM48:
+ 262 0122 9695      		lsr r25
+ 263 0124 9093 0000 		sts data.1412,r25
+ 264 0128 00C0      		rjmp .L15
+ 265               	.LVL18:
+ 266               	.L23:
+ 267               	.LM49:
+ 268 012a 9091 0000 		lds r25,data.1412
+ 269 012e 9068      		ori r25,lo8(-128)
+ 270 0130 00C0      		rjmp .L19
+ 271               	.L18:
+ 272               	.LM50:
+ 273 0132 8091 0000 		lds r24,buf+4
+ 274               	.LVL19:
+ 275 0136 8F5F      		subi r24,lo8(-(1))
+ 276 0138 8093 0000 		sts buf+4,r24
+ 277 013c 00C0      		rjmp .L15
+ 278               	.L26:
+ 279               	.LM51:
+ 280 013e 8091 0000 		lds r24,countByte.1414
+ 281 0142 E82F      		mov r30,r24
+ 282 0144 F0E0      		ldi r31,lo8(0)
+ 283 0146 E050      		subi r30,lo8(-(buf))
+ 284 0148 F040      		sbci r31,hi8(-(buf))
+ 285 014a 9083      		st Z,r25
+ 286               	.LM52:
+ 287 014c 1092 0000 		sts countBit.1413,__zero_reg__
+ 288               	.LM53:
+ 289 0150 90E0      		ldi r25,lo8(0)
+ 290 0152 1092 0000 		sts data.1412,__zero_reg__
+ 291               	.LM54:
+ 292 0156 8F5F      		subi r24,lo8(-(1))
+ 293 0158 8093 0000 		sts countByte.1414,r24
+ 294               	.LM55:
+ 295 015c 8430      		cpi r24,lo8(4)
+ 296 015e 01F4      		brne .L20
+ 297               	.LM56:
+ 298 0160 8091 0000 		lds r24,flag
+ 299 0164 8260      		ori r24,lo8(2)
+ 300 0166 8093 0000 		sts flag,r24
+ 301               	.LM57:
+ 302 016a 1092 0000 		sts currentState,__zero_reg__
+ 303 016e 00C0      		rjmp .L15
+ 304               	.LFE9:
+ 306               	.global	TIM_Display
+ 308               	TIM_Display:
+ 309               	.LFB10:
+ 310               	.LM58:
+ 311               	/* prologue: function */
+ 312               	/* frame size = 0 */
+ 313               	.LM59:
+ 314 0170 8091 0000 		lds r24,flag
+ 315 0174 81FF      		sbrs r24,1
+ 316 0176 00C0      		rjmp .L28
+ 317               	.LM60:
+ 318 0178 80E8      		ldi r24,lo8(-128)
+ 319 017a 00D0      		rcall LCD_WriteCom
+ 320               	.LM61:
+ 321 017c 8091 0000 		lds r24,buf
+ 322 0180 00D0      		rcall BCD_3Lcd
+ 323               	.LM62:
+ 324 0182 80E2      		ldi r24,lo8(32)
+ 325 0184 00D0      		rcall LCD_WriteData
+ 326               	.LM63:
+ 327 0186 8091 0000 		lds r24,buf+1
+ 328 018a 00D0      		rcall BCD_3Lcd
+ 329               	.LM64:
+ 330 018c 80E2      		ldi r24,lo8(32)
+ 331 018e 00D0      		rcall LCD_WriteData
+ 332               	.LM65:
+ 333 0190 8091 0000 		lds r24,buf+2
+ 334 0194 00D0      		rcall BCD_3Lcd
+ 335               	.LM66:
+ 336 0196 80E2      		ldi r24,lo8(32)
+ 337 0198 00D0      		rcall LCD_WriteData
+ 338               	.LM67:
+ 339 019a 8091 0000 		lds r24,buf+3
+ 340 019e 00D0      		rcall BCD_3Lcd
+ 341               	.LM68:
+ 342 01a0 80E2      		ldi r24,lo8(32)
+ 343 01a2 00D0      		rcall LCD_WriteData
+ 344               	.LM69:
+ 345 01a4 8091 0000 		lds r24,flag
+ 346 01a8 8D7F      		andi r24,lo8(-3)
+ 347 01aa 8093 0000 		sts flag,r24
+ 348               	.L28:
+ 349               	.LM70:
+ 350 01ae 80EC      		ldi r24,lo8(-64)
+ 351 01b0 00D0      		rcall LCD_WriteCom
+ 352               	.LM71:
+ 353 01b2 8091 0000 		lds r24,buf+4
+ 354 01b6 00D0      		rcall BCD_3Lcd
+ 355               	/* epilogue start */
+ 356               	.LM72:
+ 357 01b8 0895      		ret
+ 358               	.LFE10:
+ 360               	.global	icr1
+ 361               	.global	icr1
+ 362               		.section .bss
+ 365               	icr1:
+ 366 0000 0000      		.skip 2,0
+ 367               	.global	icr2
+ 368               	.global	icr2
+ 371               	icr2:
+ 372 0002 0000      		.skip 2,0
+ 373               	.global	currentState
+ 374               	.global	currentState
+ 377               	currentState:
+ 378 0004 00        		.skip 1,0
+ 379               	.global	flag
+ 380               	.global	flag
+ 383               	flag:
+ 384 0005 00        		.skip 1,0
+ 385               		.lcomm countByte.1414,1
+ 386               		.lcomm countBit.1413,1
+ 387               		.lcomm data.1412,1
+ 388               		.comm buf,5,1
+ 445               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 timer.c
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:2      *ABS*:0000003f __SREG__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:3      *ABS*:0000003e __SP_H__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:4      *ABS*:0000003d __SP_L__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:5      *ABS*:00000034 __CCP__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:6      *ABS*:00000000 __tmp_reg__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:7      *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:18     .text:00000000 TIM_Init
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:377    .bss:00000004 currentState
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:47     .text:00000018 __vector_5
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:371    .bss:00000002 icr2
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:365    .bss:00000000 icr1
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:383    .bss:00000005 flag
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:86     .text:0000005a TIM_CalcPeriod
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:142    .text:0000008c TIM_Handle
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:386    .bss:00000008 data.1412
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:385    .bss:00000007 countBit.1413
+                             .bss:00000006 countByte.1414
+                            *COM*:00000005 buf
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccx9aLqv.s:308    .text:00000170 TIM_Display
+
+UNDEFINED SYMBOLS
+LCD_WriteCom
+BCD_3Lcd
+LCD_WriteData
+__do_clear_bss

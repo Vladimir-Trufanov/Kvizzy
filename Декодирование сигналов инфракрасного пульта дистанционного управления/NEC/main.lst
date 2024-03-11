@@ -1,0 +1,58 @@
+   1               		.file	"main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               		.data
+  17               	.LC0:
+  18 0000 7769 6E61 		.string	"winavr"
+  18      7672 00
+  19               		.text
+  20               	.global	main
+  22               	main:
+  23               	.LFB6:
+  24               	.LM1:
+  25               	/* prologue: function */
+  26               	/* frame size = 0 */
+  27               	.LM2:
+  28 0000 00D0      		rcall LCD_Init
+  29               	.LM3:
+  30 0002 00D0      		rcall TIM_Init
+  31               	.LM4:
+  32 0004 80E0      		ldi r24,lo8(.LC0)
+  33 0006 90E0      		ldi r25,hi8(.LC0)
+  34 0008 00D0      		rcall LCD_SendString
+  35               	.LM5:
+  36               	/* #APP */
+  37               	 ;  25 "main.c" 1
+  38 000a 7894      		sei
+  39               	 ;  0 "" 2
+  40               	/* #NOAPP */
+  41               	.L2:
+  42               	.LM6:
+  43 000c 00D0      		rcall TIM_Handle
+  44               	.LM7:
+  45 000e 00D0      		rcall TIM_Display
+  46 0010 00C0      		rjmp .L2
+  47               	.LFE6:
+  73               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccAvwV6q.s:2      *ABS*:0000003f __SREG__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccAvwV6q.s:3      *ABS*:0000003e __SP_H__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccAvwV6q.s:4      *ABS*:0000003d __SP_L__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccAvwV6q.s:5      *ABS*:00000034 __CCP__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccAvwV6q.s:6      *ABS*:00000000 __tmp_reg__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccAvwV6q.s:7      *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\pashgan\LOCALS~1\Temp/ccAvwV6q.s:22     .text:00000000 main
+
+UNDEFINED SYMBOLS
+LCD_Init
+TIM_Init
+LCD_SendString
+TIM_Handle
+TIM_Display
+__do_copy_data

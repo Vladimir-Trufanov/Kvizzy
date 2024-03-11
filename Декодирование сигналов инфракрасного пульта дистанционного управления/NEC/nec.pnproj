@@ -1,0 +1,1 @@
+<Project name="nec"><File path="main.c"></File><File path="bcd.c"></File><File path="bcd.h"></File><File path="bits_macros.h"></File><File path="lcd_lib.c"></File><File path="lcd_lib.h"></File><File path="timer.c"></File><File path="timer.h"></File><File path="Makefile"></File></Project>
