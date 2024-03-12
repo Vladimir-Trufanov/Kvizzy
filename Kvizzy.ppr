@@ -17,7 +17,20 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	-Kvizzy
+	+Kvizzy
+		-GalaxyS4UniversalRemote
+			-ImgAndMp4
+				GalaxyS4UniversalRemote\ImgAndMp4\chernovik.jpg
+				GalaxyS4UniversalRemote\ImgAndMp4\GalaxyS4-Pult.mp4
+				GalaxyS4UniversalRemote\ImgAndMp4\razryv-dlya-upravleniya.jpg
+				GalaxyS4UniversalRemote\ImgAndMp4\shtory.jpg
+				GalaxyS4UniversalRemote\ImgAndMp4\yolkatv.jpg
+			GalaxyS4UniversalRemote\Galaxy.S4.Универсальный.пульт.v.2.3.2.b.19.RUS.crk.apk
+			GalaxyS4UniversalRemote\Galaxy+Universal+Remote+v3.4.9c.apk
+			GalaxyS4UniversalRemote\Galaxy+Universal+Remote+v4.1.3.apk
+			GalaxyS4UniversalRemote\GalaxyS4UniversalRemote.md
+			GalaxyS4UniversalRemote\GalaxyS4UniversalRemote.md.backup
+			GalaxyS4UniversalRemote\IR_ChrisTree.txt
 		-Icons
 			-TinyMCE для IttveME
 				Icons\TinyMCE для IttveME\TinyMCE.png
@@ -52,7 +65,16 @@ Kvizzy
 				Icons\tveMenu и favicon для IttveME\tveMenuD.png
 			Icons\Icons.md
 			Icons\Icons.md.backup
+		-IrPlus
+			IrPlus\IrPlus.md
+			IrPlus\IrPlus.md.backup
+			IrPlus\NEC - E424.irplus
+			IrPlus\panasonic_sa-ht928.xml
+			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
 		-IRremote
+			-MakeIrCodesAndMyCORE
+				IRremote\MakeIrCodesAndMyCORE\MakeIrCodesAndMyCORE.ino
+				IRremote\MakeIrCodesAndMyCORE\PinDefinitionsAndMore.h
 			-ReceiveDump
 				IRremote\ReceiveDump\PinDefinitionsAndMore.h
 				IRremote\ReceiveDump\ReceiveDump.ino
@@ -176,21 +198,67 @@ Kvizzy
 			IRremote 3.5.2\library.properties
 			IRremote 3.5.2\LICENSE.txt
 			IRremote 3.5.2\README.md
+		+KRUTJAK
+			+upravlyaem-skorostyu-ehlektromotora
+				KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
+			KRUTJAK\arduino-shim.webp
+			KRUTJAK\KRUTJAK.md
+			KRUTJAK\KRUTJAK.md.backup
 		-Kvizzy
 			Kvizzy\Kvizzy.md
 			Kvizzy\Kvizzy.md.backup
+		-RaspberryPiZeroW
+			RaspberryPiZeroW\RaspberryPiZeroW.md
+			RaspberryPiZeroW\RaspberryPiZeroW.md.backup
+		-Декодирование сигналов инфракрасного пульта дистанционного управления
+			-NEC
+				-.dep
+					Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\.dep\bcd.o.d
+					Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\.dep\lcd_lib.o.d
+					Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\.dep\main.o.d
+					Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\.dep\timer.o.d
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\bcd.c
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\bcd.h
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\bcd.lst
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\bcd.o
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\bits_macros.h
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\lcd_lib.c
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\lcd_lib.h
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\lcd_lib.lst
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\lcd_lib.o
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\main.c
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\main.eep
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\main.elf
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\main.hex
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\main.lss
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\main.lst
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\main.map
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\main.o
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\main.sym
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\Makefile
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\nec.pnproj
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\nec.pnps
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\timer.c
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\timer.h
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\timer.lst
+				Декодирование сигналов инфракрасного пульта дистанционного управления\NEC\timer.o
+			Декодирование сигналов инфракрасного пульта дистанционного управления\A.Tores_Infrakrasnoe_distancionnoe_upravlenie.pdf
+			Декодирование сигналов инфракрасного пульта дистанционного управления\nec-protocol-1.png
+			Декодирование сигналов инфракрасного пульта дистанционного управления\nec-protocol-2.png
+			Декодирование сигналов инфракрасного пульта дистанционного управления\nec-protocol-3.png
+			Декодирование сигналов инфракрасного пульта дистанционного управления\nec-protocol-4.png
+			Декодирование сигналов инфракрасного пульта дистанционного управления\nec-protocol-5.png
+			Декодирование сигналов инфракрасного пульта дистанционного управления\Декодирование сигналов инфракрасного пульта дистанционного управления.doc
 		Kvizzy.ppr
 		README.md
 		README.md.backup
+		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
+		Новый1.txt
 [Open project files]
-0=IRremote\ReceiveDump\ReceiveDump.ino
-1=GalaxyS4UniversalRemote\IR_ChrisTree.txt
+0=KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
 [Selected Project Files]
 Main=
-Selected=GalaxyS4UniversalRemote\IR_ChrisTree.txt
-[IRremote\ReceiveDump\ReceiveDump.ino]
-TopLine=109
-Caret=35,109
-[GalaxyS4UniversalRemote\IR_ChrisTree.txt]
-TopLine=36
-Caret=1,74
+Selected=KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
+[KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino]
+TopLine=2
+Caret=72,38
