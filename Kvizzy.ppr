@@ -19,17 +19,10 @@ Extensions=*.*
 Kvizzy
 	+Kvizzy
 		-GalaxyS4UniversalRemote
-			-ImgAndMp4
-				GalaxyS4UniversalRemote\ImgAndMp4\chernovik.jpg
-				GalaxyS4UniversalRemote\ImgAndMp4\GalaxyS4-Pult.mp4
-				GalaxyS4UniversalRemote\ImgAndMp4\razryv-dlya-upravleniya.jpg
-				GalaxyS4UniversalRemote\ImgAndMp4\shtory.jpg
-				GalaxyS4UniversalRemote\ImgAndMp4\yolkatv.jpg
 			GalaxyS4UniversalRemote\Galaxy.S4.Универсальный.пульт.v.2.3.2.b.19.RUS.crk.apk
 			GalaxyS4UniversalRemote\Galaxy+Universal+Remote+v3.4.9c.apk
 			GalaxyS4UniversalRemote\Galaxy+Universal+Remote+v4.1.3.apk
 			GalaxyS4UniversalRemote\GalaxyS4UniversalRemote.md
-			GalaxyS4UniversalRemote\GalaxyS4UniversalRemote.md.backup
 			GalaxyS4UniversalRemote\IR_ChrisTree.txt
 		-Icons
 			-TinyMCE для IttveME
@@ -64,10 +57,8 @@ Kvizzy
 				Icons\tveMenu и favicon для IttveME\tveMenuCicon.png
 				Icons\tveMenu и favicon для IttveME\tveMenuD.png
 			Icons\Icons.md
-			Icons\Icons.md.backup
 		-IrPlus
 			IrPlus\IrPlus.md
-			IrPlus\IrPlus.md.backup
 			IrPlus\NEC - E424.irplus
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
@@ -79,7 +70,6 @@ Kvizzy
 				IRremote\ReceiveDump\PinDefinitionsAndMore.h
 				IRremote\ReceiveDump\ReceiveDump.ino
 			IRremote\IRremote.md
-			IRremote\IRremote.md.backup
 		-IRremote 3.5.2
 			-examples
 				-ControlRelay
@@ -199,17 +189,43 @@ Kvizzy
 			IRremote 3.5.2\LICENSE.txt
 			IRremote 3.5.2\README.md
 		+KRUTJAK
+			-ehlektronnyj-potenciometr
+				KRUTJAK\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
+				KRUTJAK\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.md
+				KRUTJAK\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.md.backup
+				KRUTJAK\ehlektronnyj-potenciometr\harakteristiki-KP501.jpeg
+				KRUTJAK\ehlektronnyj-potenciometr\Как читать электрические схемы.doc
+				KRUTJAK\ehlektronnyj-potenciometr\Электронный переменный резистор. Паяем простую схему.mp4
+			-upravlenie-skorostyu-i-napravleniem-ot-potenciometra
+				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\MotorOtPotenciometra.jpg
+				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\n-cha-p.jpg
+				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
 			+upravlyaem-skorostyu-ehlektromotora
+				KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.fzz
 				KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
+			-Разборка паровозика
+				KRUTJAK\Разборка паровозика\Batarejnyi-otsek.jpg
+				KRUTJAK\Разборка паровозика\Koljosa.jpg
+				KRUTJAK\Разборка паровозика\Krepy.jpg
+				KRUTJAK\Разборка паровозика\Nizhniak.jpg
+				KRUTJAK\Разборка паровозика\Parovozik-v-razbore.jpg
+				KRUTJAK\Разборка паровозика\Pod-dnischem.jpg
+				KRUTJAK\Разборка паровозика\Prostejshfia-shema.jpg
+				KRUTJAK\Разборка паровозика\Silovaja-chast-i-dymovydelenie.jpg
+				KRUTJAK\Разборка паровозика\Tjagi.jpg
+			-Расчеты цепей
+				KRUTJAK\Расчеты цепей\Kireeva_E__Sherstnev_S_-_Polny_spravochnik_po.pdf
+				KRUTJAK\Расчеты цепей\raschyoty-cepej.md
+				KRUTJAK\Расчеты цепей\raschyoty-cepej.md.backup
+				KRUTJAK\Расчеты цепей\Практическая электроника - 2015 - АКУЛОВ ИВАН.pdf
+				KRUTJAK\Расчеты цепей\Электротехника и электроника - НЕМЦОВ МВ НЕМЦОВА МЛ.pdf
 			KRUTJAK\arduino-shim.webp
 			KRUTJAK\KRUTJAK.md
 			KRUTJAK\KRUTJAK.md.backup
 		-Kvizzy
 			Kvizzy\Kvizzy.md
-			Kvizzy\Kvizzy.md.backup
 		-RaspberryPiZeroW
 			RaspberryPiZeroW\RaspberryPiZeroW.md
-			RaspberryPiZeroW\RaspberryPiZeroW.md.backup
 		-Декодирование сигналов инфракрасного пульта дистанционного управления
 			-NEC
 				-.dep
@@ -251,14 +267,12 @@ Kvizzy
 			Декодирование сигналов инфракрасного пульта дистанционного управления\Декодирование сигналов инфракрасного пульта дистанционного управления.doc
 		Kvizzy.ppr
 		README.md
-		README.md.backup
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
-		Новый1.txt
 [Open project files]
-0=KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
+0=KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
-[KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino]
-TopLine=2
-Caret=72,38
+Selected=KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
+[KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino]
+TopLine=5
+Caret=8,43
