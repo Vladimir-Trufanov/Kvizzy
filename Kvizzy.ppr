@@ -196,11 +196,13 @@ Kvizzy
 				KRUTJAK\ehlektronnyj-potenciometr\harakteristiki-KP501.jpeg
 				KRUTJAK\ehlektronnyj-potenciometr\Как читать электрические схемы.doc
 				KRUTJAK\ehlektronnyj-potenciometr\Электронный переменный резистор. Паяем простую схему.mp4
+			+trassirovka-signalov-ot-potenciometra-i-na-dvigatel
+				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
 			-upravlenie-skorostyu-i-napravleniem-ot-potenciometra
 				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\MotorOtPotenciometra.jpg
 				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\n-cha-p.jpg
 				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
-			+upravlyaem-skorostyu-ehlektromotora
+			-upravlyaem-skorostyu-ehlektromotora
 				KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.fzz
 				KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
 			-Разборка паровозика
@@ -213,15 +215,11 @@ Kvizzy
 				KRUTJAK\Разборка паровозика\Prostejshfia-shema.jpg
 				KRUTJAK\Разборка паровозика\Silovaja-chast-i-dymovydelenie.jpg
 				KRUTJAK\Разборка паровозика\Tjagi.jpg
-			-Расчеты цепей
-				KRUTJAK\Расчеты цепей\Kireeva_E__Sherstnev_S_-_Polny_spravochnik_po.pdf
-				KRUTJAK\Расчеты цепей\raschyoty-cepej.md
-				KRUTJAK\Расчеты цепей\raschyoty-cepej.md.backup
-				KRUTJAK\Расчеты цепей\Практическая электроника - 2015 - АКУЛОВ ИВАН.pdf
-				KRUTJAK\Расчеты цепей\Электротехника и электроника - НЕМЦОВ МВ НЕМЦОВА МЛ.pdf
+			-Таймеры
 			KRUTJAK\arduino-shim.webp
 			KRUTJAK\KRUTJAK.md
 			KRUTJAK\KRUTJAK.md.backup
+			KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
 		-Kvizzy
 			Kvizzy\Kvizzy.md
 		-RaspberryPiZeroW
@@ -269,10 +267,10 @@ Kvizzy
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
+0=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
-[KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino]
-TopLine=5
-Caret=8,43
+Selected=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
+[KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino]
+TopLine=54
+Caret=34,85
