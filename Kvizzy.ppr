@@ -197,6 +197,8 @@ Kvizzy
 				KRUTJAK\ehlektronnyj-potenciometr\Как читать электрические схемы.doc
 				KRUTJAK\ehlektronnyj-potenciometr\Электронный переменный резистор. Паяем простую схему.mp4
 			+trassirovka-signalov-ot-potenciometra-i-na-dvigatel
+				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
+				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h
 				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
 			-upravlenie-skorostyu-i-napravleniem-ot-potenciometra
 				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\MotorOtPotenciometra.jpg
@@ -218,8 +220,6 @@ Kvizzy
 			-Таймеры
 			KRUTJAK\arduino-shim.webp
 			KRUTJAK\KRUTJAK.md
-			KRUTJAK\KRUTJAK.md.backup
-			KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
 		-Kvizzy
 			Kvizzy\Kvizzy.md
 		-RaspberryPiZeroW
@@ -268,9 +268,17 @@ Kvizzy
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
 0=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
+1=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h
+2=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
+Selected=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
 [KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino]
-TopLine=54
-Caret=34,85
+TopLine=7
+Caret=3,31
+[KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h]
+TopLine=1
+Caret=19,11
+[KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp]
+TopLine=1
+Caret=18,6
