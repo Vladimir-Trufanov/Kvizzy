@@ -272,13 +272,13 @@ Kvizzy
 2=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
+Selected=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
 [KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino]
-TopLine=52
-Caret=2,84
+TopLine=64
+Caret=11,50
 [KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h]
-TopLine=10
+TopLine=27
 Caret=1,59
 [KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp]
-TopLine=6
-Caret=1,57
+TopLine=32
+Caret=1,13

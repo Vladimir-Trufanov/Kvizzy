@@ -14,6 +14,15 @@
 #pragma once            // обеспечили разовое подключение файла
 #include <Arduino.h>    // подключили оьщие функции Arduino
 
+
+struct MyStruct 
+{
+  int valSum;
+  int valSub;
+  int valMul;
+};
+
+
 class MotorKrutjak 
 {
    private:
@@ -51,9 +60,11 @@ class MotorKrutjak
       void Disconnect(); 
       // Подключить мотор к драйверу
       void Connect(); 
+
+      MyStruct compute(); 
+
 };
 
 #endif
 
 // ************************************************************** Motor.cpp ***
-

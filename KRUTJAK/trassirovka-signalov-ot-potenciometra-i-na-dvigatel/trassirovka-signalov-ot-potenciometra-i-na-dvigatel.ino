@@ -31,8 +31,12 @@ MotorKrutjak Motor(PinPWM_L,PinPWM_R,PinRes);
 // Инициируем начальное состояние светодиода - "не горит"
 bool doBurns=false;
 
+MyStruct str;
+
 void setup() 
 {
+   Serial.begin(9600);
+   Motor.Disconnect();
    TrassInit();   
 }
 
@@ -70,7 +74,13 @@ void TrassMake()
       
       // Устанавливаем состояние светодиода
       digitalWrite(LEDPIN,doBurns);
+
+      str = Motor.compute();
+      Serial.println(str.valSum);
+      Serial.println(str.valSub);
+      Serial.println(str.valMul);
       
+      /*
       // Отсоединяем или подсоединяем мотор
       if (doBurns==true)
       {
@@ -80,6 +90,8 @@ void TrassMake()
       {
          Motor.Disconnect();
       }
+      */
+      
    }
 }
 
