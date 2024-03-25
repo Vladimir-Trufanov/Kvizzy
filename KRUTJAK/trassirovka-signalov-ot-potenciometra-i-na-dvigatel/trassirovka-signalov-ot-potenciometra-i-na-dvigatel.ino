@@ -1,4 +1,3 @@
-
 /** Arduino UNO *** trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino ***
  * 
  * Изучить взаимосвязанные сигналы от потенциометра и на двигатель у драйвера
@@ -23,22 +22,23 @@ volatile int ValPWM_R = 0;   // хранимое значение ШИМ для 
 #define LEDPIN 13            
 
 // Определяем счетчик прерываний от таймера и общее их количество до
-// события переключения светодиода  
+// события переключения светодиода = 1 секунде 
 volatile unsigned int cntr;
 const unsigned int BtnToggle = 62499;
 
 // Инициируем драйвер мотора
-MotorKrutjak Motor; 
+MotorKrutjak Motor(PinPWM_L,PinPWM_R,PinRes); 
+// Инициируем начальное состояние светодиода - "не горит"
+bool doBurns=false;
 
 void setup() 
 {
-   Motor.Init(PinPWM_L,PinPWM_R);
    TrassInit();   
 }
 
 void loop() 
 {
-   Motor.Driver(PinPWM_L,PinPWM_R,PinRes);
+   Motor.Driver();
    TrassMake();   
 }
 
@@ -63,8 +63,23 @@ void TrassMake()
 {
    if (cntr>BtnToggle)
    {
-      digitalWrite(LEDPIN, !digitalRead(LEDPIN));
+      // Изменяем состояние переключателя по прошествии 1 секунды
+      // и сбрасываем счетчик прерываний
+      doBurns=!doBurns;
       cntr=0;
+      
+      // Устанавливаем состояние светодиода
+      digitalWrite(LEDPIN,doBurns);
+      
+      // Отсоединяем или подсоединяем мотор
+      if (doBurns==true)
+      {
+         Motor.Connect();
+      }
+      else
+      {
+         Motor.Disconnect();
+      }
    }
 }
 
