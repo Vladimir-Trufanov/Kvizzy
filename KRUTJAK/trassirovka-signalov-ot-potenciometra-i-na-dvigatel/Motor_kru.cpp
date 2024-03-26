@@ -4,26 +4,11 @@
  * двух n-канальных полевых транзисторов IRFZ24N и двух p-канальных полевых 
  * транзисторов IRF9Z24N.
  * 
- * v2.0, 25.03.2024                                   Автор:      Труфанов В.Е.
+ * v2.1, 26.03.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 24.03.2024
 **/
 
 #include "Motor_kru.h" 
-
-
-MyStruct MotorKrutjak::compute() 
-{
-  MyStruct str;
-  int val1=5;
-  int val2=2;
-  str.valSum = val1 + val2;
-  str.valSub = val1 - val2;
-  str.valMul = val1 * val2;
-  return str;
-}
-
-
-
 
 // ****************************************************************************
 // *         Управлять скоростью мотора и направлением его вращения           *
@@ -31,6 +16,10 @@ MyStruct MotorKrutjak::compute()
 void MotorKrutjak::Driver() 
 {
    ValRes = analogRead(PinRes);                  // считали напряжение с потенциометра
+   
+   //ValPWM_L = 0;     
+   //ValPWM_R = 20;   
+   
    if (ValRes<512)
    {
       ValPWM_L = map(ValRes, 0,512, 255,0);      // расчитали напряжение ШИМ
@@ -42,23 +31,60 @@ void MotorKrutjak::Driver()
       ValPWM_L = 0;   
    }
    
+   
    // Если мотор подключен к драйверу, вращаем мотор
    if (isConnect==true)
    {
-      //analogWrite(PinPWM_L,ValPWM_L);     
-      //analogWrite(PinPWM_R,ValPWM_R);        
-      analogWrite(PinPWM_L,0);     
-      analogWrite(PinPWM_R,20);        
+      analogWrite(PinPWM_L,ValPWM_L);     
+      analogWrite(PinPWM_R,ValPWM_R);        
    }
+   // Имитируем вращение мотора при отключенном драйвере:
+   // для Arduino Uno, 16 000 000 Гц ощущаемое значение 
+   // делителя обращений к двигателю = 8000. 
+   else
+   {
+      inCalc=inCalc+1;
+      if (inCalc>8000)
+      {
+         // Имитируем светодиодом
+         // pinMode(13, OUTPUT);
+         // digitalWrite(13, !digitalRead(13));
+         // Имитируем передачей в порт
+         Serial.print("rrr ValRes=");
+         Serial.print(ValRes);
+         Serial.print(", ValPWM_L=");
+         Serial.print(ValPWM_L);
+         Serial.print(", ValPWM_R=");
+         Serial.println(ValPWM_R);
+         // Сбрасываем счетчик
+         inCalc=0;
+      }
+   }
+}
+// ****************************************************************************
+// *                           Получить состояние драйвера                    *
+// ****************************************************************************
+Condition MotorKrutjak::Take()
+{
+   Condition values;
+   values.ValRes   = ValRes;   // 1024;
+   values.ValPWM_L = ValPWM_L; // 250;
+   values.ValPWM_R = ValPWM_R; // 10;
+   return values;
 }
 // ****************************************************************************
 // *              Остановить мотор и отключить его от драйвера                *
 // ****************************************************************************
-void MotorKrutjak::Disconnect() 
+void MotorKrutjak::Disconnect(uint32_t _MonitorFreq=9600) 
 {
+   // Устанавливаем признак отключения драйвера
    isConnect=false; 
+   // Останавливаем двигатель
    analogWrite(PinPWM_L,0);     
-   analogWrite(PinPWM_R,0);        
+   analogWrite(PinPWM_R,0); 
+   // Устанавливаем частоту последовательного монитора
+   mFreq = 9600;
+   Serial.begin(mFreq);
 }
 // ****************************************************************************
 // *                        Подключить мотор к драйверу                       *
@@ -67,5 +93,14 @@ void MotorKrutjak::Connect()
 {
    isConnect=true; 
 }
+// ****************************************************************************
+// *         Иммитировать работу мотора через последовательный порт           *
+// ****************************************************************************
+
+// Условно считаем, что им
+// Для Arduino Uno
+void imitate()
+{
+} 
 
 // ********************************************************** Motor_kru.cpp ***

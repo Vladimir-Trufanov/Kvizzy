@@ -3,7 +3,7 @@
  * Изучить взаимосвязанные сигналы от потенциометра и на двигатель у драйвера
  * электромотора
  * 
- * v1.1, 25.03.2024                                   Автор:      Труфанов В.Е.
+ * v1.2, 26.03.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 24.03.2024
 **/
 
@@ -12,12 +12,6 @@
 const int PinRes   = A0;  // аналоговый вход, к которому подключен потенциометр
 const int PinPWM_L = 10;  // цифровой (ШИМ) выход, к которому подключено левое плечо транзисторов
 const int PinPWM_R = 9;   // цифровой (ШИМ) выход, к которому подключено правое плечо
-
-/*
-volatile int ValRes = 0;     // считанное значение напряжения с аналогового контакта (0-1023)
-volatile int ValPWM_L = 0;   // хранимое значение ШИМ для отправки на затворы левого плеча (0-255)
-volatile int ValPWM_R = 0;   // хранимое значение ШИМ для отправки на затворы правого плеча (0-255)
-*/
 
 #define LEDPIN 13            
 
@@ -28,15 +22,18 @@ const unsigned int BtnToggle = 62499;
 
 // Инициируем драйвер мотора
 MotorKrutjak Motor(PinPWM_L,PinPWM_R,PinRes); 
+
+// Инициируем структуру состояния мотора
+Condition Condition_Motor;
+
 // Инициируем начальное состояние светодиода - "не горит"
 bool doBurns=false;
-
-MyStruct str;
 
 void setup() 
 {
    Serial.begin(9600);
-   Motor.Disconnect();
+   // Отсоединяем мотор
+   // Motor.Disconnect();
    TrassInit();   
 }
 
@@ -75,27 +72,26 @@ void TrassMake()
       // Устанавливаем состояние светодиода
       digitalWrite(LEDPIN,doBurns);
 
-      str = Motor.compute();
-      Serial.println(str.valSum);
-      Serial.println(str.valSub);
-      Serial.println(str.valMul);
-      
-      /*
+      // Выводим состояние драйвера мотора
+      Condition_Motor = Motor.Take();
+      Serial.println("---");
+      Serial.print(Condition_Motor.ValRes);   Serial.print(" ");
+      Serial.print(Condition_Motor.ValPWM_L); Serial.print(" ");
+      Serial.println(Condition_Motor.ValPWM_R);
+
       // Отсоединяем или подсоединяем мотор
       if (doBurns==true)
       {
-         Motor.Connect();
+         //Motor.Connect();
       }
       else
       {
-         Motor.Disconnect();
+         //Motor.Disconnect();
       }
-      */
-      
    }
 }
 
-ISR(TIMER2_OVF_vect)
+SIGNAL(TIMER2_OVF_vect)
 {
    cntr=cntr+1;
 }

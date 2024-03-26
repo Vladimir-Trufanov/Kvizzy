@@ -270,15 +270,19 @@ Kvizzy
 0=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
 1=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h
 2=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
+3=KRUTJAK\tri-taimera\tri-taimera.ino
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
+Selected=KRUTJAK\tri-taimera\tri-taimera.ino
 [KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino]
-TopLine=64
-Caret=11,50
+TopLine=39
+Caret=1,58
 [KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h]
-TopLine=27
-Caret=1,59
+TopLine=30
+Caret=49,61
 [KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp]
-TopLine=32
-Caret=1,13
+TopLine=26
+Caret=22,62
+[KRUTJAK\tri-taimera\tri-taimera.ino]
+TopLine=25
+Caret=1,39
