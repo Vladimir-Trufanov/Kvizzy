@@ -196,10 +196,17 @@ Kvizzy
 				KRUTJAK\ehlektronnyj-potenciometr\harakteristiki-KP501.jpeg
 				KRUTJAK\ehlektronnyj-potenciometr\Как читать электрические схемы.doc
 				KRUTJAK\ehlektronnyj-potenciometr\Электронный переменный резистор. Паяем простую схему.mp4
-			+trassirovka-signalov-ot-potenciometra-i-na-dvigatel
+			+instrument-infrakrasnogo-upravleniya
+				KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
+				KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h
+				KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
+				KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.h
+			-trassirovka-signalov-ot-potenciometra-i-na-dvigatel
 				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
 				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h
 				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
+			-tri-taimera
+				KRUTJAK\tri-taimera\tri-taimera.ino
 			-upravlenie-skorostyu-i-napravleniem-ot-potenciometra
 				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\MotorOtPotenciometra.jpg
 				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\n-cha-p.jpg
@@ -220,6 +227,7 @@ Kvizzy
 			-Таймеры
 			KRUTJAK\arduino-shim.webp
 			KRUTJAK\KRUTJAK.md
+			KRUTJAK\KRUTJAK.md.backup
 		-Kvizzy
 			Kvizzy\Kvizzy.md
 		-RaspberryPiZeroW
@@ -267,22 +275,22 @@ Kvizzy
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
-1=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h
-2=KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
-3=KRUTJAK\tri-taimera\tri-taimera.ino
+0=KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
+1=KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h
+2=KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.h
+3=KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\tri-taimera\tri-taimera.ino
-[KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino]
-TopLine=39
-Caret=1,58
-[KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h]
-TopLine=30
-Caret=49,61
-[KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp]
-TopLine=26
-Caret=22,62
-[KRUTJAK\tri-taimera\tri-taimera.ino]
-TopLine=25
-Caret=1,39
+Selected=KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
+TopLine=16
+Caret=1,56
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h]
+TopLine=32
+Caret=1,70
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.h]
+TopLine=23
+Caret=1,28
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp]
+TopLine=58
+Caret=1,96

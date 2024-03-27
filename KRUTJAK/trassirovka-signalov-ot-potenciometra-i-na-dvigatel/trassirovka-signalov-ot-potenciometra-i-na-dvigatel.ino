@@ -33,7 +33,7 @@ void setup()
 {
    Serial.begin(9600);
    // Отсоединяем мотор
-   // Motor.Disconnect();
+   Motor.Disconnect();
    TrassInit();   
 }
 

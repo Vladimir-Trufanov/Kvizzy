@@ -130,7 +130,26 @@ IRF9Z24N является мощным p-канальным МОП (MOSFET) тр
 
 Если на вход левого плеча (D10) подать "0", то верхний транзистор VT1 откроется, а нижний VT3 закроется. ... 
 
-### [Трассировка сигналов от потенциометра и на двигатель](trassirovka-signalov-ot-potenciometra-i-na-dvigatel/trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino)
+### [Скетч трассировки сигналов от потенциометра и на двигатель](trassirovka-signalov-ot-potenciometra-i-na-dvigatel/trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino)
+
+Таблица снятых показаний со входа ***A0:PinRes*** -> ***ValRes*** и на выходах ***D10:PinPWM_L*** -> ***ValPWM_L***, ***D9:PinPWM_R*** -> ***ValPWM_R***:
+```
+ValRes    ValPWM_L    ValPWM_R          ValRes    ValPWM_L    ValPWM_R
+потенциометр вправо        ==>          <==         потенциометр влево  
+----------------------------------------------------------------------
+ 514           0           0             514          0            0
+ 497           8           0             535          0           11
+ 340          86           0             702          0           94
+  60         226           0             828          0          157
+   6         253           0            1000          0          243
+   0         255           0            1023          0          255
+```
+
+### Администратор мотора - инструмент инфракрасного управления 
+
+Инструмент инфракрасного управления - Infrared control tool. 
+
+
 
 
 ###### [в начало](#%D0%BF%D0%B0%D1%80%D0%BE%D0%B2%D0%BE%D0%B7%D0%B8%D0%BA-%D0%BA%D1%80%D1%83%D1%82%D1%8F%D0%BA)
