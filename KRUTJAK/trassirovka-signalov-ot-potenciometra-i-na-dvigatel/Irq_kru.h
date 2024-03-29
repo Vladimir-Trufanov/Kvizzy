@@ -57,12 +57,10 @@ statusIrq TrassMake(int cntr, unsigned int BtnToggle, bool doBurns,
       digitalWrite(nLEDPIN,doBurns);
       // Выводим состояние драйвера мотора
       Condition_Motor = Motor.Take();
-      /*
       Serial.println("---");
       Serial.print(Condition_Motor.ValRes);   Serial.print(" ");
       Serial.print(Condition_Motor.ValPWM_L); Serial.print(" ");
       Serial.println(Condition_Motor.ValPWM_R);
-      */
    }
    values.doBurns = doBurns;  
    values.cntr = cntr; 

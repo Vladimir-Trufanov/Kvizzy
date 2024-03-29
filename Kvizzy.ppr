@@ -17,7 +17,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	+Kvizzy
+	-Kvizzy
 		-GalaxyS4UniversalRemote
 			GalaxyS4UniversalRemote\Galaxy.S4.Универсальный.пульт.v.2.3.2.b.19.RUS.crk.apk
 			GalaxyS4UniversalRemote\Galaxy+Universal+Remote+v3.4.9c.apk
@@ -62,133 +62,7 @@ Kvizzy
 			IrPlus\NEC - E424.irplus
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
-		-IRremote
-			-MakeIrCodesAndMyCORE
-				IRremote\MakeIrCodesAndMyCORE\MakeIrCodesAndMyCORE.ino
-				IRremote\MakeIrCodesAndMyCORE\PinDefinitionsAndMore.h
-			-ReceiveDump
-				IRremote\ReceiveDump\PinDefinitionsAndMore.h
-				IRremote\ReceiveDump\ReceiveDump.ino
-			IRremote\IRremote.md
-		-IRremote 3.5.2
-			-examples
-				-ControlRelay
-					IRremote 3.5.2\examples\ControlRelay\ControlRelay.ino
-					IRremote 3.5.2\examples\ControlRelay\PinDefinitionsAndMore.h
-				-IRDispatcherDemo
-					IRremote 3.5.2\examples\IRDispatcherDemo\IRCommandDispatcher.h
-					IRremote 3.5.2\examples\IRDispatcherDemo\IRCommandDispatcher.hpp
-					IRremote 3.5.2\examples\IRDispatcherDemo\IRCommandMapping.h
-					IRremote 3.5.2\examples\IRDispatcherDemo\IRDispatcherDemo.ino
-					IRremote 3.5.2\examples\IRDispatcherDemo\PinDefinitionsAndMore.h
-				-IRremoteExtensionTest
-					IRremote 3.5.2\examples\IRremoteExtensionTest\IRremoteExtensionClass.cpp
-					IRremote 3.5.2\examples\IRremoteExtensionTest\IRremoteExtensionClass.h
-					IRremote 3.5.2\examples\IRremoteExtensionTest\IRremoteExtensionTest.ino
-					IRremote 3.5.2\examples\IRremoteExtensionTest\PinDefinitionsAndMore.h
-				-IRremoteInfo
-					IRremote 3.5.2\examples\IRremoteInfo\IRremoteInfo.ino
-				-MicroGirs
-					IRremote 3.5.2\examples\MicroGirs\MicroGirs.ino
-					IRremote 3.5.2\examples\MicroGirs\PinDefinitionsAndMore.h
-				-MinimalReceiver
-					IRremote 3.5.2\examples\MinimalReceiver\MinimalReceiver.ino
-				-ReceiveAndSend
-					IRremote 3.5.2\examples\ReceiveAndSend\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\ReceiveAndSend\ReceiveAndSend.ino
-				-ReceiveDemo
-					IRremote 3.5.2\examples\ReceiveDemo\IRremote_SendDemo_ReceiveDemo.log
-					IRremote 3.5.2\examples\ReceiveDemo\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\ReceiveDemo\ReceiveDemo.ino
-				-ReceiveDump
-					IRremote 3.5.2\examples\ReceiveDump\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\ReceiveDump\ReceiveDump.ino
-				-ReceiveOneAndSendMultiple
-					IRremote 3.5.2\examples\ReceiveOneAndSendMultiple\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\ReceiveOneAndSendMultiple\ReceiveOneAndSendMultiple.ino
-				-ReceiverTimingAnalysis
-					IRremote 3.5.2\examples\ReceiverTimingAnalysis\ReceiverTimingAnalysis.ino
-				-SendAndReceive
-					IRremote 3.5.2\examples\SendAndReceive\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\SendAndReceive\SendAndReceive.ino
-					IRremote 3.5.2\examples\SendAndReceive\SendAndReceive.log
-				-SendBoseWaveDemo
-					IRremote 3.5.2\examples\SendBoseWaveDemo\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\SendBoseWaveDemo\SendBoseWaveDemo.ino
-				-SendDemo
-					IRremote 3.5.2\examples\SendDemo\IRremote_SendDemo_ReceiveDemo.log
-					IRremote 3.5.2\examples\SendDemo\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\SendDemo\SendDemo.ino
-				-SendLGAirConditionerDemo
-					IRremote 3.5.2\examples\SendLGAirConditionerDemo\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\SendLGAirConditionerDemo\Readme.md
-					IRremote 3.5.2\examples\SendLGAirConditionerDemo\SendLGAirConditionerDemo.ino
-				-SendProntoDemo
-					IRremote 3.5.2\examples\SendProntoDemo\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\SendProntoDemo\SendProntoDemo.ino
-				-SendRawDemo
-					IRremote 3.5.2\examples\SendRawDemo\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\SendRawDemo\SendRawDemo.ino
-				-SimpleReceiver
-					IRremote 3.5.2\examples\SimpleReceiver\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\SimpleReceiver\SimpleReceiver.ino
-				-SimpleSender
-					IRremote 3.5.2\examples\SimpleSender\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\SimpleSender\SimpleSender.ino
-				-UnitTest
-					IRremote 3.5.2\examples\UnitTest\PinDefinitionsAndMore.h
-					IRremote 3.5.2\examples\UnitTest\UnitTest.ino
-					IRremote 3.5.2\examples\UnitTest\UnitTest.log
-			-pictures
-				IRremote 3.5.2\pictures\IR_PWM_by_software_detail.png
-				IRremote 3.5.2\pictures\IR_PWM_by_software_jitter.png
-				IRremote 3.5.2\pictures\LG_AKB73315611.jpg
-				IRremote 3.5.2\pictures\LG_AKB75415316.jpg
-				IRremote 3.5.2\pictures\LGRemote1.jpg
-				IRremote 3.5.2\pictures\SloeberDefineSymbols.png
-			-src
-				-private
-					IRremote 3.5.2\src\private\IRFeedbackLEDDefs.h
-					IRremote 3.5.2\src\private\IRTimer.hpp
-				IRremote 3.5.2\src\ac_LG.h
-				IRremote 3.5.2\src\ac_LG.hpp
-				IRremote 3.5.2\src\digitalWriteFast.h
-				IRremote 3.5.2\src\ir_BoseWave.hpp
-				IRremote 3.5.2\src\ir_Denon.hpp
-				IRremote 3.5.2\src\ir_Dish.hpp
-				IRremote 3.5.2\src\ir_DistanceProtocol.hpp
-				IRremote 3.5.2\src\ir_JVC.hpp
-				IRremote 3.5.2\src\ir_Kaseikyo.hpp
-				IRremote 3.5.2\src\ir_Lego.hpp
-				IRremote 3.5.2\src\ir_LG.hpp
-				IRremote 3.5.2\src\ir_MagiQuest.hpp
-				IRremote 3.5.2\src\ir_NEC.hpp
-				IRremote 3.5.2\src\ir_Pronto.hpp
-				IRremote 3.5.2\src\ir_RC5_RC6.hpp
-				IRremote 3.5.2\src\ir_Samsung.hpp
-				IRremote 3.5.2\src\ir_Sony.hpp
-				IRremote 3.5.2\src\ir_Template.hpp
-				IRremote 3.5.2\src\ir_Whynter.hpp
-				IRremote 3.5.2\src\IRFeedbackLED.hpp
-				IRremote 3.5.2\src\IRProtocol.h
-				IRremote 3.5.2\src\IRReceive.hpp
-				IRremote 3.5.2\src\IRremote.h
-				IRremote 3.5.2\src\IRremote.hpp
-				IRremote 3.5.2\src\IRremoteInt.h
-				IRremote 3.5.2\src\IRSend.hpp
-				IRremote 3.5.2\src\LongUnion.h
-				IRremote 3.5.2\src\TinyIRReceiver.h
-				IRremote 3.5.2\src\TinyIRReceiver.hpp
-			IRremote 3.5.2\changelog.md
-			IRremote 3.5.2\Contributing.md
-			IRremote 3.5.2\Contributors.md
-			IRremote 3.5.2\Doxyfile
-			IRremote 3.5.2\keywords.txt
-			IRremote 3.5.2\library.json
-			IRremote 3.5.2\library.properties
-			IRremote 3.5.2\LICENSE.txt
-			IRremote 3.5.2\README.md
-		+KRUTJAK
+		-KRUTJAK
 			-ehlektronnyj-potenciometr
 				KRUTJAK\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
 				KRUTJAK\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.md
@@ -196,12 +70,18 @@ Kvizzy
 				KRUTJAK\ehlektronnyj-potenciometr\harakteristiki-KP501.jpeg
 				KRUTJAK\ehlektronnyj-potenciometr\Как читать электрические схемы.doc
 				KRUTJAK\ehlektronnyj-potenciometr\Электронный переменный резистор. Паяем простую схему.mp4
-			+instrument-infrakrasnogo-upravleniya
+			-instrument-infrakrasnogo-upravleniya
+				KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
+				KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.h
+			-proverka-komand-upravleniya
+				KRUTJAK\proverka-komand-upravleniya\ardu-ir_bb-1024x477.png
+				KRUTJAK\proverka-komand-upravleniya\proverka-komand-upravleniya.ino
 			-trassirovka-signalov-ot-potenciometra-i-na-dvigatel
+				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Irq_kru.h
 				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
 				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h
 				KRUTJAK\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
@@ -211,9 +91,6 @@ Kvizzy
 				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\MotorOtPotenciometra.jpg
 				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\n-cha-p.jpg
 				KRUTJAK\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
-			-upravlyaem-skorostyu-ehlektromotora
-				KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.fzz
-				KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
 			-Разборка паровозика
 				KRUTJAK\Разборка паровозика\Batarejnyi-otsek.jpg
 				KRUTJAK\Разборка паровозика\Koljosa.jpg
@@ -224,8 +101,8 @@ Kvizzy
 				KRUTJAK\Разборка паровозика\Prostejshfia-shema.jpg
 				KRUTJAK\Разборка паровозика\Silovaja-chast-i-dymovydelenie.jpg
 				KRUTJAK\Разборка паровозика\Tjagi.jpg
-			-Таймеры
 			KRUTJAK\arduino-shim.webp
+			KRUTJAK\ir-signal-transmission.gif
 			KRUTJAK\KRUTJAK.md
 			KRUTJAK\KRUTJAK.md.backup
 		-Kvizzy
@@ -276,21 +153,17 @@ Kvizzy
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
 0=KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
-1=KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h
-2=KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.h
-3=KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
+1=KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h
+2=KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
+Selected=KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
 [KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
-TopLine=16
-Caret=1,56
-[KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h]
-TopLine=32
-Caret=1,70
-[KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.h]
-TopLine=23
-Caret=1,28
-[KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp]
-TopLine=58
-Caret=1,96
+TopLine=39
+Caret=3,88
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h]
+TopLine=7
+Caret=1,15
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp]
+TopLine=1
+Caret=1,17
