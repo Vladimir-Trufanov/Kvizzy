@@ -7,6 +7,7 @@
 **/
 
 #include <IRremote.h>
+#include <iarduino_VCC.h> 
 
 #include "proba.h"   
 
@@ -43,18 +44,77 @@ statusIrq CurrIrq;
 void setup() 
 {
    Serial.begin(9600);
-   IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
+   //IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
 
    // Отсоединяем мотор
-   // Motor.Disconnect();
+   //Motor.Disconnect();
    // TrassInit(cntr,LEDPIN);  
    //Admin.Init(); 
-   Proba.Driver(5);
- 
+   //Proba.Driver(5);
+
+   /*
+   Motor.Driver(900);
+   Serial.println(900);
+   delay(1000);
+   Motor.Driver(1000);
+   Serial.println(1000);
+   delay(1000);
+   Motor.Driver(1024);
+   Serial.println(1024);
+   delay(1000);
+   */
 }
 
 void loop() 
 {
+   /*
+   Motor.Driver(512);
+   delay(1000);  
+   //Motor.Driver(545);
+   Motor.Driver(465);
+   delay(1000);
+   */
+ 
+
+   
+   delay(5000);  
+   Motor.Driver(512);
+       Serial.print( "Vcc = "         );                 // 
+    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
+    Serial.print( " V.\r\n"        );                 // 
+Serial.println(512);
+   delay(2000);  
+   Motor.Driver(600);
+   Serial.println(600);
+    Serial.print( "Vcc = "         );                 // 
+    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
+    Serial.print( " V.\r\n"        );                 // 
+   delay(2000);
+   Motor.Driver(700);
+    Serial.print( "Vcc = "         );                 // 
+    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
+    Serial.print( " V.\r\n"        );                 // 
+   Serial.println(700);
+   delay(2000);
+   Motor.Driver(800);
+    Serial.print( "Vcc = "         );                 // 
+    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
+    Serial.print( " V.\r\n"        );                 // 
+   Serial.println(800);
+   delay(2000);
+   Motor.Driver(512);
+    Serial.print( "Vcc = "         );                 // 
+    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
+    Serial.print( " V.\r\n"        );                 // 
+   Serial.println(512);
+   delay(2000);
+
+
+   
+   
+   
+   
+   /*
    if (IrReceiver.decode()) 
    {
       // Извлекаем код, отправленный пультом дистанционного управления 
@@ -71,7 +131,7 @@ void loop()
       // Готовим прием следующего нажатия клавиши
       IrReceiver.resume();
    }
-   
+   */
    //CurrIrq=TrassMake(cntr,BtnToggle,doBurns,LEDPIN,Motor,Condition_Motor); 
    //doBurns=CurrIrq.doBurns; 
    //cntr=CurrIrq.cntr; 

@@ -17,7 +17,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	-Kvizzy
+	+Kvizzy
 		-GalaxyS4UniversalRemote
 			GalaxyS4UniversalRemote\Galaxy.S4.Универсальный.пульт.v.2.3.2.b.19.RUS.crk.apk
 			GalaxyS4UniversalRemote\Galaxy+Universal+Remote+v3.4.9c.apk
@@ -62,7 +62,7 @@ Kvizzy
 			IrPlus\NEC - E424.irplus
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
-		-KRUTJAK
+		+KRUTJAK
 			-ehlektronnyj-potenciometr
 				KRUTJAK\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
 				KRUTJAK\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.md
@@ -70,13 +70,15 @@ Kvizzy
 				KRUTJAK\ehlektronnyj-potenciometr\harakteristiki-KP501.jpeg
 				KRUTJAK\ehlektronnyj-potenciometr\Как читать электрические схемы.doc
 				KRUTJAK\ehlektronnyj-potenciometr\Электронный переменный резистор. Паяем простую схему.mp4
-			-instrument-infrakrasnogo-upravleniya
+			+instrument-infrakrasnogo-upravleniya
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.h
+				KRUTJAK\instrument-infrakrasnogo-upravleniya\proba.cpp
+				KRUTJAK\instrument-infrakrasnogo-upravleniya\proba.h
 			-proverka-komand-upravleniya
 				KRUTJAK\proverka-komand-upravleniya\ardu-ir_bb-1024x477.png
 				KRUTJAK\proverka-komand-upravleniya\proverka-komand-upravleniya.ino
@@ -159,11 +161,11 @@ Kvizzy
 Main=
 Selected=KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
 [KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
-TopLine=39
-Caret=3,88
+TopLine=48
+Caret=14,62
 [KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h]
-TopLine=7
+TopLine=15
 Caret=1,15
 [KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp]
-TopLine=1
-Caret=1,17
+TopLine=5
+Caret=2,35
