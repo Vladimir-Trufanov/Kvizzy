@@ -1,9 +1,9 @@
 /** Arduino UNO                                               *** Irq_kru.h ***
  * 
  * Подготовить и обработать прерывание от 2-го таймера для трассировки
- * данных и событий с паровозиком "КРУТЯК" с частотой ` 1 сек 
+ * данных и событий с паровозиком "КРУТЯК" с частотой в 1 сек 
  * 
- * v2.2, 27.03.2024                                   Автор:      Труфанов В.Е.
+ * v2.3, 01.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 24.03.2024
 **/
 
@@ -20,7 +20,6 @@ struct statusIrq
    bool doBurns;  
    int  cntr; 
 };
-
 // ****************************************************************************
 // *               Настроить прерывание по переполнению 2 таймера             *
 // ****************************************************************************
@@ -57,8 +56,8 @@ statusIrq TrassMake(int cntr, unsigned int BtnToggle, bool doBurns,
       digitalWrite(nLEDPIN,doBurns);
       // Выводим состояние драйвера мотора
       Condition_Motor = Motor.Take();
-      /*
       Serial.println("---");
+      /*
       Serial.print(Condition_Motor.ValRes);   Serial.print(" ");
       Serial.print(Condition_Motor.ValPWM_L); Serial.print(" ");
       Serial.println(Condition_Motor.ValPWM_R);

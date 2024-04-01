@@ -9,8 +9,6 @@
 #include <IRremote.h>
 #include <iarduino_VCC.h> 
 
-#include "proba.h"   
-
 #include "Motor_kru.h"    // подключили драйвер мотора
 #include "Admin_kru.h"    // подключили драйвер мотора
 #include "Irq_kru.h"      // подключили администратор мотора
@@ -26,15 +24,18 @@ const int PinPWM_R = 9;   // цифровой (ШИМ) выход, к котор
 // события переключения светодиода = 1 секунде 
 volatile unsigned int cntr;
 const unsigned int BtnToggle = 62499;
+// Определяем флаг истечения 1 сек для запуска трассировок
+volatile boolean OneSecondFlag = false;
+
 // Инициируем начальное состояние светодиода - "не горит"
 bool doBurns=false;
+
+boolean toggle1 = 0;
 
 // Инициируем драйвер мотора
 MotorKrutjak Motor(PinPWM_L,PinPWM_R,PinRes); 
 // Инициируем aдминистратор мотора
 AdminKrutjak Admin; 
-
-ProbaX Proba; 
 
 // Инициируем структуры состояния мотора и
 // текущего состояния таймерного прерывания
@@ -46,11 +47,17 @@ void setup()
    Serial.begin(9600);
    //IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
 
+   // Настраиваем прерывание по переполнению 2 таймера 
+   // для сигнализирования трассировок 
+   TrassInit(cntr,LEDPIN);  
    // Отсоединяем мотор
-   //Motor.Disconnect();
-   // TrassInit(cntr,LEDPIN);  
+   Motor.Disconnect();
+
+   /*
+   pinMode(13, OUTPUT);
+   */
+   
    //Admin.Init(); 
-   //Proba.Driver(5);
 
    /*
    Motor.Driver(900);
@@ -67,6 +74,20 @@ void setup()
 
 void loop() 
 {
+
+   delay(1000);
+   Motor.Driver(600);
+   
+   // Проверяем флаг истечения 1 секунды, если флаг установлен (true), то
+   // выполняем трассировку и передаём информацию внешнему контроллеру
+   if (OneSecondFlag == true)
+   {
+      Serial.print("Vcc="); 
+      Serial.print(analogRead_VCC()); // вывели напряжение питания
+      Serial.print("V\r\n");
+      OneSecondFlag=false;            // сбросили флаг одной секунды
+   }
+  
    /*
    Motor.Driver(512);
    delay(1000);  
@@ -75,44 +96,53 @@ void loop()
    delay(1000);
    */
  
-
-   
+   /*
    delay(5000);  
    Motor.Driver(512);
-       Serial.print( "Vcc = "         );                 // 
-    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
-    Serial.print( " V.\r\n"        );                 // 
-Serial.println(512);
+   Serial.print( "Vcc = "         );                 // 
+   Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
+   Serial.print( " V.\r\n"        );                 // 
+   Serial.println(512);
    delay(2000);  
    Motor.Driver(600);
    Serial.println(600);
-    Serial.print( "Vcc = "         );                 // 
-    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
-    Serial.print( " V.\r\n"        );                 // 
+   Serial.print( "Vcc = "         );                 // 
+   Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
+   Serial.print( " V.\r\n"        );                 // 
    delay(2000);
+   */
+   
+   /*
    Motor.Driver(700);
     Serial.print( "Vcc = "         );                 // 
     Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
     Serial.print( " V.\r\n"        );                 // 
    Serial.println(700);
    delay(2000);
+   */
+
+   /*   
    Motor.Driver(800);
     Serial.print( "Vcc = "         );                 // 
     Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
     Serial.print( " V.\r\n"        );                 // 
    Serial.println(800);
    delay(2000);
+   
+   Motor.Driver(1025);
+    Serial.print( "Vcc = "         );                 // 
+    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
+    Serial.print( " V.\r\n"        );                 // 
+   Serial.println(1025);
+   delay(2000);
+   
    Motor.Driver(512);
     Serial.print( "Vcc = "         );                 // 
     Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
     Serial.print( " V.\r\n"        );                 // 
    Serial.println(512);
    delay(2000);
-
-
-   
-   
-   
+   */
    
    /*
    if (IrReceiver.decode()) 
@@ -132,16 +162,29 @@ Serial.println(512);
       IrReceiver.resume();
    }
    */
+
+   // Отрабатываем блок трассировки
    //CurrIrq=TrassMake(cntr,BtnToggle,doBurns,LEDPIN,Motor,Condition_Motor); 
    //doBurns=CurrIrq.doBurns; 
    //cntr=CurrIrq.cntr; 
 }
-
-/*
+// ****************************************************************************
+// *               Обработать прерывание по переполнению 2 таймера            *
+// ****************************************************************************
 SIGNAL(TIMER2_OVF_vect)
 {
+   // Увеличиваем счетчик прерываний 
    cntr=cntr+1;
+   // Если счетчик дошел до 1 секунды, то выполняем подстройки
+   if (cntr>BtnToggle)
+   {
+      // Снова инициализируем счетчик
+      cntr=0;
+      // Устанавливаем флаг прошествия 1 секунды.
+      // Флаг всегда устанавливаем в true для того, чтобы основной цикл знал,
+      // что секунда истекла (основной цикл по своей логике и сбросит флаг в false)
+      OneSecondFlag = true;
+   }
 }
-*/
 
 // ******************************* instrument-infrakrasnogo-upravleniya.ino ***

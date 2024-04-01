@@ -71,14 +71,14 @@ Kvizzy
 				KRUTJAK\ehlektronnyj-potenciometr\Как читать электрические схемы.doc
 				KRUTJAK\ehlektronnyj-potenciometr\Электронный переменный резистор. Паяем простую схему.mp4
 			+instrument-infrakrasnogo-upravleniya
+				-ProverkaWDT
+					KRUTJAK\instrument-infrakrasnogo-upravleniya\ProverkaWDT\ProverkaWDT.ino
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.h
-				KRUTJAK\instrument-infrakrasnogo-upravleniya\proba.cpp
-				KRUTJAK\instrument-infrakrasnogo-upravleniya\proba.h
 			-proverka-komand-upravleniya
 				KRUTJAK\proverka-komand-upravleniya\ardu-ir_bb-1024x477.png
 				KRUTJAK\proverka-komand-upravleniya\proverka-komand-upravleniya.ino
@@ -107,6 +107,7 @@ Kvizzy
 			KRUTJAK\ir-signal-transmission.gif
 			KRUTJAK\KRUTJAK.md
 			KRUTJAK\KRUTJAK.md.backup
+			KRUTJAK\raspinovka-arduino-pro-mini.jpg
 		-Kvizzy
 			Kvizzy\Kvizzy.md
 		-RaspberryPiZeroW
@@ -150,22 +151,187 @@ Kvizzy
 			Декодирование сигналов инфракрасного пульта дистанционного управления\nec-protocol-4.png
 			Декодирование сигналов инфракрасного пульта дистанционного управления\nec-protocol-5.png
 			Декодирование сигналов инфракрасного пульта дистанционного управления\Декодирование сигналов инфракрасного пульта дистанционного управления.doc
+		-Про загрузчики для Arduino Pro Mini
+			-avrdudeprog33
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\atmel.ini
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\avrdude.conf
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\avrdude.exe
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\AVRDUDEPROG.exe
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\calibration.hex
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\efuse.hex
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\fuse.hex
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\hfuse.hex
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\language.ini
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\lfuse.hex
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\lock.hex
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\programm.ini
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\saveclose.ini
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\saveprog.ini
+				Про загрузчики для Arduino Pro Mini\avrdudeprog33\signature.hex
+			-Bootloader-ArduinoProMini
+				-ATmega328P с частотой 16 МГц
+					Про загрузчики для Arduino Pro Mini\Bootloader-ArduinoProMini\ATmega328P с частотой 16 МГц\ATmegaBOOT_168_atmega328.hex
+			-usbasp.2011-05-28
+				-bin
+					-firmware
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\firmware\Makefile
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\firmware\Makefile48
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\firmware\Makefile88
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\firmware\usbasp.atmega48.2009-02-28.hex
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\firmware\usbasp.atmega8.2011-05-28.hex
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\firmware\usbasp.atmega88.2011-05-28.hex
+					-linux-nonroot
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\linux-nonroot\99-USBasp.rules
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\linux-nonroot\install_rule
+					-win-driver
+						-libusb_0.1.12.1
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_0.1.12.1\libusb0.dll
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_0.1.12.1\libusb0.sys
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_0.1.12.1\libusb0_x64.dll
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_0.1.12.1\libusb0_x64.sys
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_0.1.12.1\testlibusb.exe
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_0.1.12.1\testlibusb-win.exe
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_0.1.12.1\usbasp.cat
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_0.1.12.1\usbasp.inf
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_0.1.12.1\usbasp_x64.cat
+						-libusb_1.2.4.0
+							-amd64
+								Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\amd64\libusb0.dll
+								Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\amd64\libusb0.sys
+							-ia64
+								Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\ia64\libusb0.dll
+								Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\ia64\libusb0.sys
+							-license
+								-libusb-win32
+									Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\license\libusb-win32\installer_license.txt
+							-x86
+								Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\x86\libusb0.sys
+								Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\x86\libusb0_x86.dll
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\installer_x64.exe
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\installer_x86.exe
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\libusb-win32-bin-README.txt
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\usbasp.cat
+							Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\libusb_1.2.4.0\usbasp.inf
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\bin\win-driver\Readme.txt
+				-circuit
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\circuit\USBasp.sch
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\circuit\USBasp_schematics.pdf
+				-firmware
+					-usbdrv
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\asmcommon.inc
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\Changelog.txt
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\CommercialLicense.txt
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\License.txt
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\oddebug.c
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\oddebug.h
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\Readme.txt
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbconfig-prototype.h
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrv.c
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrv.h
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrvasm.asm
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrvasm.S
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrvasm12.inc
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrvasm128.inc
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrvasm15.inc
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrvasm16.inc
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrvasm165.inc
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrvasm18-crc.inc
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbdrvasm20.inc
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\USB-ID-FAQ.txt
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\USB-IDs-for-free.txt
+						Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbdrv\usbportability.h
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\clock.c
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\clock.h
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\isp.c
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\isp.h
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\main.c
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\Makefile
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\tpi.h
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\tpi.S
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\tpi_defs.h
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbasp.h
+					Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\firmware\usbconfig.h
+				Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\Changelog.txt
+				Про загрузчики для Arduino Pro Mini\usbasp.2011-05-28\Readme.txt
+			-USBasp-win-driver-x86-x64-v3.0.7
+				-_DriverFiles
+					-amd64
+						Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\amd64\libusb0.dll
+						Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\amd64\libusbK.dll
+						Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\amd64\libusbK.sys
+						Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\amd64\WdfCoInstaller01009.dll
+					-x86
+						Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\x86\libusb0_x86.dll
+						Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\x86\libusbK.sys
+						Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\x86\libusbK_x86.dll
+						Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\x86\WdfCoInstaller01009.dll
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\dpinst.xml
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\dpinst32.exe
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\dpinst64.exe
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\dpscat.exe
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\_DriverFiles\USBasp.inf
+				-amd64
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\amd64\libusb0.dll
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\amd64\libusbK.dll
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\amd64\libusbK.sys
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\amd64\WdfCoInstaller01009.dll
+				-x86
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\x86\libusb0_x86.dll
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\x86\libusbK.sys
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\x86\libusbK_x86.dll
+					Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\x86\WdfCoInstaller01009.dll
+				Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\7zDP_LZMA.cfg
+				Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\7ZDP_LZMA.sfx
+				Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\dpinst.xml
+				Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\dpinst32.exe
+				Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\dpinst64.exe
+				Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\dpscat.exe
+				Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\InstallDriver.exe
+				Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\Instructions.txt
+				Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\re-pack-files.cmd
+				Про загрузчики для Arduino Pro Mini\USBasp-win-driver-x86-x64-v3.0.7\USBasp.inf
+			Про загрузчики для Arduino Pro Mini\driver-USBASP.jpg
+			Про загрузчики для Arduino Pro Mini\FUSE-bityi.jpg
+			Про загрузчики для Arduino Pro Mini\izkontrollera-fusy.jpg
+			Про загрузчики для Arduino Pro Mini\nachalnye-fusy.jpg
+			Про загрузчики для Arduino Pro Mini\otkrytie-programmy.jpg
+			Про загрузчики для Arduino Pro Mini\raspinovka-USBASP.jpg
+			Про загрузчики для Arduino Pro Mini\Про загрузчики для Arduino Pro Mini.md
+		-Простой мониторинг напряжения Arduino
+			-iarduino_VCC
+				-examples
+					-calcVcc
+						Простой мониторинг напряжения Arduino\iarduino_VCC\examples\calcVcc\calcVcc.ino
+					-readVcc
+						Простой мониторинг напряжения Arduino\iarduino_VCC\examples\readVcc\readVcc.ino
+				-src
+					Простой мониторинг напряжения Arduino\iarduino_VCC\src\iarduino_VCC.cpp
+					Простой мониторинг напряжения Arduino\iarduino_VCC\src\iarduino_VCC.h
+				Простой мониторинг напряжения Arduino\iarduino_VCC\keywords.txt
+				Простой мониторинг напряжения Arduino\iarduino_VCC\library.properties
+			-VoltageReadOut
+				Простой мониторинг напряжения Arduino\VoltageReadOut\VoltageReadOut.ino
+			Простой мониторинг напряжения Arduino\Простой мониторинг напряжения Arduino.md
 		Kvizzy.ppr
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
-1=KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h
-2=KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
+0=KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h
+1=KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
+2=KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h
+3=KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
 [Selected Project Files]
 Main=
 Selected=KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
-[KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
-TopLine=48
-Caret=14,62
 [KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h]
-TopLine=15
+TopLine=11
 Caret=1,15
-[KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp]
-TopLine=5
-Caret=2,35
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
+TopLine=59
+Caret=1,59
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h]
+TopLine=19
+Caret=1,26
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp]
+TopLine=1
+Caret=1,1

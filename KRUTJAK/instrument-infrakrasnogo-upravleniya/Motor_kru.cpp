@@ -43,13 +43,14 @@ void MotorKrutjak::Driver(int ValRes)
    // делителя обращений к двигателю = 8000. 
    else
    {
+      /*
       inCalc=inCalc+1;
       if (inCalc>8000)
       {
          // Имитируем светодиодом
          // pinMode(13, OUTPUT);
          // digitalWrite(13, !digitalRead(13));
-         // Имитируем передачей в порт
+         // Имитируем  передачей в порт
          Serial.print("rrr ValRes=");
          Serial.print(ValRes);
          Serial.print(", ValPWM_L=");
@@ -59,6 +60,7 @@ void MotorKrutjak::Driver(int ValRes)
          // Сбрасываем счетчик
          inCalc=0;
       }
+      */
    }
 }
 // ****************************************************************************

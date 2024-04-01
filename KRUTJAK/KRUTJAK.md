@@ -18,21 +18,20 @@
 
 ### Система команд ИК-пульта управления паровозиком
 ```
- 1 - "стоп паровоз"       - TV-VCR   
- 2 - "включить/выключить" - ON standby  
- 3 -                      - A.REP 
-20 - "начать движение"    - REC     
-21 - "назад"              - == 
-22 -                      - >|<     
-24 - "медленнее"          - <<    
-25 - "вперед"             - =>
-26 - "быстрее"            - >>   
- 
-32 -                      - EJECT
-33 -                      - A.TRK
-44 - "подключить"         - TRACKING ON 
-45 - "отключить"          - TRACKING OFF 
-50 -                      - SYSTEM
+ 1 - "стоп паровоз"       	- TV-VCR   
+ 2 - "включить/выключить" 	- ON standby  
+ 3 - "начать движение"    	- A.REP 
+20 - "начать движение"    	- REC     
+21 - "назад"              	- == 
+22 -                      	- >|<     
+24 - "медленнее"          	- <<    
+25 - "вперед"             	- =>
+26 - "быстрее"            	- >>   
+32 - "звук вкл/выкл"      	- EJECT
+33 -                      	- A.TRK
+44 - "подключить"         	- TRACKING ON 
+45 - "отключить"          	- TRACKING OFF 
+50 - "тестировать систему"	- SYSTEM
 ```
 
 ### [How to use an IR receiver and remote with Arduino](https://www.makerguides.com/ir-receiver-remote-arduino-tutorial/)
@@ -166,6 +165,8 @@ IRF9Z24N является мощным p-канальным МОП (MOSFET) тр
 ![](upravlenie-skorostyu-i-napravleniem-ot-potenciometra/n-cha-p.jpg) 
 
 ![](upravlenie-skorostyu-i-napravleniem-ot-potenciometra/MotorOtPotenciometra.jpg) 
+
+![](raspinovka-arduino-pro-mini.jpg)
 
 **Схема драйвера:**
 
