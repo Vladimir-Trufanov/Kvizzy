@@ -14,9 +14,6 @@
 #include "Admin_kru.h"    // подключили драйвер мотора
 #include "Irq_kru.h"      // подключили администратор мотора
 
-// Инициируем начальное состояние светодиода - "не горит"
-bool doBurns=false;
-
 // Инициируем драйвер мотора
 MotorKrutjak Motor(PinPWM_L,PinPWM_R,PinRes); 
 // Инициируем aдминистратор мотора
@@ -32,6 +29,8 @@ void setup()
 
    //IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
 
+   // Инициируем начальное состояние светодиода - "не горит"
+   doBurns=false;
    // Настраиваем прерывание по переполнению 2 таймера 
    // для сигнализирования трассировок 
    TrassInit();  
@@ -39,18 +38,6 @@ void setup()
    Motor.Disconnect();
    
    //Admin.Init(); 
-
-   /*
-   Motor.Driver(900);
-   Serial.println(900);
-   delay(1000);
-   Motor.Driver(1000);
-   Serial.println(1000);
-   delay(1000);
-   Motor.Driver(1024);
-   Serial.println(1024);
-   delay(1000);
-   */
 }
 
 void loop() 
@@ -58,15 +45,15 @@ void loop()
    // !!! Здесь, в основном цикле программные задержки используются только при
    // отработке команды инфракрасного приемника = 0.2 сек
 
-   //delay(1000);
-   //Motor.Driver(600);
+   delay(1000);
+   Motor.Driver(600);
    
    // Проверяем флаг истечения 1 секунды, если флаг установлен (true), то
    // выполняем трассировку и передаём информацию внешнему контроллеру
    if (OneSecondFlag == true)
    {
       // Запускаем цикл моторного теста
-      Motor.Test();
+      // Motor.Test();
       // Меняя состояние, мигаем светодиодом
       doBurns=!doBurns; 
       digitalWrite(LEDPIN,doBurns);
@@ -83,57 +70,6 @@ void loop()
       // Cбрасываем флаг одной секунды
       OneSecondFlag=false;            
    }
-  
-   /*
-   */
- 
-   /*
-   delay(5000);  
-   Motor.Driver(512);
-   Serial.print( "Vcc = "         );                 // 
-   Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
-   Serial.print( " V.\r\n"        );                 // 
-   Serial.println(512);
-   delay(2000);  
-   Motor.Driver(600);
-   Serial.println(600);
-   Serial.print( "Vcc = "         );                 // 
-   Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
-   Serial.print( " V.\r\n"        );                 // 
-   delay(2000);
-   */
-   
-   /*
-   Motor.Driver(700);
-    Serial.print( "Vcc = "         );                 // 
-    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
-    Serial.print( " V.\r\n"        );                 // 
-   Serial.println(700);
-   delay(2000);
-   */
-
-   /*   
-   Motor.Driver(800);
-    Serial.print( "Vcc = "         );                 // 
-    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
-    Serial.print( " V.\r\n"        );                 // 
-   Serial.println(800);
-   delay(2000);
-   
-   Motor.Driver(1025);
-    Serial.print( "Vcc = "         );                 // 
-    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
-    Serial.print( " V.\r\n"        );                 // 
-   Serial.println(1025);
-   delay(2000);
-   
-   Motor.Driver(512);
-    Serial.print( "Vcc = "         );                 // 
-    Serial.print( analogRead_VCC() );                 // Выводим напряжение питания.
-    Serial.print( " V.\r\n"        );                 // 
-   Serial.println(512);
-   delay(2000);
-   */
    
    /*
    if (IrReceiver.decode()) 
