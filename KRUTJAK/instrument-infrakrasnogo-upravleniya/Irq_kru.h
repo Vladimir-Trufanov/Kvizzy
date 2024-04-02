@@ -3,30 +3,23 @@
  * Подготовить и обработать прерывание от 2-го таймера для трассировки
  * данных и событий с паровозиком "КРУТЯК" с частотой в 1 сек 
  * 
- * v2.3, 01.04.2024                                   Автор:      Труфанов В.Е.
+ * v2.4, 02.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 24.03.2024
 **/
 
 #ifndef Irq_kru
 #define Irq_kru
- 
-#pragma once            // обеспечили разовое подключение файла
+#pragma once
+
+#include "define_kru.h"
 #include <Arduino.h>    // подключили оьщие функции Arduino
 #include "Motor_kru.h"  // подключили драйвер мотора
 
-// Состояние таймерного прерывания
-struct statusIrq
-{
-   bool doBurns;  
-   int  cntr; 
-};
 // ****************************************************************************
 // *               Настроить прерывание по переполнению 2 таймера             *
 // ****************************************************************************
-void TrassInit(int cntr, byte nLEDPIN) 
+void TrassInit() 
 {
-   pinMode(nLEDPIN, OUTPUT);
-   cntr=0;
    cli(); // отключили прерывания
    // Инициализируем регистры Timer2
    TCCR2A = 0; 
@@ -38,34 +31,24 @@ void TrassInit(int cntr, byte nLEDPIN)
    TCCR2B |= (1 << CS20);
    sei(); // включили прерывания
 }
+
 // ****************************************************************************
-// *         Контроллировать счетчик прерываний для прошествия 1 сек          *
-// *                      и трассировать данные и события                     *
+// *               Обработать прерывание по переполнению 2 таймера            *
 // ****************************************************************************
-statusIrq TrassMake(int cntr, unsigned int BtnToggle, bool doBurns, 
-   byte nLEDPIN, MotorKrutjak Motor, Condition Condition_Motor) 
+SIGNAL(TIMER2_OVF_vect)
 {
-   statusIrq values;
+   // Увеличиваем счетчик прерываний 
+   cntr=cntr+1;
+   // Если счетчик дошел до 1 секунды, то выполняем подстройки
    if (cntr>BtnToggle)
    {
-      // Изменяем состояние переключателя по прошествии 1 секунды
-      // и сбрасываем счетчик прерываний
-      doBurns=!doBurns;
+      // Снова инициализируем счетчик
       cntr=0;
-      // Устанавливаем состояние светодиода
-      digitalWrite(nLEDPIN,doBurns);
-      // Выводим состояние драйвера мотора
-      Condition_Motor = Motor.Take();
-      Serial.println("---");
-      /*
-      Serial.print(Condition_Motor.ValRes);   Serial.print(" ");
-      Serial.print(Condition_Motor.ValPWM_L); Serial.print(" ");
-      Serial.println(Condition_Motor.ValPWM_R);
-      */
+      // Устанавливаем флаг прошествия 1 секунды.
+      // Флаг всегда устанавливаем в true для того, чтобы основной цикл знал,
+      // что секунда истекла (основной цикл по своей логике и сбросит флаг в false)
+      OneSecondFlag = true;
    }
-   values.doBurns = doBurns;  
-   values.cntr = cntr; 
-   return values;
 }
 
 #endif

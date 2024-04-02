@@ -2,60 +2,41 @@
  * 
  * Построить модель администратора мотора - инструмента инфракрасного управления
  * 
- * v1.0, 29.03.2024                                   Автор:      Труфанов В.Е.
+ * v1.1, 02.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 29.03.2024
 **/
 
 #include <IRremote.h>
 #include <iarduino_VCC.h> 
 
+#include "define_kru.h"   // подключили определения системы управления
 #include "Motor_kru.h"    // подключили драйвер мотора
 #include "Admin_kru.h"    // подключили драйвер мотора
 #include "Irq_kru.h"      // подключили администратор мотора
 
-const int PinRes   = A0;  // аналоговый вход, к которому подключен потенциометр
-const int PinPWM_L = 10;  // цифровой (ШИМ) выход, к которому подключено левое плечо транзисторов
-const int PinPWM_R = 9;   // цифровой (ШИМ) выход, к которому подключено правое плечо
-
-#define LEDPIN         13 
-#define IR_RECEIVE_PIN 2
-
-// Определяем счетчик прерываний от таймера и общее их количество до
-// события переключения светодиода = 1 секунде 
-volatile unsigned int cntr;
-const unsigned int BtnToggle = 62499;
-// Определяем флаг истечения 1 сек для запуска трассировок
-volatile boolean OneSecondFlag = false;
-
 // Инициируем начальное состояние светодиода - "не горит"
 bool doBurns=false;
-
-boolean toggle1 = 0;
 
 // Инициируем драйвер мотора
 MotorKrutjak Motor(PinPWM_L,PinPWM_R,PinRes); 
 // Инициируем aдминистратор мотора
 AdminKrutjak Admin; 
-
-// Инициируем структуры состояния мотора и
-// текущего состояния таймерного прерывания
+// Инициируем структуру состояния мотора 
 Condition Condition_Motor;
-statusIrq CurrIrq;
 
 void setup() 
 {
    Serial.begin(9600);
+   pinMode(LEDPIN,OUTPUT);
+   cntr=0;
+
    //IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
 
    // Настраиваем прерывание по переполнению 2 таймера 
    // для сигнализирования трассировок 
-   TrassInit(cntr,LEDPIN);  
+   TrassInit();  
    // Отсоединяем мотор
    Motor.Disconnect();
-
-   /*
-   pinMode(13, OUTPUT);
-   */
    
    //Admin.Init(); 
 
@@ -74,26 +55,36 @@ void setup()
 
 void loop() 
 {
+   // !!! Здесь, в основном цикле программные задержки используются только при
+   // отработке команды инфракрасного приемника = 0.2 сек
 
-   delay(1000);
-   Motor.Driver(600);
+   //delay(1000);
+   //Motor.Driver(600);
    
    // Проверяем флаг истечения 1 секунды, если флаг установлен (true), то
    // выполняем трассировку и передаём информацию внешнему контроллеру
    if (OneSecondFlag == true)
    {
-      Serial.print("Vcc="); 
-      Serial.print(analogRead_VCC()); // вывели напряжение питания
-      Serial.print("V\r\n");
-      OneSecondFlag=false;            // сбросили флаг одной секунды
+      // Запускаем цикл моторного теста
+      Motor.Test();
+      // Меняя состояние, мигаем светодиодом
+      doBurns=!doBurns; 
+      digitalWrite(LEDPIN,doBurns);
+      // Вытаскиваем состояние драйвера мотора
+      Condition_Motor = Motor.Take();
+      // Передаём данные внешнему, контроллирующему устройству
+      // (выводим данные в последовательный порт)
+      // ------------------------------------------------------ Напряжение питания
+      Serial.print("Vcc="); Serial.print(analogRead_VCC()); Serial.print("V\r\n");
+      // ------------------------------------------------------ Состояние мотора
+      Serial.print(Condition_Motor.ValRes);   Serial.print(": ");
+      Serial.print(Condition_Motor.ValPWM_L); Serial.print(" - ");
+      Serial.println(Condition_Motor.ValPWM_R);
+      // Cбрасываем флаг одной секунды
+      OneSecondFlag=false;            
    }
   
    /*
-   Motor.Driver(512);
-   delay(1000);  
-   //Motor.Driver(545);
-   Motor.Driver(465);
-   delay(1000);
    */
  
    /*
@@ -162,29 +153,6 @@ void loop()
       IrReceiver.resume();
    }
    */
-
-   // Отрабатываем блок трассировки
-   //CurrIrq=TrassMake(cntr,BtnToggle,doBurns,LEDPIN,Motor,Condition_Motor); 
-   //doBurns=CurrIrq.doBurns; 
-   //cntr=CurrIrq.cntr; 
-}
-// ****************************************************************************
-// *               Обработать прерывание по переполнению 2 таймера            *
-// ****************************************************************************
-SIGNAL(TIMER2_OVF_vect)
-{
-   // Увеличиваем счетчик прерываний 
-   cntr=cntr+1;
-   // Если счетчик дошел до 1 секунды, то выполняем подстройки
-   if (cntr>BtnToggle)
-   {
-      // Снова инициализируем счетчик
-      cntr=0;
-      // Устанавливаем флаг прошествия 1 секунды.
-      // Флаг всегда устанавливаем в true для того, чтобы основной цикл знал,
-      // что секунда истекла (основной цикл по своей логике и сбросит флаг в false)
-      OneSecondFlag = true;
-   }
 }
 
 // ******************************* instrument-infrakrasnogo-upravleniya.ino ***

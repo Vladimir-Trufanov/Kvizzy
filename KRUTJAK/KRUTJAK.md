@@ -164,6 +164,14 @@ IRF9Z24N является мощным p-канальным МОП (MOSFET) тр
 
 ![](upravlenie-skorostyu-i-napravleniem-ot-potenciometra/n-cha-p.jpg) 
 
+```
+Timer0 -  8 бит, счетный регистр   [0,255], используется delay(), millis()
+
+Timer1 - 16 бит, счетный регистр [0,65535], используется Arduino Servo
+
+Timer2 -  8 бит, счетный регистр   [0,255], используется tone()
+```
+
 ![](upravlenie-skorostyu-i-napravleniem-ot-potenciometra/MotorOtPotenciometra.jpg) 
 
 ![](raspinovka-arduino-pro-mini.jpg)

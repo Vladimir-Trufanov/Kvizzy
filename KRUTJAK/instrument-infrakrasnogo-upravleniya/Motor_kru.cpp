@@ -13,13 +13,9 @@
 // ****************************************************************************
 // *         Управлять скоростью мотора и направлением его вращения           *
 // ****************************************************************************
-void MotorKrutjak::Driver(int ValRes) 
+void MotorKrutjak::Driver(int _ValRes) 
 {
-   //ValRes = analogRead(PinRes);                  // считали напряжение с потенциометра
-   
-   //ValPWM_L = 0;     
-   //ValPWM_R = 20;   
-
+   ValRes = _ValRes; // считали условное напряжение
    // Отрезаем переход через пограничные значения
    if (ValRes<0)    ValRes=0; 
    if (ValRes>1023) ValRes=1023; 
@@ -37,30 +33,6 @@ void MotorKrutjak::Driver(int ValRes)
    {
       analogWrite(PinPWM_L,ValPWM_L);     
       analogWrite(PinPWM_R,ValPWM_R);        
-   }
-   // Имитируем вращение мотора при отключенном драйвере:
-   // для Arduino Uno, 16 000 000 Гц ощущаемое значение 
-   // делителя обращений к двигателю = 8000. 
-   else
-   {
-      /*
-      inCalc=inCalc+1;
-      if (inCalc>8000)
-      {
-         // Имитируем светодиодом
-         // pinMode(13, OUTPUT);
-         // digitalWrite(13, !digitalRead(13));
-         // Имитируем  передачей в порт
-         Serial.print("rrr ValRes=");
-         Serial.print(ValRes);
-         Serial.print(", ValPWM_L=");
-         Serial.print(ValPWM_L);
-         Serial.print(", ValPWM_R=");
-         Serial.println(ValPWM_R);
-         // Сбрасываем счетчик
-         inCalc=0;
-      }
-      */
    }
 }
 // ****************************************************************************
@@ -95,5 +67,31 @@ void MotorKrutjak::Connect()
 {
    isConnect=true; 
 }
+// ****************************************************************************
+// *                            Протестировать мотор                          *
+// ****************************************************************************
+
+// Метод запускается из цикла с интервалом в 1 сек
+void MotorKrutjak::Test()
+{
+   // Включаем двигатель на 1 тестовой скорости 
+   if (iTest<1) 
+   {
+      iTest=nTest;
+      Driver(700);
+   }
+   if (iTest<6) 
+   {
+      Driver(600);
+   }
+   iTest--;
+   
+   //Driver(512);
+   //delay(2000);  
+   
+   //Motor.Driver(465);
+   //delay(2000);
+
+} 
 
 // ********************************************************** Motor_kru.cpp ***

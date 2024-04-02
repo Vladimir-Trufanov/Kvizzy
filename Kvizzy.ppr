@@ -75,6 +75,7 @@ Kvizzy
 					KRUTJAK\instrument-infrakrasnogo-upravleniya\ProverkaWDT\ProverkaWDT.ino
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h
+				KRUTJAK\instrument-infrakrasnogo-upravleniya\define_kru.h
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h
 				KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
@@ -320,18 +321,26 @@ Kvizzy
 1=KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
 2=KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h
 3=KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
+4=KRUTJAK\instrument-infrakrasnogo-upravleniya\define_kru.h
+5=KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.h
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
+Selected=KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
 [KRUTJAK\instrument-infrakrasnogo-upravleniya\Admin_kru.h]
 TopLine=11
 Caret=1,15
 [KRUTJAK\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
-TopLine=59
-Caret=1,59
+TopLine=44
+Caret=15,60
 [KRUTJAK\instrument-infrakrasnogo-upravleniya\Irq_kru.h]
-TopLine=19
-Caret=1,26
+TopLine=17
+Caret=1,13
 [KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp]
+TopLine=44
+Caret=11,79
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\define_kru.h]
 TopLine=1
-Caret=1,1
+Caret=1,22
+[KRUTJAK\instrument-infrakrasnogo-upravleniya\Motor_kru.h]
+TopLine=33
+Caret=1,71

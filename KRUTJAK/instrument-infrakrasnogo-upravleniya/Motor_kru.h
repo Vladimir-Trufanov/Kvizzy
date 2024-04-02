@@ -20,7 +20,6 @@ struct Condition
    int ValRes;   // считанное значение напряжения с аналогового контакта (0-1023)
    int ValPWM_L; // хранимое значение ШИМ для отправки на затворы левого плеча (0-255)
    int ValPWM_R; // хранимое значение ШИМ для отправки на затворы правого плеча (0-255)
-   //int Vсс;      // фактическое напряжение на микроконтроллерном питании
 };
 
 class MotorKrutjak 
@@ -36,7 +35,9 @@ class MotorKrutjak
       volatile int ValPWM_R; // хранимое значение ШИМ для отправки на затворы правого плеча (0-255)
       // Имитировать работу мотора через последовательный порт
       uint32_t mFreq;        // частота серийного монитора для трассировки в отключенном режиме
-      uint32_t inCalc;       // счетчик обращений к двигателю (max = 4 294 967 295)при имитации
+
+      const int nTest = 10;  // количество секунд одной скорости в тесте
+      int iTest;             // счетчик секунд одной скорости
    public:
       MotorKrutjak(int _PinPWM_L, int _PinPWM_R, int _PinRes) 
       {
@@ -44,7 +45,7 @@ class MotorKrutjak
          PinPWM_R = _PinPWM_R;
          PinRes = _PinRes;
          mFreq = 9600;
-         inCalc=0;
+         iTest=0;
          
          pinMode(PinPWM_L, OUTPUT); // назначили, как выход, контакт левого плеча 
          pinMode(PinPWM_R, OUTPUT); // назначили, как выход, контакт правого плеча
@@ -66,6 +67,8 @@ class MotorKrutjak
       void Connect(); 
       // Получить состояние драйвера
       Condition Take();
+      // Протестировать мотор
+      void Test(); 
 };
 
 #endif
