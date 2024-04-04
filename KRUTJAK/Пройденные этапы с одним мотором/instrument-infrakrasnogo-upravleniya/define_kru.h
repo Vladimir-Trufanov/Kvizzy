@@ -1,0 +1,37 @@
+/** Arduino UNO                                               *** define_kru.h ***
+ * 
+ * Определить переменные и константы системы управления паровозиком "КРУТЯК"
+ * 
+ * v1.1, 02.04.2024                                   Автор:      Труфанов В.Е.
+ * Copyright © 2024 tve                               Дата создания: 24.03.2024
+**/
+
+#ifndef define_kru
+#define define_kru
+#pragma once            
+
+const int PinRes   = A0;  // аналоговый вход, к которому подключен потенциометр
+const int PinPWM_L = 10;  // цифровой (ШИМ) выход, к которому подключено левое плечо транзисторов
+const int PinPWM_R = 9;   // цифровой (ШИМ) выход, к которому подключено правое плечо
+
+#define LEDPIN         13 
+#define IR_RECEIVE_PIN 2
+
+
+// Состояние светодиода: "горит" - "не горит"
+bool doBurns;
+// Определяем счетчик прерываний от таймера и общее их количество до
+// события переключения светодиода = 1 секунде 
+volatile unsigned int cntr;
+const unsigned int BtnToggle = 2000; //62499;
+// Определяем флаг истечения 1 сек для запуска трассировок
+volatile boolean OneSecondFlag = false;
+
+
+//storage variables
+boolean toggle0 = 0;
+
+
+#endif
+
+// ************************************************************** define_kru.h ***
