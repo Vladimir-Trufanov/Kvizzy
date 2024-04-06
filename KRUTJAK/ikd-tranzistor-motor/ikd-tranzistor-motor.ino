@@ -9,7 +9,7 @@
 #include <SoftwareSerial.h>
 SoftwareSerial serialRX(4,3);   // RX=4, TX=3
 
-#define IR_RECEIVE_PIN 2
+#define IR_RECEIVE_PIN 11
 
 const int PinRes = A0;  // аналоговый вход, к которому подключен потенциометр
 const int PinPWM = 10;  // цифровой (ШИМ) выход, к которому подключен затвор полевого транзистора
@@ -19,9 +19,9 @@ volatile int ValPWM;    // расчитанное значение ШИМ для
 // Состояние светодиода: "горит" - "не горит"
 bool doBurns;
 // Определяем счетчик прерываний от таймера и общее их количество до
-// события переключения светодиода = 1 секунде 
+// события переключения светодиода ~1 секунде 
 volatile unsigned int cntr;
-const unsigned int BtnToggle = 2000; //62499;
+const unsigned int BtnToggle = 4000; //62499;
 // Определяем флаг истечения 1 сек для запуска трассировок
 volatile boolean OneSecondFlag = false;
 
@@ -45,30 +45,36 @@ void setup()
   cntr=0;
   doBurns=false;
   ValPWM = 0;
-  
-  cli(); // отключили прерывания
-  //set timer0 interrupt at 2kHz
-  TCCR0A = 0;// set entire TCCR2A register to 0
-  TCCR0B = 0;// same for TCCR2B
-  TCNT0  = 0;//initialize counter value to 0
-  // set compare match register for 2khz increments
-  OCR0A = 124;// = (16*10^6) / (2000*64) - 1 (must be <256)
-  // turn on CTC mode
-  TCCR0A |= (1 << WGM01);
-  // Set CS01 and CS00 bits for 64 prescaler
-  TCCR0B |= (1 << CS01) | (1 << CS00);   
-  // enable timer compare interrupt
-  TIMSK0 |= (1 << OCIE0A);
-  sei(); // включили прерывания
 
-  //      ValPWM = 0;
-  //    analogWrite(PinPWM,ValPWM);        
+
+
+   // 
+   // Установить 2 таймер на частоту прерывания 2kHz, чтобы можно было 
+   // пользоваться delay(), millis()
+   //
+   // Timer0 -  8 бит, счетный регистр   [0,255], используется delay(), millis()
+   // Timer1 - 16 бит, счетный регистр [0,65535], используется Arduino Servo
+   // Timer2 -  8 бит, счетный регистр   [0,255], используется tone()
+ 
+   cli();                       // отключили прерывания
+   TCCR2A = 0;
+   TCCR2B = 0;
+   TCNT2  = 0;
+   OCR2A = 124;                 // =(16*10^6)/(2000*64)-1 (менее 256)
+   TCCR2A|=(1<<WGM01);          // включили режим сравнения (CTC)
+   TCCR2B|=(1<<CS01)|(1<<CS00); // установили биты CS01,CS00 на прескалер 64 
+   TIMSK2 |= (1<<OCIE2A);       // включили таймер на прерывание по сравнению
+   sei();                       // включили прерывания
+
+   ValPWM = 230;
+   analogWrite(PinPWM,ValPWM);        
   //    delay(2000);
 
 }
 
 void loop() 
 {
+   analogWrite(PinPWM,ValPWM);
 
    int But = digitalRead(IR_RECEIVE_PIN);
    
@@ -102,16 +108,15 @@ void loop()
    {
       if (But==0)
       {
-        //analogWrite(PinPWM,180);        
-        analogWrite(PinPWM,0);        
+         ValPWM = 0;
       }
       //else  analogWrite(PinPWM,0);        
 
       OneSecondFlag = false; 
       doBurns=!doBurns;
       digitalWrite(13,doBurns);
-      //Serial.println(ValPWM);
-      //Serial.println(But);
+      Serial.println(ValPWM);
+      Serial.println(But);
    }
 
 
@@ -145,7 +150,7 @@ void loop()
 }
 
 
-ISR(TIMER0_COMPA_vect)
+ISR(TIMER2_COMPA_vect)
 {
    // Увеличиваем счетчик прерываний 
    cntr=cntr+1;
