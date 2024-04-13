@@ -14,6 +14,7 @@ bool dir = false;
 
 void setup()
 {
+
    //  Конфигурируем вывод PinKey как вход
    pinMode(PinKey, INPUT );
    //  Конфигурируем вывод PinLed как выход

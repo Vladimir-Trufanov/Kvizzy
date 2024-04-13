@@ -77,14 +77,18 @@ Kvizzy
 					KRUTJAK\Проект с драйвером мотора\1-knopka-svetodiod\1-knopka-svetodiod.ino
 				+2-knopka-diod-motor
 					KRUTJAK\Проект с драйвером мотора\2-knopka-diod-motor\2-knopka-diod-motor.ino
-				-Детали проекта
+				+Детали проекта
+					-izmenenie-napravleniya-vrashcheniya
+						KRUTJAK\Проект с драйвером мотора\Детали проекта\izmenenie-napravleniya-vrashcheniya\izmenenie-napravleniya-vrashcheniya.ino
+					+plavnyj-start
+						KRUTJAK\Проект с драйвером мотора\Детали проекта\plavnyj-start\plavnyj-start.ino
 					KRUTJAK\Проект с драйвером мотора\Детали проекта\driver-motora.jpg
 					KRUTJAK\Проект с драйвером мотора\Детали проекта\podkliuchenie-k-arduino-uno.png
 					KRUTJAK\Проект с драйвером мотора\Детали проекта\podkliuchenie-ot-vneshnego-istochnika.png
 					KRUTJAK\Проект с драйвером мотора\Детали проекта\podkliuchenie-s-pitaniem-ot-platy.png
 					KRUTJAK\Проект с драйвером мотора\Детали проекта\Детали проекта.md
 					KRUTJAK\Проект с драйвером мотора\Детали проекта\Детали проекта.md.backup
-			-Пройденные этапы с одним мотором
+			+Пройденные этапы с одним мотором
 				-ikd-tranzistor-motor
 					-sketch_First
 						KRUTJAK\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino
@@ -99,7 +103,7 @@ Kvizzy
 					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Irq_kru.h
 					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
 					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Motor_kru.h
-				-instrument-infrakrasnogo-upravleniya1
+				+instrument-infrakrasnogo-upravleniya1
 					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\Admin_kru.cpp
 					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\Admin_kru.h
 					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\define_kru.h
@@ -352,14 +356,10 @@ Kvizzy
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=KRUTJAK\Проект с драйвером мотора\1-knopka-svetodiod\1-knopka-svetodiod.ino
-1=KRUTJAK\Проект с драйвером мотора\2-knopka-diod-motor\2-knopka-diod-motor.ino
+0=KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\instrument-infrakrasnogo-upravleniya1.ino
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\Проект с драйвером мотора\2-knopka-diod-motor\2-knopka-diod-motor.ino
-[KRUTJAK\Проект с драйвером мотора\1-knopka-svetodiod\1-knopka-svetodiod.ino]
-TopLine=1
-Caret=13,26
-[KRUTJAK\Проект с драйвером мотора\2-knopka-diod-motor\2-knopka-diod-motor.ino]
-TopLine=34
-Caret=15,34
+Selected=KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\instrument-infrakrasnogo-upravleniya1.ino
+[KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\instrument-infrakrasnogo-upravleniya1.ino]
+TopLine=37
+Caret=1,70
