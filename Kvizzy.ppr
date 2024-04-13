@@ -70,53 +70,62 @@ Kvizzy
 				KRUTJAK\ehlektronnyj-potenciometr\harakteristiki-KP501.jpeg
 				KRUTJAK\ehlektronnyj-potenciometr\Как читать электрические схемы.doc
 				KRUTJAK\ehlektronnyj-potenciometr\Электронный переменный резистор. Паяем простую схему.mp4
-			+ikd-tranzistor-motor
-				KRUTJAK\ikd-tranzistor-motor\ikd-tranzistor-motor.ino
-			+Old
-				+1
+			-ProverkaWDT
+				KRUTJAK\ProverkaWDT\ProverkaWDT.ino
+			+Проект с драйвером мотора
+				-1-knopka-svetodiod
+					KRUTJAK\Проект с драйвером мотора\1-knopka-svetodiod\1-knopka-svetodiod.ino
+				+2-knopka-diod-motor
+					KRUTJAK\Проект с драйвером мотора\2-knopka-diod-motor\2-knopka-diod-motor.ino
+				-Детали проекта
+					KRUTJAK\Проект с драйвером мотора\Детали проекта\driver-motora.jpg
+					KRUTJAK\Проект с драйвером мотора\Детали проекта\podkliuchenie-k-arduino-uno.png
+					KRUTJAK\Проект с драйвером мотора\Детали проекта\podkliuchenie-ot-vneshnego-istochnika.png
+					KRUTJAK\Проект с драйвером мотора\Детали проекта\podkliuchenie-s-pitaniem-ot-platy.png
+					KRUTJAK\Проект с драйвером мотора\Детали проекта\Детали проекта.md
+					KRUTJAK\Проект с драйвером мотора\Детали проекта\Детали проекта.md.backup
+			-Пройденные этапы с одним мотором
+				-ikd-tranzistor-motor
+					-sketch_First
+						KRUTJAK\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino
+					KRUTJAK\Пройденные этапы с одним мотором\ikd-tranzistor-motor\ikd-tranzistor-motor.ino
+				-instrument-infrakrasnogo-upravleniya
 					-ProverkaWDT
-						KRUTJAK\Old\1\ProverkaWDT\ProverkaWDT.ino
-					KRUTJAK\Old\1\Admin_kru.cpp
-					KRUTJAK\Old\1\Admin_kru.h
-					KRUTJAK\Old\1\define_kru.h
-					KRUTJAK\Old\1\instrument-infrakrasnogo-upravleniya.ino
-					KRUTJAK\Old\1\Irq_kru.h
-					KRUTJAK\Old\1\Motor_kru.cpp
-					KRUTJAK\Old\1\Motor_kru.h
-				+instrument-infrakrasnogo-upravleniya
-					-ProverkaWDT
-						KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\ProverkaWDT\ProverkaWDT.ino
-					KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
-					KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\Admin_kru.h
-					KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\define_kru.h
-					KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
-					KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\Irq_kru.h
-					KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
-					KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\Motor_kru.h
+						KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\ProverkaWDT\ProverkaWDT.ino
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.h
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\define_kru.h
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Irq_kru.h
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Motor_kru.h
+				-instrument-infrakrasnogo-upravleniya1
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\Admin_kru.cpp
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\Admin_kru.h
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\define_kru.h
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\instrument-infrakrasnogo-upravleniya1.ino
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\Irq_kru.h
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\Motor_kru.cpp
+					KRUTJAK\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\Motor_kru.h
 				-obmen-dannymi
 					-sketch_First
-						KRUTJAK\Old\obmen-dannymi\sketch_First\sketch_First.ino
+						KRUTJAK\Пройденные этапы с одним мотором\obmen-dannymi\sketch_First\sketch_First.ino
 					-sketch_sECOND
-						KRUTJAK\Old\obmen-dannymi\sketch_sECOND\sketch_sECOND.ino
-				-proba
-					KRUTJAK\Old\proba\proba.ino
+						KRUTJAK\Пройденные этапы с одним мотором\obmen-dannymi\sketch_sECOND\sketch_sECOND.ino
 				-proverka-komand-upravleniya
-					KRUTJAK\Old\proverka-komand-upravleniya\ardu-ir_bb-1024x477.png
-					KRUTJAK\Old\proverka-komand-upravleniya\proverka-komand-upravleniya.ino
+					KRUTJAK\Пройденные этапы с одним мотором\proverka-komand-upravleniya\proverka-komand-upravleniya.ino
 				-trassirovka-signalov-ot-potenciometra-i-na-dvigatel
-					KRUTJAK\Old\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Irq_kru.h
-					KRUTJAK\Old\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
-					KRUTJAK\Old\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h
-					KRUTJAK\Old\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
+					KRUTJAK\Пройденные этапы с одним мотором\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Irq_kru.h
+					KRUTJAK\Пройденные этапы с одним мотором\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.cpp
+					KRUTJAK\Пройденные этапы с одним мотором\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\Motor_kru.h
+					KRUTJAK\Пройденные этапы с одним мотором\trassirovka-signalov-ot-potenciometra-i-na-dvigatel\trassirovka-signalov-ot-potenciometra-i-na-dvigatel.ino
 				-tri-taimera
-					KRUTJAK\Old\tri-taimera\tri-taimera.ino
+					KRUTJAK\Пройденные этапы с одним мотором\tri-taimera\tri-taimera.ino
 				-upravlenie-skorostyu-i-napravleniem-ot-potenciometra
-					KRUTJAK\Old\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\MotorOtPotenciometra.jpg
-					KRUTJAK\Old\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\n-cha-p.jpg
-					KRUTJAK\Old\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
-			-upravlyaem-skorostyu-ehlektromotora
-				KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.fzz
-				KRUTJAK\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
+					KRUTJAK\Пройденные этапы с одним мотором\upravlenie-skorostyu-i-napravleniem-ot-potenciometra\upravlenie-skorostyu-i-napravleniem-ot-potenciometra.ino
+				-upravlyaem-skorostyu-ehlektromotora
+					KRUTJAK\Пройденные этапы с одним мотором\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.fzz
+					KRUTJAK\Пройденные этапы с одним мотором\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
 			-Разборка паровозика
 				KRUTJAK\Разборка паровозика\Batarejnyi-otsek.jpg
 				KRUTJAK\Разборка паровозика\Koljosa.jpg
@@ -128,8 +137,12 @@ Kvizzy
 				KRUTJAK\Разборка паровозика\Silovaja-chast-i-dymovydelenie.jpg
 				KRUTJAK\Разборка паровозика\Tjagi.jpg
 			KRUTJAK\arduino-shim.webp
+			KRUTJAK\ardu-ir_bb-1024x477.png
 			KRUTJAK\ir-signal-transmission.gif
 			KRUTJAK\KRUTJAK.md
+			KRUTJAK\KRUTJAK.md.backup
+			KRUTJAK\MotorOtPotenciometra.jpg
+			KRUTJAK\n-cha-p.jpg
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
 		-Kvizzy
 			Kvizzy\Kvizzy.md
@@ -339,22 +352,14 @@ Kvizzy
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=KRUTJAK\ikd-tranzistor-motor\ikd-tranzistor-motor.ino
-1=KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
-2=KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\Irq_kru.h
-3=KRUTJAK\Old\1\define_kru.h
+0=KRUTJAK\Проект с драйвером мотора\1-knopka-svetodiod\1-knopka-svetodiod.ino
+1=KRUTJAK\Проект с драйвером мотора\2-knopka-diod-motor\2-knopka-diod-motor.ino
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\ikd-tranzistor-motor\ikd-tranzistor-motor.ino
-[KRUTJAK\ikd-tranzistor-motor\ikd-tranzistor-motor.ino]
-TopLine=50
-Caret=1,87
-[KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
-TopLine=85
-Caret=1,117
-[KRUTJAK\Old\instrument-infrakrasnogo-upravleniya\Irq_kru.h]
-TopLine=6
-Caret=24,57
-[KRUTJAK\Old\1\define_kru.h]
+Selected=KRUTJAK\Проект с драйвером мотора\2-knopka-diod-motor\2-knopka-diod-motor.ino
+[KRUTJAK\Проект с драйвером мотора\1-knopka-svetodiod\1-knopka-svetodiod.ino]
 TopLine=1
-Caret=1,19
+Caret=13,26
+[KRUTJAK\Проект с драйвером мотора\2-knopka-diod-motor\2-knopka-diod-motor.ino]
+TopLine=34
+Caret=15,34
