@@ -1,4 +1,4 @@
-/** KRUTJAK-ESP01 ************************************** *** mk01-Buzer.ino ***
+/** KRUTJAK-MASTER-PRO_MINI ****************************** *** mk01-Buzer.ino ***
  * 
  * 1 - По клавише "System" запустить тестирование системы (пока три пика зумера)
  * 
@@ -8,7 +8,7 @@
 
 #include <IRremote.hpp>
 #define IR_RECEIVE_PIN 2
-#define buzPin 0
+#define buzPin 3
 
 bool isFirst = false;
 

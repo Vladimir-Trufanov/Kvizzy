@@ -64,8 +64,20 @@ Kvizzy
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
 		+KRUTJAK
 			+MasterKrutjak
-				+mk01-Buzer
+				-mk01-Buzer
 					KRUTJAK\MasterKrutjak\mk01-Buzer\mk01-Buzer.ino
+				-mk02-OLED
+					-ShowMediumFont
+						KRUTJAK\MasterKrutjak\mk02-OLED\ShowMediumFont\ShowMediumFont.ino
+					KRUTJAK\MasterKrutjak\mk02-OLED\DefaultFonts.c
+					KRUTJAK\MasterKrutjak\mk02-OLED\iarduino_OLED_txt.cpp
+					KRUTJAK\MasterKrutjak\mk02-OLED\iarduino_OLED_txt.h
+					KRUTJAK\MasterKrutjak\mk02-OLED\iarduino_OLED_txt_I2C.h
+					KRUTJAK\MasterKrutjak\mk02-OLED\mk02-OLED.ino
+				-mk03-Timer
+					KRUTJAK\MasterKrutjak\mk03-Timer\mk03-Timer.ino
+				+mk04-Serial
+					KRUTJAK\MasterKrutjak\mk04-Serial\mk04-Serial.ino
 			-Outdated
 				-ehlektronnyj-potenciometr
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
@@ -100,8 +112,6 @@ Kvizzy
 							KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\ikd-tranzistor-motor.ino
 					-instrument-infrakrasnogo-upravleniya
-						-ProverkaWDT
-							KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\ProverkaWDT\ProverkaWDT.ino
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.h
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\define_kru.h
@@ -362,10 +372,26 @@ Kvizzy
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=KRUTJAK\MasterKrutjak\mk01-Buzer\mk01-Buzer.ino
+0=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
+1=KRUTJAK\MasterKrutjak\mk02-OLED\iarduino_OLED_txt_I2C.h
+2=KRUTJAK\MasterKrutjak\mk02-OLED\DefaultFonts.c
+3=KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino
+4=KRUTJAK\MasterKrutjak\mk04-Serial\mk04-Serial.ino
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\MasterKrutjak\mk01-Buzer\mk01-Buzer.ino
-[KRUTJAK\MasterKrutjak\mk01-Buzer\mk01-Buzer.ino]
-TopLine=1
-Caret=1,46
+Selected=KRUTJAK\MasterKrutjak\mk04-Serial\mk04-Serial.ino
+[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
+TopLine=61
+Caret=1,93
+[KRUTJAK\MasterKrutjak\mk02-OLED\iarduino_OLED_txt_I2C.h]
+TopLine=41
+Caret=1,1
+[KRUTJAK\MasterKrutjak\mk02-OLED\DefaultFonts.c]
+TopLine=407
+Caret=27,123
+[KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino]
+TopLine=7
+Caret=1,35
+[KRUTJAK\MasterKrutjak\mk04-Serial\mk04-Serial.ino]
+TopLine=54
+Caret=36,86
