@@ -63,7 +63,7 @@ Kvizzy
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
 		+KRUTJAK
-			+MasterKrutjak
+			-MasterKrutjak
 				-mk01-Buzer
 					KRUTJAK\MasterKrutjak\mk01-Buzer\mk01-Buzer.ino
 				-mk02-OLED
@@ -76,8 +76,11 @@ Kvizzy
 					KRUTJAK\MasterKrutjak\mk02-OLED\mk02-OLED.ino
 				-mk03-Timer
 					KRUTJAK\MasterKrutjak\mk03-Timer\mk03-Timer.ino
-				+mk04-Serial
+				-mk04-Serial
 					KRUTJAK\MasterKrutjak\mk04-Serial\mk04-Serial.ino
+				-mk05-IniMem
+					KRUTJAK\MasterKrutjak\mk05-IniMem\define_master_kru.h
+					KRUTJAK\MasterKrutjak\mk05-IniMem\mk05-IniMem.ino
 			-Outdated
 				-ehlektronnyj-potenciometr
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
@@ -146,7 +149,12 @@ Kvizzy
 					-upravlyaem-skorostyu-ehlektromotora
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.fzz
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
-			-SlaveKrutjak
+			+SlaveKrutjak
+				-sk04-Serial
+					KRUTJAK\SlaveKrutjak\sk04-Serial\sk04-Serial.ino
+				+sk05-IniMem
+					KRUTJAK\SlaveKrutjak\sk05-IniMem\define_slave_kru.h
+					KRUTJAK\SlaveKrutjak\sk05-IniMem\sk05-IniMem.ino
 			-Разборка паровозика
 				KRUTJAK\Разборка паровозика\Batarejnyi-otsek.jpg
 				KRUTJAK\Разборка паровозика\Koljosa.jpg
@@ -161,8 +169,10 @@ Kvizzy
 			KRUTJAK\ardu-ir_bb-1024x477.png
 			KRUTJAK\ir-signal-transmission.gif
 			KRUTJAK\KRUTJAK.md
+			KRUTJAK\KRUTJAK.md.backup
 			KRUTJAK\MotorOtPotenciometra.jpg
 			KRUTJAK\n-cha-p.jpg
+			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
 		-Kvizzy
 			Kvizzy\Kvizzy.md
@@ -372,26 +382,34 @@ Kvizzy
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
-1=KRUTJAK\MasterKrutjak\mk02-OLED\iarduino_OLED_txt_I2C.h
-2=KRUTJAK\MasterKrutjak\mk02-OLED\DefaultFonts.c
-3=KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino
-4=KRUTJAK\MasterKrutjak\mk04-Serial\mk04-Serial.ino
+0=KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino
+1=KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\ikd-tranzistor-motor.ino
+2=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\instrument-infrakrasnogo-upravleniya1.ino
+3=KRUTJAK\MasterKrutjak\mk05-IniMem\mk05-IniMem.ino
+4=KRUTJAK\MasterKrutjak\mk05-IniMem\define_master_kru.h
+5=KRUTJAK\SlaveKrutjak\sk05-IniMem\sk05-IniMem.ino
+6=KRUTJAK\SlaveKrutjak\sk05-IniMem\define_slave_kru.h
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\MasterKrutjak\mk04-Serial\mk04-Serial.ino
-[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
-TopLine=61
-Caret=1,93
-[KRUTJAK\MasterKrutjak\mk02-OLED\iarduino_OLED_txt_I2C.h]
-TopLine=41
-Caret=1,1
-[KRUTJAK\MasterKrutjak\mk02-OLED\DefaultFonts.c]
-TopLine=407
-Caret=27,123
+Selected=KRUTJAK\MasterKrutjak\mk05-IniMem\mk05-IniMem.ino
 [KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino]
 TopLine=7
-Caret=1,35
-[KRUTJAK\MasterKrutjak\mk04-Serial\mk04-Serial.ino]
-TopLine=54
-Caret=36,86
+Caret=46,11
+[KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\ikd-tranzistor-motor.ino]
+TopLine=82
+Caret=1,118
+[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\instrument-infrakrasnogo-upravleniya1.ino]
+TopLine=1
+Caret=1,13
+[KRUTJAK\MasterKrutjak\mk05-IniMem\mk05-IniMem.ino]
+TopLine=70
+Caret=25,87
+[KRUTJAK\MasterKrutjak\mk05-IniMem\define_master_kru.h]
+TopLine=1
+Caret=16,31
+[KRUTJAK\SlaveKrutjak\sk05-IniMem\sk05-IniMem.ino]
+TopLine=1
+Caret=1,48
+[KRUTJAK\SlaveKrutjak\sk05-IniMem\define_slave_kru.h]
+TopLine=9
+Caret=63,18

@@ -71,24 +71,38 @@ void loop()
    
    if (IrReceiver.decode()) 
    {
+//cli();//stop interrupts
       // Извлекаем код, отправленный пультом дистанционного управления 
       // в зависимости от того, какая клавиша была нажата из структуры IRData
       command = IrReceiver.decodedIRData.command;
+      // Отправляем команду в Slave по VirtUART
+      serialTX.println(putCom(command));
+      // Делаем задержку в 100 мс, чтобы отработать сигнал от нажатия клавиши 
+      delay(100);  
+      myOLED.clrScr(); // Чистим экран.
+      // Делаем задержку в 100 мс, чтобы отработать сигнал от нажатия клавиши 
+      delay(100);  
+      myOLED.print(command,80,1);                  // Выводим текст начиная с 92 столбца 1 строки (высота шрифта 2 строки, он займёт строки 0 и 1).
+
       if (command==50)
       {
          buzz_Ok();
       }
+      /*
       else
       {
          // Отправляем команду в Slave
          // Отправляем AT-команды на VirtUART
-         serialTX.println("AT+2");    // "поставить на паузу"
+         serialTX.println("AT+0234.");    // 
+         serialTX.println(putCom(command));
          myOLED.print(command,80,1);                  // Выводим текст начиная с 92 столбца 1 строки (высота шрифта 2 строки, он займёт строки 0 и 1).
       }
+      */
       // Делаем задержку в 100 мс, чтобы отработать сигнал от нажатия клавиши 
       delay(100);  
       // Готовим прием следующего нажатия клавиши
       IrReceiver.resume();
+//sei();//allow interrupts
    }
 }
 
@@ -131,5 +145,16 @@ ISR(TIMER1_COMPA_vect)
    myOLED.print(F("4.99"),22,7); myOLED.print(F("-"),69,7); myOLED.print(analogRead_VCC(),80,7);                   
 }
 
+String putCom(uint16_t command)
+{
+  String sCommand = String(command);
+   // Формируем код команды
+   if (command<10)
+   {
+      sCommand="0"+sCommand;
+   }
+   sCommand="AT+"+sCommand+".";
+   return sCommand; 
+}
 
 // ********************************************************* mk04-Serial.ino ***
