@@ -1,9 +1,8 @@
-/** KRUTJAK-MASTER-PRO_MINI                             *** mk05-IniMen.ino ***
+/** KRUTJAK-MASTER-PRO_MINI                          *** mk06-viewState.ino ***
  * 
- * mk05 - Вывести в отдельный модуль переменные и константы 
- *        управляющей системы паровозика "КРУТЯК"
+ * mk06 - Обеспечить вывод информации на дисплей 
  * 
- * v3.0, 16.04.2024                                   Автор:      Труфанов В.Е.
+ * v3.1, 17.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 12.04.2024
 **/
 
@@ -13,6 +12,7 @@
 #include <SoftwareSerial.h>
 
 #include "define_master_kru.h"  // подключили определения управляющей системы 
+#include "common_master_kru.h"  // подключили общие функции управляющей системы 
 
 void setup() 
 {
@@ -55,6 +55,8 @@ void loop()
       isFirst=true;
    }
    
+   VccSlave=4.90;
+
    if (IrReceiver.decode()) 
    {
       // myOLED.clrScr(); // почистили экран
@@ -63,11 +65,14 @@ void loop()
       // в зависимости от того, какая клавиша была нажата из структуры IRData
       command = IrReceiver.decodedIRData.command;
       // Отправляем команду в Slave по VirtUART
-      sCommand = String(command);
-      if (command<10) sCommand="0"+sCommand;
-      serialMaster.println("AT+"+sCommand+".");
-      // Делаем задержку в 100 мс, чтобы отработать сигнал от нажатия клавиши 
-      delay(100);  
+      if (command!=0)
+      {
+         sCommand = String(command);
+         if (command<10) sCommand="0"+sCommand;
+         serialMaster.println("AT+"+sCommand+".");
+         // Делаем задержку в 100 мс, чтобы отработать сигнал от нажатия клавиши 
+         delay(100);  
+      }
       //
       if (command==50)
       {
@@ -84,7 +89,7 @@ void loop()
       doBurns=!doBurns;
       digitalWrite(LEDPIN,doBurns);
       // Выводим информацию на монитор
-      viewState(sCommand);
+      viewState(sCommand,VccSlave);
       // Сбрасываем флаг одной секунды
       OneSecondFlag = false;
    }
@@ -114,49 +119,6 @@ ISR(TIMER1_COMPA_vect)
    // для того, чтобы основной цикл знал, что секунда истекла 
    // (основной цикл по своей логике и сбросит флаг в false)
    OneSecondFlag = true;
-}
-
-/*
-// ****************************************************************************
-// *                Отправить команду исполнительной системе                  *
-// ****************************************************************************
-String putCom(uint16_t command)
-{
-   String sCommand = String(command);
-   // Формируем код команды
-   if (command<10)
-   {
-      sCommand="0"+sCommand;
-   }
-   sCommand="AT+"+sCommand+".";
-   return sCommand; 
-}
-*/
-
-// ****************************************************************************
-// *                Отправить команду исполнительной системе                  *
-// ****************************************************************************
-void viewState(String sCommand)
-{
-   cli();
-   // Выводим последнюю команду, начиная с 80 столбца 1 строки 
-   // (высота шрифта 2 строки, текст займёт строки 0 и 1).
-   if (sCommand != oldCommand)
-   {
-      myOLED.print(sCommand,80,1); 
-      oldCommand=sCommand;           
-   }
-   
-   // myOLED.print(F("ком"),   0,     1);  
-   // myOLED.print(command,  40,     1);  
-   
-   // Выводим текст начиная с 15 столбца 4 строки (высота шрифта 2 строки, он займёт строки 3 и 4).
-   myOLED.print(F("iArduino"),15,4); 
-   
-   // Выводим напряжения батарей
-   // myOLED.print(F("v"),0,7); myOLED.print(F(":"),10,7);                 
-   // myOLED.print(F("4.99"),22,7); myOLED.print(F("-"),69,7); myOLED.print(analogRead_VCC(),80,7);                   
-   sei();
 }
 
 // ******************************************************** mk05-IniMen.ino ***

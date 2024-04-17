@@ -63,9 +63,7 @@ Kvizzy
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
 		+KRUTJAK
-			-MasterKrutjak
-				-mk01-Buzer
-					KRUTJAK\MasterKrutjak\mk01-Buzer\mk01-Buzer.ino
+			+MasterKrutjak
 				-mk02-OLED
 					-ShowMediumFont
 						KRUTJAK\MasterKrutjak\mk02-OLED\ShowMediumFont\ShowMediumFont.ino
@@ -76,11 +74,10 @@ Kvizzy
 					KRUTJAK\MasterKrutjak\mk02-OLED\mk02-OLED.ino
 				-mk03-Timer
 					KRUTJAK\MasterKrutjak\mk03-Timer\mk03-Timer.ino
-				-mk04-Serial
-					KRUTJAK\MasterKrutjak\mk04-Serial\mk04-Serial.ino
-				-mk05-IniMem
-					KRUTJAK\MasterKrutjak\mk05-IniMem\define_master_kru.h
-					KRUTJAK\MasterKrutjak\mk05-IniMem\mk05-IniMem.ino
+				+mk06-viewState
+					KRUTJAK\MasterKrutjak\mk06-viewState\common_master_kru.h
+					KRUTJAK\MasterKrutjak\mk06-viewState\define_master_kru.h
+					KRUTJAK\MasterKrutjak\mk06-viewState\mk06-viewState.ino
 			-Outdated
 				-ehlektronnyj-potenciometr
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
@@ -149,12 +146,15 @@ Kvizzy
 					-upravlyaem-skorostyu-ehlektromotora
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.fzz
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
-			+SlaveKrutjak
+			-SlaveKrutjak
 				-sk04-Serial
 					KRUTJAK\SlaveKrutjak\sk04-Serial\sk04-Serial.ino
-				+sk05-IniMem
+				-sk05-IniMem
 					KRUTJAK\SlaveKrutjak\sk05-IniMem\define_slave_kru.h
 					KRUTJAK\SlaveKrutjak\sk05-IniMem\sk05-IniMem.ino
+				-sk06-viewState
+					KRUTJAK\SlaveKrutjak\sk06-viewState\define_slave_kru.h
+					KRUTJAK\SlaveKrutjak\sk06-viewState\sk06-viewState.ino
 			-Разборка паровозика
 				KRUTJAK\Разборка паровозика\Batarejnyi-otsek.jpg
 				KRUTJAK\Разборка паровозика\Koljosa.jpg
@@ -169,7 +169,6 @@ Kvizzy
 			KRUTJAK\ardu-ir_bb-1024x477.png
 			KRUTJAK\ir-signal-transmission.gif
 			KRUTJAK\KRUTJAK.md
-			KRUTJAK\KRUTJAK.md.backup
 			KRUTJAK\MotorOtPotenciometra.jpg
 			KRUTJAK\n-cha-p.jpg
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
@@ -382,34 +381,26 @@ Kvizzy
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino
-1=KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\ikd-tranzistor-motor.ino
-2=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\instrument-infrakrasnogo-upravleniya1.ino
-3=KRUTJAK\MasterKrutjak\mk05-IniMem\mk05-IniMem.ino
-4=KRUTJAK\MasterKrutjak\mk05-IniMem\define_master_kru.h
-5=KRUTJAK\SlaveKrutjak\sk05-IniMem\sk05-IniMem.ino
-6=KRUTJAK\SlaveKrutjak\sk05-IniMem\define_slave_kru.h
+0=KRUTJAK\SlaveKrutjak\sk06-viewState\sk06-viewState.ino
+1=KRUTJAK\SlaveKrutjak\sk06-viewState\define_slave_kru.h
+2=KRUTJAK\MasterKrutjak\mk06-viewState\mk06-viewState.ino
+3=KRUTJAK\MasterKrutjak\mk06-viewState\define_master_kru.h
+4=KRUTJAK\MasterKrutjak\mk06-viewState\common_master_kru.h
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\MasterKrutjak\mk05-IniMem\mk05-IniMem.ino
-[KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino]
-TopLine=7
-Caret=46,11
-[KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\ikd-tranzistor-motor.ino]
-TopLine=82
-Caret=1,118
-[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya1\instrument-infrakrasnogo-upravleniya1.ino]
+Selected=KRUTJAK\MasterKrutjak\mk06-viewState\mk06-viewState.ino
+[KRUTJAK\SlaveKrutjak\sk06-viewState\sk06-viewState.ino]
+TopLine=41
+Caret=24,82
+[KRUTJAK\SlaveKrutjak\sk06-viewState\define_slave_kru.h]
 TopLine=1
-Caret=1,13
-[KRUTJAK\MasterKrutjak\mk05-IniMem\mk05-IniMem.ino]
-TopLine=70
-Caret=25,87
-[KRUTJAK\MasterKrutjak\mk05-IniMem\define_master_kru.h]
+Caret=1,1
+[KRUTJAK\MasterKrutjak\mk06-viewState\mk06-viewState.ino]
 TopLine=1
-Caret=16,31
-[KRUTJAK\SlaveKrutjak\sk05-IniMem\sk05-IniMem.ino]
+Caret=9,5
+[KRUTJAK\MasterKrutjak\mk06-viewState\define_master_kru.h]
 TopLine=1
-Caret=1,48
-[KRUTJAK\SlaveKrutjak\sk05-IniMem\define_slave_kru.h]
-TopLine=9
-Caret=63,18
+Caret=93,37
+[KRUTJAK\MasterKrutjak\mk06-viewState\common_master_kru.h]
+TopLine=1
+Caret=1,12

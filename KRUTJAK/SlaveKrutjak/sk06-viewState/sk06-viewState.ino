@@ -1,4 +1,4 @@
-/** KRUTJAK-SLAVE-PRO_MINI                              *** sk05-IniMem.ino ***
+/** KRUTJAK-SLAVE-PRO_MINI                           *** sk06-viewState.ino ***
  * 
  * mk05 - Вывести в отдельный модуль переменные и константы 
  *        исполнительной системы паровозика "КРУТЯК"
@@ -79,4 +79,4 @@ uint16_t getCom(SoftwareSerial serialSlave)
    return 4; 
 }
 
-// ******************************************************** sk05-IniMem.ino ***
+// ***************************************************** sk06-viewState.ino ***
