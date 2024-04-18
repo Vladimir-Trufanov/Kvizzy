@@ -64,7 +64,7 @@ Kvizzy
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
 		+KRUTJAK
 			+MasterKrutjak
-				-mk02-OLED
+				+mk02-OLED
 					-ShowMediumFont
 						KRUTJAK\MasterKrutjak\mk02-OLED\ShowMediumFont\ShowMediumFont.ino
 					KRUTJAK\MasterKrutjak\mk02-OLED\DefaultFonts.c
@@ -74,10 +74,14 @@ Kvizzy
 					KRUTJAK\MasterKrutjak\mk02-OLED\mk02-OLED.ino
 				-mk03-Timer
 					KRUTJAK\MasterKrutjak\mk03-Timer\mk03-Timer.ino
-				+mk06-viewState
+				-mk06-viewState
 					KRUTJAK\MasterKrutjak\mk06-viewState\common_master_kru.h
 					KRUTJAK\MasterKrutjak\mk06-viewState\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk06-viewState\mk06-viewState.ino
+				+mk07-reciVCC
+					KRUTJAK\MasterKrutjak\mk07-reciVCC\common_master_kru.h
+					KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
+					KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino
 			-Outdated
 				-ehlektronnyj-potenciometr
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
@@ -146,7 +150,7 @@ Kvizzy
 					-upravlyaem-skorostyu-ehlektromotora
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.fzz
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
-			-SlaveKrutjak
+			+SlaveKrutjak
 				-sk04-Serial
 					KRUTJAK\SlaveKrutjak\sk04-Serial\sk04-Serial.ino
 				-sk05-IniMem
@@ -155,6 +159,9 @@ Kvizzy
 				-sk06-viewState
 					KRUTJAK\SlaveKrutjak\sk06-viewState\define_slave_kru.h
 					KRUTJAK\SlaveKrutjak\sk06-viewState\sk06-viewState.ino
+				+sk07-reciVCC
+					KRUTJAK\SlaveKrutjak\sk07-reciVCC\define_slave_kru.h
+					KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino
 			-Разборка паровозика
 				KRUTJAK\Разборка паровозика\Batarejnyi-otsek.jpg
 				KRUTJAK\Разборка паровозика\Koljosa.jpg
@@ -381,26 +388,26 @@ Kvizzy
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=KRUTJAK\SlaveKrutjak\sk06-viewState\sk06-viewState.ino
-1=KRUTJAK\SlaveKrutjak\sk06-viewState\define_slave_kru.h
-2=KRUTJAK\MasterKrutjak\mk06-viewState\mk06-viewState.ino
-3=KRUTJAK\MasterKrutjak\mk06-viewState\define_master_kru.h
-4=KRUTJAK\MasterKrutjak\mk06-viewState\common_master_kru.h
+0=KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino
+1=KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
+2=KRUTJAK\MasterKrutjak\mk07-reciVCC\common_master_kru.h
+3=KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino
+4=KRUTJAK\SlaveKrutjak\sk07-reciVCC\define_slave_kru.h
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\MasterKrutjak\mk06-viewState\mk06-viewState.ino
-[KRUTJAK\SlaveKrutjak\sk06-viewState\sk06-viewState.ino]
-TopLine=41
-Caret=24,82
-[KRUTJAK\SlaveKrutjak\sk06-viewState\define_slave_kru.h]
+Selected=KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
+[KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino]
+TopLine=1
+Caret=12,6
+[KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h]
+TopLine=6
+Caret=45,27
+[KRUTJAK\MasterKrutjak\mk07-reciVCC\common_master_kru.h]
 TopLine=1
 Caret=1,1
-[KRUTJAK\MasterKrutjak\mk06-viewState\mk06-viewState.ino]
+[KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino]
 TopLine=1
-Caret=9,5
-[KRUTJAK\MasterKrutjak\mk06-viewState\define_master_kru.h]
+Caret=26,4
+[KRUTJAK\SlaveKrutjak\sk07-reciVCC\define_slave_kru.h]
 TopLine=1
-Caret=93,37
-[KRUTJAK\MasterKrutjak\mk06-viewState\common_master_kru.h]
-TopLine=1
-Caret=1,12
+Caret=1,1
