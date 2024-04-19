@@ -63,8 +63,8 @@ Kvizzy
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
 		+KRUTJAK
-			+MasterKrutjak
-				+mk02-OLED
+			-MasterKrutjak
+				-mk02-OLED
 					-ShowMediumFont
 						KRUTJAK\MasterKrutjak\mk02-OLED\ShowMediumFont\ShowMediumFont.ino
 					KRUTJAK\MasterKrutjak\mk02-OLED\DefaultFonts.c
@@ -78,7 +78,7 @@ Kvizzy
 					KRUTJAK\MasterKrutjak\mk06-viewState\common_master_kru.h
 					KRUTJAK\MasterKrutjak\mk06-viewState\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk06-viewState\mk06-viewState.ino
-				+mk07-reciVCC
+				-mk07-reciVCC
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\common_master_kru.h
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino
@@ -160,6 +160,7 @@ Kvizzy
 					KRUTJAK\SlaveKrutjak\sk06-viewState\define_slave_kru.h
 					KRUTJAK\SlaveKrutjak\sk06-viewState\sk06-viewState.ino
 				+sk07-reciVCC
+					KRUTJAK\SlaveKrutjak\sk07-reciVCC\common_slave_kru.h
 					KRUTJAK\SlaveKrutjak\sk07-reciVCC\define_slave_kru.h
 					KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino
 			-Разборка паровозика
@@ -176,8 +177,10 @@ Kvizzy
 			KRUTJAK\ardu-ir_bb-1024x477.png
 			KRUTJAK\ir-signal-transmission.gif
 			KRUTJAK\KRUTJAK.md
+			KRUTJAK\KRUTJAK.md.backup
 			KRUTJAK\MotorOtPotenciometra.jpg
 			KRUTJAK\n-cha-p.jpg
+			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
 		-Kvizzy
@@ -390,24 +393,24 @@ Kvizzy
 [Open project files]
 0=KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino
 1=KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
-2=KRUTJAK\MasterKrutjak\mk07-reciVCC\common_master_kru.h
-3=KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino
-4=KRUTJAK\SlaveKrutjak\sk07-reciVCC\define_slave_kru.h
+2=KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino
+3=KRUTJAK\SlaveKrutjak\sk07-reciVCC\define_slave_kru.h
+4=KRUTJAK\SlaveKrutjak\sk07-reciVCC\common_slave_kru.h
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
+Selected=KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino
 [KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino]
 TopLine=1
-Caret=12,6
+Caret=1,17
 [KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h]
 TopLine=6
-Caret=45,27
-[KRUTJAK\MasterKrutjak\mk07-reciVCC\common_master_kru.h]
-TopLine=1
-Caret=1,1
+Caret=1,17
 [KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino]
-TopLine=1
-Caret=26,4
+TopLine=25
+Caret=1,44
 [KRUTJAK\SlaveKrutjak\sk07-reciVCC\define_slave_kru.h]
 TopLine=1
-Caret=1,1
+Caret=89,29
+[KRUTJAK\SlaveKrutjak\sk07-reciVCC\common_slave_kru.h]
+TopLine=1
+Caret=1,13

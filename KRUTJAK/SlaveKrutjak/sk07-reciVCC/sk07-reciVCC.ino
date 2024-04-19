@@ -3,80 +3,62 @@
  * sk07 - Передать в управляющую систему напряжение батареи и потенциал 
  *        драйвера мотора
  * 
- * v3.1, 18.04.2024                                   Автор:      Труфанов В.Е.
+ * v3.2, 19.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 12.04.2024
 **/
 
 #include <SoftwareSerial.h>
 
-#include "define_slave_kru.h"  // подключили определения управляющей системы 
+#include "define_slave_kru.h"  // подключили определения исполнительной системы 
+#include "common_slave_kru.h"  // подключили общие функции исполнительной системы 
 
 void setup() 
 {
-   serialSlave.begin(300);  
-   Serial.begin(9600);
+   serialSlave.begin(300); 
+   if (ModeSlave==modeDebug) Serial.begin(9600);
 }
 
 void loop() 
 {
+   // Принимаем и собираем командную последовательность
+   // от управляющей системы в строку (String) без "обрывов"
    while(serialSlave.available())
    {
       simb=serialSlave.read();
-      strData += (char)simb;        // забиваем строку принятыми данными
-      //String str(simb);
-      //Serial.print(str);
-      //strData = strData+str;        // забиваем строку принятыми данными
-      recievedFlag = true;                   // поднять флаг что получили данные
-      delay(40);                     // ЗАДЕРЖКА ожидания очистки буфера после символа !!!
+      strData += (char)simb;   // добавили в строку принятый символ
+      recievedFlag = true;     // устанавливаем флаг, что получили данные
+      delay(40);               // ожидание завершения поступления символов !!!
    }
-
+   // Разбираем команду и выполняем действие
    if (recievedFlag) 
-   {                      // если данные получены
-      //Serial.println("strData:");               // вывести
-      Serial.println(strData);               // вывести
-      strData = "";                          // очистить
-      recievedFlag = false;                  // опустить флаг
+   {                      
+      if (ModeSlave==modeDebug) Serial.println(strData);  
+      // Извлекаем код команды
+      command=getCom(strData);
+      // Отрабатываем команду по оборудованию исполняющей системы 
+      reskom=actionCom(command);      
+      // Чистим командную последовательность и сбрасываем флаг
+      strData = "";                     
+      recievedFlag = false;           
    }
-
-  
-   /*
-   if (serialSlave.available())
-   {
-      //uint16_t com=getCom(serialRX);
-      //Serial.println(com);
-      
-      //while(serialRX.available())
-      //{
-         simb=serialSlave.read();
-         strData += (char)simb;        // забиваем строку принятыми данными
-         String str(simb);
-         Serial.print(str);
-      //}
-
-   }
-   */
 }
 
-/*
-  Данный код позволяет принять данные, идущие из порта, в строку (String) без "обрывов"
-*/
-// Принять команду
-uint16_t getCom(SoftwareSerial serialSlave) 
+// ****************************************************************************
+// *           Извлечь код команды из командной последовательности            *
+// ****************************************************************************
+uint16_t getCom(String strData) 
 {
-   while (serialSlave.available() > 0) 
-   {         // ПОКА есть что то на вход    
-      strData += (char)serialSlave.read();        // забиваем строку принятыми данными
-      recievedFlag = true;                   // поднять флаг что получили данные
-      delay(2);                              // ЗАДЕРЖКА. Без неё работает некорректно!
-   }
+   uint16_t command = 0;  
+   return command; 
+}
 
-   if (recievedFlag) 
-   {                      // если данные получены
-      Serial.println(strData);               // вывести
-      strData = "";                          // очистить
-      recievedFlag = false;                  // опустить флаг
-   }
-   return 4; 
+// ****************************************************************************
+// *           Отработать команду по оборудованию исполняющей системы         *
+// ****************************************************************************
+int actionCom(uint16_t command) 
+{
+   int reskom=0;   // "действие выполнено успешно"
+   return reskom;
 }
 
 // ******************************************************* sk07-reciVCC.ino ***
