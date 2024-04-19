@@ -7,16 +7,39 @@
  * Copyright © 2024 tve                               Дата создания: 12.04.2024
 **/
 
+#include <iarduino_VCC.h> 
 #include <SoftwareSerial.h>
 
 #include "define_slave_kru.h"  // подключили определения исполнительной системы 
 #include "common_slave_kru.h"  // подключили общие функции исполнительной системы 
+#include "timer_kru.h"         // подключили 1-ое таймерное прерывание 
 
 void setup() 
 {
    serialSlave.begin(300); 
    if (ModeSlave==modeDebug) Serial.begin(9600);
+   // Инициируем секундное первое прерывание (с частотой в 1 Гц)
+   IniTimer1();
 }
+
+/** Система команд ИК-пульта управления паровозиком
+ * 
+ * - 1 - "стоп паровоз"       	- TV-VCR
+ * - 2 - "включить SLAVE" 		- ON standby
+ * - 3 - "начать движение"    	- A.REP 
+ * -20 - "начать движение"    	- REC 
+ * -21 - "назад"              	- == 
+ * -22 -                      	- >|<    
+ * -24 - "медленнее"          	- <<  
+ * -25 - "вперед"             	- =>
+ * -26 - "быстрее"            	- >>   
+ * -32 - "звук вкл/выкл"      	- EJECT
+ * -33 -                      	- A.TRK
+ * -44 - "подключить"         	- TRACKING ON 
+ * -45 - "отключить"          	- TRACKING OFF 
+ * -50 - "тестировать систему"	- SYSTEM
+ * 
+**/
 
 void loop() 
 {
@@ -32,7 +55,7 @@ void loop()
    // Разбираем команду и выполняем действие
    if (recievedFlag) 
    {                      
-      if (ModeSlave==modeDebug) Serial.println(strData);  
+     if (ModeSlave==modeDebug) Serial.println(strData);  
       // Извлекаем код команды
       command=getCom(strData);
       // Отрабатываем команду по оборудованию исполняющей системы 
@@ -40,6 +63,17 @@ void loop()
       // Чистим командную последовательность и сбрасываем флаг
       strData = "";                     
       recievedFlag = false;           
+   }
+   // Выполняем действия по прошествии 1 секунды
+   if (OneSecondFlag==true)
+   {
+      if (ModeSlave==modeDebug) 
+      {
+         Serial.print("Vcc="); 
+         Serial.println(analogRead_VCC()); 
+      } 
+      // Сбрасываем флаг одной секунды
+      OneSecondFlag = false;
    }
 }
 

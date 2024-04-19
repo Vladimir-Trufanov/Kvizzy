@@ -12,13 +12,14 @@
 #include <IRremote.hpp>
 #include <SoftwareSerial.h>
 
-#include "define_master_kru.h"  // подключили определения управляющей системы 
-#include "common_master_kru.h"  // подключили общие функции управляющей системы 
+#include "define_master_kru.h"     // подключили определения управляющей системы 
+#include "common_master_kru.h"     // подключили общие функции управляющей системы 
+#include "timer_kru.h"             // подключили 1-ое таймерное прерывание  
 
 void setup() 
 {
-   myOLED.begin();                                          // Инициируем работу с дисплеем.
-   myOLED.setFont(MediumFontRus);                           // Указываем шрифт который требуется использовать для вывода цифр и текста.
+   myOLED.begin();                 // инициировали работу с дисплеем.
+   myOLED.setFont(MediumFontRus);  // указали шрифт для вывода чисел и текста.
 
    serialMaster.begin(300);  
 
@@ -27,29 +28,12 @@ void setup()
    IrReceiver.begin(IR_RECEIVE_PIN, DISABLE_LED_FEEDBACK);
 
    pinMode(LEDPIN, OUTPUT);
- 
-   cli(); // stop interrupts
-   // set timer1 interrupt at 1Hz
-   TCCR1A = 0; // set entire TCCR1A register to 0
-   TCCR1B = 0; // same for TCCR1B
-   TCNT1  = 0; // initialize counter value to 0
-   // set compare match register for 1hz increments
-   OCR1A = 15624; // = (16*10^6) / (1*1024) - 1 (must be <65536)
-   // turn on CTC mode
-   TCCR1B |= (1 << WGM12);
-   // Set CS12 and CS10 bits for 1024 prescaler
-   TCCR1B |= (1 << CS12) | (1 << CS10);  
-   // enable timer compare interrupt
-   TIMSK1 |= (1 << OCIE1A);
-   sei(); // allow interrupts
+   
+   // Инициируем секундное первое прерывание (с частотой в 1 Гц)
+   // (для управляющей системы, чуть пореже, чтобы таймеры систем 
+   // расходились, но медленно)
+   IniTimer1(15627);
 }
-
-/*
-Произошла ошибка при загрузке скетча
-avrdude: verification error, first mismatch at byte 0x0000
-         0x00 != 0x0c
-avrdude: verification error; content mismatch
-*/
 
 void loop() 
 {
@@ -101,7 +85,6 @@ void loop()
       // Сбрасываем флаг одной секунды
       OneSecondFlag = false;
    }
-
 }
 
 void buzz_Ok()
@@ -117,16 +100,6 @@ void buzz_Ok()
    digitalWrite(buzPin, HIGH);
    delay(100);  
    digitalWrite(buzPin, LOW);
-}
-// ****************************************************************************
-// *                         Отметить истечение 1 секунды                     *
-// ****************************************************************************
-ISR(TIMER1_COMPA_vect)
-{
-   // Устанавливаем флаг прошествия 1 секунды. Флаг всегда устанавливаем в true 
-   // для того, чтобы основной цикл знал, что секунда истекла 
-   // (основной цикл по своей логике и сбросит флаг в false)
-   OneSecondFlag = true;
 }
 
 // ******************************************************* mk07-reciVCC.ino ***
