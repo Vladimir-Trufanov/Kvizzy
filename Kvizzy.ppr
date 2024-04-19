@@ -63,7 +63,7 @@ Kvizzy
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
 		+KRUTJAK
-			+MasterKrutjak
+			-MasterKrutjak
 				-mk02-OLED
 					-ShowMediumFont
 						KRUTJAK\MasterKrutjak\mk02-OLED\ShowMediumFont\ShowMediumFont.ino
@@ -74,16 +74,17 @@ Kvizzy
 					KRUTJAK\MasterKrutjak\mk02-OLED\mk02-OLED.ino
 				-mk03-Timer
 					KRUTJAK\MasterKrutjak\mk03-Timer\mk03-Timer.ino
-				-mk06-viewState
-					KRUTJAK\MasterKrutjak\mk06-viewState\common_master_kru.h
-					KRUTJAK\MasterKrutjak\mk06-viewState\define_master_kru.h
-					KRUTJAK\MasterKrutjak\mk06-viewState\mk06-viewState.ino
-				+mk07-reciVCC
+				-mk07-reciVCC
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\common_master_kru.h
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\timer_kru.h
-			-Outdated
+				-mk08-Lead
+					KRUTJAK\MasterKrutjak\mk08-Lead\common_master_kru.h
+					KRUTJAK\MasterKrutjak\mk08-Lead\define_master_kru.h
+					KRUTJAK\MasterKrutjak\mk08-Lead\mk08-Lead.ino
+					KRUTJAK\MasterKrutjak\mk08-Lead\timer_kru.h
+			+Outdated
 				-ehlektronnyj-potenciometr
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.md
@@ -93,24 +94,23 @@ Kvizzy
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\Электронный переменный резистор. Паяем простую схему.mp4
 				-ProverkaWDT
 					KRUTJAK\Outdated\ProverkaWDT\ProverkaWDT.ino
-				-Проект с драйвером мотора
+				+Проект с драйвером мотора
 					-Master-ESP01
-					-Slave-ProMini
+					+Slave-ProMini
 						-1-knopka-svetodiod
 							KRUTJAK\Outdated\Проект с драйвером мотора\Slave-ProMini\1-knopka-svetodiod\1-knopka-svetodiod.ino
 						-2-knopka-diod-motor
 							KRUTJAK\Outdated\Проект с драйвером мотора\Slave-ProMini\2-knopka-diod-motor\2-knopka-diod-motor.ino
-					-Детали проекта
-						-izmenenie-napravleniya-vrashcheniya
+					+Детали проекта
+						+izmenenie-napravleniya-vrashcheniya
 							KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\izmenenie-napravleniya-vrashcheniya\izmenenie-napravleniya-vrashcheniya.ino
-						-plavnyj-start
+						+plavnyj-start
 							KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\plavnyj-start\plavnyj-start.ino
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\driver-motora.jpg
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\podkliuchenie-k-arduino-uno.png
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\podkliuchenie-ot-vneshnego-istochnika.png
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\podkliuchenie-s-pitaniem-ot-platy.png
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\Детали проекта.md
-						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\Детали проекта.md.backup
 				-Пройденные этапы с одним мотором
 					-ikd-tranzistor-motor
 						-sketch_First
@@ -151,20 +151,19 @@ Kvizzy
 					-upravlyaem-skorostyu-ehlektromotora
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.fzz
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\upravlyaem-skorostyu-ehlektromotora\upravlyaem-skorostyu-ehlektromotora.ino
-			+SlaveKrutjak
+			-SlaveKrutjak
 				-sk04-Serial
 					KRUTJAK\SlaveKrutjak\sk04-Serial\sk04-Serial.ino
-				-sk05-IniMem
-					KRUTJAK\SlaveKrutjak\sk05-IniMem\define_slave_kru.h
-					KRUTJAK\SlaveKrutjak\sk05-IniMem\sk05-IniMem.ino
-				-sk06-viewState
-					KRUTJAK\SlaveKrutjak\sk06-viewState\define_slave_kru.h
-					KRUTJAK\SlaveKrutjak\sk06-viewState\sk06-viewState.ino
-				+sk07-reciVCC
+				-sk07-reciVCC
 					KRUTJAK\SlaveKrutjak\sk07-reciVCC\common_slave_kru.h
 					KRUTJAK\SlaveKrutjak\sk07-reciVCC\define_slave_kru.h
 					KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino
 					KRUTJAK\SlaveKrutjak\sk07-reciVCC\timer_kru.h
+				-sk08-Lead
+					KRUTJAK\SlaveKrutjak\sk08-Lead\common_slave_kru.h
+					KRUTJAK\SlaveKrutjak\sk08-Lead\define_slave_kru.h
+					KRUTJAK\SlaveKrutjak\sk08-Lead\sk08-Lead.ino
+					KRUTJAK\SlaveKrutjak\sk08-Lead\timer_kru.h
 			-Разборка паровозика
 				KRUTJAK\Разборка паровозика\Batarejnyi-otsek.jpg
 				KRUTJAK\Разборка паровозика\Koljosa.jpg
@@ -394,33 +393,41 @@ Kvizzy
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
 0=KRUTJAK\MasterKrutjak\mk07-reciVCC\timer_kru.h
-1=KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
-2=KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino
-3=KRUTJAK\SlaveKrutjak\sk07-reciVCC\define_slave_kru.h
-4=KRUTJAK\SlaveKrutjak\sk07-reciVCC\common_slave_kru.h
-5=KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino
-6=KRUTJAK\MasterKrutjak\mk07-reciVCC\common_master_kru.h
+1=KRUTJAK\SlaveKrutjak\sk08-Lead\sk08-Lead.ino
+2=KRUTJAK\SlaveKrutjak\sk08-Lead\define_slave_kru.h
+3=KRUTJAK\SlaveKrutjak\sk08-Lead\common_slave_kru.h
+4=KRUTJAK\MasterKrutjak\mk08-Lead\mk08-Lead.ino
+5=KRUTJAK\MasterKrutjak\mk08-Lead\define_master_kru.h
+6=KRUTJAK\MasterKrutjak\mk08-Lead\common_master_kru.h
+7=KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\izmenenie-napravleniya-vrashcheniya\izmenenie-napravleniya-vrashcheniya.ino
+8=KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\plavnyj-start\plavnyj-start.ino
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
+Selected=KRUTJAK\SlaveKrutjak\sk08-Lead\common_slave_kru.h
 [KRUTJAK\MasterKrutjak\mk07-reciVCC\timer_kru.h]
 TopLine=12
 Caret=1,17
-[KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h]
-TopLine=8
-Caret=1,41
-[KRUTJAK\SlaveKrutjak\sk07-reciVCC\sk07-reciVCC.ino]
-TopLine=56
-Caret=1,72
-[KRUTJAK\SlaveKrutjak\sk07-reciVCC\define_slave_kru.h]
-TopLine=1
-Caret=1,32
-[KRUTJAK\SlaveKrutjak\sk07-reciVCC\common_slave_kru.h]
-TopLine=1
-Caret=1,15
-[KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino]
-TopLine=35
-Caret=1,60
-[KRUTJAK\MasterKrutjak\mk07-reciVCC\common_master_kru.h]
+[KRUTJAK\SlaveKrutjak\sk08-Lead\sk08-Lead.ino]
+TopLine=48
+Caret=33,71
+[KRUTJAK\SlaveKrutjak\sk08-Lead\define_slave_kru.h]
 TopLine=12
-Caret=1,47
+Caret=1,49
+[KRUTJAK\SlaveKrutjak\sk08-Lead\common_slave_kru.h]
+TopLine=7
+Caret=66,41
+[KRUTJAK\MasterKrutjak\mk08-Lead\mk08-Lead.ino]
+TopLine=86
+Caret=41,104
+[KRUTJAK\MasterKrutjak\mk08-Lead\define_master_kru.h]
+TopLine=1
+Caret=1,1
+[KRUTJAK\MasterKrutjak\mk08-Lead\common_master_kru.h]
+TopLine=11
+Caret=1,50
+[KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\izmenenie-napravleniya-vrashcheniya\izmenenie-napravleniya-vrashcheniya.ino]
+TopLine=1
+Caret=1,1
+[KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\plavnyj-start\plavnyj-start.ino]
+TopLine=1
+Caret=1,10

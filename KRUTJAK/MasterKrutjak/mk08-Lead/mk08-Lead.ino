@@ -1,8 +1,9 @@
-/** KRUTJAK-MASTER-PRO_MINI                          *** mk06-viewState.ino ***
+/** KRUTJAK-MASTER-PRO_MINI                               *** mk08-Lead.ino ***
  * 
- * mk06 - Обеспечить вывод информации на дисплей 
+ * mk08 - Принять от исполнительной системы напряжение батареи 
+ *        и мощность мотора
  * 
- * v3.1, 17.04.2024                                   Автор:      Труфанов В.Е.
+ * v3.2, 18.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 12.04.2024
 **/
 
@@ -11,36 +12,27 @@
 #include <IRremote.hpp>
 #include <SoftwareSerial.h>
 
-#include "define_master_kru.h"  // подключили определения управляющей системы 
-#include "common_master_kru.h"  // подключили общие функции управляющей системы 
+#include "define_master_kru.h"     // подключили определения управляющей системы 
+#include "common_master_kru.h"     // подключили общие функции управляющей системы 
+#include "timer_kru.h"             // подключили 1-ое таймерное прерывание  
 
 void setup() 
 {
-   myOLED.begin();                                          // Инициируем работу с дисплеем.
-   myOLED.setFont(MediumFontRus);                           // Указываем шрифт который требуется использовать для вывода цифр и текста.
+   myOLED.begin();                 // инициировали работу с дисплеем.
+   myOLED.setFont(MediumFontRus);  // указали шрифт для вывода чисел и текста.
 
-   serialMaster.begin(300);  
+   serialMaster.begin(2400);  
 
    pinMode(buzPin, OUTPUT);  
    digitalWrite(buzPin, LOW);
    IrReceiver.begin(IR_RECEIVE_PIN, DISABLE_LED_FEEDBACK);
 
    pinMode(LEDPIN, OUTPUT);
- 
-   cli(); // stop interrupts
-   // set timer1 interrupt at 1Hz
-   TCCR1A = 0; // set entire TCCR1A register to 0
-   TCCR1B = 0; // same for TCCR1B
-   TCNT1  = 0; // initialize counter value to 0
-   // set compare match register for 1hz increments
-   OCR1A = 15624; // = (16*10^6) / (1*1024) - 1 (must be <65536)
-   // turn on CTC mode
-   TCCR1B |= (1 << WGM12);
-   // Set CS12 and CS10 bits for 1024 prescaler
-   TCCR1B |= (1 << CS12) | (1 << CS10);  
-   // enable timer compare interrupt
-   TIMSK1 |= (1 << OCIE1A);
-   sei(); // allow interrupts
+   
+   // Инициируем секундное первое прерывание (с частотой в 1 Гц)
+   // (для управляющей системы, чуть пореже, чтобы таймеры систем 
+   // расходились, но медленно)
+   IniTimer1(15627);
 }
 
 void loop() 
@@ -54,6 +46,26 @@ void loop()
       myOLED.clrScr(); // почистили экран
       isFirst=true;
    }
+   
+   // Принимаем и собираем командную последовательность
+   // от управляющей системы в строку (String) без "обрывов"
+   while(serialMaster.available())
+   {
+      char ysimb=serialMaster.read();
+      ystrData += (char)ysimb;          // добавили в строку принятый символ
+      yrecievedFlag = true;             // устанавливаем флаг, что получили данные
+      delay(40);                        // ожидание завершения поступления символов !!!
+   }
+   // Разбираем команду и выполняем действие
+   if (yrecievedFlag) 
+   {
+      viewData=ystrData;                           
+           
+      // Чистим командную последовательность и сбрасываем флаг
+      ystrData = "";                     
+      yrecievedFlag = false;           
+   }
+
    
    VccSlave=4.90;
 
@@ -89,11 +101,10 @@ void loop()
       doBurns=!doBurns;
       digitalWrite(LEDPIN,doBurns);
       // Выводим информацию на монитор
-      viewState(sCommand,VccSlave);
+      viewState(sCommand,VccSlave,5.24,0);
       // Сбрасываем флаг одной секунды
       OneSecondFlag = false;
    }
-
 }
 
 void buzz_Ok()
@@ -110,15 +121,5 @@ void buzz_Ok()
    delay(100);  
    digitalWrite(buzPin, LOW);
 }
-// ****************************************************************************
-// *                         Отметить истечение 1 секунды                     *
-// ****************************************************************************
-ISR(TIMER1_COMPA_vect)
-{
-   // Устанавливаем флаг прошествия 1 секунды. Флаг всегда устанавливаем в true 
-   // для того, чтобы основной цикл знал, что секунда истекла 
-   // (основной цикл по своей логике и сбросит флаг в false)
-   OneSecondFlag = true;
-}
 
-// ******************************************************** mk05-IniMen.ino ***
+// ********************************************************** mk08-Lead.ino ***

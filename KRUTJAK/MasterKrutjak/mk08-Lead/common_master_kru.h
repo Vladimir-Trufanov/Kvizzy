@@ -13,7 +13,7 @@
 // ****************************************************************************
 // *                         Вывести информацию на монитор                    *
 // ****************************************************************************
-void viewState(String sCommand, float VccSlave)
+void viewState(String sCommand, float VccSlave, float pwrSlave, byte dirMotor)
 {
    cli();
    // Выводим последнюю команду, начиная с 80 столбца 1 строки 
@@ -25,7 +25,9 @@ void viewState(String sCommand, float VccSlave)
    }
 
    // Выводим текст начиная с 15 столбца 4 строки (высота шрифта 2 строки, он займёт строки 3 и 4).
-   myOLED.print(F("iArduino"),15,4); 
+   //myOLED.print(F("iArduino"),15,4); 
+   myOLED.print(viewData,0,4); 
+   
 
    // Готовим и выводим данные по напряжению питания
    if (VccSlave != oldVccSlv)
