@@ -21,7 +21,7 @@ void setup()
    myOLED.begin();                 // инициировали работу с дисплеем.
    myOLED.setFont(MediumFontRus);  // указали шрифт для вывода чисел и текста.
 
-   serialMaster.begin(300);  
+   serialMaster.begin(2400);  
 
    pinMode(buzPin, OUTPUT);  
    digitalWrite(buzPin, LOW);
@@ -46,6 +46,26 @@ void loop()
       myOLED.clrScr(); // почистили экран
       isFirst=true;
    }
+   
+   // Принимаем и собираем командную последовательность
+   // от управляющей системы в строку (String) без "обрывов"
+   while(serialMaster.available())
+   {
+      char ysimb=serialMaster.read();
+      ystrData += (char)ysimb;          // добавили в строку принятый символ
+      yrecievedFlag = true;             // устанавливаем флаг, что получили данные
+      delay(40);                        // ожидание завершения поступления символов !!!
+   }
+   // Разбираем команду и выполняем действие
+   if (yrecievedFlag) 
+   {
+      viewData=ystrData;                           
+           
+      // Чистим командную последовательность и сбрасываем флаг
+      ystrData = "";                     
+      yrecievedFlag = false;           
+   }
+
    
    VccSlave=4.90;
 
@@ -102,4 +122,19 @@ void buzz_Ok()
    digitalWrite(buzPin, LOW);
 }
 
+/*
+void yield() 
+{
+   // Принимаем и собираем командную последовательность
+   // от управляющей системы в строку (String) без "обрывов"
+   while(serialMaster.available())
+   {
+      String ystrData;   
+      char ysimb=serialMaster.read();
+      ystrData += (char)ysimb;   // добавили в строку принятый символ
+      bool yrecievedFlag = true;        // устанавливаем флаг, что получили данные
+      delay(40);                        // ожидание завершения поступления символов !!!
+   }
+}
+*/
 // ******************************************************* mk07-reciVCC.ino ***

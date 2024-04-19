@@ -16,7 +16,7 @@
 
 void setup() 
 {
-   serialSlave.begin(300); 
+   serialSlave.begin(2400); 
    if (ModeSlave==modeDebug) Serial.begin(9600);
    // Инициируем секундное первое прерывание (с частотой в 1 Гц)
    IniTimer1();
@@ -49,7 +49,7 @@ void loop()
    {
       simb=serialSlave.read();
       strData += (char)simb;   // добавили в строку принятый символ
-      recievedFlag = true;     // устанавливаем флаг, что получили данные
+      recievedFlag = true;     // установили флаг, что получили данные
       delay(40);               // ожидание завершения поступления символов !!!
    }
    // Разбираем команду и выполняем действие
@@ -67,11 +67,17 @@ void loop()
    // Выполняем действия по прошествии 1 секунды
    if (OneSecondFlag==true)
    {
+      // Определяем напряжение батареи
+      VccSlave=analogRead_VCC();
       if (ModeSlave==modeDebug) 
       {
          Serial.print("Vcc="); 
-         Serial.println(analogRead_VCC()); 
-      } 
+         Serial.println(VccSlave); 
+      }
+      // Передаем напряжение питания в управляющую систему 
+      sVcc = String(VccSlave,2);
+      serialSlave.println("ATvcc="+sVcc+".");
+      delay(40); // выдержали паузу, чтобы команда спокойно ушла
       // Сбрасываем флаг одной секунды
       OneSecondFlag = false;
    }
