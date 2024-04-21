@@ -2,7 +2,7 @@
  * 
  * Определить общие функции управляющей системы паровозика "КРУТЯК"
  * 
- * v3.0, 19.04.2024                                   Автор:      Труфанов В.Е.
+ * v3.1, 21.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 19.04.2024
 **/
 
@@ -13,18 +13,8 @@
 // ****************************************************************************
 // *          Подготовить и передать данные в управляющую систему             *
 // ****************************************************************************
-void sendState(byte currShim, byte currDir)
+void sendState()
 {
-      // Определяем напряжение батареи
-      VccSlave=analogRead_VCC();
-      // Определяем напряжение на контакте мотора
-      //            VccSlave --> 255
-      //            x        --> currShim
-      float  x = VccSlave * currShim / 255;
-      // Определяем мощность на контакте мотора: P=U*U/R, где R = 13 Ом
-      float  p = x * x / 13;
-      
-      
       /*
       if (ModeSlave==modeDebug) 
       {
@@ -32,18 +22,99 @@ void sendState(byte currShim, byte currDir)
          Serial.println(VccSlave); 
       }
       */
-      // Готовим и передаем данные в управляющую систему  
-      sVcc = String(VccSlave,2);     // напряжение питания 
-      sPwr = String(p,2);            // мощность на контакте 
-      String d=String(currDir);      // направление движения     
-      String shim=String(currShim);  // ШИМ на контакте     
 
       //serialSlave.println(sVcc+" "+sPwr+"#");
-      serialSlave.println(shim+" "+sPwr+"  345");
+      // serialSlave.println(shim+" "+sPwr+"  345");
 
       //serialSlave.println("v="+sVcc+" p="+sPwr+" d="+d+" sh"+shim+".");
       //serialSlave.println("ATvcc="+sVcc+".");
+      serialSlave.print(strInfo);
       delay(40); // выдержали паузу, чтобы команда спокойно ушла
+}
+// ****************************************************************************
+// *         Установить и отметить мощность мотора (для трассировки)          *
+// ****************************************************************************
+void motor_speed(byte iShim)
+{
+   currShim=iShim;
+   analogWrite(PWM_PIN,currShim);
+   delay(MS_TIME);
+}
+// ****************************************************************************
+// *    Установить и отметить направление вращения мотора (для трассировки)   *
+// ****************************************************************************
+void motor_direct(byte iDir)
+{
+   currDir=iDir;
+   digitalWrite(DIR_PIN,currDir);
+}
+// ****************************************************************************
+// *               Установить тестовое трассировочное сообщение               *
+// ****************************************************************************
+String motor_infotest()
+{
+   String Result=sDir+sShim+": "+sPwr+"Вт   ";
+   return Result;
+}
+// ****************************************************************************
+// *            Выполнить плавный разгон мотора (вперед или назад)            *
+// ****************************************************************************
+void motion_to_max(byte iDir)
+{
+   // Устанавливаем таймерный интервал почти на полсекунду
+   // IniTimer1(7000);
+   // Устанавливаем вращение мотора
+   motor_direct(forward); 
+   // Выключаем мотор
+   motor_speed(0);
+   strInfo=motor_infotest(); 
+   delay(600);
+   // Заводим мотор
+   motor_speed(MAX_SPEED);
+   // Медленно приращиваем скорость при помощи ШИМ
+   for (uint8_t speed = UP_MIN_SPEED; speed < MAX_SPEED; speed++) 
+   {
+      motor_speed(speed);
+      strInfo=motor_infotest(); 
+   }
+   // Выходим на максимальную скорость
+   motor_speed(MAX_SPEED);
+   strInfo=motor_infotest(); 
+   delay(600);
+   // Выключаем мотор
+   motor_speed(0);
+}
+
+
+
+void move()
+{
+   delay(8000);
+   analogWrite(PWM_PIN, MAX_SPEED);
+   delay(MS_TIME);
+   // Медленно приращиваем скорость при помощи ШИМ
+   //for (uint8_t speed = UP_MIN_SPEED; speed < MAX_SPEED; speed++) 
+   for (uint8_t speed = UP_MIN_SPEED; speed < 100; speed++) 
+   {
+      analogWrite(PWM_PIN, speed);
+      delay(MS_TIME);
+   }
+
+   // Выходим на максимальную скорость
+   //analogWrite(PWM_PIN, MAX_SPEED);
+   analogWrite(PWM_PIN, 100);
+   delay(2000);
+
+   // Медленно сбавляем скорость
+//   for (uint8_t speed = MAX_SPEED; speed > DOWN_MIN_SPEED; speed--) 
+   for (uint8_t speed = 100; speed > DOWN_MIN_SPEED; speed--) 
+   {
+      analogWrite(PWM_PIN, speed);
+      delay(MS_TIME);
+   }
+
+   // Выключаем мотор
+   analogWrite(PWM_PIN, 0);
 }
 
 #endif

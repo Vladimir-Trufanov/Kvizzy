@@ -1,7 +1,9 @@
 /*  plavnyj-start.ino  */
+
 // Определяем выводы
-#define DIR_PIN 2
-#define PWM_PIN 3
+#define DIR_PIN    8        // направление движения мотора 8 (зеленый)
+#define PWM_PIN    9        // ШИМ-сигнал на мотор (0-255) 9 (желтый)
+
 // Определяем максимальную ШИМ
 #define MAX_SPEED 255
 #define UP_MIN_SPEED 64
@@ -42,7 +44,8 @@ void move()
    analogWrite(PWM_PIN, MAX_SPEED);
    delay(MS_TIME);
    // Медленно приращиваем скорость при помощи ШИМ
-   for (uint8_t speed = UP_MIN_SPEED; speed < MAX_SPEED; speed++) 
+   //for (uint8_t speed = UP_MIN_SPEED; speed < MAX_SPEED; speed++) 
+   for (uint8_t speed = UP_MIN_SPEED; speed < 150; speed++) 
    {
       analogWrite(PWM_PIN, speed);
       Serial.print("--> "); Serial.println(speed);
@@ -50,12 +53,14 @@ void move()
    }
 
    // Выходим на максимальную скорость
-   analogWrite(PWM_PIN, MAX_SPEED);
+   //analogWrite(PWM_PIN, MAX_SPEED);
+   analogWrite(PWM_PIN, 100);
    Serial.print("=== "); Serial.println(MAX_SPEED);
    delay(2000);
 
    // Медленно сбавляем скорость
-   for (uint8_t speed = MAX_SPEED; speed > DOWN_MIN_SPEED; speed--) 
+//   for (uint8_t speed = MAX_SPEED; speed > DOWN_MIN_SPEED; speed--) 
+   for (uint8_t speed = 100; speed > DOWN_MIN_SPEED; speed--) 
    {
       analogWrite(PWM_PIN, speed);
       Serial.print("<-- "); Serial.println(speed);

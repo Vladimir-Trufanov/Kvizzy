@@ -17,6 +17,11 @@ void setup()
 {
    serialSlave.begin(2400); 
    if (ModeSlave==modeDebug) Serial.begin(9600);
+   
+   // Подключаем выводы мотора: направление и мощность
+   pinMode(DIR_PIN, OUTPUT);
+   pinMode(PWM_PIN, OUTPUT);
+
    // Инициируем секундное первое прерывание (с частотой в 1 Гц)
    IniTimer1();
 }
@@ -42,6 +47,40 @@ void setup()
 
 void loop() 
 {
+
+
+   digitalWrite(DIR_PIN, HIGH);
+   move();
+   digitalWrite(DIR_PIN, LOW);
+   move();
+
+
+
+
+
+   /*
+   // Снимаем напряжение батареи
+   VccSlave=analogRead_VCC();
+   // Определяем напряжение на контакте мотора
+   //    VccSlave --> 255
+   //    U        --> currShim
+   float  U = VccSlave * currShim / 255;
+   // Определяем мощность на контакте мотора: P=U*U/R, где R = 13 Ом
+   PwrSlave = U*U / 13;
+   // Готовим данные для передачи в управляющую систему  
+   sVcc  = String(VccSlave,2);     // напряжение питания 
+   sPwr  = String(PwrSlave,2);     // мощность на контакте 
+   if (currDir==forward) sDir="+"; else sDir="-";
+   sShim = String(currShim);       // ШИМ на контакте     
+   
+   
+   motion_to_max(forward);
+   motion_to_max(back);
+   */
+  
+   /*
+   analogWrite(PWM_PIN, currShim);
+
    // Принимаем и собираем командную последовательность
    // от управляющей системы в строку (String) без "обрывов"
    while(serialSlave.available())
@@ -54,43 +93,76 @@ void loop()
    // Разбираем команду и выполняем действие
    if (recievedFlag) 
    {                      
-     if (ModeSlave==modeDebug) Serial.println(strData);  
+      if (ModeSlave==modeDebug) Serial.println(strData);  
       // Извлекаем код команды
-      command=getCom(strData);
+      command = strData.substring(3,5);
       // Отрабатываем команду по оборудованию исполняющей системы 
       reskom=actionCom(command);      
       // Чистим командную последовательность и сбрасываем флаг
       strData = "";                     
       recievedFlag = false;           
    }
+   */
+   
+   
+   /*
    // Выполняем действия по прошествии 1 секунды
    if (OneSecondFlag==true)
    {
       // Передаем данные в управляющую систему
-      currShim=255;
-      currDir=back;
-      sendState(currShim,currDir);
+      //currShim=255;
+      //currDir=back;
+      // sendState(currShim,currDir);
       // Сбрасываем флаг одной секунды
       OneSecondFlag = false;
    }
-}
-
-// ****************************************************************************
-// *           Извлечь код команды из командной последовательности            *
-// ****************************************************************************
-uint16_t getCom(String strData) 
-{
-   uint16_t command = 0;  
-   return command; 
+   */
 }
 
 // ****************************************************************************
 // *           Отработать команду по оборудованию исполняющей системы         *
 // ****************************************************************************
-int actionCom(uint16_t command) 
+int actionCom(String command) 
 {
    int reskom=0;   // "действие выполнено успешно"
+   serialSlave.print("=== "+command+" ===");
+   delay(40);
+
+   if (command=="03")
+   {
+      currShim=254; //MAX_SPEED;
+      analogWrite(PWM_PIN, currShim);
+      //delay(40);
+      //currShim=250;
+      //analogWrite(PWM_PIN, currShim);
+      
+      //analogWrite(PWM_PIN, MAX_SPEED);
+   }
+   if (command=="01")
+   {
+      currShim=0;
+      //analogWrite(PWM_PIN, currShim);
+   }
+   if (command=="24")
+   {
+      currShim=254; //currShim-10;
+      analogWrite(PWM_PIN, currShim);
+      delay(4000);
+   }
+   command=="00";
    return reskom;
 }
 
+/*
+void yield() 
+{
+   if (OneSecondFlag==true)
+   {
+      // Передаем данные в управляющую систему
+      sendState();
+      // Сбрасываем флаг одной секунды
+      OneSecondFlag = false;
+   }
+}
+*/
 // ********************************************************** sk08-Lead.ino ***

@@ -403,31 +403,31 @@ Kvizzy
 8=KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\plavnyj-start\plavnyj-start.ino
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\SlaveKrutjak\sk08-Lead\common_slave_kru.h
+Selected=KRUTJAK\SlaveKrutjak\sk08-Lead\sk08-Lead.ino
 [KRUTJAK\MasterKrutjak\mk07-reciVCC\timer_kru.h]
-TopLine=12
-Caret=1,17
+TopLine=13
+Caret=9,19
 [KRUTJAK\SlaveKrutjak\sk08-Lead\sk08-Lead.ino]
-TopLine=48
-Caret=33,71
+TopLine=81
+Caret=2,120
 [KRUTJAK\SlaveKrutjak\sk08-Lead\define_slave_kru.h]
-TopLine=12
-Caret=1,49
+TopLine=19
+Caret=18,32
 [KRUTJAK\SlaveKrutjak\sk08-Lead\common_slave_kru.h]
-TopLine=7
-Caret=66,41
+TopLine=80
+Caret=2,119
 [KRUTJAK\MasterKrutjak\mk08-Lead\mk08-Lead.ino]
-TopLine=86
-Caret=41,104
+TopLine=16
+Caret=28,84
 [KRUTJAK\MasterKrutjak\mk08-Lead\define_master_kru.h]
 TopLine=1
 Caret=1,1
 [KRUTJAK\MasterKrutjak\mk08-Lead\common_master_kru.h]
-TopLine=11
+TopLine=14
 Caret=1,50
 [KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\izmenenie-napravleniya-vrashcheniya\izmenenie-napravleniya-vrashcheniya.ino]
 TopLine=1
-Caret=1,1
+Caret=1,34
 [KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\plavnyj-start\plavnyj-start.ino]
-TopLine=1
-Caret=1,10
+TopLine=17
+Caret=1,39

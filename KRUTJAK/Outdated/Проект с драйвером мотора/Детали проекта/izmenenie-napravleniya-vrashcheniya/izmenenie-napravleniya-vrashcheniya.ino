@@ -1,8 +1,7 @@
 /* izmenenie-napravleniya-vrashcheniya.ino  */
 
-// Определяем выводы подключения 2 - направление, 3 - скорость
-#define DIR_PIN 2
-#define PWM_PIN 3
+#define DIR_PIN    8        // направление движения мотора 8 (зеленый)
+#define PWM_PIN    9        // ШИМ-сигнал на мотор (0-255) 9 (желтый)
 
 // Создаём переменную направления
 bool dir = false;

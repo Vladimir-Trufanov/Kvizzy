@@ -81,7 +81,7 @@ void loop()
       {
          sCommand = String(command);
          if (command<10) sCommand="0"+sCommand;
-         serialMaster.println("AT+"+sCommand+".");
+         serialMaster.print("AT+"+sCommand+".");
          // Делаем задержку в 100 мс, чтобы отработать сигнал от нажатия клавиши 
          delay(100);  
       }
