@@ -37,7 +37,7 @@ void sendState()
 void motor_speed(byte iShim)
 {
    currShim=iShim;
-   analogWrite(PWM_PIN,currShim);
+   //analogWrite(PWM_PIN,currShim);
    delay(MS_TIME);
 }
 // ****************************************************************************
@@ -62,7 +62,7 @@ String motor_infotest()
 void motion_to_max(byte iDir)
 {
    // Устанавливаем таймерный интервал почти на полсекунду
-   // IniTimer1(7000);
+   timerToggle=30000;
    // Устанавливаем вращение мотора
    motor_direct(forward); 
    // Выключаем мотор
@@ -72,13 +72,13 @@ void motion_to_max(byte iDir)
    // Заводим мотор
    motor_speed(MAX_SPEED);
    // Медленно приращиваем скорость при помощи ШИМ
-   for (uint8_t speed = UP_MIN_SPEED; speed < MAX_SPEED; speed++) 
+   for (uint8_t speed = UP_MIN_SPEED; speed < CTRL_SPEED; speed++) 
    {
       motor_speed(speed);
       strInfo=motor_infotest(); 
    }
    // Выходим на максимальную скорость
-   motor_speed(MAX_SPEED);
+   motor_speed(CTRL_SPEED);
    strInfo=motor_infotest(); 
    delay(600);
    // Выключаем мотор

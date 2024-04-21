@@ -14,7 +14,7 @@
 
 #include "define_master_kru.h"     // подключили определения управляющей системы 
 #include "common_master_kru.h"     // подключили общие функции управляющей системы 
-#include "timer_kru.h"             // подключили 1-ое таймерное прерывание  
+#include "timer1_kru.h"            // подключили 1-ое таймерное прерывание  
 
 void setup() 
 {

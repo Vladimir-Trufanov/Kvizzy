@@ -2,14 +2,14 @@
  * 
  * sk08 - Отработать команды управляющей системы 
  * 
- * v3.3, 19.04.2024                                   Автор:      Труфанов В.Е.
+ * v3.4, 21.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 12.04.2024
 **/
 
 #include <iarduino_VCC.h> 
 #include <SoftwareSerial.h>
 
-#include "timer_kru.h"         // подключили 1-ое таймерное прерывание 
+#include "timer2_kru.h"        // подключили 1-ое таймерное прерывание 
 #include "define_slave_kru.h"  // подключили определения исполнительной системы 
 #include "common_slave_kru.h"  // подключили общие функции исполнительной системы 
 
@@ -23,7 +23,8 @@ void setup()
    pinMode(PWM_PIN, OUTPUT);
 
    // Инициируем секундное первое прерывание (с частотой в 1 Гц)
-   IniTimer1();
+   IniTimer2();
+   pinMode(LEDPIN, OUTPUT);
 }
 
 /** Система команд ИК-пульта управления паровозиком
@@ -47,18 +48,6 @@ void setup()
 
 void loop() 
 {
-
-
-   digitalWrite(DIR_PIN, HIGH);
-   move();
-   digitalWrite(DIR_PIN, LOW);
-   move();
-
-
-
-
-
-   /*
    // Снимаем напряжение батареи
    VccSlave=analogRead_VCC();
    // Определяем напряжение на контакте мотора
@@ -72,11 +61,36 @@ void loop()
    sPwr  = String(PwrSlave,2);     // мощность на контакте 
    if (currDir==forward) sDir="+"; else sDir="-";
    sShim = String(currShim);       // ШИМ на контакте     
-   
+
+
+   /*
+   digitalWrite(DIR_PIN, HIGH);
+   move();
+   digitalWrite(DIR_PIN, LOW);
+   move();
+   */
+
+
+
+
+
    
    motion_to_max(forward);
    motion_to_max(back);
-   */
+   
+   if (OneSecondFlag==true)
+   {
+      // Меняем состояние контрольного светодиода
+      doBurns=!doBurns;
+      digitalWrite(LEDPIN,doBurns);
+      serialSlave.print(strInfo);
+      delay(40); // выдержали паузу, чтобы команда спокойно ушла
+      // Сбрасываем флаг одной секунды
+      OneSecondFlag = false;
+   }
+   
+   
+   
   
    /*
    analogWrite(PWM_PIN, currShim);
@@ -103,22 +117,7 @@ void loop()
       recievedFlag = false;           
    }
    */
-   
-   
-   /*
-   // Выполняем действия по прошествии 1 секунды
-   if (OneSecondFlag==true)
-   {
-      // Передаем данные в управляющую систему
-      //currShim=255;
-      //currDir=back;
-      // sendState(currShim,currDir);
-      // Сбрасываем флаг одной секунды
-      OneSecondFlag = false;
-   }
-   */
 }
-
 // ****************************************************************************
 // *           Отработать команду по оборудованию исполняющей системы         *
 // ****************************************************************************
@@ -153,16 +152,21 @@ int actionCom(String command)
    return reskom;
 }
 
+
 /*
+// ****************************************************************************
+// *      Выполнить передачу состояния системы в независимом 2 процессе       *
+// ****************************************************************************
 void yield() 
 {
    if (OneSecondFlag==true)
    {
-      // Передаем данные в управляющую систему
-      sendState();
+      //serialSlave.print("strInfoYield");
+      //delay(40); // выдержали паузу, чтобы команда спокойно ушла
       // Сбрасываем флаг одной секунды
       OneSecondFlag = false;
    }
 }
 */
+
 // ********************************************************** sk08-Lead.ino ***
