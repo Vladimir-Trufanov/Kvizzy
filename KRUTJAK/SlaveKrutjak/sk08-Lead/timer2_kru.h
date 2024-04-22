@@ -11,15 +11,22 @@
 #pragma once            
 
 #include <Arduino.h>
-//#include "define_slave_kru.h"  // подключили определения исполнительной системы 
+
+#define LEDPIN    13        // контакт контрольного светодиода
+bool doBurns=false;         // состояние контрольного светодиода
 
 // Определяем счетчик прерываний от таймера и общее их количество до
-// события переключения светодиода = 1 секунде 
+// события переключения светодиода = чуть быстрее 1 секунды 
 unsigned int cntr = 0;
-volatile unsigned int timerToggle = 62499;
+volatile unsigned int timerToggle = 60000;  // 62499 -> 1 секунда;
+volatile bool OneSecondFlag = false;        // истечение 1 сек для запуска трассировок
 
-// Определяем флаг истечения 1 сек для запуска трассировок
-volatile bool OneSecondFlag = false;
+// Определяем счетчик и параметры управления тестов мотора
+/*
+unsigned int cntrMotion = 0;
+volatile unsigned int timerMotion = 6000;   // ~ 1 мсек
+volatile bool OneMillSecFlag = false;       // истечение 1 мсек для подачи ШИМ на мотор
+*/
 
 // ****************************************************************************
 // *                 Инициализировать секундное первое прерывание             *
@@ -45,13 +52,14 @@ void IniTimer2()
 SIGNAL(TIMER2_OVF_vect)
 {
    // Увеличиваем счетчик прерываний 
-   cntr=cntr+1;
+   cntr=cntr+1; 
+   // cntrMotion=cntrMotion+1;
    // Если счетчик дошел до 1 секунды, то выполняем подстройки
    if (cntr>timerToggle)
    {
       // Меняем состояние контрольного светодиода
-      //doBurns=!doBurns;
-      //digitalWrite(LEDPIN,doBurns);
+      doBurns=!doBurns;
+      digitalWrite(LEDPIN,doBurns);
       // Снова инициализируем счетчик
       cntr=0;
       // Устанавливаем флаг прошествия 1 секунды.
@@ -59,6 +67,14 @@ SIGNAL(TIMER2_OVF_vect)
       // что секунда истекла (основной цикл по своей логике и сбросит флаг в false)
       OneSecondFlag = true;
    }
+   /*
+   // Если счетчик дошел до 1 мсек, то выполняем подстройки
+   if (cntrMotion>timerMotion)
+   {
+      cntrMotion=0;
+      OneMillSecFlag = true;
+   }
+   */
 }
 
 #endif

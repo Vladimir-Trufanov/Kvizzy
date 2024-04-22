@@ -71,20 +71,30 @@ void loop()
    */
 
 
-
+   /*
+   delay(2000);
+   analogWrite(PWM_PIN, MAX_SPEED);
+   delay(MS_TIME);
+   delay(2000);
+   analogWrite(PWM_PIN, 100);
+   delay(MS_TIME);
+   delay(2000);
+   analogWrite(PWM_PIN, 64);
+   delay(MS_TIME);
+   delay(2000);
+   analogWrite(PWM_PIN, 0);
+   delay(MS_TIME);
+   */
 
 
    
-   motion_to_max(forward);
-   motion_to_max(back);
+   //motion_to_max(forward);
+   //motion_to_max(back);
    
    if (OneSecondFlag==true)
    {
-      // Меняем состояние контрольного светодиода
-      doBurns=!doBurns;
-      digitalWrite(LEDPIN,doBurns);
-      serialSlave.print(strInfo);
-      delay(40); // выдержали паузу, чтобы команда спокойно ушла
+      //serialSlave.print(strInfo);
+      //delay(40); // выдержали паузу, чтобы команда спокойно ушла
       // Сбрасываем флаг одной секунды
       OneSecondFlag = false;
    }
