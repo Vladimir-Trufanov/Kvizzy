@@ -41,38 +41,13 @@ void motor_speed(byte iShim)
    delay(MS_TIME);
 }
 // ****************************************************************************
-// *         Установить и отметить мощность мотора (для трассировки)          *
-// *                             много раз через интервал                     *
-// ****************************************************************************
-/*
-void motor_speedN(byte iShim, unsigned int nPutm = 0)
-{
-   if (OneMillSecFlag==true)
-   {
-      motor_speed(iShim)
-      OneMillSecFlag = false;
-   }
-}
-*/
-// ****************************************************************************
-// *    Установить и отметить направление вращения мотора (для трассировки)   *
+// *                    Установить направление вращения мотора                *
 // ****************************************************************************
 void motor_direct(byte iDir)
 {
    currDir=iDir;
    digitalWrite(DIR_PIN,currDir);
 }
-
-/*
-// ****************************************************************************
-// *               Установить тестовое трассировочное сообщение               *
-// ****************************************************************************
-String motor_infotest()
-{
-   String Result=sDir+sShim+": "+sPwr+"Вт   ";
-   return Result;
-}
-*/
 
 // ****************************************************************************
 // *            Выполнить плавный разгон мотора (вперед или назад)            *
@@ -87,47 +62,15 @@ void motion_to_max(byte iDir)
    // Заводим мотор
    motor_speed(MAX_SPEED);
    // Медленно приращиваем скорость при помощи ШИМ
-   for (uint8_t speed = UP_MIN_SPEED; speed < CTRL_SPEED; speed++) 
+   for (uint8_t speed = MIN_SPEED; speed < START_SPEED; speed++) 
    {
       motor_speed(speed);
    }
-   // Выходим на максимальную скорость
-   motor_speed(CTRL_SPEED);
+   // Выходим на максимальную тестовую скорость
+   motor_speed(START_SPEED);
    delay(600);
    // Выключаем мотор
    motor_speed(0);
-}
-
-
-
-void move()
-{
-   delay(8000);
-   analogWrite(PWM_PIN, MAX_SPEED);
-   delay(MS_TIME);
-   // Медленно приращиваем скорость при помощи ШИМ
-   //for (uint8_t speed = UP_MIN_SPEED; speed < MAX_SPEED; speed++) 
-   for (uint8_t speed = UP_MIN_SPEED; speed < 100; speed++) 
-   {
-      analogWrite(PWM_PIN, speed);
-      delay(MS_TIME);
-   }
-
-   // Выходим на максимальную скорость
-   //analogWrite(PWM_PIN, MAX_SPEED);
-   analogWrite(PWM_PIN, 100);
-   delay(2000);
-
-   // Медленно сбавляем скорость
-//   for (uint8_t speed = MAX_SPEED; speed > DOWN_MIN_SPEED; speed--) 
-   for (uint8_t speed = 100; speed > DOWN_MIN_SPEED; speed--) 
-   {
-      analogWrite(PWM_PIN, speed);
-      delay(MS_TIME);
-   }
-
-   // Выключаем мотор
-   analogWrite(PWM_PIN, 0);
 }
 
 #endif
