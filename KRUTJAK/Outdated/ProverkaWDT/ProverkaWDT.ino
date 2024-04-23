@@ -8,12 +8,15 @@
   В случае bootloop у вас будет 10 секунд на перепрошивку устройства после подачи питания
   Для добавления поддержки всего функционала watchdog загрузите optiboot или откажитесь от загрузчика
 */
-void setup() {
+void setup() 
+{
   Serial.begin(9600);
   Serial.println("Program started , wait 10 seconds");
   delay(10000);                                             // 10 секунд на перепрошивку в случае bootloop
+  
   Watchdog.enable(RESET_MODE, WDT_PRESCALER_1024);          // Режим сторожевого сброса , таймаут ~8с
   Serial.println("watchdog enabled");
+  
   while (1) {                                               // Бесконечный цикл , эмуляция "зависания"
     if (!(millis() % 1000)) {                               // Каждую секунду
       Serial.println((uint16_t)((millis() / 1000) - 10));   // Вывести время после включения watchdog в секундах
