@@ -2,9 +2,12 @@
  * 
  * Определить переменные и константы управляющей системы паровозика "КРУТЯК"
  * 
- * v3.2, 19.04.2024                                   Автор:      Труфанов В.Е.
+ * v3.3, 26.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 16.04.2024
 **/
+
+// ИСКР - исполнительная система паровозика "КРУТЯК"
+// УПС  - управляющая система
 
 #ifndef define_master_kru
 #define define_master_kru
@@ -12,8 +15,8 @@
 
 #define IR_RECEIVE_PIN   2        // контакт ИКП (инфракрасного приемника)
 #define buzPin           3        // контакт активного зуммера
-#define sw5_RX           5        // RX=5
-#define sw6_TX           6        // TX=6
+#define sw5_RX           5        // RX=5 (зеленый)
+#define sw6_TX           6        // TX=6 (жёлтый)
 
 #define LEDPIN          13        // контакт контрольного светодиода
 
@@ -41,6 +44,13 @@ String sVcc;                      // представление напряжен
 String ystrData="yyy";   
 String viewData="КРУТЯК";                           
 bool yrecievedFlag = false;       // флаг, что получили данные
+
+// Отладочный режим: Slave программируется на Arduino Uno, Master для трассировки использует 
+// верхнюю строку дисплея и последовательный порт
+#define modeDebug  0              // отладочный режим 
+#define modeWork   1              // рабочий режим
+const int ModeSlave = modeDebug;  // modeWork;   // текущий режим 
+
 
 #endif
 

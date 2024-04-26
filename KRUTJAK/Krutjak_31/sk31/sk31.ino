@@ -2,7 +2,7 @@
  * 
  * sk31 - Исполнительная система паровозика "КРУТЯК"
   * 
- * v3.4, 23.04.2024                                   Автор:      Труфанов В.Е.
+ * v3.4, 26.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 12.04.2024
 **/
 
@@ -38,7 +38,7 @@ void loop()
    analogWrite(PWM_PIN,currShim);
 
    // Снимаем напряжение батареи
-   VccSlave=analogRead_VCC();
+   VccSlave=4.87; //analogRead_VCC();
    // Определяем напряжение на контакте мотора
    //    VccSlave --> 255
    //    U        --> currShim
@@ -52,6 +52,7 @@ void loop()
    sShim=String(currShim);
    if (currShim<100) sShim="0"+sShim;
    if (currShim<10)  sShim="0"+sShim; // ШИМ на контакте  
+   strInfo=sShim+": "+sPwr+sDir;
 
    //motion_to_max(forward);
    //motion_to_max(back);
@@ -81,7 +82,7 @@ void loop()
       strData = "";                     
       recievedFlag = false;           
    }
-      
+   // Отправляем информационное сообщение управляющей системе   
    if (OneSecondFlag==true)
    {
       // Меняем состояние контрольного светодиода здесь в основном цикле
@@ -90,11 +91,10 @@ void loop()
       digitalWrite(LEDPIN,doBurns);
       
       // Формируем и возвращаем контрольную информацию управляющей системе
-      strInfo=sDir+sShim+": "+sPwr;
-      //serialSlave.print("=== "+command+" ===");
+      //char simFin='x';
+      //strInfo=sDir+sShim+": "+sPwr+(char)simFin;
       serialSlave.print(strInfo);
       delay(40); // выдержали паузу, чтобы команда спокойно ушла
-
       // Сбрасываем флаг одной секунды
       OneSecondFlag = false;
    }

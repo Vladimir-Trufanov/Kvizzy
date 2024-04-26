@@ -20,15 +20,11 @@ void viewState(String sCommand, float VccSlave, float pwrSlave, byte dirMotor)
    // (высота шрифта 2 строки, текст займёт строки 0 и 1).
    if (sCommand != oldCommand)
    {
-      myOLED.print(sCommand,80,1); 
+      if (ModeSlave!=modeDebug)myOLED.print(sCommand,80,1); 
       oldCommand=sCommand;           
    }
-
-   // Выводим текст начиная с 15 столбца 4 строки (высота шрифта 2 строки, он займёт строки 3 и 4).
-   //myOLED.print(F("iArduino"),15,4); 
-   myOLED.print(viewData,0,4); 
-   
-
+   // Выводим текст начиная с 5 столбца 4 строки (высота шрифта 2 строки, он займёт строки 3 и 4).
+   myOLED.print(viewData,5,4); 
    // Готовим и выводим данные по напряжению питания
    if (VccSlave != oldVccSlv)
    {
@@ -37,6 +33,7 @@ void viewState(String sCommand, float VccSlave, float pwrSlave, byte dirMotor)
       myOLED.print(sVcc,22,7);
       oldVccSlv=VccSlave;           
    }
+   // Определяем напряжение питания УПС
    VccMaster=analogRead_VCC();
    if (VccMaster != oldVccMst) 
    {
