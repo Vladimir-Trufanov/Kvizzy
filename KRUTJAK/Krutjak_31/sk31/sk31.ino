@@ -13,6 +13,15 @@
 #include "define_slave_kru.h"  // подключили определения исполнительной системы 
 #include "common_slave_kru.h"  // подключили общие функции исполнительной системы 
 
+/** Примерно за 1 секунду управляющей системе ( Master) отправляются несколько 
+ * сообщений разных типов через одинаковые интервалы:
+ *  
+ *  "+" - ШИМ и мощность на контакте двигателя при движении вперед
+ *  "-" - ШИМ и мощность на контакте двигателя при движении назад
+ *  "~" - напряжение питания исполнительной системы
+ *  "*" - Диагностическое сообщение
+ */
+
 void setup() 
 {
    serialSlave.begin(2400); 
@@ -38,7 +47,7 @@ void loop()
    analogWrite(PWM_PIN,currShim);
 
    // Снимаем напряжение батареи
-   VccSlave=4.87; //analogRead_VCC();
+   VccSlave=analogRead_VCC();
    // Определяем напряжение на контакте мотора
    //    VccSlave --> 255
    //    U        --> currShim
@@ -83,20 +92,36 @@ void loop()
       recievedFlag = false;           
    }
    // Отправляем информационное сообщение управляющей системе   
+   if (Motor1_Flag == true)
+   {
+      Motor1_Flag = false;
+      serialSlave.print("Мотор-");
+      //if (ModeSlave==modeDebug) Serial.println("Мотор-");
+      delay(40); // выдержали паузу, чтобы команда спокойно ушла
+   } 
+   // Отправляем информационное сообщение управляющей системе   
+   else if (Vcc2_Flag == true)
+   {
+      Vcc2_Flag = false;
+      serialSlave.print("Напря~");
+      //if (ModeSlave==modeDebug) Serial.println("Напря~");
+      delay(40); // выдержали паузу, чтобы команда спокойно ушла
+   } 
+   // Меняем состояние лампочки после почти секунды
    if (OneSecondFlag==true)
    {
+      // Сбрасываем флаг одной секунды
+      OneSecondFlag = false;
       // Меняем состояние контрольного светодиода здесь в основном цикле
       // для того, чтобы видеть как часто он запускается
       doBurns=!doBurns;
       digitalWrite(LEDPIN,doBurns);
-      
+      if (ModeSlave==modeDebug) Serial.println("Лампочка");
       // Формируем и возвращаем контрольную информацию управляющей системе
       //char simFin='x';
       //strInfo=sDir+sShim+": "+sPwr+(char)simFin;
-      serialSlave.print(strInfo);
-      delay(40); // выдержали паузу, чтобы команда спокойно ушла
-      // Сбрасываем флаг одной секунды
-      OneSecondFlag = false;
+      //serialSlave.print(strInfo);
+      //delay(40); // выдержали паузу, чтобы команда спокойно ушла
    }
 
 }

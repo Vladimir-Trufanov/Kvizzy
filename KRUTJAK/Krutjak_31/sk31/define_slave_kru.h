@@ -15,7 +15,7 @@
 
 #define modeDebug  0              // отладочный режим на Arduino Uno
 #define modeWork   1              // рабочий режим на Arduino Pro Mini
-const int ModeSlave = modeWork;   // текущий режим 
+const int ModeSlave = modeDebug; // modeWork;   // текущий режим 
 
 #define sw3_TX     3        // последовательный порт: TX=3 (зеленый)
 #define sw4_RX     4        // последовательный порт: RX=4 (желтый)
