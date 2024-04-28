@@ -51,6 +51,7 @@ void loop()
    // Определяем напряжение на контакте мотора
    //    VccSlave --> 255
    //    U        --> currShim
+   if (ModeSlave==modeDebug) currShim=115;
    float  U = VccSlave * currShim / 255;
    // Определяем мощность на контакте мотора: P=U*U/R, где R = 13 Ом
    PwrSlave = U*U / 13;
@@ -61,7 +62,6 @@ void loop()
    sShim=String(currShim);
    if (currShim<100) sShim="0"+sShim;
    if (currShim<10)  sShim="0"+sShim; // ШИМ на контакте  
-   strInfo=sShim+": "+sPwr+sDir;
 
    //motion_to_max(forward);
    //motion_to_max(back);
@@ -82,8 +82,9 @@ void loop()
    // Разбираем команду и выполняем действие
    if (recievedFlag) 
    {                      
-      if (ModeSlave==modeDebug) Serial.println(strData);  
+      //if (ModeSlave==modeDebug) Serial.println(strData);  
       // Извлекаем код команды
+      currCmd = strData.substring(0,5);
       command = strData.substring(3,5);
       // Отрабатываем команду по оборудованию исполняющей системы 
       reskom=actionCom(command); 
@@ -95,18 +96,33 @@ void loop()
    if (Motor1_Flag == true)
    {
       Motor1_Flag = false;
-      serialSlave.print("Мотор-");
-      //if (ModeSlave==modeDebug) Serial.println("Мотор-");
-      delay(40); // выдержали паузу, чтобы команда спокойно ушла
+      strInfo=sDir+sShim+" p"+sPwr+sDir;
+      serialSlave.print(strInfo);
+      if (ModeSlave==modeDebug) Serial.println(strInfo);
    } 
    // Отправляем информационное сообщение управляющей системе   
    else if (Vcc2_Flag == true)
    {
       Vcc2_Flag = false;
-      serialSlave.print("Напря~");
-      //if (ModeSlave==modeDebug) Serial.println("Напря~");
-      delay(40); // выдержали паузу, чтобы команда спокойно ушла
+      strInfo="Vcc"+sVcc+"~";
+      serialSlave.print(strInfo);
+      if (ModeSlave==modeDebug) Serial.println(strInfo);
    } 
+   // Отправляем информационное сообщение управляющей системе   
+   else if (Act3_Flag == true)
+   {
+      Act3_Flag = false;
+      if (currCmd != oldiCmd)
+      {
+        oldiCmd=currCmd; 
+        strInfo=currCmd+"!";
+        serialSlave.print(strInfo);
+        if (ModeSlave==modeDebug) Serial.println(strInfo);
+      }
+   }
+   // Выдерживаем паузу, чтобы команда спокойно ушла
+   delay(4); 
+    
    // Меняем состояние лампочки после почти секунды
    if (OneSecondFlag==true)
    {

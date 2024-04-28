@@ -16,6 +16,7 @@
  *  "-" - ШИМ и мощность на контакте двигателя при движении назад
  *  "~" - напряжение питания исполнительной системы
  *  "*" - Диагностическое сообщение
+ *  "!" - команда от УПС
  */
 
 #include <iarduino_VCC.h> 
@@ -56,9 +57,8 @@ void loop()
       buzz_Ok();
       myOLED.clrScr(); // почистили экран
       isFirst=true;
-      if (ModeSlave==modeDebug) sendTrass(F("FirstLoop"));
+      sendTrass(F(" КРУТЯК"));
    }
-   
    // Принимаем и собираем командную последовательность
    // от управляющей системы в строку (String) без "обрывов"
    while(serialMaster.available())
@@ -77,9 +77,15 @@ void loop()
       // Готовим наполнение нового сообщения и сбрасываем флаг
       ystrData = "";                     
       yrecievedFlag = false;  
-      myOLED.print(typeData,50,7);
    }
-   VccSlave=4.95;
+   //
+   /*
+   if (command==50)
+   {
+      buzz_Ok();
+   }
+   */
+   //VccSlave=4.95;
    // Регистрируем поступление команды от инфракрасного датчика
    if (IrReceiver.decode()) 
    {
@@ -94,13 +100,8 @@ void loop()
          sCommand = String(command);
          if (command<10) sCommand="0"+sCommand;
          serialMaster.print("AT+"+sCommand+".");
-         // Делаем задержку в 100 мс, чтобы отработать сигнал от нажатия клавиши 
-         delay(100);  
-      }
-      //
-      if (command==50)
-      {
-         buzz_Ok();
+         // Делаем задержку в 10 мс, чтобы отработать сигнал от нажатия клавиши 
+         delay(10);  
       }
       // Готовим прием следующего нажатия клавиши
       IrReceiver.resume();
@@ -111,7 +112,7 @@ void loop()
       // Сбрасываем флаг одной секунды
       OneQuatrFlag = false;
       // Выводим информацию на дисплей
-      //viewState();
+      viewState();
       // Меняем состояние контрольного светодиода
       quatr=quatr+1;
       if (quatr==4)
@@ -120,12 +121,6 @@ void loop()
          doBurns=!doBurns;
          digitalWrite(LEDPIN,doBurns);
       }
-
-         cli();
-         myOLED.print(viewData,5,4); 
-         myOLED.print(quatr,5,7);
-         sei(); 
-
    }
 }
 

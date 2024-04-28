@@ -11,44 +11,58 @@
 #pragma once            
 
 // ****************************************************************************
+// *        Проверить данные по напряжениям питания и вывести на монитор      *
+// ****************************************************************************
+void viewSupplyVoltage()
+{
+   // Считаем, что данные не изменились
+   isChanged = false;
+   // Переопределяем напряжения УПС
+   oldVccMst = VccMaster;
+   Vcc=analogRead_VCC();
+   VccMaster = String(Vcc,2);
+   // Если напряжение УПС изменилось, то установливаем признак
+   if (VccMaster != oldVccMst) isChanged = true;
+   // Иначе переопределяем напряжения ИСКР
+   {
+      oldVccSlv = VccSlave;     
+      VccSlave=viewData.substring(3,7);
+      // Если напряжение ИСКР изменилось, то установливаем признак
+      if (VccSlave != oldVccSlv) isChanged = true;
+   }
+   // Если данные изменились, то выводим их в монитор
+   if (isChanged == true)
+   {
+      myOLED.print(F("v"),0,7); myOLED.print(F(":"),10,7);                 
+      myOLED.print(VccSlave,22,7);
+      myOLED.print(F("-"),69,7); 
+      myOLED.print(VccMaster,80,7);                   
+   }
+} 
+
+// ****************************************************************************
 // *                         Вывести информацию на монитор                    *
 // ****************************************************************************
-//void viewState(String sCommand, float VccSlave, float pwrSlave, byte dirMotor)
 void viewState()
 {
-   cli();
-   myOLED.print(typeData,5,4); 
-   /*
-   // Выводим последнюю команду, начиная с 80 столбца 1 строки 
-   // (высота шрифта 2 строки, текст займёт строки 0 и 1).
-   if (sCommand != oldCommand)
+   if (typeData=="-" || typeData=="+")
    {
-      if (ModeSlave!=modeDebug)myOLED.print(sCommand,80,1); 
-      oldCommand=sCommand;           
+      myOLED.print(viewData,3,4); 
    }
-   // Выводим текст начиная с 5 столбца 4 строки (высота шрифта 2 строки, он займёт строки 3 и 4).
-   //myOLED.print(viewData,5,4); 
-   myOLED.print(typeData,5,4); 
-   
-   // Готовим и выводим данные по напряжению питания
-   if (VccSlave != oldVccSlv)
+   // Выводим напряжения питания систем
+   else if (typeData=="~")
    {
-      sVcc = String(VccSlave,2);
-      myOLED.print(F("v"),0,7); myOLED.print(F(":"),10,7);                 
-      myOLED.print(sVcc,22,7);
-      oldVccSlv=VccSlave;           
+      viewSupplyVoltage();
    }
-   // Определяем напряжение питания УПС
-   VccMaster=analogRead_VCC();
-   if (VccMaster != oldVccMst) 
+   // Подтверждаем отправленную команду
+   else if (typeData=="!")
    {
-      sVcc = String(VccMaster,2);
-      myOLED.print(F("-"),69,7); 
-      myOLED.print(sVcc,80,7);                   
-      oldVccMst=VccMaster; 
+      myOLED.print(viewData+"     ",0,1); 
    }
-   */          
-   sei();
+   else
+   {
+      myOLED.print("NoDefine",0,1); 
+   }
 }
 
 #endif
