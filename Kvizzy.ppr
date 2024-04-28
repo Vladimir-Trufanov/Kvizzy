@@ -63,17 +63,38 @@ Kvizzy
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
 		+KRUTJAK
+			-Fritzing
+				KRUTJAK\Fritzing\Btr-Btn.fzz
+				KRUTJAK\Fritzing\MainMaster_v6.fzz
+				KRUTJAK\Fritzing\MainProjector_v5.fzz
+				KRUTJAK\Fritzing\MainSwitch_v1.fzz
+				KRUTJAK\Fritzing\MainSwitch_v2.fzz
+				KRUTJAK\Fritzing\MainSwitch_v3.fzz
+				KRUTJAK\Fritzing\MainSwitch_v4.fzz
+				KRUTJAK\Fritzing\MainSwitch12.fzz
+				KRUTJAK\Fritzing\MainSwitch1g2v.fzz
 			-Krutjak_31
 				-mk31
 					KRUTJAK\Krutjak_31\mk31\common_master_kru.h
 					KRUTJAK\Krutjak_31\mk31\define_master_kru.h
 					KRUTJAK\Krutjak_31\mk31\mk31.ino
 					KRUTJAK\Krutjak_31\mk31\timer1_kru.h
-				+sk31
+				-sk31
 					KRUTJAK\Krutjak_31\sk31\common_slave_kru.h
 					KRUTJAK\Krutjak_31\sk31\define_slave_kru.h
 					KRUTJAK\Krutjak_31\sk31\sk31.ino
 					KRUTJAK\Krutjak_31\sk31\timer2_kru.h
+			+Krutjak_32
+				+mk32
+					KRUTJAK\Krutjak_32\mk32\common_master_kru.h
+					KRUTJAK\Krutjak_32\mk32\define_master_kru.h
+					KRUTJAK\Krutjak_32\mk32\mk32.ino
+					KRUTJAK\Krutjak_32\mk32\timer1_kru.h
+				+sk32
+					KRUTJAK\Krutjak_32\sk32\common_slave_kru.h
+					KRUTJAK\Krutjak_32\sk32\define_slave_kru.h
+					KRUTJAK\Krutjak_32\sk32\sk32.ino
+					KRUTJAK\Krutjak_32\sk32\timer2_kru.h
 			-MasterKrutjak
 				-mk02-OLED
 					-ShowMediumFont
@@ -257,38 +278,38 @@ Kvizzy
 		README.md
 		«¿◊≈Ã Õ¿ ÃŒ“Œ–≈  ŒÕƒ≈Õ—¿“Œ–€.mp4
 [Open project files]
-0=KRUTJAK\Krutjak_31\mk31\mk31.ino
-1=KRUTJAK\Krutjak_31\mk31\define_master_kru.h
-2=KRUTJAK\Krutjak_31\mk31\common_master_kru.h
-3=KRUTJAK\Krutjak_31\mk31\timer1_kru.h
-4=KRUTJAK\Krutjak_31\sk31\sk31.ino
-5=KRUTJAK\Krutjak_31\sk31\define_slave_kru.h
-6=KRUTJAK\Krutjak_31\sk31\common_slave_kru.h
-7=KRUTJAK\Krutjak_31\sk31\timer2_kru.h
+0=KRUTJAK\Krutjak_32\mk32\mk32.ino
+1=KRUTJAK\Krutjak_32\mk32\define_master_kru.h
+2=KRUTJAK\Krutjak_32\mk32\common_master_kru.h
+3=KRUTJAK\Krutjak_32\mk32\timer1_kru.h
+4=KRUTJAK\Krutjak_32\sk32\sk32.ino
+5=KRUTJAK\Krutjak_32\sk32\define_slave_kru.h
+6=KRUTJAK\Krutjak_32\sk32\common_slave_kru.h
+7=KRUTJAK\Krutjak_32\sk32\timer2_kru.h
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\Krutjak_31\sk31\sk31.ino
-[KRUTJAK\Krutjak_31\mk31\mk31.ino]
-TopLine=54
-Caret=1,81
-[KRUTJAK\Krutjak_31\mk31\define_master_kru.h]
-TopLine=13
-Caret=63,31
-[KRUTJAK\Krutjak_31\mk31\common_master_kru.h]
-TopLine=11
-Caret=1,21
-[KRUTJAK\Krutjak_31\mk31\timer1_kru.h]
-TopLine=12
-Caret=1,16
-[KRUTJAK\Krutjak_31\sk31\sk31.ino]
-TopLine=85
-Caret=9,99
-[KRUTJAK\Krutjak_31\sk31\define_slave_kru.h]
-TopLine=21
-Caret=17,50
-[KRUTJAK\Krutjak_31\sk31\common_slave_kru.h]
+Selected=KRUTJAK\Krutjak_32\sk32\define_slave_kru.h
+[KRUTJAK\Krutjak_32\mk32\mk32.ino]
 TopLine=1
 Caret=1,1
-[KRUTJAK\Krutjak_31\sk31\timer2_kru.h]
-TopLine=18
-Caret=39,18
+[KRUTJAK\Krutjak_32\mk32\define_master_kru.h]
+TopLine=1
+Caret=1,1
+[KRUTJAK\Krutjak_32\mk32\common_master_kru.h]
+TopLine=1
+Caret=1,1
+[KRUTJAK\Krutjak_32\mk32\timer1_kru.h]
+TopLine=1
+Caret=1,1
+[KRUTJAK\Krutjak_32\sk32\sk32.ino]
+TopLine=1
+Caret=1,1
+[KRUTJAK\Krutjak_32\sk32\define_slave_kru.h]
+TopLine=1
+Caret=1,24
+[KRUTJAK\Krutjak_32\sk32\common_slave_kru.h]
+TopLine=1
+Caret=1,1
+[KRUTJAK\Krutjak_32\sk32\timer2_kru.h]
+TopLine=1
+Caret=1,1
