@@ -144,7 +144,7 @@ void buzz_Ok()
 // ****************************************************************************
 void sendTrass(String message)
 {
-   Serial.println(message); 
+   if (ModeSlave==modeDebug) Serial.println(message); 
    myOLED.print(message,0,1); 
 }
 // ****************************************************************************
