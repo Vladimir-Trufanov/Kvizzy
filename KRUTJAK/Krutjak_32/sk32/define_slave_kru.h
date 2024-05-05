@@ -17,7 +17,7 @@
 #define modeWork   1              // рабочий режим на Arduino Pro Mini
 const int ModeSlave = modeWork;   // текущий режим 
 
-#define sw3_TX     3        // последовательный порт: TX=3 (зеленый)
+#define sw3_TX     3        // последовательный порт: TX=3 (белый)
 #define sw4_RX     4        // последовательный порт: RX=4 (желтый)
 #define DIR_PIN    6        // направление движения мотора 6 (белый)
 #define PWM_PIN    7        // ШИМ-сигнал на мотор (0-255) 7 (синий)

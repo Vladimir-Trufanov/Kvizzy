@@ -1,6 +1,6 @@
 /** KRUTJAK-SLAVE-PRO_MINI                                     *** sk32.ino ***
  * 
- * sk31 - Исполнительная система паровозика "КРУТЯК"
+ * sk32 - Исполнительная система паровозика "КРУТЯК"
   * 
  * v3.4, 26.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 12.04.2024
@@ -78,7 +78,7 @@ void loop()
    // Разбираем команду и выполняем действие
    if (recievedFlag) 
    {                      
-      //if (ModeSlave==modeDebug) Serial.println(strData);  
+      if (ModeSlave==modeDebug) Serial.println(strData);  
       // Извлекаем код команды
       currCmd = strData.substring(0,5);
       command = strData.substring(3,5);

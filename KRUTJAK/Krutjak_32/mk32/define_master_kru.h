@@ -23,7 +23,7 @@
 iarduino_OLED_txt myOLED(0x3C);   // объявили объект OLED-дисплея по адресу на шине I2C: 0x3D 
 extern uint8_t MediumFontRus[];   // подключили шрифт MediumFontRus.
 
-// Объявляем программный последовательный порт с RX(зеленый) =5, TX(желтый) =6
+// Объявляем программный последовательный порт с RX(белый) =5, TX(зеленый) =6
 SoftwareSerial serialMaster(sw5_RX,sw6_TX); 
 
 bool      isFirst = false;        // признак первого запуска системы
