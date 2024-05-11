@@ -2,7 +2,7 @@
  * 
  * Определить переменные и константы исполнительной системы паровозика "КРУТЯК"
  * 
- * v3.3, 26.04.2024                                   Автор:      Труфанов В.Е.
+ * v3.4, 30.04.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 16.04.2024
 **/
 
@@ -15,9 +15,9 @@
 
 #define modeDebug  0              // отладочный режим на Arduino Uno
 #define modeWork   1              // рабочий режим на Arduino Pro Mini
-const int ModeSlave = modeDebug; // modeWork;   // текущий режим 
+const int ModeSlave = modeWork;
 
-#define sw3_TX     3        // последовательный порт: TX=3 (зеленый)
+#define sw3_TX     3        // последовательный порт: TX=3 (белый)
 #define sw4_RX     4        // последовательный порт: RX=4 (желтый)
 #define DIR_PIN    6        // направление движения мотора 6 (белый)
 #define PWM_PIN    7        // ШИМ-сигнал на мотор (0-255) 7 (синий)
@@ -40,9 +40,10 @@ String oldiCmd="x";               // прежняя команда
 
 // Контрольные значения ШИМ
 #define MAX_SPEED      255        // максимум
-#define START_SPEED    101        // стартовая скорость
-#define MIN_SPEED       64        // минимум 
-#define DELTA_SPEED     17        // интервал изменения скорости 
+#define START_SPEED    155        // стартовый ШИМ
+#define MIN_SPEED      134        // минимальный ШИМ 
+#define DELTA_SPEED     17        // интервал увеличения скорости 
+#define mm_SPEED         5        // интервал уменьшения скорости 
 #define MS_TIME         20        // моторная задержка
 #define forward          0        // направление движения = "вперёд" 
 #define back             1        // направление движения = "назад" 

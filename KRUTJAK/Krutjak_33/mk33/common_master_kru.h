@@ -57,7 +57,7 @@ void viewState()
    // Подтверждаем отправленную команду
    else if (typeData=="!")
    {
-      myOLED.print(viewData+"     ",0,1); 
+      myOLED.print("c"+viewData.substring(3,5),0,1); 
    }
    else
    {

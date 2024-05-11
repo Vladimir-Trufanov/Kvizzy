@@ -1,8 +1,8 @@
-/** KRUTJAK-MASTER-PRO_MINI                                    *** mk31.ino ***
+/** KRUTJAK-MASTER-PRO_MINI                                    *** mk33.ino ***
  * 
- * mk31 - Управляющая система паровозика "КРУТЯК" 
+ * mk33 - Управляющая система паровозика "КРУТЯК" 
  * 
- * v3.3, 27.04.2024                                   Автор:      Труфанов В.Е.
+ * v3.5, 11.05.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 12.04.2024
 **/
 
@@ -41,7 +41,7 @@ void setup()
 
    pinMode(LEDPIN, OUTPUT);
    
-   // Инициируем четветрь секундное прерывание (с частотой в 1/4 Гц)
+   // Инициируем четверть-секундное прерывание (с частотой в 1/4 Гц)
    // (для управляющей системы, чуть пореже, чтобы таймеры систем 
    // расходились, но медленно)
    IniTimer1(3906);  // 1 четверть => 15624/4=3906
@@ -53,19 +53,20 @@ void loop()
    if (isFirst==false)
    {
       // Делаем задержку и трассируем включение
-      delay(1000);  
-      buzz_Ok();
       myOLED.clrScr(); // почистили экран
+      sendTrass(F("КРУТЯК"));
+      buzz_Ok();
+      delay(2000);  
+      sendTrass(F("          "));
       isFirst=true;
-      sendTrass(F(" КРУТЯК"));
    }
    // Принимаем и собираем командную последовательность
    // от управляющей системы в строку (String) без "обрывов"
    while(serialMaster.available())
    {
       ysimb=serialMaster.read();
-      ystrData += (char)ysimb;          // добавили в строку принятый символ
-      yrecievedFlag = true;             // устанавливаем флаг, что получили данные
+      ystrData += (char)ysimb;         // добавили в строку принятый символ
+      yrecievedFlag = true;            // устанавливаем флаг, что получили данные
       delay(4);                        // ожидание завершения поступления символов !!!
    }
    // Разбираем команду и выполняем действие
@@ -78,18 +79,9 @@ void loop()
       ystrData = "";                     
       yrecievedFlag = false;  
    }
-   //
-   /*
-   if (command==50)
-   {
-      buzz_Ok();
-   }
-   */
-   //VccSlave=4.95;
    // Регистрируем поступление команды от инфракрасного датчика
    if (IrReceiver.decode()) 
    {
-      // myOLED.clrScr(); // почистили экран
       if (ModeSlave==modeDebug) markIKS(); 
       // Извлекаем код, отправленный пультом дистанционного управления 
       // в зависимости от того, какая клавиша была нажата из структуры IRData
@@ -100,8 +92,26 @@ void loop()
          sCommand = String(command);
          if (command<10) sCommand="0"+sCommand;
          serialMaster.print("AT+"+sCommand+".");
+         //Serial.println("AT+"+sCommand+"."); 
          // Делаем задержку в 10 мс, чтобы отработать сигнал от нажатия клавиши 
          delay(10);  
+      }
+      // Начинаем отсчет секунд с началом движения
+      if ((command==3)||(command==20))
+      {
+         bSec = millis()/1000ul;  // общие секунды на начало движения
+         isMove = true; 
+      }
+      // Завершаем отсчет секунд по окончании движения
+      if ((command==1)||(command==33))
+      {
+         isMove = false; 
+      }
+      // Тестируем систему (в перспективе)
+      if (command==50)
+      {
+         buzz_Ok();
+         myOLED.clrScr(); // почистили экран
       }
       // Готовим прием следующего нажатия клавиши
       IrReceiver.resume();
@@ -113,13 +123,27 @@ void loop()
       OneQuatrFlag = false;
       // Выводим информацию на дисплей
       viewState();
-      // Меняем состояние контрольного светодиода
+      // Выполняем действия примерно после одной секунды
       quatr=quatr+1;
       if (quatr==4)
       {
          quatr=0;
+         // Меняем состояние контрольного светодиода
          doBurns=!doBurns;
          digitalWrite(LEDPIN,doBurns);
+         // Расчитываем и выводим время с начала движения
+         if (isMove==true)
+         {
+            bTick = millis()/1000ul-bSec; 
+            timeMins = (bTick % 3600ul) / 60ul;  // минуты
+            sMins = String(timeMins);
+            if (timeMins<10) sMins="0"+sMins;
+
+            timeSecs = (bTick % 3600ul) % 60ul;  // секунды
+            sSecs = String(timeSecs);
+            if (timeSecs<10) sSecs="0"+sSecs;
+            myOLED.print("t"+sMins+"."+sSecs,56,1); 
+         }
       }
    }
 }
@@ -144,7 +168,7 @@ void buzz_Ok()
 // ****************************************************************************
 void sendTrass(String message)
 {
-   Serial.println(message); 
+   if (ModeSlave==modeDebug) Serial.println(message); 
    myOLED.print(message,0,1); 
 }
 // ****************************************************************************
@@ -158,4 +182,4 @@ void markIKS()
    sendTrass(F("         "));
 }
 
-// *************************************************************** mk31.ino ***
+// *************************************************************** mk32.ino ***
