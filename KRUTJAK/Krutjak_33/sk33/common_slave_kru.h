@@ -109,6 +109,7 @@ int actionCom(String command)
    }
    // "назад" - если двигались вперед, то останавливаем движение 
    // и начинаем движение назад
+   /*
    if (command=="21")
    {
       if (currDir==forward)
@@ -131,6 +132,7 @@ int actionCom(String command)
          motor_speed(MIN_SPEED);
       }
    }
+   */
    command=="00";
    return reskom;
 }

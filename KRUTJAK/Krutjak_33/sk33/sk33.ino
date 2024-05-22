@@ -41,6 +41,25 @@ void setup()
    pinMode(LEDPIN, OUTPUT);
 }
 
+void loopi() 
+{
+   currDir=0;
+   digitalWrite(DIR_PIN,currDir);
+   
+   analogWrite(PWM_PIN,155);
+   delay(4000);              
+   analogWrite(PWM_PIN,0);
+   delay(4000);              
+   
+   currDir=1;
+   digitalWrite(DIR_PIN,currDir);
+
+   analogWrite(PWM_PIN,155);
+   delay(4000);              
+   analogWrite(PWM_PIN,0);
+   delay(4000);              
+ }
+
 void loop() 
 {
    // Контроллируем скорость на постоянном SHIM
