@@ -62,39 +62,35 @@ Kvizzy
 			IrPlus\NEC - E424.irplus
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
-		+KRUTJAK
+		-KRUTJAK
 			-Fritzing
+				KRUTJAK\Fritzing\Avtonom_v8.fzz
+				KRUTJAK\Fritzing\Avtonom_v8.jpg
 				KRUTJAK\Fritzing\Btr-Btn.fzz
-				KRUTJAK\Fritzing\MainMaster_v6.fzz
-				KRUTJAK\Fritzing\MainProjector_v5.fzz
-				KRUTJAK\Fritzing\MainSwitch_v1.fzz
-				KRUTJAK\Fritzing\MainSwitch_v2.fzz
-				KRUTJAK\Fritzing\MainSwitch_v3.fzz
-				KRUTJAK\Fritzing\MainSwitch_v4.fzz
-				KRUTJAK\Fritzing\MainSwitch12.fzz
-				KRUTJAK\Fritzing\MainSwitch1g2v.fzz
-			-Krutjak_31
-				-mk31
-					KRUTJAK\Krutjak_31\mk31\common_master_kru.h
-					KRUTJAK\Krutjak_31\mk31\define_master_kru.h
-					KRUTJAK\Krutjak_31\mk31\mk31.ino
-					KRUTJAK\Krutjak_31\mk31\timer1_kru.h
-				-sk31
-					KRUTJAK\Krutjak_31\sk31\common_slave_kru.h
-					KRUTJAK\Krutjak_31\sk31\define_slave_kru.h
-					KRUTJAK\Krutjak_31\sk31\sk31.ino
-					KRUTJAK\Krutjak_31\sk31\timer2_kru.h
-			+Krutjak_32
-				+mk32
+				KRUTJAK\Fritzing\Dva-v-odnom_v9.fzz
+				KRUTJAK\Fritzing\Maketnaja-shema-krutjak-v3.jpg
+			-Krutjak_32
+				-mk32
 					KRUTJAK\Krutjak_32\mk32\common_master_kru.h
 					KRUTJAK\Krutjak_32\mk32\define_master_kru.h
 					KRUTJAK\Krutjak_32\mk32\mk32.ino
 					KRUTJAK\Krutjak_32\mk32\timer1_kru.h
-				+sk32
+				-sk32
 					KRUTJAK\Krutjak_32\sk32\common_slave_kru.h
 					KRUTJAK\Krutjak_32\sk32\define_slave_kru.h
 					KRUTJAK\Krutjak_32\sk32\sk32.ino
 					KRUTJAK\Krutjak_32\sk32\timer2_kru.h
+			-Krutjak_33
+				-mk33
+					KRUTJAK\Krutjak_33\mk33\common_master_kru.h
+					KRUTJAK\Krutjak_33\mk33\define_master_kru.h
+					KRUTJAK\Krutjak_33\mk33\mk33.ino
+					KRUTJAK\Krutjak_33\mk33\timer1_kru.h
+				-sk33
+					KRUTJAK\Krutjak_33\sk33\common_slave_kru.h
+					KRUTJAK\Krutjak_33\sk33\define_slave_kru.h
+					KRUTJAK\Krutjak_33\sk33\sk33.ino
+					KRUTJAK\Krutjak_33\sk33\timer2_kru.h
 			-MasterKrutjak
 				-mk02-OLED
 					-ShowMediumFont
@@ -196,6 +192,16 @@ Kvizzy
 					KRUTJAK\SlaveKrutjak\sk08-Lead\define_slave_kru.h
 					KRUTJAK\SlaveKrutjak\sk08-Lead\sk08-Lead.ino
 					KRUTJAK\SlaveKrutjak\sk08-Lead\timer2_kru.h
+			-Как я тестировал крутяк
+				-Отладка
+					KRUTJAK\Как я тестировал крутяк\Отладка\IMG20240423140247.jpg
+					KRUTJAK\Как я тестировал крутяк\Отладка\IMG20240423140256.jpg
+					KRUTJAK\Как я тестировал крутяк\Отладка\IMG20240423140319.jpg
+					KRUTJAK\Как я тестировал крутяк\Отладка\IMG20240423140330.jpg
+					KRUTJAK\Как я тестировал крутяк\Отладка\IMG20240423140342.jpg
+					KRUTJAK\Как я тестировал крутяк\Отладка\IMG20240428074207.jpg
+				KRUTJAK\Как я тестировал крутяк\Как я тестировал крутяк.md
+				KRUTJAK\Как я тестировал крутяк\Как я тестировал крутяк.md.backup
 			-Разборка паровозика
 				KRUTJAK\Разборка паровозика\Batarejnyi-otsek.jpg
 				KRUTJAK\Разборка паровозика\Koljosa.jpg
@@ -213,11 +219,32 @@ Kvizzy
 			KRUTJAK\KRUTJAK.md
 			KRUTJAK\MotorOtPotenciometra.jpg
 			KRUTJAK\n-cha-p.jpg
+			KRUTJAK\podklyuchenie-draivera.png
+			KRUTJAK\podklyuchenie-motora-s-platy.png
 			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
-		-Kvizzy
+		+Kvizzy
+			-I2c_Scanner
+				Kvizzy\I2c_Scanner\I2c_Scanner.fzz
+				Kvizzy\I2c_Scanner\I2c_Scanner.ino
+			-kvizzy1-pervushechka
+				-Mini_v1
+					Kvizzy\kvizzy1-pervushechka\Mini_v1\Mini_v1.ino
+				-Pir_v1
+					Kvizzy\kvizzy1-pervushechka\Pir_v1\Pir_v1.ino
+				Kvizzy\kvizzy1-pervushechka\kvizzy1-pervushechka.fzz
+				Kvizzy\kvizzy1-pervushechka\kvizzy1-pervushechka.md
+				Kvizzy\kvizzy1-pervushechka\kvizzy1-pervushechka.md.backup
+			+LCD1602aWithI2C_rus
+				Kvizzy\TestLCD1602\TestLCD1602.ino
+			+TestBuzer
+				Kvizzy\TestBuzer\TestBuzer.ino
 			Kvizzy\Kvizzy.md
+			Kvizzy\Kvizzy.md.backup
+			Kvizzy\LCD_1602_RUS-master.zip
+			Kvizzy\LiquidCrystal_I2C.zip
+			Kvizzy\principialnaya-ehlektricheskaya-shema-foto-lovushki.png
 		-RaspberryPiZeroW
 			RaspberryPiZeroW\RaspberryPiZeroW.md
 		-Декодирование сигналов инфракрасного пульта дистанционного управления
@@ -278,38 +305,14 @@ Kvizzy
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=KRUTJAK\Krutjak_32\mk32\mk32.ino
-1=KRUTJAK\Krutjak_32\mk32\define_master_kru.h
-2=KRUTJAK\Krutjak_32\mk32\common_master_kru.h
-3=KRUTJAK\Krutjak_32\mk32\timer1_kru.h
-4=KRUTJAK\Krutjak_32\sk32\sk32.ino
-5=KRUTJAK\Krutjak_32\sk32\define_slave_kru.h
-6=KRUTJAK\Krutjak_32\sk32\common_slave_kru.h
-7=KRUTJAK\Krutjak_32\sk32\timer2_kru.h
+0=Kvizzy\TestBuzer\TestBuzer.ino
+1=Kvizzy\TestLCD1602\TestLCD1602.ino
 [Selected Project Files]
 Main=
-Selected=KRUTJAK\Krutjak_32\sk32\define_slave_kru.h
-[KRUTJAK\Krutjak_32\mk32\mk32.ino]
+Selected=Kvizzy\TestLCD1602\TestLCD1602.ino
+[Kvizzy\TestBuzer\TestBuzer.ino]
+TopLine=47
+Caret=1,88
+[Kvizzy\TestLCD1602\TestLCD1602.ino]
 TopLine=1
-Caret=1,1
-[KRUTJAK\Krutjak_32\mk32\define_master_kru.h]
-TopLine=1
-Caret=1,1
-[KRUTJAK\Krutjak_32\mk32\common_master_kru.h]
-TopLine=1
-Caret=1,1
-[KRUTJAK\Krutjak_32\mk32\timer1_kru.h]
-TopLine=1
-Caret=1,1
-[KRUTJAK\Krutjak_32\sk32\sk32.ino]
-TopLine=1
-Caret=1,1
-[KRUTJAK\Krutjak_32\sk32\define_slave_kru.h]
-TopLine=1
-Caret=1,24
-[KRUTJAK\Krutjak_32\sk32\common_slave_kru.h]
-TopLine=1
-Caret=1,1
-[KRUTJAK\Krutjak_32\sk32\timer2_kru.h]
-TopLine=1
-Caret=1,1
+Caret=6,2
