@@ -11,6 +11,18 @@
 #include <Wire.h>
 // Подключаем библиотеку LCD_1602_RUS (наследницу LiquidCrystal_I2C.h)
 #include <LCD_1602_RUS.h> 
+// Подключаем библиотеку сигнальных звуков
+//#include "Walk_Sounds.h"
+
+#define mel 
+
+
+
+#include "Proba.h"
+
+
+
+
 
 
 /* 
@@ -31,19 +43,37 @@ int pirPin = 2;                      // пин сигнального конта
 int sensorReady = 0;                 // флаг готовности датчика к обнаружению движения сброшен
 int pirValue;                        // переменная для сохранения значения из PIR
 
+int ssum; 
+
+
 //int motionDetected = 0;              // флаг обнаруженного движения
 
 // Создаём объект для LCD-дисплея
 LCD_1602_RUS lcd(0x27,16,2); 
+// Инициируем ----драйвер мотора
+//WalkSounds tws; 
 
 void setup() 
 {
+  //tws.Sound();
+  //tws.Soundi(Baby_Elephant_Walk,array_count) 
+  //tws.Sound();
+  //tws.Test();
+
   // Инициируем LCD1602, включаем подсветку, чистим вторую строку
   lcd.init();                       
   lcd.backlight();                 
   lcd.setCursor(0,1);               // установили курсор в начало 2 строки
   lcd.print("                ");    // распечатали текст
+
+  ssum=roba(); 
+  ssum=Mel();
+  setupi();
   
+  lcd.setCursor(0,0); // установили курсор в начало 1 строки
+  lcd.print(ssum);  
+  
+  /*
   pinMode(pirPin, INPUT);           // установили пин датчика, как вход
 
   // Выполняем начальную задержку в 1 минуту для стабилизации датчика
@@ -53,12 +83,14 @@ void setup()
   // Подняли флаг готовности датчика к обнаружению движения
   sensorReady = 1;                   
   lcd.setCursor(0,0);
-  lcd.print("PIR-датчик готов");  
-
+  lcd.print("PIR-датчик готов");
+  //WalkSounds();  
+  */
 }
 
 void loop() 
 {
+  /*
   // Если датчику разрешено обнаруживать движение, считываем его значение
   if (sensorReady == 1)                 
   {
@@ -83,6 +115,7 @@ void loop()
        sensorReady = 1;                   // подняли флаг готовности датчика к обнаружению движения
     } 
   }
+  */
 }
 
 /**
