@@ -17,7 +17,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	-Kvizzy
+	+Kvizzy
 		-Buzzer_Sounds
 			-arduino-songs
 				-asabranca
@@ -1741,7 +1741,7 @@ Kvizzy
 			IrPlus\NEC - E424.irplus
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
-		-KRUTJAK
+		+KRUTJAK
 			-Fritzing
 				KRUTJAK\Fritzing\Avtonom_v8.fzz
 				KRUTJAK\Fritzing\Avtonom_v8.jpg
@@ -1791,7 +1791,7 @@ Kvizzy
 					KRUTJAK\MasterKrutjak\mk08-Lead\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk08-Lead\mk08-Lead.ino
 					KRUTJAK\MasterKrutjak\mk08-Lead\timer1_kru.h
-			-Outdated
+			+Outdated
 				-ehlektronnyj-potenciometr
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.md
@@ -1818,7 +1818,7 @@ Kvizzy
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\podkliuchenie-ot-vneshnego-istochnika.png
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\podkliuchenie-s-pitaniem-ot-platy.png
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\Детали проекта.md
-				-Пройденные этапы с одним мотором
+				+Пройденные этапы с одним мотором
 					-ikd-tranzistor-motor
 						-sketch_First
 							KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino
@@ -1902,7 +1902,7 @@ Kvizzy
 			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
-		-Kvizzy
+		+Kvizzy
 			-I2c_Scanner
 				Kvizzy\I2c_Scanner\I2c_Scanner.fzz
 				Kvizzy\I2c_Scanner\I2c_Scanner.ino
@@ -1917,7 +1917,7 @@ Kvizzy
 				Kvizzy\Test01_Buzer\Test01_Buzer.ino
 			-Test02_LCD1602
 				Kvizzy\Test02_LCD1602\Test02_LCD1602.ino
-			-Test03_HCSR501
+			+Test03_HCSR501
 				Kvizzy\Test03_HCSR501\Proba.h
 				Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
 				Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
@@ -1992,29 +1992,21 @@ Kvizzy
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
 0=Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
-1=Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
-2=Kvizzy\Test03_HCSR501\Proba.h
-3=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp
-4=Kvizzy\Test03_HCSR501\Walk_Sounds.h
-5=Buzzer_Sounds\arduino-songs\babyelephantwalk\babyelephantwalk.ino
+1=Kvizzy\Test03_HCSR501\Proba.h
+2=Kvizzy\Test03_HCSR501\Walk_Sounds.h
+3=Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
 [Selected Project Files]
 Main=
-Selected=Kvizzy\Test03_HCSR501\Proba.h
+Selected=Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
 [Kvizzy\Test03_HCSR501\Test03_HCSR501.ino]
-TopLine=53
-Caret=12,65
-[Kvizzy\Test03_HCSR501\Walk_Sounds.cpp]
-TopLine=11
-Caret=11,12
+TopLine=65
+Caret=3,72
 [Kvizzy\Test03_HCSR501\Proba.h]
-TopLine=1
-Caret=6,29
-[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Motor_kru.cpp]
-TopLine=11
-Caret=1,1
+TopLine=177
+Caret=1,214
 [Kvizzy\Test03_HCSR501\Walk_Sounds.h]
-TopLine=178
-Caret=1,206
-[Buzzer_Sounds\arduino-songs\babyelephantwalk\babyelephantwalk.ino]
-TopLine=130
-Caret=1,167
+TopLine=120
+Caret=1,120
+[Kvizzy\Test03_HCSR501\Walk_Sounds.cpp]
+TopLine=66
+Caret=1,1

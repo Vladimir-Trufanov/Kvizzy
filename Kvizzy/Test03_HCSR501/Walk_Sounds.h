@@ -13,6 +13,13 @@
 #pragma once            // обеспечили разовое подключение файла
 #include <Arduino.h>    // подключили общие функции Arduino
 
+
+      #ifdef meli
+      int aMeli[] = {10, 10, 10, 10, 5};
+      //int Meli(){return sumFunction(aMeli,sizeof(aMeli));}
+      #endif
+
+
 // Первичные константы для частот, длительностей и темпов звукоизвлечения
 #define NOTE_B0  31
 #define NOTE_C1  33
@@ -105,13 +112,89 @@
 #define NOTE_DS8 4978
 #define REST      0
 
+
+
+// change this to make the song slower or faster
+//int tempo = 132;
+
+// change this to whichever pin you want to use
+//int buzzer = 12;
+
+
 // В сформированном списке мелодии 4 означает четвертную ноту, 8 - восьмую,
 // 16 - шестнадцатую и так далее. Отрицательные числа используются для 
 // обозначения "пунктирных" нот (нот с точкой), где -4 означает пунктирную 
 // четвертную ноту, то есть четвертная плюс восьмая!
 
+int melody[] = 
+{
+
+  // Baby Elephant Walk
+  // Score available at https://musescore.com/user/7965776/scores/1862611
+
+  
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,2,
+  /*
+
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_G4,-2, NOTE_A4,8, NOTE_DS4,1,
+  
+  NOTE_A4,8,
+  NOTE_E4,8, NOTE_C4,8, REST,4, REST,2,
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,4, REST,8, NOTE_G4,8,
+  NOTE_D5,4, NOTE_D5,4, NOTE_B4,8, NOTE_G4,8, REST,8, NOTE_G4,8,
+   
+  NOTE_C5,4, NOTE_C5,4, NOTE_AS4,16, NOTE_C5,16, NOTE_AS4,16, NOTE_G4,16, NOTE_F4,8, NOTE_DS4,8,
+  NOTE_FS4,4, NOTE_FS4,4, NOTE_F4,16, NOTE_G4,16, NOTE_F4,16, NOTE_DS4,16, NOTE_C4,8, NOTE_G4,8,
+  NOTE_AS4,8, NOTE_C5,8, REST,4, REST,2,  
+  */
+  
+};
 
 
+/*
+// sizeof gives the number of bytes, each int value is composed of two bytes (16 bits)
+// there are two values per note (pitch and duration), so for each note there are four bytes
+int notes = sizeof(melody) / sizeof(melody[0]) / 2;
+
+// this calculates the duration of a whole note in ms
+int wholenote = (60000 * 4) / tempo;
+
+int divider = 0, noteDuration = 0;
+
+void setupi() 
+{
+  // iterate over the notes of the melody.
+  // Remember, the array is twice the number of notes (notes + durations)
+  for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) {
+
+    // calculates the duration of each note
+    divider = melody[thisNote + 1];
+    if (divider > 0) {
+      // regular note, just proceed
+      noteDuration = (wholenote) / divider;
+    } else if (divider < 0) {
+      // dotted notes are represented with negative durations!!
+      noteDuration = (wholenote) / abs(divider);
+      noteDuration *= 1.5; // increases the duration in half for dotted notes
+    }
+
+    // we only play the note for 90% of the duration, leaving 10% as a pause
+    tone(buzzer, melody[thisNote], noteDuration * 0.9);
+
+    // Wait for the specief duration before playing the next note.
+    delay(noteDuration);
+
+    // stop the waveform generation before the next note.
+    noTone(buzzer);
+  }
+}
+*/
+
+
+/*
 int Baby_Elephant_Walk[] = 
 {
 
@@ -134,7 +217,7 @@ int Baby_Elephant_Walk[] =
 };
 
 #define array_count sizeof(Baby_Elephant_Walk)/sizeof(Baby_Elephant_Walk[0])
-
+*/
 
 /*
 int melody[] = 
@@ -170,13 +253,30 @@ int melody[] =
 class WalkSounds 
 {
    private:
+      /*
       int tempo = 132;    // темп воспроизведения 
       int buzzer = 12;    // пин зуммера
       int notes;          // размер (количество байт) мелодии
       int divider;        // позиция текущей ноты
       int wholenote;      // темп мелодии
       int noteDuration;   // продолжительность ноты
-      int melody;
+      //int melody;
+      */
+      
+      int sumFunction(int *intArray, int arrSize)
+      {
+      // переменная для суммирования
+      int sum = 0;  
+      // находим размер массива, разделив его вес
+      // на вес одного элемента (тут у нас int)
+      arrSize = arrSize / sizeof(int);  
+      for (byte i = 0; i < arrSize; i++) 
+      {
+         sum += intArray[i];
+      }
+      return sum;
+      }
+ 
    public:
 
 
@@ -205,11 +305,54 @@ int Baby_Elephant_Walk[] =
 };
 */
       // Управлять скоростью мотора и направлением его вращения
-      void Sound(); 
+      void Sound()
+      {
+         // change this to make the song slower or faster
+         int tempo = 132;
+         // change this to whichever pin you want to use
+         int buzzer = 12;
+
+         // sizeof gives the number of bytes, each int value is composed of two bytes (16 bits)
+         // there are two values per note (pitch and duration), so for each note there are four bytes
+         int notes = sizeof(melody) / sizeof(melody[0]) / 2;
+         // this calculates the duration of a whole note in ms
+         int wholenote = (60000 * 4) / tempo;
+         int divider = 0, noteDuration = 0;
+
+         // iterate over the notes of the melody.
+         // Remember, the array is twice the number of notes (notes + durations)
+         for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) 
+         {
+            // calculates the duration of each note
+            divider = melody[thisNote + 1];
+            if (divider > 0) 
+            {
+               // regular note, just proceed
+               noteDuration = (wholenote) / divider;
+            } 
+            else if (divider < 0) 
+            {
+               // dotted notes are represented with negative durations!!
+               noteDuration = (wholenote) / abs(divider);
+               noteDuration *= 1.5; // increases the duration in half for dotted notes
+            }
+            // we only play the note for 90% of the duration, leaving 10% as a pause
+            tone(buzzer, melody[thisNote], noteDuration * 0.9);
+            // Wait for the specief duration before playing the next note.
+            delay(noteDuration);
+            // stop the waveform generation before the next note.
+            noTone(buzzer);
+        }
+      }
       // Управлять скоростью мотора и направлением его вращения
-      void Soundi(int x[], int ssize); 
+      //void Soundi(int x[], int ssize); 
       // Протестировать мотор
-      void Test(); 
+      //void Test(); 
+      // ----Протестировать мотор
+      #ifdef meli
+      //int aMeli[5] = {10, 10, 10, 10, 5};
+      int Meli(){return sumFunction(aMeli,sizeof(aMeli));}
+      #endif
 };
 
 

@@ -11,14 +11,15 @@
 #include <Wire.h>
 // Подключаем библиотеку LCD_1602_RUS (наследницу LiquidCrystal_I2C.h)
 #include <LCD_1602_RUS.h> 
-// Подключаем библиотеку сигнальных звуков
-//#include "Walk_Sounds.h"
 
 #define mel 
+#define meli
+
+// Подключаем библиотеку сигнальных звуков
+#include "Walk_Sounds.h"
 
 
-
-#include "Proba.h"
+//#include "Proba.h"
 
 
 
@@ -51,7 +52,7 @@ int ssum;
 // Создаём объект для LCD-дисплея
 LCD_1602_RUS lcd(0x27,16,2); 
 // Инициируем ----драйвер мотора
-//WalkSounds tws; 
+WalkSounds tws; 
 
 void setup() 
 {
@@ -66,9 +67,11 @@ void setup()
   lcd.setCursor(0,1);               // установили курсор в начало 2 строки
   lcd.print("                ");    // распечатали текст
 
-  ssum=roba(); 
-  ssum=Mel();
-  setupi();
+  //ssum=roba(); 
+  //ssum=Mel();
+  //setupi();
+  ssum=tws.Meli();
+  tws.Sound();
   
   lcd.setCursor(0,0); // установили курсор в начало 1 строки
   lcd.print(ssum);  
