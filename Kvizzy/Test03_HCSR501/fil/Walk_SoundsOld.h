@@ -13,9 +13,12 @@
 #pragma once            // обеспечили разовое подключение файла
 #include <Arduino.h>    // подключили общие функции Arduino
 
-#ifdef meli
-   int aMeli[] = {10, 10, 10, 10, 5};
-#endif
+
+      #ifdef meli
+      int aMeli[] = {10, 10, 10, 10, 5};
+      //int Meli(){return sumFunction(aMeli,sizeof(aMeli));}
+      #endif
+
 
 // Первичные константы для частот, длительностей и темпов звукоизвлечения
 #define NOTE_B0  31
@@ -110,17 +113,49 @@
 #define REST      0
 
 
-int amelody[] = 
+
+// change this to make the song slower or faster
+//int tempo = 132;
+
+// change this to whichever pin you want to use
+//int buzzer = 12;
+
+
+// В сформированном списке мелодии 4 означает четвертную ноту, 8 - восьмую,
+// 16 - шестнадцатую и так далее. Отрицательные числа используются для 
+// обозначения "пунктирных" нот (нот с точкой), где -4 означает пунктирную 
+// четвертную ноту, то есть четвертная плюс восьмая!
+
+int imelody[] = 
 {
+
+  // Baby Elephant Walk
+  // Score available at https://musescore.com/user/7965776/scores/1862611
+
+  
   NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
   NOTE_FS4,8, NOTE_G4,8, REST,4, REST,2,
+  /*
+
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_G4,-2, NOTE_A4,8, NOTE_DS4,1,
+  
+  NOTE_A4,8,
+  NOTE_E4,8, NOTE_C4,8, REST,4, REST,2,
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,4, REST,8, NOTE_G4,8,
+  NOTE_D5,4, NOTE_D5,4, NOTE_B4,8, NOTE_G4,8, REST,8, NOTE_G4,8,
+   
+  NOTE_C5,4, NOTE_C5,4, NOTE_AS4,16, NOTE_C5,16, NOTE_AS4,16, NOTE_G4,16, NOTE_F4,8, NOTE_DS4,8,
+  NOTE_FS4,4, NOTE_FS4,4, NOTE_F4,16, NOTE_G4,16, NOTE_F4,16, NOTE_DS4,16, NOTE_C4,8, NOTE_G4,8,
+  NOTE_AS4,8, NOTE_C5,8, REST,4, REST,2,  
+  */
+  
 };
 
-
 #ifdef FurElise
-//const int  Fur_Elise[] PROGMEM = 
-int Fur_Elise[] = 
-{
+const int  Fur_Elise[] PROGMEM = {
+
   // Fur Elise - Ludwig van Beethovem
   // Score available at https://musescore.com/user/28149610/scores/5281944
 
@@ -282,6 +317,126 @@ int Fur_Elise[] =
 #endif
 
 
+/*
+int melody[] = 
+{
+  // Baby Elephant Walk
+  // Score available at https://musescore.com/user/7965776/scores/1862611
+
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,2,
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_G4,-2, NOTE_A4,8, NOTE_DS4,1,
+  
+  NOTE_A4,8,
+  NOTE_E4,8, NOTE_C4,8, REST,4, REST,2,
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,4, REST,8, NOTE_G4,8,
+  NOTE_D5,4, NOTE_D5,4, NOTE_B4,8, NOTE_G4,8, REST,8, NOTE_G4,8,
+   
+  NOTE_C5,4, NOTE_C5,4, NOTE_AS4,16, NOTE_C5,16, NOTE_AS4,16, NOTE_G4,16, NOTE_F4,8, NOTE_DS4,8,
+  NOTE_FS4,4, NOTE_FS4,4, NOTE_F4,16, NOTE_G4,16, NOTE_F4,16, NOTE_DS4,16, NOTE_C4,8, NOTE_G4,8,
+  NOTE_AS4,8, NOTE_C5,8, REST,4, REST,2,  
+  
+};
+  */
+
+
+/*
+// sizeof gives the number of bytes, each int value is composed of two bytes (16 bits)
+// there are two values per note (pitch and duration), so for each note there are four bytes
+int notes = sizeof(melody) / sizeof(melody[0]) / 2;
+
+// this calculates the duration of a whole note in ms
+int wholenote = (60000 * 4) / tempo;
+
+int divider = 0, noteDuration = 0;
+
+void setupi() 
+{
+  // iterate over the notes of the melody.
+  // Remember, the array is twice the number of notes (notes + durations)
+  for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) {
+
+    // calculates the duration of each note
+    divider = melody[thisNote + 1];
+    if (divider > 0) {
+      // regular note, just proceed
+      noteDuration = (wholenote) / divider;
+    } else if (divider < 0) {
+      // dotted notes are represented with negative durations!!
+      noteDuration = (wholenote) / abs(divider);
+      noteDuration *= 1.5; // increases the duration in half for dotted notes
+    }
+
+    // we only play the note for 90% of the duration, leaving 10% as a pause
+    tone(buzzer, melody[thisNote], noteDuration * 0.9);
+
+    // Wait for the specief duration before playing the next note.
+    delay(noteDuration);
+
+    // stop the waveform generation before the next note.
+    noTone(buzzer);
+  }
+}
+*/
+
+
+/*
+int Baby_Elephant_Walk[] = 
+{
+
+  // Baby Elephant Walk
+  // Score available at https://musescore.com/user/7965776/scores/1862611
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,2,
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_G4,-2, NOTE_A4,8, NOTE_DS4,1,
+  
+  NOTE_A4,8,
+  NOTE_E4,8, NOTE_C4,8, REST,4, REST,2,
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,4, REST,8, NOTE_G4,8,
+  NOTE_D5,4, NOTE_D5,4, NOTE_B4,8, NOTE_G4,8, REST,8, NOTE_G4,8,
+   
+  NOTE_C5,4, NOTE_C5,4, NOTE_AS4,16, NOTE_C5,16, NOTE_AS4,16, NOTE_G4,16, NOTE_F4,8, NOTE_DS4,8,
+  NOTE_FS4,4, NOTE_FS4,4, NOTE_F4,16, NOTE_G4,16, NOTE_F4,16, NOTE_DS4,16, NOTE_C4,8, NOTE_G4,8,
+  NOTE_AS4,8, NOTE_C5,8, REST,4, REST,2,
+};
+
+#define array_count sizeof(Baby_Elephant_Walk)/sizeof(Baby_Elephant_Walk[0])
+*/
+
+/*
+int melody[] = 
+{
+
+  // Baby Elephant Walk
+  // Score available at https://musescore.com/user/7965776/scores/1862611
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,2,
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_G4,-2, NOTE_A4,8, NOTE_DS4,1,
+  
+  NOTE_A4,8,
+  NOTE_E4,8, NOTE_C4,8, REST,4, REST,2,
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,4, REST,8, NOTE_G4,8,
+  NOTE_D5,4, NOTE_D5,4, NOTE_B4,8, NOTE_G4,8, REST,8, NOTE_G4,8,
+   
+  NOTE_C5,4, NOTE_C5,4, NOTE_AS4,16, NOTE_C5,16, NOTE_AS4,16, NOTE_G4,16, NOTE_F4,8, NOTE_DS4,8,
+  NOTE_FS4,4, NOTE_FS4,4, NOTE_F4,16, NOTE_G4,16, NOTE_F4,16, NOTE_DS4,16, NOTE_C4,8, NOTE_G4,8,
+  NOTE_AS4,8, NOTE_C5,8, REST,4, REST,2,
+};
+*/
+// Определяем размер мелодии исходя из того, что каждое целое состоит из двух байт (16 бит), а
+// на каждую ноту приходится два значения (высота тона и длительность), то есть
+// четыре байта
+//int notes = sizeof(melody) / sizeof(melody[0]) / 2;
+// Определяем продолжительность всей ноты в мс
+//int wholenote = (60000 * 4) / tempo;
+// Инициируем позицию текущей ноты и длительность 
+//int divider = 0, noteDuration = 0;
 
 class WalkSounds 
 {
@@ -309,60 +464,172 @@ class WalkSounds
       }
       return sum;
       }
-         // int notes = sizeof(melody) / sizeof(melody[0]) / 2;
  
    public:
 
+
+/*
+#define Baby_Elephant_Walk
+
+int Baby_Elephant_Walk[] = 
+{
+
+  // Baby Elephant Walk
+  // Score available at https://musescore.com/user/7965776/scores/1862611
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,2,
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_G4,-2, NOTE_A4,8, NOTE_DS4,1,
+  
+  NOTE_A4,8,
+  NOTE_E4,8, NOTE_C4,8, REST,4, REST,2,
+  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
+  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,4, REST,8, NOTE_G4,8,
+  NOTE_D5,4, NOTE_D5,4, NOTE_B4,8, NOTE_G4,8, REST,8, NOTE_G4,8,
+   
+  NOTE_C5,4, NOTE_C5,4, NOTE_AS4,16, NOTE_C5,16, NOTE_AS4,16, NOTE_G4,16, NOTE_F4,8, NOTE_DS4,8,
+  NOTE_FS4,4, NOTE_FS4,4, NOTE_F4,16, NOTE_G4,16, NOTE_F4,16, NOTE_DS4,16, NOTE_C4,8, NOTE_G4,8,
+  NOTE_AS4,8, NOTE_C5,8, REST,4, REST,2,
+};
+*/
       // Управлять скоростью мотора и направлением его вращения
-      void Soundi(int *Melody, int MelodySize, int OneSize, int tempo = 132)
+      void Soundi(int melody, int MelodySize, int OneSize, int tempo = 132)
       {
+         // change this to make the song slower or faster
+         //int tempo = 132;
+         // change this to whichever pin you want to use
          int buzzer = 12;
+
+         // sizeof gives the number of bytes, each int value is composed of two bytes (16 bits)
+         // there are two values per note (pitch and duration), so for each note there are four bytes
+         //int notes = sizeof(melody) / sizeof(melody[0]) / 2;
          int notes = MelodySize / OneSize / 2;
+         // this calculates the duration of a whole note in ms
          int wholenote = (60000 * 4) / tempo;
-         int divider = 0;
-         int noteDuration = 0;
+         int divider = 0, noteDuration = 0;
+
+         // iterate over the notes of the melody.
+         // Remember, the array is twice the number of notes (notes + durations)
          for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) 
          {
-            divider = Melody[thisNote + 1];
+            // calculates the duration of each note
+            divider = melody[thisNote + 1];
             if (divider > 0) 
             {
-               noteDuration = wholenote / divider;
+               // regular note, just proceed
+               noteDuration = (wholenote) / divider;
             } 
             else if (divider < 0) 
             {
-               noteDuration = wholenote / abs(divider);
-               noteDuration *= 1.5; 
+               // dotted notes are represented with negative durations!!
+               noteDuration = (wholenote) / abs(divider);
+               noteDuration *= 1.5; // increases the duration in half for dotted notes
             }
-            else {}
-            tone(buzzer, Melody[thisNote], noteDuration * 0.9);
+            // we only play the note for 90% of the duration, leaving 10% as a pause
+            tone(buzzer, melody[thisNote], noteDuration * 0.9);
+            // Wait for the specief duration before playing the next note.
             delay(noteDuration);
+            // stop the waveform generation before the next note.
             noTone(buzzer);
         }
       }
 
+
+/*
+      // Управлять скоростью мотора и направлением его вращения
+      void Sound(int tempo = 132)
+      {
+         // change this to make the song slower or faster
+         //int tempo = 132;
+         // change this to whichever pin you want to use
+         int buzzer = 12;
+
+         // sizeof gives the number of bytes, each int value is composed of two bytes (16 bits)
+         // there are two values per note (pitch and duration), so for each note there are four bytes
+         int notes = sizeof(melody) / sizeof(melody[0]) / 2;
+         // this calculates the duration of a whole note in ms
+         int wholenote = (60000 * 4) / tempo;
+         int divider = 0, noteDuration = 0;
+
+         // iterate over the notes of the melody.
+         // Remember, the array is twice the number of notes (notes + durations)
+         for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) 
+         {
+            // calculates the duration of each note
+            divider = melody[thisNote + 1];
+            if (divider > 0) 
+            {
+               // regular note, just proceed
+               noteDuration = (wholenote) / divider;
+            } 
+            else if (divider < 0) 
+            {
+               // dotted notes are represented with negative durations!!
+               noteDuration = (wholenote) / abs(divider);
+               noteDuration *= 1.5; // increases the duration in half for dotted notes
+            }
+            // we only play the note for 90% of the duration, leaving 10% as a pause
+            tone(buzzer, melody[thisNote], noteDuration * 0.9);
+            // Wait for the specief duration before playing the next note.
+            delay(noteDuration);
+            // stop the waveform generation before the next note.
+            noTone(buzzer);
+        }
+      }
+*/
+
+      
+      // Управлять скоростью мотора и направлением его вращения
+      //void Soundi(int x[], int ssize); 
+      // Протестировать мотор
+      //void Test(); 
       // ----Протестировать мотор
       #ifdef meli
       //int aMeli[5] = {10, 10, 10, 10, 5};
       int Meli(){return sumFunction(aMeli,sizeof(aMeli));}
       #endif
 
-      #ifdef melodyi
+
+      #ifdef melody
       void Sound_melody(int tempo = 132)
       {
-         Soundi(amelody,sizeof(amelody),sizeof(amelody[0]),tempo);
-      }
-      #endif
-      
-      #ifdef FurElise
-      void Sound_FurElise(int tempo = 80)
-      {
-         Soundi(Fur_Elise,sizeof(Fur_Elise),sizeof(Fur_Elise[0]),tempo);
+         Soundi(amelody,sizeof(amelody),sizeof(amelody[0]),132)
       }
       #endif
 
 };
 
 
+
+/*
+void WalkSounds() 
+{
+   // Перебираем ноты мелодии, помня что массив включает пары: ноты + длительности
+   for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) 
+   {
+      // Вычисляем длительность текущей ноты
+      divider = melody[thisNote + 1];
+      if (divider > 0) 
+      {
+         noteDuration = (wholenote) / divider;
+      } 
+      else if (divider < 0) 
+      {
+         // Уточняем длительность для ноты с точкой
+         noteDuration = (wholenote) / abs(divider);
+         noteDuration *= 1.5; // increases the duration in half for dotted notes
+      }
+      // Воспроизводим ноту только в течение 90% ее продолжительности, оставляя 
+      // 10% в качестве паузы
+      tone(buzzer, melody[thisNote], noteDuration * 0.9);
+      // Выдерживаем время продолжительности текущей ноты, прежде чем 
+      // играть следующую ноту
+      delay(noteDuration);
+      // Останавливаем генерацию сигнала перед следующей нотой
+      noTone(buzzer);
+   }
+}
+*/
 #endif
 
 // ********************************************************** Walk_Sounds.h ***

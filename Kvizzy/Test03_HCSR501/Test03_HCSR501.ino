@@ -14,8 +14,13 @@
 
 #define mel 
 #define meli
+#define FurElise
+#define melodyi
 
 // Подключаем библиотеку сигнальных звуков
+
+
+
 #include "Walk_Sounds.h"
 
 
@@ -54,6 +59,7 @@ LCD_1602_RUS lcd(0x27,16,2);
 // Инициируем ----драйвер мотора
 WalkSounds tws; 
 
+
 void setup() 
 {
   //tws.Sound();
@@ -71,7 +77,11 @@ void setup()
   //ssum=Mel();
   //setupi();
   ssum=tws.Meli();
-  tws.Sound();
+  //tws.Soundi();
+  //tws.Sound();
+
+  tws.Sound_melody();
+  tws.Sound_FurElise();
   
   lcd.setCursor(0,0); // установили курсор в начало 1 строки
   lcd.print(ssum);  
