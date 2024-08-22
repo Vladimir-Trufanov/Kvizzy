@@ -1741,7 +1741,7 @@ Kvizzy
 			IrPlus\NEC - E424.irplus
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
-		+KRUTJAK
+		-KRUTJAK
 			-Fritzing
 				KRUTJAK\Fritzing\Avtonom_v8.fzz
 				KRUTJAK\Fritzing\Avtonom_v8.jpg
@@ -1791,7 +1791,7 @@ Kvizzy
 					KRUTJAK\MasterKrutjak\mk08-Lead\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk08-Lead\mk08-Lead.ino
 					KRUTJAK\MasterKrutjak\mk08-Lead\timer1_kru.h
-			+Outdated
+			-Outdated
 				-ehlektronnyj-potenciometr
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.md
@@ -1818,12 +1818,12 @@ Kvizzy
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\podkliuchenie-ot-vneshnego-istochnika.png
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\podkliuchenie-s-pitaniem-ot-platy.png
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\Детали проекта.md
-				+Пройденные этапы с одним мотором
+				-Пройденные этапы с одним мотором
 					-ikd-tranzistor-motor
 						-sketch_First
 							KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\ikd-tranzistor-motor.ino
-					+instrument-infrakrasnogo-upravleniya
+					-instrument-infrakrasnogo-upravleniya
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.h
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\define_kru.h
@@ -1918,9 +1918,6 @@ Kvizzy
 			-Test02_LCD1602
 				Kvizzy\Test02_LCD1602\Test02_LCD1602.ino
 			+Test03_HCSR501
-				-fil
-					Kvizzy\Test03_HCSR501\fil\Proba.h
-					Kvizzy\Test03_HCSR501\fil\Walk_SoundsOld.h
 				Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
 				Kvizzy\Test03_HCSR501\Walk_Defines.h
 				Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
@@ -1934,6 +1931,183 @@ Kvizzy
 			Kvizzy\LCD_1602_RUS-master.zip
 			Kvizzy\LiquidCrystal_I2C.zip
 			Kvizzy\principialnaya-ehlektricheskaya-shema-foto-lovushki.png
+		-Qb_PLAY_i_melodii
+			-Music_Basic
+				Qb_PLAY_i_melodii\Music_Basic\12DAYS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ADAAMS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ANDRE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ANITRA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ARTHUR.BAS
+				Qb_PLAY_i_melodii\Music_Basic\AVE_MARI.BAS
+				Qb_PLAY_i_melodii\Music_Basic\AXLE_F.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BAABLKSP.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BACH1.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BACH2.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BACH3.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BANNER.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BARENECC.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BEARMONT.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BEAVER.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BEE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BETHLEHM.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BILLYBOY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BLULLABY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BRITISH.BAS
+				Qb_PLAY_i_melodii\Music_Basic\BUCKY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CABARET.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CAPRICCI.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CARRY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CHOPIN1.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CHOPIN2.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CHOPIN3.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CIRCUS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CLASSGAS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CLAUSCOM.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CLAVIER.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CLEMENTI.BAS
+				Qb_PLAY_i_melodii\Music_Basic\CMINOR2.BAS
+				Qb_PLAY_i_melodii\Music_Basic\COLUMBIA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\COMEMONT.BAS
+				Qb_PLAY_i_melodii\Music_Basic\COMFAITH.BAS
+				Qb_PLAY_i_melodii\Music_Basic\DBNUSHKA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\DEBUSSY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\DECK.BAS
+				Qb_PLAY_i_melodii\Music_Basic\DIXIE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\DOODLE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ELEPHANT.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ELISE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\EVERONW.BAS
+				Qb_PLAY_i_melodii\Music_Basic\EXODUS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\EXPANSE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\FANTASIA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\FANTASY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\FASCINAT.BAS
+				Qb_PLAY_i_melodii\Music_Basic\FIDDLER.BAS
+				Qb_PLAY_i_melodii\Music_Basic\FINNIGIN.BAS
+				Qb_PLAY_i_melodii\Music_Basic\FIRSTIME.BAS
+				Qb_PLAY_i_melodii\Music_Basic\FLAG.BAS
+				Qb_PLAY_i_melodii\Music_Basic\FLASHDNC.BAS
+				Qb_PLAY_i_melodii\Music_Basic\FRAGGLE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\FUGE_D.BAS
+				Qb_PLAY_i_melodii\Music_Basic\GENTLE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\GHOSTBUS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\GLADXMAS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\GMINOR.BAS
+				Qb_PLAY_i_melodii\Music_Basic\GODFATHE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\GOOSYGND.BAS
+				Qb_PLAY_i_melodii\Music_Basic\GRANDFLG.BAS
+				Qb_PLAY_i_melodii\Music_Basic\GYPSY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HABANERA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HAPHOTEL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HAPPYB.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HAVA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HAYDNE2.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HERALD.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HERECLAS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HIHO.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HILLBILL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HITCHKOK.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HOMEHOLI.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HOUSETOP.BAS
+				Qb_PLAY_i_melodii\Music_Basic\HURA!.BAS
+				Qb_PLAY_i_melodii\Music_Basic\INV14.BAS
+				Qb_PLAY_i_melodii\Music_Basic\INVENTIO.BAS
+				Qb_PLAY_i_melodii\Music_Basic\IRISHBAL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\JBOND.BAS
+				Qb_PLAY_i_melodii\Music_Basic\JEOPARDY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\JINGLE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\JOPLIN1.BAS
+				Qb_PLAY_i_melodii\Music_Basic\JOPLIN2.BAS
+				Qb_PLAY_i_melodii\Music_Basic\JOY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\KATIUSHA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\KING.BAS
+				Qb_PLAY_i_melodii\Music_Basic\LEES.BAS
+				Qb_PLAY_i_melodii\Music_Basic\LETSNOW.BAS
+				Qb_PLAY_i_melodii\Music_Basic\LIEBESTR.BAS
+				Qb_PLAY_i_melodii\Music_Basic\LIFE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\LNDNBRDG.BAS
+				Qb_PLAY_i_melodii\Music_Basic\LUNY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MALGUENA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MAMA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MANGER.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MARYLAMB.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MCDONALD.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MENDEL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MENUETG.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MERRY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MIDCLEAR.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MINUET_D.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MINUET_G.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MOCKINBD.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MOINTAI.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MOONSON1.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MOONSON2.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MOONSON3.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MOVIN.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MOZART40.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MULBERRY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\MUPPETS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\NIGHTB4X.BAS
+				Qb_PLAY_i_melodii\Music_Basic\NOEL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\NOM6_E.BAS
+				Qb_PLAY_i_melodii\Music_Basic\NUTCRCKR.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ODA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ODDCOUPL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\PADDO.BAS
+				Qb_PLAY_i_melodii\Music_Basic\PETRGUN.BAS
+				Qb_PLAY_i_melodii\Music_Basic\PETROV.BAS
+				Qb_PLAY_i_melodii\Music_Basic\POLODANS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\POLONES.BAS
+				Qb_PLAY_i_melodii\Music_Basic\POP!WEAS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\POPEYE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\PRELUDE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\PZZLBOEK.BAS
+				Qb_PLAY_i_melodii\Music_Basic\RAIL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\RAINGOWY.BAS
+				Qb_PLAY_i_melodii\Music_Basic\RBCONNEC.BAS
+				Qb_PLAY_i_melodii\Music_Basic\REALTHNG.BAS
+				Qb_PLAY_i_melodii\Music_Basic\RECORD.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ROMJUL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ROWROWBT.BAS
+				Qb_PLAY_i_melodii\Music_Basic\RUBRDUCK.BAS
+				Qb_PLAY_i_melodii\Music_Basic\RUSSIAN.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SHUMAN.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SILENT.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SLEEPBEU.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SLEIGH.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SOLFE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SOMETHIN.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SONATE11.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SONATINA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SOUNDSIL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SPOONFUL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\STARS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\STARSTRP.BAS
+				Qb_PLAY_i_melodii\Music_Basic\STARWARS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SUNSET.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SUPERCAL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\SUSANNA.BAS
+				Qb_PLAY_i_melodii\Music_Basic\TAILTIGR.BAS
+				Qb_PLAY_i_melodii\Music_Basic\TAKE5.BAS
+				Qb_PLAY_i_melodii\Music_Basic\TEAPOT.BAS
+				Qb_PLAY_i_melodii\Music_Basic\TOREODOR.BAS
+				Qb_PLAY_i_melodii\Music_Basic\TREKSONG.BAS
+				Qb_PLAY_i_melodii\Music_Basic\TTANIMAL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\TURKISH.BAS
+				Qb_PLAY_i_melodii\Music_Basic\TWINKLE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\VALSE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\VALTZ.BAS
+				Qb_PLAY_i_melodii\Music_Basic\VIERKANT.BAS
+				Qb_PLAY_i_melodii\Music_Basic\WASSAIL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\WE3KINGS.BAS
+				Qb_PLAY_i_melodii\Music_Basic\WHISTLE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\WMTELL.BAS
+				Qb_PLAY_i_melodii\Music_Basic\WRECK.BAS
+				Qb_PLAY_i_melodii\Music_Basic\XMASTREE.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ZHIVAGO.BAS
+				Qb_PLAY_i_melodii\Music_Basic\ZIPADEE.BAS
+			-sketch_Qb_PLAY
+				Qb_PLAY_i_melodii\sketch_Qb_PLAY\sketch_Qb_PLAY.ino
 		-RaspberryPiZeroW
 			RaspberryPiZeroW\RaspberryPiZeroW.md
 		-Декодирование сигналов инфракрасного пульта дистанционного управления
@@ -1995,33 +2169,21 @@ Kvizzy
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
 0=Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
-1=Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
-2=Kvizzy\Test03_HCSR501\Walk_Defines.h
-3=Kvizzy\Test03_HCSR501\Walk_Sounds.h
-4=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.h
-5=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Motor_kru.h
-6=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
+1=Kvizzy\Test03_HCSR501\Walk_Defines.h
+2=Kvizzy\Test03_HCSR501\Walk_Sounds.h
+3=Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
 [Selected Project Files]
 Main=
-Selected=Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
+Selected=Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
 [Kvizzy\Test03_HCSR501\Test03_HCSR501.ino]
-TopLine=24
-Caret=9,24
-[Kvizzy\Test03_HCSR501\Walk_Sounds.cpp]
-TopLine=9
-Caret=1,17
+TopLine=109
+Caret=1,56
 [Kvizzy\Test03_HCSR501\Walk_Defines.h]
-TopLine=123
-Caret=20,150
-[Kvizzy\Test03_HCSR501\Walk_Sounds.h]
-TopLine=94
-Caret=1,121
-[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.h]
-TopLine=11
+TopLine=208
 Caret=1,1
-[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Motor_kru.h]
-TopLine=27
-Caret=1,30
-[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
+[Kvizzy\Test03_HCSR501\Walk_Sounds.h]
+TopLine=79
+Caret=1,1
+[Kvizzy\Test03_HCSR501\Walk_Sounds.cpp]
 TopLine=1
 Caret=1,1

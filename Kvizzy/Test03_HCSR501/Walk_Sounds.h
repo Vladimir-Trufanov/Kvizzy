@@ -12,21 +12,16 @@
  
 #pragma once                // обеспечили разовое подключение файла
 #include <Arduino.h>        // подключили общие функции Arduino
-#include "Walk_Defines.h"   // подключили определения наборов мелодий к библиотеке
 
 
-#ifdef meli
-   int aMeli[] = {10, 10, 10, 10, 5};
+// Обеспечить демонстрацию передачи массива в метод
+// (определить условие - #define ExampleTransferArray в основной программе)
+#ifdef ExampleTransferArray
+   int aExTransferArray[] = {10,10,10,10,5};
 #endif
 
+#include "Walk_Defines.h"   // подключили определения наборов мелодий
 
-/*
-int amelody[] = 
-{
-  NOTE_C4,-8, NOTE_E4,16, NOTE_G4,8, NOTE_C5,8, NOTE_E5,8, NOTE_D5,8, NOTE_C5,8, NOTE_A4,8,
-  NOTE_FS4,8, NOTE_G4,8, REST,4, REST,2,
-};
-*/
 
 
 class WalkSounds 
@@ -34,19 +29,24 @@ class WalkSounds
    private:
       int buzzer;         // пин зуммера
 
-      int sumFunction(int *intArray, int arrSize)
-      {
-      // переменная для суммирования
-      int sum = 0;  
-      // находим размер массива, разделив его вес
-      // на вес одного элемента (тут у нас int)
-      arrSize = arrSize / sizeof(int);  
-      for (byte i = 0; i < arrSize; i++) 
-      {
-         sum += intArray[i];
-      }
-      return sum;
-      }
+      // Обеспечить демонстрацию передачи массива в метод
+      // (подсчитать сумму элементов массива)
+      #ifdef ExampleTransferArray
+         int sumFunction(int *intArray, int arrSize)
+         {
+            // Определяем переменную для суммирования
+            int sum = 0;  
+            // Находим размер массива, разделив его вес
+            // на вес одного элемента (тут у нас int)
+            arrSize = arrSize / sizeof(int); 
+            // Подсчитываем сумму 
+            for (byte i = 0; i < arrSize; i++) 
+            {
+               sum += intArray[i];
+            }
+            return sum;
+         }
+      #endif
 
       // Воспроизвести музыкальный фрагмент по указанному массиву звуков    
       // с заданным темпом                          
@@ -58,26 +58,47 @@ class WalkSounds
          buzzer = _buzzer;
       }
 
-      // ----Протестировать мотор
-      #ifdef meli
-      //int aMeli[5] = {10, 10, 10, 10, 5};
-      int Meli(){return sumFunction(aMeli,sizeof(aMeli));}
+      // **********************************************************************
+      // *    Воспроизвести музыкальные фрагменты по работе с пир-датчиком    *
+      // **********************************************************************
+
+      // Отрабатываем звуковую вставку "Успокаиваем PIR-датчик"
+      #ifdef UspokaivaemPirDatchik
+      void Sound_UspokaivaemPirDatchik(int tempo = 80)
+      {
+         Soundi(uspokaivaem_pir_datchik,sizeof(uspokaivaem_pir_datchik),sizeof(uspokaivaem_pir_datchik[0]),tempo);
+      }
+      #endif
+      // Отрабатываем звуковую вставку "PIR-датчик готов"
+      #ifdef PirDatchikGotov
+      void Sound_PirDatchikGotov(int tempo = 144)
+      {
+         Soundi(pir_datchik_gotov,sizeof(pir_datchik_gotov),sizeof(pir_datchik_gotov[0]),tempo);
+      }
+      #endif
+      // Отрабатываем звуковую вставку "Движение есть"
+      #ifdef DvizhenieEst
+      void Sound_DvizhenieEst(int tempo = 225)
+      {
+         Soundi(dvizhenie_est,sizeof(dvizhenie_est),sizeof(dvizhenie_est[0]),tempo);
+      }
+      #endif
+      // Отрабатываем звуковую вставку "Ловим движение"
+      #ifdef LovimDvizhenie
+      void Sound_LovimDvizhenie(int tempo = 120)
+      {
+         Soundi(lovim_dvizhenie,sizeof(lovim_dvizhenie),sizeof(lovim_dvizhenie[0]),tempo);
+      }
+      #endif
+      // Обеспечиваем демонстрацию передачи массива в метод
+      #ifdef ExampleTransferArray
+         int ExTransferArray(){return sumFunction(aExTransferArray,sizeof(aExTransferArray));}
       #endif
 
-      #ifdef melodyi
-      void Sound_melody(int tempo = 132)
-      {
-         Soundi(amelody,sizeof(amelody),sizeof(amelody[0]),tempo);
-      }
-      #endif
-      
-      #ifdef FurElise
-      void Sound_FurElise(int tempo = 80)
-      {
-         Soundi(Fur_Elise,sizeof(Fur_Elise),sizeof(Fur_Elise[0]),tempo);
-      }
-      #endif
-      
+      // **********************************************************************
+      // *                 Воспроизвести предопределенные мелодии             *
+      // **********************************************************************
+
       #ifdef Asabranca
       void Sound_Asabranca(int tempo = 120)
       {
@@ -91,44 +112,7 @@ class WalkSounds
          Soundi(Greens_leeves,sizeof(Greens_leeves),sizeof(Greens_leeves[0]),tempo);
       }
       #endif
-
-      // Отрабатываем звуковую вставку "Успокаиваем PIR-датчик"
-      #ifdef UspokaivaemPirDatchik
-      void Sound_UspokaivaemPirDatchik(int tempo = 80)
-      {
-         Soundi(uspokaivaem_pir_datchik,sizeof(uspokaivaem_pir_datchik),sizeof(uspokaivaem_pir_datchik[0]),tempo);
-      }
-      #endif
-      
-      // Отрабатываем звуковую вставку "PIR-датчик готов"
-      #ifdef PirDatchikGotov
-      void Sound_PirDatchikGotov(int tempo = 144)
-      {
-         Soundi(pir_datchik_gotov,sizeof(pir_datchik_gotov),sizeof(pir_datchik_gotov[0]),tempo);
-      }
-      #endif
-      
-      // Отрабатываем звуковую вставку "Движение есть"
-      #ifdef DvizhenieEst
-      void Sound_DvizhenieEst(int tempo = 225)
-      {
-         Soundi(dvizhenie_est,sizeof(dvizhenie_est),sizeof(dvizhenie_est[0]),tempo);
-      }
-      #endif
-      
-      // Отрабатываем звуковую вставку "Ловим движение"
-      #ifdef LovimDvizhenie
-      void Sound_LovimDvizhenie(int tempo = 120)
-      {
-         Soundi(lovim_dvizhenie,sizeof(lovim_dvizhenie),sizeof(lovim_dvizhenie[0]),tempo);
-      }
-      #endif
-
-
-
-
 };
-
 
 #endif
 

@@ -1,0 +1,16 @@
+REM CHOPIN 1
+PLAY "MNT100L1O1G+L16C+.>G+.>C+.E.C+.<G+.C+.G+.>C+.E.C+.<G+."
+PLAY "C+.G+.>C+.E.C+.<G+.C+.G+.>C+.E.C+.<G+.C+>G+AG+GG+>C+E"
+PLAY "D+C+D+C+CC+EG+O2C+>G+AG+GG+>C+ED+C+D+C+CC+EG+P16<A>C+"
+PLAY "D+F+A>C+D+BAG+F+ED+F+C+CD+<AG+F+AED+F+C+CD+<AG+BA<C+>G+"
+PLAY "AG+GG+>C+ED+C+D+C+CC+EG+O2C+>G+AG+GG+>C+ED+C+D+C+CC+E"
+PLAY "G+D+ED+DD+BA+G+G>ED+C+<BA+G+GA+G+BDED+G+<A+>C+<B>D+<G"
+PLAY "A+G+GG+G+>G+CC+<F+>F+CC+<F>FCC+<F+>F+CC+<C+>C+<F+AD+>D+"
+PLAY "<F+AE>E<G+BG+>G+<B>E<G+>G+CC+<F+>F+CC+<F>FCC+<F+>F+CC+"
+PLAY "<F>F<B>D+<F+>F+<B>D+<A>A<B>E<G+>G+<B>E<G+>G+CC+<F+>F+"
+PLAY "CC+<F>FCC+<F+>F+CC+<C+>C+<F+AD+>D+<F+AE>E<G+BG+>G+<B>E"
+PLAY "<G+>G+CC+<F+>F+CC+D+>D+<F+AC+>C+<F+AC+>C+<D+F+C>C<D+F+"
+PLAY "C>C<D+F+C>C<D+F+C>C<D+F+<B>BD+F+<B>BD+F+<A+>A+D+F+<A+"
+PLAY ">A+D+F+<A>AD+F+<A>AD+F+<A>AD+F+C>C<D+F+<B>BD+F+<B>BD+"
+PLAY "F+<A+>A+D+F+<A+>A+D+F+<A>AD+F+<A>AD+F+<G+>G+D+F+"
+

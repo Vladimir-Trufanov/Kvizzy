@@ -12,7 +12,9 @@
 #pragma once            // обеспечили разовое подключение файла
 #include <Arduino.h>    // подключили общие функции Arduino
 
-// Первичные константы для частот, длительностей и темпов звукоизвлечения
+// ****************************************************************************
+// *  Первичные константы для частот, длительностей и темпов звукоизвлечения  *
+// ****************************************************************************
 #define NOTE_B0  31
 #define NOTE_C1  33
 #define NOTE_CS1 35
@@ -104,27 +106,11 @@
 #define NOTE_DS8 4978
 #define REST      0
 
-#ifdef PirDatchikGotov
-int pir_datchik_gotov[] = 
-{
-  // Фрагмент Bloody Tears, from Castlevania II
-  // Arranged by Bobby Lee. THe flute part was used 
-  // https://musescore.com/user/263171/scores/883296
-  NOTE_G5, 16, NOTE_D5, 16, NOTE_D6, 16, NOTE_D5, 16, NOTE_C6, 16, NOTE_D5, 16, NOTE_AS5, 16, NOTE_D5, 16,
-  NOTE_A5, 16,  NOTE_D5, 16, NOTE_AS5, 16, NOTE_D5, 16, NOTE_A5, 8,
-};
-#endif
+// ****************************************************************************
+// *              Музыкальные фрагменты по работе с пир-датчиком              *
+// ****************************************************************************
 
-#ifdef DvizhenieEst
-int dvizhenie_est[] = 
-{
-  // Фрагмент At Doom's Gate (E1M1)
-  // Score available at https://musescore.com/pieridot/doom
-  NOTE_E2, 8, NOTE_E2, 8, NOTE_E3, 8, 
-  NOTE_E2, 8, NOTE_E2, 8, NOTE_D3, 8, NOTE_C3, -2, 
-};
-#endif
-
+// ------------------------------ Звуковая вставка "Успокаиваем PIR-датчик" ---
 #ifdef UspokaivaemPirDatchik
 int uspokaivaem_pir_datchik[] = 
 {
@@ -142,7 +128,28 @@ int uspokaivaem_pir_datchik[] =
   NOTE_A4 , 4, REST, 8, //9 - 1st ending
 };
 #endif
-
+// ------------------------------------ Звуковая вставка "PIR-датчик готов" ---
+#ifdef PirDatchikGotov
+int pir_datchik_gotov[] = 
+{
+  // Фрагмент Bloody Tears, from Castlevania II
+  // Arranged by Bobby Lee. THe flute part was used 
+  // https://musescore.com/user/263171/scores/883296
+  NOTE_G5, 16, NOTE_D5, 16, NOTE_D6, 16, NOTE_D5, 16, NOTE_C6, 16, NOTE_D5, 16, NOTE_AS5, 16, NOTE_D5, 16,
+  NOTE_A5, 16,  NOTE_D5, 16, NOTE_AS5, 16, NOTE_D5, 16, NOTE_A5, 8,
+};
+#endif
+// --------------------------------------- Звуковая вставка "Движение есть" ---
+#ifdef DvizhenieEst
+int dvizhenie_est[] = 
+{
+  // Фрагмент At Doom's Gate (E1M1)
+  // Score available at https://musescore.com/pieridot/doom
+  NOTE_E2, 8, NOTE_E2, 8, NOTE_E3, 8, 
+  NOTE_E2, 8, NOTE_E2, 8, NOTE_D3, 8, NOTE_C3, -2, 
+};
+#endif
+// -------------------------------------- Звуковая вставка "Ловим движение" ---
 #ifdef LovimDvizhenie
 int lovim_dvizhenie[] = 
 {
@@ -152,7 +159,9 @@ int lovim_dvizhenie[] =
   NOTE_A4,-4, NOTE_A4,-4, NOTE_A4,16, NOTE_A4,16, NOTE_A4,16, NOTE_A4,16, NOTE_F4,8, REST,8,
 };
 #endif
-
+// ****************************************************************************
+// *                           Предопределенные мелодии                       *
+// ****************************************************************************
 #ifdef Asabranca
 int Asa_branca[] = 
 {
