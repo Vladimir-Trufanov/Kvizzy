@@ -18,8 +18,8 @@ Extensions=*.*
 [Project tree]
 Kvizzy
 	+Kvizzy
-		+Buzzer_Sounds
-			+arduino-songs
+		-Buzzer_Sounds
+			-arduino-songs
 				-asabranca
 					Buzzer_Sounds\arduino-songs\asabranca\asabranca.ino
 				-babyelephantwalk
@@ -34,7 +34,7 @@ Kvizzy
 					Buzzer_Sounds\arduino-songs\cantinaband\cantinaband.ino
 				-doom
 					Buzzer_Sounds\arduino-songs\doom\doom.ino
-				+furelise
+				-furelise
 					Buzzer_Sounds\arduino-songs\furelise\furelise.ino
 				-gameofthrones
 					Buzzer_Sounds\arduino-songs\gameofthrones\gameofthrones.ino
@@ -1741,7 +1741,7 @@ Kvizzy
 			IrPlus\NEC - E424.irplus
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
-		-KRUTJAK
+		+KRUTJAK
 			-Fritzing
 				KRUTJAK\Fritzing\Avtonom_v8.fzz
 				KRUTJAK\Fritzing\Avtonom_v8.jpg
@@ -1791,7 +1791,7 @@ Kvizzy
 					KRUTJAK\MasterKrutjak\mk08-Lead\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk08-Lead\mk08-Lead.ino
 					KRUTJAK\MasterKrutjak\mk08-Lead\timer1_kru.h
-			-Outdated
+			+Outdated
 				-ehlektronnyj-potenciometr
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.jpeg
 					KRUTJAK\Outdated\ehlektronnyj-potenciometr\ehlektronnyj-potenciometr.md
@@ -1818,12 +1818,12 @@ Kvizzy
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\podkliuchenie-ot-vneshnego-istochnika.png
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\podkliuchenie-s-pitaniem-ot-platy.png
 						KRUTJAK\Outdated\Проект с драйвером мотора\Детали проекта\Детали проекта.md
-				-Пройденные этапы с одним мотором
+				+Пройденные этапы с одним мотором
 					-ikd-tranzistor-motor
 						-sketch_First
 							KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\sketch_First\sketch_First.ino
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\ikd-tranzistor-motor\ikd-tranzistor-motor.ino
-					-instrument-infrakrasnogo-upravleniya
+					+instrument-infrakrasnogo-upravleniya
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.cpp
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.h
 						KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\define_kru.h
@@ -1918,10 +1918,11 @@ Kvizzy
 			-Test02_LCD1602
 				Kvizzy\Test02_LCD1602\Test02_LCD1602.ino
 			+Test03_HCSR501
-				+fil
+				-fil
 					Kvizzy\Test03_HCSR501\fil\Proba.h
 					Kvizzy\Test03_HCSR501\fil\Walk_SoundsOld.h
 				Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
+				Kvizzy\Test03_HCSR501\Walk_Defines.h
 				Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
 				Kvizzy\Test03_HCSR501\Walk_Sounds.h
 			-WalkSounds
@@ -1994,29 +1995,33 @@ Kvizzy
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
 0=Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
-1=Kvizzy\Test03_HCSR501\Proba.h
-2=Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
+1=Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
+2=Kvizzy\Test03_HCSR501\Walk_Defines.h
 3=Kvizzy\Test03_HCSR501\Walk_Sounds.h
-4=Kvizzy\Test03_HCSR501\fil\Walk_SoundsOld.h
-5=Buzzer_Sounds\arduino-songs\furelise\furelise.ino
+4=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.h
+5=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Motor_kru.h
+6=KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino
 [Selected Project Files]
 Main=
 Selected=Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
 [Kvizzy\Test03_HCSR501\Test03_HCSR501.ino]
-TopLine=16
-Caret=1,18
-[Kvizzy\Test03_HCSR501\Proba.h]
-TopLine=177
-Caret=1,214
+TopLine=24
+Caret=9,24
 [Kvizzy\Test03_HCSR501\Walk_Sounds.cpp]
-TopLine=64
-Caret=1,1
+TopLine=9
+Caret=1,17
+[Kvizzy\Test03_HCSR501\Walk_Defines.h]
+TopLine=123
+Caret=20,150
 [Kvizzy\Test03_HCSR501\Walk_Sounds.h]
-TopLine=328
-Caret=44,356
-[Kvizzy\Test03_HCSR501\fil\Walk_SoundsOld.h]
-TopLine=287
-Caret=1,318
-[Buzzer_Sounds\arduino-songs\furelise\furelise.ino]
-TopLine=79
-Caret=12,101
+TopLine=94
+Caret=1,121
+[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Admin_kru.h]
+TopLine=11
+Caret=1,1
+[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\Motor_kru.h]
+TopLine=27
+Caret=1,30
+[KRUTJAK\Outdated\Пройденные этапы с одним мотором\instrument-infrakrasnogo-upravleniya\instrument-infrakrasnogo-upravleniya.ino]
+TopLine=1
+Caret=1,1
