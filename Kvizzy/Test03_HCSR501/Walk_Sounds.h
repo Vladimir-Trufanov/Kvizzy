@@ -3,7 +3,7 @@
  * Библиотека звуковых вставок в приложение 
  * (на основе https://github.com/robsoncouto/arduino-songs)
  * 
- * v1.1, 22.08.2024                                   Автор:      Труфанов В.Е.
+ * v1.2, 25.08.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 19.08.2024
 **/
 
@@ -13,41 +13,12 @@
 #pragma once                // обеспечили разовое подключение файла
 #include <Arduino.h>        // подключили общие функции Arduino
 
-
-// Обеспечить демонстрацию передачи массива в метод
-// (определить условие - #define ExampleTransferArray в основной программе)
-#ifdef ExampleTransferArray
-   int aExTransferArray[] = {10,10,10,10,5};
-#endif
-
 #include "Walk_Defines.h"   // подключили определения наборов мелодий
-
-
 
 class WalkSounds 
 {
    private:
-      int buzzer;         // пин зуммера
-
-      // Обеспечить демонстрацию передачи массива в метод
-      // (подсчитать сумму элементов массива)
-      #ifdef ExampleTransferArray
-         int sumFunction(int *intArray, int arrSize)
-         {
-            // Определяем переменную для суммирования
-            int sum = 0;  
-            // Находим размер массива, разделив его вес
-            // на вес одного элемента (тут у нас int)
-            arrSize = arrSize / sizeof(int); 
-            // Подсчитываем сумму 
-            for (byte i = 0; i < arrSize; i++) 
-            {
-               sum += intArray[i];
-            }
-            return sum;
-         }
-      #endif
-
+      int buzzer;          // пин зуммера
       // Воспроизвести музыкальный фрагмент по указанному массиву звуков    
       // с заданным темпом                          
       void Soundi(int *Melody, int MelodySize, int OneSize, int tempo = 132);
@@ -90,10 +61,6 @@ class WalkSounds
          Soundi(lovim_dvizhenie,sizeof(lovim_dvizhenie),sizeof(lovim_dvizhenie[0]),tempo);
       }
       #endif
-      // Обеспечиваем демонстрацию передачи массива в метод
-      #ifdef ExampleTransferArray
-         int ExTransferArray(){return sumFunction(aExTransferArray,sizeof(aExTransferArray));}
-      #endif
 
       // **********************************************************************
       // *                 Воспроизвести предопределенные мелодии             *
@@ -111,6 +78,27 @@ class WalkSounds
       {
          Soundi(Greens_leeves,sizeof(Greens_leeves),sizeof(Greens_leeves[0]),tempo);
       }
+      #endif
+
+      // **********************************************************************
+      // *          Обеспечить демонстрацию передачи массива в метод          *
+      // *                 (подсчитать сумму элементов массива)               *
+      // **********************************************************************
+      #ifdef ExampleTransferArray
+         int sumFunction(int *intArray, int arrSize)
+         {
+            // Определяем переменную для суммирования
+            int sum = 0;  
+            // Находим размер массива, разделив его вес
+            // на вес одного элемента (тут у нас int)
+            arrSize = arrSize / sizeof(int); 
+            // Подсчитываем сумму 
+            for (byte i = 0; i < arrSize; i++) 
+            {
+               sum += intArray[i];
+            }
+            return sum;
+         }
       #endif
 };
 
