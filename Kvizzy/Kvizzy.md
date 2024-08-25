@@ -24,6 +24,16 @@
 
 Ваша статья заинтересовала меня и я повторил ваше устройство. Правда вместо ИК датчика движений использовал микроволновый RCWL-0516 (фиксирует движение даже через стену), а также Ардуино Про Мини на Atmega328, что в принципе сути не меняет. Все питается от 5В, кроме светодиода. В его цепи поставил стабилизатор AMS1117 3,3 без всяких сопротивлений. Он как раз выдает ток на диод 300 мА.
 
+### [Последовательная связь между Arduino и ESP32 CAM](https://www.programmingboss.com/2023/01/serial-communication-between-arduino-and-esp32-CAM-UART-data-communication.html#gsc.tab=0)
+
+#### [ESP32, Arduino и 3 аппаратных последовательных порта](https://quadmeup.com/arduino-esp32-and-3-hardware-serial-ports/)
+
+#### [Урок 26.1 Соединяем две arduino по шине UART](https://lesson.iarduino.ru/page/urok-26-1-soedinyaem-dve-arduino-po-shine-uart#:~:text=Таким%20образом%20значение%20по%20умолчанию,бита%20равна%201%20битовому%20интервалу)
+
+#### [How to establish a serial communication between an ESP32 s3 dev kit c module and Arduino board](https://forum.arduino.cc/t/how-to-establish-a-serial-communication-between-an-esp32-s3-dev-kit-c-module-and-arduino-board/1139692)
+
+
+
 ### [Kvizzy1 - первушечка](kvizzy1-pervushechka/kvizzy1-pervushechka.md)
 
 ### [LCD 1602 русский шрифт на Ардуино](https://роботехника18.рф/русский-шрифт-ардуино/)
