@@ -63,7 +63,7 @@ SERIAL_5O2, SERIAL_6O2, SERIAL_7O2, SERIAL_8O2
 
 > **Настройки шины UART обеих arduino должны быть идентичны!**
 
-#### [Принципиальная схема последовательной связи между Arduino и ESP32]()
+#### [Принципиальная схема последовательной связи между Arduino и ESP32](#)
 
 Уровни напряжения Arduino Uno (Pro Mini) и ESP32 несовместимы с прямой связью без какого-либо изменения уровня напряжения. Arduino работает при напряжении 5 вольт, в то время как ESP32 работает при напряжении 3,3 вольта. Если вы соедините контакты RX и TX Arduino и ESP32 напрямую, вы можете повредить ESP32 из-за более высокого напряжения.
 
@@ -90,9 +90,93 @@ SERIAL_5O2, SERIAL_6O2, SERIAL_7O2, SERIAL_8O2
 
 #### [ESP32, Arduino и 3 аппаратных последовательных порта](https://quadmeup.com/arduino-esp32-and-3-hardware-serial-ports/)
 
+При работе с ESP32 WiFi/Bluetooth в Arduino SDK механизм Serial работает просто отлично. Но с Serial1 и Serial2 возникают вопросы. ESP32 имеет 3 аппаратных последовательных порта, которые могут быть подключены практически к любому контакту. Но, Serial1 и Serial2 не будут работать. В случае с ESP32 это просто нужно делать немного другим способом - с помощью HardwareSerial.h:
 
-#### [How to establish a serial communication between an ESP32 s3 dev kit c module and Arduino board](https://forum.arduino.cc/t/how-to-establish-a-serial-communication-between-an-esp32-s3-dev-kit-c-module-and-arduino-board/1139692)
+```
+include <HardwareSerial.h>
+HardwareSerial MySerial(1);
+void setup() 
+{
+   MySerial.begin(9600, SERIAL_8N1, 16, 17);
+}
+void loop() 
+{
+   while (MySerial.available() > 0) 
+   {
+      uint8_t byteFromSerial = MySerial.read();
+      // Do something
+   }
+   //Write something like that
+   MySerial.write(rand(0, 255));
+}
+```
+Хитрость заключается в использовании библиотеки HardwareSerial для доступа к UART1 и 2 вместо Serial1 и Serial2.
 
+Класс HardwareSerial принимает один параметр в конструкторе, это номер UART. Значения от 0 (UART1) до 2 (UART3).
+
+HardwareSerial(0) такой же, как Serial, но метод begin принимает 4 параметра: скорость передачи в бодах, режим UART, RX pin, TX pin.
+
+Настоящая прелесть этого решения заключается в том, что практически любой вывод может быть использован в качестве вывода TX или RX для любого последовательного порта. Большинство плат для разработки ESP32 имеют метки типа TX2 или RX2, но на самом деле вам не обязательно указывать именно эти контакты. Любой другой вывод GPIO может действовать как последовательный RX, но только те, что находятся между GPIO0 и GPIO31, могут использоваться как TX. 
+
+#### [Пример скетчей обмена между ESP32 и Arduino Pro Mini](#)
+
+```
+// Slave - подчиненный контроллер: ESP32 (здесь штатные пины RX,TX)
+// ----------------------------------------------------------------
+#include <Arduino.h>
+void setup() 
+{
+   Serial.begin(115200); // Initialize the hardware serial port
+}
+void loop() 
+{
+   if (Serial.available()) 
+   {
+      // Принимаем и возвращаем символ
+      char data = Serial.read();
+      // Process the received data here
+      // Echo back the data to the serial port
+      Serial.write(data);
+   }
+}
+```
+
+```
+// Master - ведущий контроллер: Arduino Pro Mini
+// ---------------------------------------------
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial(2,3); // RX,TX pins for SoftwareSerial
+void setup() 
+{
+   Serial.begin(9600);        // Initialize the hardware serial port for debugging
+   mySerial.begin(115200);    // Initialize the software serial port
+}
+void loop() 
+{
+   // Если есть, принимаем байт, возвращаем на "экран"
+   // и передаем подчиненному контроллеру
+   if (Serial.available() > 0) 
+   {
+      int incomingByte = Serial.read();
+      // prints the received data
+      Serial.print("I received: ");
+      Serial.println((char)incomingByte);
+      mySerial.write((char)incomingByte);
+   }
+   // Ждем байты от подчиненного контроллера
+   if (mySerial.available()) 
+   {
+      char data = mySerial.read();
+      // Process the received data here
+      // Echo back the data to the serial port
+      Serial.print("     ESP32: ");
+      Serial.println(data);
+   }
+}
+```
+#### [Пример Serial.read](https://arduinogetstarted.com/reference/serial-read)
+
+![](obmen.jpg)
 
 
 ### [Kvizzy1 - первушечка](kvizzy1-pervushechka/kvizzy1-pervushechka.md)
