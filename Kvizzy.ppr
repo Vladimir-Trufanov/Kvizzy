@@ -1911,26 +1911,49 @@ Kvizzy
 					Kvizzy\kvizzy1-pervushechka\Mini_v1\Mini_v1.ino
 				-Pir_v1
 					Kvizzy\kvizzy1-pervushechka\Pir_v1\Pir_v1.ino
-				Kvizzy\kvizzy1-pervushechka\kvizzy1-pervushechka.fzz
+				Kvizzy\kvizzy1-pervushechka\kvizzy1-esp32-cam.fzz
 				Kvizzy\kvizzy1-pervushechka\kvizzy1-pervushechka.md
+				Kvizzy\kvizzy1-pervushechka\kvizzy1-pro-mini.fzz
+			-kvizzy2-WiFi
+				Kvizzy\kvizzy2-WiFi\kvizzy1-esp32-cam.fzz
+				Kvizzy\kvizzy2-WiFi\kvizzy1-pro-mini.fzz
 			-Test01_Buzer
 				Kvizzy\Test01_Buzer\Test01_Buzer.ino
 			-Test02_LCD1602
 				Kvizzy\Test02_LCD1602\Test02_LCD1602.ino
-			+Test03_HCSR501
+			-Test03_HCSR501
 				Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
 				Kvizzy\Test03_HCSR501\Walk_Defines.h
 				Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
 				Kvizzy\Test03_HCSR501\Walk_Sounds.h
-			-WalkSounds
-				Kvizzy\WalkSounds\common_slave_kru.h
-				Kvizzy\WalkSounds\define_slave_kru.h
-				Kvizzy\WalkSounds\sk33.ino
-				Kvizzy\WalkSounds\timer2_kru.h
+			+Test04_Serial_ProMini
+				Kvizzy\Test04_Serial_ProMini\Test04_Serial_ProMini.ino
+			+WalkSounds
+				Kvizzy\WalkSounds\Walk_Defines.h
+				Kvizzy\WalkSounds\Walk_Sounds.cpp
+				Kvizzy\WalkSounds\Walk_Sounds.h
 			Kvizzy\Kvizzy.md
 			Kvizzy\LCD_1602_RUS-master.zip
 			Kvizzy\LiquidCrystal_I2C.zip
+			Kvizzy\obmen.jpg
 			Kvizzy\principialnaya-ehlektricheskaya-shema-foto-lovushki.png
+			Kvizzy\Serial communication between Arduino and ESP32 CAM.webp
+			Kvizzy\SPI between Arduino and ESP32 CAM.webp
+		-LedyEs
+			-Blink
+				LedyEs\Blink\Blink.ino
+			-LedSimpl
+				LedyEs\LedSimpl\LedSimpl.ino
+			-SecondSketch
+				LedyEs\SecondSketch\SecondSketch.ino
+			LedyEs\fet10k.webp
+			LedyEs\Id-by-Vgs.jpg
+			LedyEs\irfz24n.pdf
+			LedyEs\LedyEs.md
+			LedyEs\RGB-LED-schematic-768x516.webp
+			LedyEs\rgb-led-strips-mosfets-500x372.jpg
+			LedyEs\rgbstripMos-768x448.webp
+			LedyEs\tsokolevka-IRFZ24N.jpg
 		-Qb_PLAY_i_melodii
 			-Music_Basic
 				Qb_PLAY_i_melodii\Music_Basic\12DAYS.BAS
@@ -2108,8 +2131,6 @@ Kvizzy
 				Qb_PLAY_i_melodii\Music_Basic\ZIPADEE.BAS
 			-sketch_Qb_PLAY
 				Qb_PLAY_i_melodii\sketch_Qb_PLAY\sketch_Qb_PLAY.ino
-		-RaspberryPiZeroW
-			RaspberryPiZeroW\RaspberryPiZeroW.md
 		-Декодирование сигналов инфракрасного пульта дистанционного управления
 			-NEC
 				-.dep
@@ -2163,27 +2184,32 @@ Kvizzy
 				Простой мониторинг напряжения Arduino\iarduino_VCC\library.properties
 			-VoltageReadOut
 				Простой мониторинг напряжения Arduino\VoltageReadOut\VoltageReadOut.ino
+			-Контроль тока и напряжения
+				Простой мониторинг напряжения Arduino\Контроль тока и напряжения\Arduino измерение тока в сети 220в.doc
+				Простой мониторинг напряжения Arduino\Контроль тока и напряжения\Вольтметр переменного тока на Arduino Uno.doc
+				Простой мониторинг напряжения Arduino\Контроль тока и напряжения\Измерение мощности переменного тока - первоисточник.doc
+				Простой мониторинг напряжения Arduino\Контроль тока и напряжения\Измерение мощности переменного тока.doc
+				Простой мониторинг напряжения Arduino\Контроль тока и напряжения\Измерение тока потребления при помощи датчиков ZXCT.doc
+				Простой мониторинг напряжения Arduino\Контроль тока и напряжения\Использование датчика тока ACS712 Подключение к микроконтроллеру.doc
+				Простой мониторинг напряжения Arduino\Контроль тока и напряжения\Использование датчика тока ACS712 Теория.doc
+				Простой мониторинг напряжения Arduino\Контроль тока и напряжения\КАК ПОДКЛЮЧИТЬ ДАТЧИК ТОКА К ARDUINO.doc
 			Простой мониторинг напряжения Arduino\Простой мониторинг напряжения Arduino.md
 		Kvizzy.ppr
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
 0=Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
-1=Kvizzy\Test03_HCSR501\Walk_Defines.h
-2=Kvizzy\Test03_HCSR501\Walk_Sounds.h
-3=Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
+1=Kvizzy\Test04_Serial_ProMini\Test04_Serial_ProMini.ino
+2=Kvizzy\WalkSounds\Walk_Sounds.cpp
 [Selected Project Files]
 Main=
-Selected=Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
+Selected=Kvizzy\Test04_Serial_ProMini\Test04_Serial_ProMini.ino
 [Kvizzy\Test03_HCSR501\Test03_HCSR501.ino]
-TopLine=109
+TopLine=2
 Caret=1,56
-[Kvizzy\Test03_HCSR501\Walk_Defines.h]
-TopLine=208
-Caret=1,1
-[Kvizzy\Test03_HCSR501\Walk_Sounds.h]
-TopLine=79
-Caret=1,1
-[Kvizzy\Test03_HCSR501\Walk_Sounds.cpp]
+[Kvizzy\Test04_Serial_ProMini\Test04_Serial_ProMini.ino]
+TopLine=30
+Caret=2,67
+[Kvizzy\WalkSounds\Walk_Sounds.cpp]
 TopLine=1
-Caret=1,1
+Caret=1,16
