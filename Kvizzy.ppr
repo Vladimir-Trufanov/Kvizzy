@@ -1926,9 +1926,15 @@ Kvizzy
 				Kvizzy\Test03_HCSR501\Walk_Defines.h
 				Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
 				Kvizzy\Test03_HCSR501\Walk_Sounds.h
-			+Test04_Serial_ProMini
+			-Test04_Serial_ProMini
 				Kvizzy\Test04_Serial_ProMini\Test04_Serial_ProMini.ino
-			+WalkSounds
+			-Test05_Serial_Esp32
+				Kvizzy\Test05_Serial_Esp32\Test05_Serial_Esp32.ino
+			+Test06_Obmen_Esp32
+				Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
+			+Test06_Obmen_ProMini
+				Kvizzy\Test06_Obmen_ProMini\Test06_Obmen_ProMini.ino
+			-WalkSounds
 				Kvizzy\WalkSounds\Walk_Defines.h
 				Kvizzy\WalkSounds\Walk_Sounds.cpp
 				Kvizzy\WalkSounds\Walk_Sounds.h
@@ -2198,18 +2204,14 @@ Kvizzy
 		README.md
 		«¿◊≈Ã Õ¿ ÃŒ“Œ–≈  ŒÕƒ≈Õ—¿“Œ–€.mp4
 [Open project files]
-0=Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
-1=Kvizzy\Test04_Serial_ProMini\Test04_Serial_ProMini.ino
-2=Kvizzy\WalkSounds\Walk_Sounds.cpp
+0=Kvizzy\Test06_Obmen_ProMini\Test06_Obmen_ProMini.ino
+1=Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy\Test04_Serial_ProMini\Test04_Serial_ProMini.ino
-[Kvizzy\Test03_HCSR501\Test03_HCSR501.ino]
-TopLine=2
-Caret=1,56
-[Kvizzy\Test04_Serial_ProMini\Test04_Serial_ProMini.ino]
-TopLine=30
-Caret=2,67
-[Kvizzy\WalkSounds\Walk_Sounds.cpp]
-TopLine=1
-Caret=1,16
+Selected=Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
+[Kvizzy\Test06_Obmen_ProMini\Test06_Obmen_ProMini.ino]
+TopLine=63
+Caret=1,38
+[Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino]
+TopLine=16
+Caret=40,45
