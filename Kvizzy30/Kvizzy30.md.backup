@@ -45,13 +45,13 @@ void setup()
       return; 
    };
 
-   XMLNode * root = xmlDocument.FirstChild();
-   XMLElement * element = root->FirstChildElement("element");
+  XMLNode * root = xmlDocument.FirstChild();
+  XMLElement * element = root->FirstChildElement("element");
 
-   int val;
-   element->QueryIntText(&val);
+  int val;
+  element->QueryIntText(&val);
   
-   Serial.println(val);
+  Serial.println(val);
 }
 
 void loop() {}
