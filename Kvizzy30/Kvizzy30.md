@@ -22,6 +22,8 @@
 
 ### [ESP32 Arduino: синтаксический анализ XML](https://techtutorialsx.com/2019/11/20/esp32-arduino-parsing-xml/)
 
+### [How to parser XML with TinyXML2 C++](https://terminalroot.com/how-to-parser-xml-with-tinyxml2-cpp/)
+
 Синтаксический анализ XML с помощью ESP32, используя ядро Arduino, как вариант, выполняется с помощью [tinyxml2: https://github.com/leethomason/tinyxml2](https://github.com/leethomason/tinyxml2) - библиотеки синтаксического анализа C++. 
 
 Страница документации  к библиотеке [размещена здесь: https://leethomason.github.io/tinyxml2/index.html](https://leethomason.github.io/tinyxml2/index.html).
