@@ -15,6 +15,8 @@ using namespace tinyxml2;
 const char* ssid     = "TP-Link_B394";
 const char* password = "18009217";
 
+int iloop=0;
+
 void setup() 
 {
   Serial.begin(115200);
@@ -32,6 +34,10 @@ void setup()
 
 void loop() 
 {
+  iloop=iloop+1;
+  Serial.print("iloop = ");
+  Serial.println(iloop);
+  
   // выполняем проверку подключения к беспроводной сети
   if ((WiFi.status() == WL_CONNECTED)) 
   {
@@ -49,94 +55,73 @@ void loop()
     {
       // выводим ответ сервера
       String payload = http.getString();
+      Serial.println("httpCode ---");
       Serial.println(httpCode);
+      Serial.println("payload ----");
       Serial.println(payload);
+      Serial.println("------------");
 
-      // парсим
-      //char * testDocument = httpCode;
-      
-      char* testDocument = "<article><title>How to parser XML with TinyXML2 C++</title><description>A simple and functional tool to read the tilemaps of your games.</description><date>2022-03-04</date><time>13:40</time><tagi>28</tagi></article>";
+      int length = payload.length();
+      char* testDocument = new char[length + 1];  
+      strcpy(testDocument,payload.c_str()); 
+
       XMLDocument xmlDocument;
-      if(xmlDocument.Parse(testDocument)!= XML_SUCCESS)
+      if (xmlDocument.Parse(testDocument)!= XML_SUCCESS)
       {
          Serial.println("Error parsing");
          return; 
       };
-      XMLNode * article = xmlDocument.FirstChild();
-      XMLElement * tagi = article->FirstChildElement("tagi");
 
+      XMLNode* istudent = xmlDocument.FirstChild();
+
+      Serial.println("tagi -------");
+      XMLElement* tagi = istudent->FirstChildElement("tagi");
       int val;
       tagi->QueryIntText(&val);
       Serial.println(val);
+      Serial.println("------------");
 
-      XMLElement* text = article->FirstChildElement("title");
-      if (text != nullptr) 
+      Serial.println("ititle -----");
+      /*
+      try
       {
-        Serial.println(text->GetText());
+      */
+      XMLElement* text = istudent->FirstChildElement("ititle");
+      if (text != nullptr) Serial.println(text->GetText());
+      else Serial.println("text=nullptr");
+      /*
       }
-
-
-      /*
-      // парсинг нескольких элементов
-      <?xml version="1.0" encoding="UTF-8"?>
-      <article>
-         <title>How to parser XML with TinyXML2 C++</title>
-         <description>A simple and functional tool to read the tilemaps of your games.</description>
-         <date>2022-03-04</date>
-         <time>13:40</time>
-         <tag>c++</tag>
-      </article>
-      */
-
-      /*
-      testDocument = "<article><title>How to parser XML with TinyXML2 C++</title><description>A simple and functional tool to read the tilemaps of your games.</description><date>2022-03-04</date><time>13:40</time><tag>c++</tag></article>";
-      if(xmlDocument.Parse(testDocument)!= XML_SUCCESS)
+      catch (const char* error_message)
       {
-         Serial.println("Error 2 parsing");
-         return; 
-      };
-      XMLNode * root = xmlDocument.FirstChild();
-      XMLElement * title = root->FirstChildElement("title");
-
-      String tTitle;
-      title->GetText(&tTitle);
-      */
-
-      /*
-      tinyxml2::XMLDocument doc;
-      doc.LoadFile("segundo.xml");
-
-      tinyxml2::XMLElement * p_root_element = doc.RootElement();
-      tinyxml2::XMLElement * p_title = p_root_element->FirstChildElement("title");
-      tinyxml2::XMLElement * p_desc = p_root_element->FirstChildElement("description");
-      tinyxml2::XMLElement * p_date = p_root_element->FirstChildElement("date");
-      tinyxml2::XMLElement * p_time = p_root_element->FirstChildElement("time");
-      tinyxml2::XMLElement * p_tag = p_root_element->FirstChildElement("tag");
-      */
-
-
-      /*
-      tinyxml2::XMLDocument doc;
-      //doc.Parse("<greeting><text>Hello, world!</text></greeting>");
-      String textDocument = "<article><title>How to parser XML with TinyXML2 C++</title><description>A simple and functional tool to read the tilemaps of your games.</description><date>2022-03-04</date><time>13:40</time><tag>c++</tag></article>";
-
-      if (doc.Parse(textDocument&)!= XML_SUCCESS)
-      {
-         Serial.println("Error parsing");
-         return; 
-      };
-
-      //XMLNode * article = doc.FirstChild();
-      
-      tinyxml2::XMLElement* text = doc.FirstChildElement("article")->FirstChildElement("title");
-      if (text != nullptr) 
-      {
-        Serial.println(text->GetText());
+         Serial.println("error_message");
+         iloop=iloop+100;
       }
       */
+      Serial.println("------------");
 
+      Serial.println("texti ------");
+      XMLElement* texti = istudent->FirstChildElement("title");
+      if (texti != nullptr) Serial.println(texti->GetText());
+      else Serial.println("texti=nullptr");
+      Serial.println("------------");
 
+      /*
+      Serial.println("title ------");
+      XMLElement* text = istudent->FirstChildElement("title");
+      if (text != nullptr) Serial.println(text->GetText());
+      Serial.println("------------");
+      */
 
+      /*
+      try
+      {
+         XMLNode* istudent = xmlDocument.FirstChild();
+      }
+      catch (const char* error_message)
+      {
+         Serial.println("error_message");
+      }
+      */
     }
     else 
     {
