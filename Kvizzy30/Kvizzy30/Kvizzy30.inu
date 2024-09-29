@@ -46,9 +46,7 @@ void loop()
     // подключаемся к веб-странице
     //http.begin("https://doortry.ru/stihi/sorevnovanie-s-hakerami");
     //http.begin("https://kwinflat.ru/Dacha/");
-
-    String xmlname="https://kwinflat.ru/Dacha/Proba.xml";
-    http.begin(xmlname);
+    http.begin("https://kwinflat.ru/Dacha/result.xml");
     // делаем GET запрос
     int httpCode = http.GET();
     // проверяем успешность запроса
@@ -69,39 +67,60 @@ void loop()
       XMLDocument xmlDocument;
       if (xmlDocument.Parse(testDocument)!= XML_SUCCESS)
       {
-         Serial.print("Ошибка распознавания файла: ");
-         Serial.println(xmlname);
+         Serial.println("Error parsing");
          return; 
       };
 
-      // Отмечаем успешное распознавание xml-файла
-      Serial.print(xmlname);
-      Serial.println(" - файл распознан!");
+      XMLNode* istudent = xmlDocument.FirstChild();
 
-      // Подключаем к разбору корневой тег 
-      XMLNode* root = xmlDocument.FirstChild();
-
-      // Выбираем значение параметра "sgpa"
-      Serial.println("sgpa -------");
-      XMLElement* sgpa = root->FirstChildElement("sgpa");
+      Serial.println("tagi -------");
+      XMLElement* tagi = istudent->FirstChildElement("tagi");
       int val;
-      sgpa->QueryIntText(&val);
+      tagi->QueryIntText(&val);
       Serial.println(val);
       Serial.println("------------");
 
-      // Выбираем значение параметра "name"
-      Serial.println("name -------");
-      XMLElement* text = root->FirstChildElement("name");
+      Serial.println("ititle -----");
+      /*
+      try
+      {
+      */
+      XMLElement* text = istudent->FirstChildElement("ititle");
       if (text != nullptr) Serial.println(text->GetText());
-      else Serial.println("nullptr");
+      else Serial.println("text=nullptr");
+      /*
+      }
+      catch (const char* error_message)
+      {
+         Serial.println("error_message");
+         iloop=iloop+100;
+      }
+      */
       Serial.println("------------");
 
-      // Выбираем значение параметра "noname"
-      Serial.println("noname -----");
-      XMLElement* noname = root->FirstChildElement("noname");
-      if (noname != nullptr) Serial.println(noname->GetText());
-      else Serial.println("nullptr");
+      Serial.println("texti ------");
+      XMLElement* texti = istudent->FirstChildElement("title");
+      if (texti != nullptr) Serial.println(texti->GetText());
+      else Serial.println("texti=nullptr");
       Serial.println("------------");
+
+      /*
+      Serial.println("title ------");
+      XMLElement* text = istudent->FirstChildElement("title");
+      if (text != nullptr) Serial.println(text->GetText());
+      Serial.println("------------");
+      */
+
+      /*
+      try
+      {
+         XMLNode* istudent = xmlDocument.FirstChild();
+      }
+      catch (const char* error_message)
+      {
+         Serial.println("error_message");
+      }
+      */
     }
     else 
     {
@@ -110,5 +129,5 @@ void loop()
     // освобождаем ресурсы микроконтроллера
     http.end();
   }
-  delay(3000);
+  delay(10000);
 }
