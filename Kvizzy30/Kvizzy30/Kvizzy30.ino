@@ -46,8 +46,10 @@ void loop()
     // подключаемся к веб-странице
     //http.begin("https://doortry.ru/stihi/sorevnovanie-s-hakerami");
     //http.begin("https://kwinflat.ru/Dacha/");
+    //http://kwinflatht.nichost.ru/
 
-    String xmlname="https://kwinflat.ru/Dacha/Proba.xml";
+    //String xmlname="https://kwinflat.ru/Dacha/Proba.xml";
+    String xmlname="http://kwinflatht.nichost.ru/";
     http.begin(xmlname);
     // делаем GET запрос
     int httpCode = http.GET();
@@ -62,6 +64,8 @@ void loop()
       Serial.println(payload);
       Serial.println("------------");
 
+      /*
+      // Распознаем XML-файл
       int length = payload.length();
       char* testDocument = new char[length + 1];  
       strcpy(testDocument,payload.c_str()); 
@@ -102,6 +106,7 @@ void loop()
       if (noname != nullptr) Serial.println(noname->GetText());
       else Serial.println("nullptr");
       Serial.println("------------");
+      */
     }
     else 
     {
