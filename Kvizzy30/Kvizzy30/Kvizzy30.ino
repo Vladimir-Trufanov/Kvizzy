@@ -30,6 +30,9 @@ void setup()
     Serial.println("Соединяемся с Wi-Fi..");
   }
   Serial.println("Соединение с Wi-Fi установлено");
+
+  pinMode(4,OUTPUT);   // "вспышка"
+  pinMode(33,OUTPUT);    // "работает"
 }
 
 void loop() 
@@ -49,7 +52,8 @@ void loop()
     //http://kwinflatht.nichost.ru/
 
     //String xmlname="https://kwinflat.ru/Dacha/Proba.xml";
-    String xmlname="http://kwinflatht.nichost.ru/";
+    //String xmlname="https://kwinflatht.nichost.ru/";
+    String xmlname="https://kwinflatht.nichost.ru/State/State.php";
     http.begin(xmlname);
     // делаем GET запрос
     int httpCode = http.GET();
@@ -116,4 +120,34 @@ void loop()
     http.end();
   }
   delay(3000);
+
+
+  // 
+  Serial.println("Погасили");
+  digitalWrite(33,HIGH);  // рабочая
+  digitalWrite(4,LOW);    // "вспышка"
+  delay(1000);
+  view();
+  delay(4000);
+  Serial.println("Зажгли");
+  digitalWrite(33,LOW);   // рабочая
+  digitalWrite(4,HIGH);   // "вспышка"
+  delay(1000);
+  view();
+  delay(4000);
+  Serial.println("Погасили");
+  digitalWrite(33,HIGH);  // рабочая
+  digitalWrite(4,LOW);    // "вспышка"
+  delay(1000);
+  view();
+  delay(4000);
+
+}
+
+void view() 
+{
+  if (digitalRead(4) == HIGH) Serial.println("4-горит"); 
+  else Serial.println("4-потушена");
+  if (digitalRead(33) == HIGH) Serial.println("33-потушена"); 
+  else Serial.println("33-горит");
 }

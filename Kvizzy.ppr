@@ -104,6 +104,32 @@ Kvizzy
 					Buzzer_Sounds\arduino-songs\zeldatheme\zeldatheme.ino
 				Buzzer_Sounds\arduino-songs\arduino-songs.md
 				Buzzer_Sounds\arduino-songs\hardware.png
+			-com.google.android.gm
+				-Notifications
+					-Calm
+						Buzzer_Sounds\com.google.android.gm\Notifications\Calm\Безмятежность.ogg
+					-Music_box
+						Buzzer_Sounds\com.google.android.gm\Notifications\Music_box\Музыкальная шкатулка.ogg
+					-Nudge
+						Buzzer_Sounds\com.google.android.gm\Notifications\Nudge\Намек.ogg
+					-Piggyback
+						Buzzer_Sounds\com.google.android.gm\Notifications\Piggyback\Поехали.ogg
+					-Shrink_ray
+						Buzzer_Sounds\com.google.android.gm\Notifications\Shrink_ray\Лазерный луч.ogg
+					-Snap
+						Buzzer_Sounds\com.google.android.gm\Notifications\Snap\Бодрость.ogg
+					-Sweet
+						Buzzer_Sounds\com.google.android.gm\Notifications\Sweet\Сладость.ogg
+					-Tennis
+						Buzzer_Sounds\com.google.android.gm\Notifications\Tennis\Теннис.ogg
+					-Tones
+						Buzzer_Sounds\com.google.android.gm\Notifications\Tones\Тональный сигнал.ogg
+					-Treasure
+						Buzzer_Sounds\com.google.android.gm\Notifications\Treasure\Сокровище.ogg
+					-Welcome
+						Buzzer_Sounds\com.google.android.gm\Notifications\Welcome\Добро пожаловать.ogg
+					-Whistle
+						Buzzer_Sounds\com.google.android.gm\Notifications\Whistle\Свисток.ogg
 			-Mozzi
 				-config
 					Buzzer_Sounds\Mozzi\config\config_example_avr_hifi.h
@@ -1703,39 +1729,6 @@ Kvizzy
 			GalaxyS4UniversalRemote\Galaxy+Universal+Remote+v4.1.3.apk
 			GalaxyS4UniversalRemote\GalaxyS4UniversalRemote.md
 			GalaxyS4UniversalRemote\IR_ChrisTree.txt
-		-Icons
-			-TinyMCE для IttveME
-				Icons\TinyMCE для IttveME\TinyMCE.png
-				Icons\TinyMCE для IttveME\tveTiny.png
-				Icons\TinyMCE для IttveME\tveTiny.svg
-				Icons\TinyMCE для IttveME\tveTiny2.png
-				Icons\TinyMCE для IttveME\tveTiny21.png
-				Icons\TinyMCE для IttveME\tveTiny22.png
-				Icons\TinyMCE для IttveME\tveTiny23.png
-				Icons\TinyMCE для IttveME\tveTiny24.png
-				Icons\TinyMCE для IttveME\tveTiny31.png
-				Icons\TinyMCE для IttveME\tveTiny32.png
-				Icons\TinyMCE для IttveME\tveTiny33.png
-				Icons\TinyMCE для IttveME\tveTiny34.png
-				Icons\TinyMCE для IttveME\tveTiny35.png
-				Icons\TinyMCE для IttveME\tveTiny36.png
-				Icons\TinyMCE для IttveME\tveTiny37.png
-				Icons\TinyMCE для IttveME\tveTiny38.png
-				Icons\TinyMCE для IttveME\tveTiny39.png
-				Icons\TinyMCE для IttveME\tveTiny40.png
-			-tveMenu и favicon для IttveME
-				Icons\tveMenu и favicon для IttveME\ex1-SegoePrint.png
-				Icons\tveMenu и favicon для IttveME\fav.png
-				Icons\tveMenu и favicon для IttveME\IconFav.png
-				Icons\tveMenu и favicon для IttveME\Menu.svg
-				Icons\tveMenu и favicon для IttveME\tve.psd
-				Icons\tveMenu и favicon для IttveME\tveMenu.png
-				Icons\tveMenu и favicon для IttveME\tveMenu.svg
-				Icons\tveMenu и favicon для IttveME\tveMenuB.png
-				Icons\tveMenu и favicon для IttveME\tveMenuC.png
-				Icons\tveMenu и favicon для IttveME\tveMenuCicon.png
-				Icons\tveMenu и favicon для IttveME\tveMenuD.png
-			Icons\Icons.md
 		-IrPlus
 			IrPlus\IrPlus.md
 			IrPlus\NEC - E424.irplus
@@ -1902,49 +1895,60 @@ Kvizzy
 			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
-		+Kvizzy
+		+Kvizzy30
+			-2024-09-04 Kvizzy
+				-Test06_Obmen_Esp32
+					Kvizzy30\2024-09-04 Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
+				-Test06_Obmen_ProMini
+					Kvizzy30\2024-09-04 Kvizzy\Test06_Obmen_ProMini\Test06_Obmen_ProMini.ino
+				Kvizzy30\2024-09-04 Kvizzy\2024-09-04 Kvizzy.md
+				Kvizzy30\2024-09-04 Kvizzy\ESP32-CAM-Pinout.png
+				Kvizzy30\2024-09-04 Kvizzy\ESP32-Pinout.png
+				Kvizzy30\2024-09-04 Kvizzy\kvizzy1-esp32-cam.fzz
+				Kvizzy30\2024-09-04 Kvizzy\obmen.jpg
+				Kvizzy30\2024-09-04 Kvizzy\principialnaya-ehlektricheskaya-shema-foto-lovushki.png
+				Kvizzy30\2024-09-04 Kvizzy\Serial communication between Arduino and ESP32 CAM.webp
+				Kvizzy30\2024-09-04 Kvizzy\SPI between Arduino and ESP32 CAM.webp
+			-ArduinoJson
+				-Deserialization
+					Kvizzy30\ArduinoJson\Deserialization\Deserialization.ino
+				-Serialization
+					Kvizzy30\ArduinoJson\Serialization\Serialization.ino
+				Kvizzy30\ArduinoJson\ArduinoJson.md
 			-I2c_Scanner
-				Kvizzy\I2c_Scanner\I2c_Scanner.fzz
-				Kvizzy\I2c_Scanner\I2c_Scanner.ino
-			-kvizzy1-pervushechka
-				-Mini_v1
-					Kvizzy\kvizzy1-pervushechka\Mini_v1\Mini_v1.ino
-				-Pir_v1
-					Kvizzy\kvizzy1-pervushechka\Pir_v1\Pir_v1.ino
-				Kvizzy\kvizzy1-pervushechka\kvizzy1-esp32-cam.fzz
-				Kvizzy\kvizzy1-pervushechka\kvizzy1-pervushechka.md
-				Kvizzy\kvizzy1-pervushechka\kvizzy1-pro-mini.fzz
-			-kvizzy2-WiFi
-				Kvizzy\kvizzy2-WiFi\kvizzy1-esp32-cam.fzz
-				Kvizzy\kvizzy2-WiFi\kvizzy1-pro-mini.fzz
+				Kvizzy30\I2c_Scanner\I2c_Scanner.fzz
+				Kvizzy30\I2c_Scanner\I2c_Scanner.ino
+			-KlimovHelp
+				-FindExactTime
+					Kvizzy30\KlimovHelp\FindExactTime\FindExactTime.ino
+				-FindWeather
+					Kvizzy30\KlimovHelp\FindWeather\FindWeather.ino
+				-ServerPing
+					Kvizzy30\KlimovHelp\ServerPing\ServerPing.ino
+				Kvizzy30\KlimovHelp\ESP32Ping-master.zip
+				Kvizzy30\KlimovHelp\KlimovHelp.md
+			+Kvizzy30
+				Kvizzy30\Kvizzy30\Kvizzy30.ino
+				Kvizzy30\Kvizzy30\Kvizzy30.inu
+				Kvizzy30\Kvizzy30\tinyxml2.cpp
+				Kvizzy30\Kvizzy30\tinyxml2.h
 			-Test01_Buzer
-				Kvizzy\Test01_Buzer\Test01_Buzer.ino
-			-Test02_LCD1602
-				Kvizzy\Test02_LCD1602\Test02_LCD1602.ino
+				Kvizzy30\Test01_Buzer\Test01_Buzer.ino
 			-Test03_HCSR501
-				Kvizzy\Test03_HCSR501\Test03_HCSR501.ino
-				Kvizzy\Test03_HCSR501\Walk_Defines.h
-				Kvizzy\Test03_HCSR501\Walk_Sounds.cpp
-				Kvizzy\Test03_HCSR501\Walk_Sounds.h
-			-Test04_Serial_ProMini
-				Kvizzy\Test04_Serial_ProMini\Test04_Serial_ProMini.ino
+				Kvizzy30\Test03_HCSR501\Test03_HCSR501.ino
+				Kvizzy30\Test03_HCSR501\Walk_Defines.h
+				Kvizzy30\Test03_HCSR501\Walk_Sounds.cpp
+				Kvizzy30\Test03_HCSR501\Walk_Sounds.h
 			-Test05_Serial_Esp32
-				Kvizzy\Test05_Serial_Esp32\Test05_Serial_Esp32.ino
-			+Test06_Obmen_Esp32
-				Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
-			+Test06_Obmen_ProMini
-				Kvizzy\Test06_Obmen_ProMini\Test06_Obmen_ProMini.ino
+				Kvizzy30\Test05_Serial_Esp32\Test05_Serial_Esp32.ino
 			-WalkSounds
-				Kvizzy\WalkSounds\Walk_Defines.h
-				Kvizzy\WalkSounds\Walk_Sounds.cpp
-				Kvizzy\WalkSounds\Walk_Sounds.h
-			Kvizzy\Kvizzy.md
-			Kvizzy\LCD_1602_RUS-master.zip
-			Kvizzy\LiquidCrystal_I2C.zip
-			Kvizzy\obmen.jpg
-			Kvizzy\principialnaya-ehlektricheskaya-shema-foto-lovushki.png
-			Kvizzy\Serial communication between Arduino and ESP32 CAM.webp
-			Kvizzy\SPI between Arduino and ESP32 CAM.webp
+				Kvizzy30\WalkSounds\Walk_Defines.h
+				Kvizzy30\WalkSounds\Walk_Sounds.cpp
+				Kvizzy30\WalkSounds\Walk_Sounds.h
+			Kvizzy30\ESP32-CAM-ADC-Pins.webp
+			Kvizzy30\ESP32-CAM-Pinout.webp
+			Kvizzy30\ESP32-CAM-PWM-Pins.webp
+			Kvizzy30\Kvizzy30.md
 		-LedyEs
 			-Blink
 				LedyEs\Blink\Blink.ino
@@ -1952,191 +1956,19 @@ Kvizzy
 				LedyEs\LedSimpl\LedSimpl.ino
 			-SecondSketch
 				LedyEs\SecondSketch\SecondSketch.ino
+			LedyEs\BP-S100-12.jpg
+			LedyEs\BP-S100-12-bez-kryshki.jpg
 			LedyEs\fet10k.webp
 			LedyEs\Id-by-Vgs.jpg
 			LedyEs\irfz24n.pdf
+			LedyEs\LedyEs.fzz
 			LedyEs\LedyEs.md
+			LedyEs\Podkliuchenie-dvuh-lent.jpeg
+			LedyEs\Podkliuchenie-dvuh-lent2.jpeg
 			LedyEs\RGB-LED-schematic-768x516.webp
 			LedyEs\rgb-led-strips-mosfets-500x372.jpg
 			LedyEs\rgbstripMos-768x448.webp
 			LedyEs\tsokolevka-IRFZ24N.jpg
-		-Qb_PLAY_i_melodii
-			-Music_Basic
-				Qb_PLAY_i_melodii\Music_Basic\12DAYS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ADAAMS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ANDRE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ANITRA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ARTHUR.BAS
-				Qb_PLAY_i_melodii\Music_Basic\AVE_MARI.BAS
-				Qb_PLAY_i_melodii\Music_Basic\AXLE_F.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BAABLKSP.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BACH1.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BACH2.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BACH3.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BANNER.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BARENECC.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BEARMONT.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BEAVER.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BEE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BETHLEHM.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BILLYBOY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BLULLABY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BRITISH.BAS
-				Qb_PLAY_i_melodii\Music_Basic\BUCKY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CABARET.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CAPRICCI.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CARRY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CHOPIN1.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CHOPIN2.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CHOPIN3.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CIRCUS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CLASSGAS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CLAUSCOM.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CLAVIER.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CLEMENTI.BAS
-				Qb_PLAY_i_melodii\Music_Basic\CMINOR2.BAS
-				Qb_PLAY_i_melodii\Music_Basic\COLUMBIA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\COMEMONT.BAS
-				Qb_PLAY_i_melodii\Music_Basic\COMFAITH.BAS
-				Qb_PLAY_i_melodii\Music_Basic\DBNUSHKA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\DEBUSSY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\DECK.BAS
-				Qb_PLAY_i_melodii\Music_Basic\DIXIE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\DOODLE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ELEPHANT.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ELISE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\EVERONW.BAS
-				Qb_PLAY_i_melodii\Music_Basic\EXODUS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\EXPANSE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\FANTASIA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\FANTASY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\FASCINAT.BAS
-				Qb_PLAY_i_melodii\Music_Basic\FIDDLER.BAS
-				Qb_PLAY_i_melodii\Music_Basic\FINNIGIN.BAS
-				Qb_PLAY_i_melodii\Music_Basic\FIRSTIME.BAS
-				Qb_PLAY_i_melodii\Music_Basic\FLAG.BAS
-				Qb_PLAY_i_melodii\Music_Basic\FLASHDNC.BAS
-				Qb_PLAY_i_melodii\Music_Basic\FRAGGLE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\FUGE_D.BAS
-				Qb_PLAY_i_melodii\Music_Basic\GENTLE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\GHOSTBUS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\GLADXMAS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\GMINOR.BAS
-				Qb_PLAY_i_melodii\Music_Basic\GODFATHE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\GOOSYGND.BAS
-				Qb_PLAY_i_melodii\Music_Basic\GRANDFLG.BAS
-				Qb_PLAY_i_melodii\Music_Basic\GYPSY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HABANERA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HAPHOTEL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HAPPYB.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HAVA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HAYDNE2.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HERALD.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HERECLAS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HIHO.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HILLBILL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HITCHKOK.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HOMEHOLI.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HOUSETOP.BAS
-				Qb_PLAY_i_melodii\Music_Basic\HURA!.BAS
-				Qb_PLAY_i_melodii\Music_Basic\INV14.BAS
-				Qb_PLAY_i_melodii\Music_Basic\INVENTIO.BAS
-				Qb_PLAY_i_melodii\Music_Basic\IRISHBAL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\JBOND.BAS
-				Qb_PLAY_i_melodii\Music_Basic\JEOPARDY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\JINGLE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\JOPLIN1.BAS
-				Qb_PLAY_i_melodii\Music_Basic\JOPLIN2.BAS
-				Qb_PLAY_i_melodii\Music_Basic\JOY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\KATIUSHA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\KING.BAS
-				Qb_PLAY_i_melodii\Music_Basic\LEES.BAS
-				Qb_PLAY_i_melodii\Music_Basic\LETSNOW.BAS
-				Qb_PLAY_i_melodii\Music_Basic\LIEBESTR.BAS
-				Qb_PLAY_i_melodii\Music_Basic\LIFE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\LNDNBRDG.BAS
-				Qb_PLAY_i_melodii\Music_Basic\LUNY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MALGUENA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MAMA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MANGER.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MARYLAMB.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MCDONALD.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MENDEL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MENUETG.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MERRY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MIDCLEAR.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MINUET_D.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MINUET_G.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MOCKINBD.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MOINTAI.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MOONSON1.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MOONSON2.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MOONSON3.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MOVIN.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MOZART40.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MULBERRY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\MUPPETS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\NIGHTB4X.BAS
-				Qb_PLAY_i_melodii\Music_Basic\NOEL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\NOM6_E.BAS
-				Qb_PLAY_i_melodii\Music_Basic\NUTCRCKR.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ODA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ODDCOUPL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\PADDO.BAS
-				Qb_PLAY_i_melodii\Music_Basic\PETRGUN.BAS
-				Qb_PLAY_i_melodii\Music_Basic\PETROV.BAS
-				Qb_PLAY_i_melodii\Music_Basic\POLODANS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\POLONES.BAS
-				Qb_PLAY_i_melodii\Music_Basic\POP!WEAS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\POPEYE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\PRELUDE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\PZZLBOEK.BAS
-				Qb_PLAY_i_melodii\Music_Basic\RAIL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\RAINGOWY.BAS
-				Qb_PLAY_i_melodii\Music_Basic\RBCONNEC.BAS
-				Qb_PLAY_i_melodii\Music_Basic\REALTHNG.BAS
-				Qb_PLAY_i_melodii\Music_Basic\RECORD.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ROMJUL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ROWROWBT.BAS
-				Qb_PLAY_i_melodii\Music_Basic\RUBRDUCK.BAS
-				Qb_PLAY_i_melodii\Music_Basic\RUSSIAN.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SHUMAN.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SILENT.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SLEEPBEU.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SLEIGH.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SOLFE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SOMETHIN.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SONATE11.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SONATINA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SOUNDSIL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SPOONFUL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\STARS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\STARSTRP.BAS
-				Qb_PLAY_i_melodii\Music_Basic\STARWARS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SUNSET.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SUPERCAL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\SUSANNA.BAS
-				Qb_PLAY_i_melodii\Music_Basic\TAILTIGR.BAS
-				Qb_PLAY_i_melodii\Music_Basic\TAKE5.BAS
-				Qb_PLAY_i_melodii\Music_Basic\TEAPOT.BAS
-				Qb_PLAY_i_melodii\Music_Basic\TOREODOR.BAS
-				Qb_PLAY_i_melodii\Music_Basic\TREKSONG.BAS
-				Qb_PLAY_i_melodii\Music_Basic\TTANIMAL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\TURKISH.BAS
-				Qb_PLAY_i_melodii\Music_Basic\TWINKLE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\VALSE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\VALTZ.BAS
-				Qb_PLAY_i_melodii\Music_Basic\VIERKANT.BAS
-				Qb_PLAY_i_melodii\Music_Basic\WASSAIL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\WE3KINGS.BAS
-				Qb_PLAY_i_melodii\Music_Basic\WHISTLE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\WMTELL.BAS
-				Qb_PLAY_i_melodii\Music_Basic\WRECK.BAS
-				Qb_PLAY_i_melodii\Music_Basic\XMASTREE.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ZHIVAGO.BAS
-				Qb_PLAY_i_melodii\Music_Basic\ZIPADEE.BAS
-			-sketch_Qb_PLAY
-				Qb_PLAY_i_melodii\sketch_Qb_PLAY\sketch_Qb_PLAY.ino
 		-Декодирование сигналов инфракрасного пульта дистанционного управления
 			-NEC
 				-.dep
@@ -2204,14 +2036,10 @@ Kvizzy
 		README.md
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
-0=Kvizzy\Test06_Obmen_ProMini\Test06_Obmen_ProMini.ino
-1=Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
+0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
-[Kvizzy\Test06_Obmen_ProMini\Test06_Obmen_ProMini.ino]
-TopLine=63
-Caret=1,38
-[Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino]
-TopLine=16
-Caret=40,45
+Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
+[Kvizzy30\Kvizzy30\Kvizzy30.ino]
+TopLine=52
+Caret=64,66
