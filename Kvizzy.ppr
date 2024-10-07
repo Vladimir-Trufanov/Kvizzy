@@ -1927,11 +1927,17 @@ Kvizzy
 					Kvizzy30\KlimovHelp\ServerPing\ServerPing.ino
 				Kvizzy30\KlimovHelp\ESP32Ping-master.zip
 				Kvizzy30\KlimovHelp\KlimovHelp.md
-			+Kvizzy30
+			-Kvizzy30
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
 				Kvizzy30\Kvizzy30\Kvizzy30.inu
 				Kvizzy30\Kvizzy30\tinyxml2.cpp
 				Kvizzy30\Kvizzy30\tinyxml2.h
+			-ParseXMLfile
+				Kvizzy30\ParseXMLfile\ParseXMLfile.ino
+				Kvizzy30\ParseXMLfile\tinyxml2.cpp
+				Kvizzy30\ParseXMLfile\tinyxml2.h
+			+ParseXMLfile-LeadLEDs
+				Kvizzy30\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino
 			-Test01_Buzer
 				Kvizzy30\Test01_Buzer\Test01_Buzer.ino
 			-Test03_HCSR501
@@ -2037,9 +2043,21 @@ Kvizzy
 		«¿◊≈Ã Õ¿ ÃŒ“Œ–≈  ŒÕƒ≈Õ—¿“Œ–€.mp4
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
+1=Kvizzy30\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino
+2=..\KwinFlat\www\State\ParseXMLfile-LeadLEDs.xml
+3=..\KwinFlat\www\TTools\TKvizzyMaker\CommonKvizzyMaker.php
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
+Selected=Kvizzy30\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
-TopLine=52
-Caret=64,66
+TopLine=7
+Caret=39,7
+[Kvizzy30\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino]
+TopLine=147
+Caret=11,71
+[..\KwinFlat\www\State\ParseXMLfile-LeadLEDs.xml]
+TopLine=1
+Caret=17,5
+[..\KwinFlat\www\TTools\TKvizzyMaker\CommonKvizzyMaker.php]
+TopLine=119
+Caret=21,145
