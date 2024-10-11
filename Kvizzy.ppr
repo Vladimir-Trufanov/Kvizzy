@@ -1734,6 +1734,8 @@ Kvizzy
 			IrPlus\NEC - E424.irplus
 			IrPlus\panasonic_sa-ht928.xml
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
+		-konstruktor-umnogo-hozyajstva
+			konstruktor-umnogo-hozyajstva\konstruktor-umnogo-hozyajstva.md
 		-KRUTJAK
 			-Fritzing
 				KRUTJAK\Fritzing\Avtonom_v8.fzz
@@ -1915,6 +1917,18 @@ Kvizzy
 				-Serialization
 					Kvizzy30\ArduinoJson\Serialization\Serialization.ino
 				Kvizzy30\ArduinoJson\ArduinoJson.md
+			+ESP32_Watchdog
+				+BasicWDT.ino
+					Kvizzy30\ESP32_Watchdog\BasicWDT.ino\BasicWDT.ino.ino
+				+ex5-1-33_Watchdog
+					Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino
+				-ex5-1-33_Watchdog1
+					Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog1\ex5-1-33_Watchdog1.ino
+				-MakeException
+					Kvizzy30\ESP32_Watchdog\MakeException\MakeException.ino
+				Kvizzy30\ESP32_Watchdog\A-typical-Watchdog-setup.jpg
+				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md
+				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md.backup
 			-I2c_Scanner
 				Kvizzy30\I2c_Scanner\I2c_Scanner.fzz
 				Kvizzy30\I2c_Scanner\I2c_Scanner.ino
@@ -1929,15 +1943,10 @@ Kvizzy
 				Kvizzy30\KlimovHelp\KlimovHelp.md
 			-Kvizzy30
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
-				Kvizzy30\Kvizzy30\Kvizzy30.inu
-				Kvizzy30\Kvizzy30\tinyxml2.cpp
-				Kvizzy30\Kvizzy30\tinyxml2.h
-			-ParseXMLfile
-				Kvizzy30\ParseXMLfile\ParseXMLfile.ino
-				Kvizzy30\ParseXMLfile\tinyxml2.cpp
-				Kvizzy30\ParseXMLfile\tinyxml2.h
-			+ParseXMLfile-LeadLEDs
+			-ParseXMLfile-LeadLEDs
 				Kvizzy30\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino
+				Kvizzy30\ParseXMLfile-LeadLEDs\tinyxml2.cpp
+				Kvizzy30\ParseXMLfile-LeadLEDs\tinyxml2.h
 			-Test01_Buzer
 				Kvizzy30\Test01_Buzer\Test01_Buzer.ino
 			-Test03_HCSR501
@@ -2043,21 +2052,17 @@ Kvizzy
 		«¿◊≈Ã Õ¿ ÃŒ“Œ–≈  ŒÕƒ≈Õ—¿“Œ–€.mp4
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
-1=Kvizzy30\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino
-2=..\KwinFlat\www\State\ParseXMLfile-LeadLEDs.xml
-3=..\KwinFlat\www\TTools\TKvizzyMaker\CommonKvizzyMaker.php
+1=Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino
+2=Kvizzy30\ESP32_Watchdog\BasicWDT.ino\BasicWDT.ino.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino
+Selected=Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=7
 Caret=39,7
-[Kvizzy30\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino]
-TopLine=147
-Caret=11,71
-[..\KwinFlat\www\State\ParseXMLfile-LeadLEDs.xml]
+[Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino]
+TopLine=85
+Caret=4,16
+[Kvizzy30\ESP32_Watchdog\BasicWDT.ino\BasicWDT.ino.ino]
 TopLine=1
-Caret=17,5
-[..\KwinFlat\www\TTools\TKvizzyMaker\CommonKvizzyMaker.php]
-TopLine=119
-Caret=21,145
+Caret=1,1
