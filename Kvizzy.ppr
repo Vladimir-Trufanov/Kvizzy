@@ -1918,17 +1918,14 @@ Kvizzy
 					Kvizzy30\ArduinoJson\Serialization\Serialization.ino
 				Kvizzy30\ArduinoJson\ArduinoJson.md
 			+ESP32_Watchdog
-				+BasicWDT.ino
-					Kvizzy30\ESP32_Watchdog\BasicWDT.ino\BasicWDT.ino.ino
-				+ex5-1-33_Watchdog
+				-ex5-1-33_BasicWDT
+					Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
+				-ex5-1-33_Watchdog
 					Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino
-				-ex5-1-33_Watchdog1
-					Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog1\ex5-1-33_Watchdog1.ino
 				-MakeException
 					Kvizzy30\ESP32_Watchdog\MakeException\MakeException.ino
 				Kvizzy30\ESP32_Watchdog\A-typical-Watchdog-setup.jpg
 				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md
-				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md.backup
 			-I2c_Scanner
 				Kvizzy30\I2c_Scanner\I2c_Scanner.fzz
 				Kvizzy30\I2c_Scanner\I2c_Scanner.ino
@@ -2053,16 +2050,16 @@ Kvizzy
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 1=Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino
-2=Kvizzy30\ESP32_Watchdog\BasicWDT.ino\BasicWDT.ino.ino
+2=Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino
+Selected=Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=7
 Caret=39,7
 [Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino]
-TopLine=85
-Caret=4,16
-[Kvizzy30\ESP32_Watchdog\BasicWDT.ino\BasicWDT.ino.ino]
-TopLine=1
-Caret=1,1
+TopLine=57
+Caret=1,85
+[Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino]
+TopLine=50
+Caret=4,85
