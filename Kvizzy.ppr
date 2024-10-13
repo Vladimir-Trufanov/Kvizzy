@@ -1917,15 +1917,36 @@ Kvizzy
 				-Serialization
 					Kvizzy30\ArduinoJson\Serialization\Serialization.ino
 				Kvizzy30\ArduinoJson\ArduinoJson.md
-			+ESP32_Watchdog
+			+ESP32_Mutex
+				+ex5-1-33_twousoneBlink
+					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino
+				Kvizzy30\ESP32_Mutex\ESP32_Mutex.md
+				Kvizzy30\ESP32_Mutex\ESP32_Mutex.md.backup
+			-ESP32_Watchdog
 				-ex5-1-33_BasicWDT
 					Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
+				-ex5-1-33_DeadLockWDT
+					Kvizzy30\ESP32_Watchdog\ex5-1-33_DeadLockWDT\ex5-1-33_DeadLockWDT.ino
 				-ex5-1-33_Watchdog
 					Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino
+				-Listing2_DeadLockWDT
+					Kvizzy30\ESP32_Watchdog\Listing2_DeadLockWDT\Listing2_DeadLockWDT.ino
+				-Listing3_SanityCheckSingleLoop
+					Kvizzy30\ESP32_Watchdog\Listing3_SanityCheckSingleLoop\Listing3_SanityCheckSingleLoop.ino
+				-Listing4_SanityCheckRTOS
+					Kvizzy30\ESP32_Watchdog\Listing4_SanityCheckRTOS\Listing4_SanityCheckRTOS.ino
+				-Listing5_GreatWDT
+					Kvizzy30\ESP32_Watchdog\Listing5_GreatWDT\Listing5_GreatWDT.ino
 				-MakeException
 					Kvizzy30\ESP32_Watchdog\MakeException\MakeException.ino
+				-UsesMutex
+					Kvizzy30\ESP32_Watchdog\UsesMutex\UsesMutex.ino
+				Kvizzy30\ESP32_Watchdog\2.jpg
+				Kvizzy30\ESP32_Watchdog\3.jpg
+				Kvizzy30\ESP32_Watchdog\4.jpg
 				Kvizzy30\ESP32_Watchdog\A-typical-Watchdog-setup.jpg
 				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md
+				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md.backup
 			-I2c_Scanner
 				Kvizzy30\I2c_Scanner\I2c_Scanner.fzz
 				Kvizzy30\I2c_Scanner\I2c_Scanner.ino
@@ -2050,16 +2071,16 @@ Kvizzy
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 1=Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino
-2=Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
+2=Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
+Selected=Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=7
 Caret=39,7
 [Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino]
-TopLine=57
-Caret=1,85
-[Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino]
-TopLine=50
-Caret=4,85
+TopLine=91
+Caret=92,130
+[Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino]
+TopLine=8
+Caret=10,31
