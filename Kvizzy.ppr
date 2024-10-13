@@ -1918,10 +1918,15 @@ Kvizzy
 					Kvizzy30\ArduinoJson\Serialization\Serialization.ino
 				Kvizzy30\ArduinoJson\ArduinoJson.md
 			+ESP32_Mutex
-				+ex5-1-33_twousoneBlink
+				-ex5-1-33_twousoneBlink
 					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino
+				+ex5-1-33_twousoneMutex
+					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneMutex\ex5-1-33_twousoneMutex.ino
 				Kvizzy30\ESP32_Mutex\ESP32_Mutex.md
 				Kvizzy30\ESP32_Mutex\ESP32_Mutex.md.backup
+				Kvizzy30\ESP32_Mutex\Espressif-ESP32-Internal-Block-Diagram-CIRCUITSTATE-Electronics-01.png
+				Kvizzy30\ESP32_Mutex\How-to-Write-Parallel-Multitasking-Applications-for-ESP32-with-FreeRTOS-and-Arduino-Mutex-Working-Illustration-CIRCUITSTATE-Electronics-01-1280x751.png
+				Kvizzy30\ESP32_Mutex\How-to-Write-Parallel-Multitasking-Applications-for-ESP32-with-FreeRTOS-and-Arduino-Semaphore-Working-Illustration-CIRCUITSTATE-Electronics-01-1280x556.png
 			-ESP32_Watchdog
 				-ex5-1-33_BasicWDT
 					Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
@@ -1946,7 +1951,6 @@ Kvizzy
 				Kvizzy30\ESP32_Watchdog\4.jpg
 				Kvizzy30\ESP32_Watchdog\A-typical-Watchdog-setup.jpg
 				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md
-				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md.backup
 			-I2c_Scanner
 				Kvizzy30\I2c_Scanner\I2c_Scanner.fzz
 				Kvizzy30\I2c_Scanner\I2c_Scanner.ino
@@ -2072,9 +2076,10 @@ Kvizzy
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 1=Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino
 2=Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino
+3=Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneMutex\ex5-1-33_twousoneMutex.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino
+Selected=Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneMutex\ex5-1-33_twousoneMutex.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=7
 Caret=39,7
@@ -2084,3 +2089,6 @@ Caret=92,130
 [Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino]
 TopLine=8
 Caret=10,31
+[Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneMutex\ex5-1-33_twousoneMutex.ino]
+TopLine=91
+Caret=50,124
