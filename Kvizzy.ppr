@@ -1917,18 +1917,22 @@ Kvizzy
 				-Serialization
 					Kvizzy30\ArduinoJson\Serialization\Serialization.ino
 				Kvizzy30\ArduinoJson\ArduinoJson.md
-			+ESP32_Mutex
+			-ESP32_Mutex
 				-ex5-1-33_twousoneBlink
 					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino
 				-ex5-1-33_twousoneMutex
 					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneMutex\ex5-1-33_twousoneMutex.ino
-				+ex5-1-33_twousoneSemaphore
+				-ex5-1-33_twousoneSemaphore
 					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneSemaphore\ex5-1-33_twousoneSemaphore.ino
 				Kvizzy30\ESP32_Mutex\ESP32_Mutex.md
-				Kvizzy30\ESP32_Mutex\ESP32_Mutex.md.backup
 				Kvizzy30\ESP32_Mutex\Espressif-ESP32-Internal-Block-Diagram-CIRCUITSTATE-Electronics-01.png
 				Kvizzy30\ESP32_Mutex\How-to-Write-Parallel-Multitasking-Applications-for-ESP32-with-FreeRTOS-and-Arduino-Mutex-Working-Illustration-CIRCUITSTATE-Electronics-01-1280x751.png
 				Kvizzy30\ESP32_Mutex\How-to-Write-Parallel-Multitasking-Applications-for-ESP32-with-FreeRTOS-and-Arduino-Semaphore-Working-Illustration-CIRCUITSTATE-Electronics-01-1280x556.png
+			+ESP32_StackUsage
+				+ex5-1-33_high-watermark
+					Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino
+				Kvizzy30\ESP32_StackUsage\ESP32_StackUsage.md
+				Kvizzy30\ESP32_StackUsage\ESP32_StackUsage.md.backup
 			-ESP32_Watchdog
 				-ex5-1-33_BasicWDT
 					Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
@@ -2077,12 +2081,16 @@ Kvizzy
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 1=Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneSemaphore\ex5-1-33_twousoneSemaphore.ino
+2=Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneSemaphore\ex5-1-33_twousoneSemaphore.ino
+Selected=Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=7
 Caret=39,7
 [Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneSemaphore\ex5-1-33_twousoneSemaphore.ino]
-TopLine=57
+TopLine=8
 Caret=28,8
+[Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino]
+TopLine=9
+Caret=119,36
