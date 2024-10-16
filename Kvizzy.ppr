@@ -17,7 +17,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	+Kvizzy
+	-Kvizzy
 		-Buzzer_Sounds
 			-arduino-songs
 				-asabranca
@@ -1897,7 +1897,7 @@ Kvizzy
 			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
-		+Kvizzy30
+		-Kvizzy30
 			-2024-09-04 Kvizzy
 				-Test06_Obmen_Esp32
 					Kvizzy30\2024-09-04 Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
@@ -1922,17 +1922,18 @@ Kvizzy
 					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino
 				-ex5-1-33_twousoneMutex
 					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneMutex\ex5-1-33_twousoneMutex.ino
+				-ex5-1-33_twousonePortCritical
+					Kvizzy30\ESP32_Mutex\ex5-1-33_twousonePortCritical\ex5-1-33_twousonePortCritical.ino
 				-ex5-1-33_twousoneSemaphore
 					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneSemaphore\ex5-1-33_twousoneSemaphore.ino
 				Kvizzy30\ESP32_Mutex\ESP32_Mutex.md
 				Kvizzy30\ESP32_Mutex\Espressif-ESP32-Internal-Block-Diagram-CIRCUITSTATE-Electronics-01.png
 				Kvizzy30\ESP32_Mutex\How-to-Write-Parallel-Multitasking-Applications-for-ESP32-with-FreeRTOS-and-Arduino-Mutex-Working-Illustration-CIRCUITSTATE-Electronics-01-1280x751.png
 				Kvizzy30\ESP32_Mutex\How-to-Write-Parallel-Multitasking-Applications-for-ESP32-with-FreeRTOS-and-Arduino-Semaphore-Working-Illustration-CIRCUITSTATE-Electronics-01-1280x556.png
-			+ESP32_StackUsage
-				+ex5-1-33_high-watermark
+			-ESP32_StackUsage
+				-ex5-1-33_high-watermark
 					Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino
 				Kvizzy30\ESP32_StackUsage\ESP32_StackUsage.md
-				Kvizzy30\ESP32_StackUsage\ESP32_StackUsage.md.backup
 			-ESP32_Watchdog
 				-ex5-1-33_BasicWDT
 					Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
@@ -2080,17 +2081,13 @@ Kvizzy
 		«¿◊≈Ã Õ¿ ÃŒ“Œ–≈  ŒÕƒ≈Õ—¿“Œ–€.mp4
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
-1=Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneSemaphore\ex5-1-33_twousoneSemaphore.ino
-2=Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino
+1=Kvizzy30\ESP32_Mutex\ex5-1-33_twousonePortCritical\ex5-1-33_twousonePortCritical.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino
+Selected=Kvizzy30\ESP32_Mutex\ex5-1-33_twousonePortCritical\ex5-1-33_twousonePortCritical.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=7
 Caret=39,7
-[Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneSemaphore\ex5-1-33_twousoneSemaphore.ino]
-TopLine=8
-Caret=28,8
-[Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino]
-TopLine=9
-Caret=119,36
+[Kvizzy30\ESP32_Mutex\ex5-1-33_twousonePortCritical\ex5-1-33_twousonePortCritical.ino]
+TopLine=60
+Caret=69,82
