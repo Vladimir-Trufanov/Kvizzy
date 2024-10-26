@@ -17,7 +17,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	-Kvizzy
+	+Kvizzy
 		-Buzzer_Sounds
 			-arduino-songs
 				-asabranca
@@ -1736,7 +1736,7 @@ Kvizzy
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
 		-konstruktor-umnogo-hozyajstva
 			konstruktor-umnogo-hozyajstva\konstruktor-umnogo-hozyajstva.md
-		-KRUTJAK
+		+KRUTJAK
 			-Fritzing
 				KRUTJAK\Fritzing\Avtonom_v8.fzz
 				KRUTJAK\Fritzing\Avtonom_v8.jpg
@@ -1765,7 +1765,7 @@ Kvizzy
 					KRUTJAK\Krutjak_33\sk33\define_slave_kru.h
 					KRUTJAK\Krutjak_33\sk33\sk33.ino
 					KRUTJAK\Krutjak_33\sk33\timer2_kru.h
-			-MasterKrutjak
+			+MasterKrutjak
 				-mk02-OLED
 					-ShowMediumFont
 						KRUTJAK\MasterKrutjak\mk02-OLED\ShowMediumFont\ShowMediumFont.ino
@@ -1781,8 +1781,8 @@ Kvizzy
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\timer_kru.h
-				-mk08-Lead
-					KRUTJAK\MasterKrutjak\mk08-Lead\common_master_kru.h
+				+mk08-Lead
+					Kvizzy30\Kvizzy30\common_kvizzy.cpp
 					KRUTJAK\MasterKrutjak\mk08-Lead\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk08-Lead\mk08-Lead.ino
 					KRUTJAK\MasterKrutjak\mk08-Lead\timer1_kru.h
@@ -1897,7 +1897,7 @@ Kvizzy
 			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
-		-Kvizzy30
+		+Kvizzy30
 			-2024-09-04 Kvizzy
 				-Test06_Obmen_Esp32
 					Kvizzy30\2024-09-04 Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
@@ -1917,25 +1917,12 @@ Kvizzy
 				-Serialization
 					Kvizzy30\ArduinoJson\Serialization\Serialization.ino
 				Kvizzy30\ArduinoJson\ArduinoJson.md
-			-ESP32_Mutex
-				-ex5-1-33_twousoneBlink
-					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneBlink\ex5-1-33_twousoneBlink.ino
-				-ex5-1-33_twousoneMutex
-					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneMutex\ex5-1-33_twousoneMutex.ino
-				-ex5-1-33_twousonePortCritical
-					Kvizzy30\ESP32_Mutex\ex5-1-33_twousonePortCritical\ex5-1-33_twousonePortCritical.ino
-				-ex5-1-33_twousoneSemaphore
-					Kvizzy30\ESP32_Mutex\ex5-1-33_twousoneSemaphore\ex5-1-33_twousoneSemaphore.ino
-				Kvizzy30\ESP32_Mutex\ESP32_Mutex.md
-				Kvizzy30\ESP32_Mutex\Espressif-ESP32-Internal-Block-Diagram-CIRCUITSTATE-Electronics-01.png
-				Kvizzy30\ESP32_Mutex\How-to-Write-Parallel-Multitasking-Applications-for-ESP32-with-FreeRTOS-and-Arduino-Mutex-Working-Illustration-CIRCUITSTATE-Electronics-01-1280x751.png
-				Kvizzy30\ESP32_Mutex\How-to-Write-Parallel-Multitasking-Applications-for-ESP32-with-FreeRTOS-and-Arduino-Semaphore-Working-Illustration-CIRCUITSTATE-Electronics-01-1280x556.png
 			-ESP32_StackUsage
 				-ex5-1-33_high-watermark
 					Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino
 				Kvizzy30\ESP32_StackUsage\ESP32_StackUsage.md
-			-ESP32_Watchdog
-				-ex5-1-33_BasicWDT
+			+ESP32_Watchdog
+				+ex5-1-33_BasicWDT
 					Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
 				-ex5-1-33_DeadLockWDT
 					Kvizzy30\ESP32_Watchdog\ex5-1-33_DeadLockWDT\ex5-1-33_DeadLockWDT.ino
@@ -1958,6 +1945,7 @@ Kvizzy
 				Kvizzy30\ESP32_Watchdog\4.jpg
 				Kvizzy30\ESP32_Watchdog\A-typical-Watchdog-setup.jpg
 				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md
+				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md.backup
 			-I2c_Scanner
 				Kvizzy30\I2c_Scanner\I2c_Scanner.fzz
 				Kvizzy30\I2c_Scanner\I2c_Scanner.ino
@@ -1971,7 +1959,9 @@ Kvizzy
 				Kvizzy30\KlimovHelp\ESP32Ping-master.zip
 				Kvizzy30\KlimovHelp\KlimovHelp.md
 			-Kvizzy30
+				Kvizzy30\Kvizzy30\define_kvizzy.h
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
+				Kvizzy30\Kvizzy30\Kvizzy30.inoOld
 			-ParseXMLfile-LeadLEDs
 				Kvizzy30\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino
 				Kvizzy30\ParseXMLfile-LeadLEDs\tinyxml2.cpp
@@ -2081,13 +2071,17 @@ Kvizzy
 		«¿◊≈Ã Õ¿ ÃŒ“Œ–≈  ŒÕƒ≈Õ—¿“Œ–€.mp4
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
-1=Kvizzy30\ESP32_Mutex\ex5-1-33_twousonePortCritical\ex5-1-33_twousonePortCritical.ino
+1=Kvizzy30\Kvizzy30\define_kvizzy.h
+2=Kvizzy30\Kvizzy30\common_kvizzy.cpp
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\ESP32_Mutex\ex5-1-33_twousonePortCritical\ex5-1-33_twousonePortCritical.ino
+Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
-TopLine=7
-Caret=39,7
-[Kvizzy30\ESP32_Mutex\ex5-1-33_twousonePortCritical\ex5-1-33_twousonePortCritical.ino]
-TopLine=60
-Caret=69,82
+TopLine=1
+Caret=1,31
+[Kvizzy30\Kvizzy30\define_kvizzy.h]
+TopLine=1
+Caret=50,32
+[Kvizzy30\Kvizzy30\common_kvizzy.cpp]
+TopLine=1
+Caret=12,16
