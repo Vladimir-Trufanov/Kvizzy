@@ -10,6 +10,20 @@
 #define define_kvizzy
 #pragma once            
 
+#include <Arduino.h>
+
+String thisController() 
+{
+   doc["namectrl"] = "Esp32-CAM во двор дачи";
+   doc["idplace"]  = 201;   // 'Во двор дачи'
+   doc["tidctrl"]  = 1;     // 'Esp32-CAM'
+   doc["idctrl"]   = 201;   // идентификатор контроллера
+   String str = "";
+   serializeJson(doc,str);
+   return str;
+}
+
+/*
 const int PinRes   = A0;  // аналоговый вход, к которому подключен потенциометр
 const int PinPWM_L = 10;  // цифровой (ШИМ) выход, к которому подключено левое плечо транзисторов
 const int PinPWM_R = 9;   // цифровой (ШИМ) выход, к которому подключено правое плечо
@@ -26,6 +40,7 @@ volatile unsigned int cntr;
 const unsigned int BtnToggle = 62499;
 // Определяем флаг истечения 1 сек для запуска трассировок
 volatile boolean OneSecondFlag = false;
+*/
 
 #endif
 

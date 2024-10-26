@@ -11,19 +11,52 @@
  * 
 **/
 
-#include "define_kvizzy.h"     // подключили общие определения 
+
+// Размещаем JSON-документ
+#include <ArduinoJson.h>
+JsonDocument doc;
+
+#include "define_kvizzy.h"   // подключили общие определения 
 #include "common_kvizzy.h"   // подключили общие функции  
 
 void setup() 
 {
    Serial.begin(115200);
    while (!Serial) continue;
-   String g=jison1();
-   Serial.println(g);
+   
+   String sjson=jison1();
+   Serial.println(sjson);
+   ssetup(sjson);
 
-   while (!Serial) continue;
+   sjson=thisController();
+   Serial.print("Контроллер0: ");
+   Serial.println(sjson);
 
-   ssetup(g);
+
+   // The filter: it contains "true" for each value we want to keep
+   JsonDocument filter;
+   //filter["list"][0]["dt"] = true;
+   //filter["list"][0]["main"]["temp"] = true;
+
+   filter["namectrl"] = true; // "Esp32-CAM во двор дачи";
+   filter["idplace"]  = true; // 'Во двор дачи'
+   filter["tidctrl"]  = true; // 'Esp32-CAM'
+   filter["idctrl"]   = true; // идентификатор контроллера
+   
+   // Deserialize the document
+   JsonDocument doc;
+   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
+   // Print the result
+   String str = "";
+   serializeJson(doc,str);
+   Serial.print("Контроллер1: ");
+   Serial.println(str);
+
+
+
+
+
+   
 }
 
 void loop() 
@@ -32,13 +65,9 @@ void loop()
 
 void ssetup(String g) 
 {
-
-  // Allocate the JSON document
-  JsonDocument doc;
-
   // JSON input string.
-  const char* json = "12{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
-  //const char* json = g.c_str();
+  // const char* json = "12{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
+  const char* json = g.c_str();
 
 
   // Deserialize the JSON document
