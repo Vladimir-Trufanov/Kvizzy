@@ -1736,7 +1736,7 @@ Kvizzy
 			IrPlus\SAMSUNG - SmartRemote TV FHD UHD.irplus
 		-konstruktor-umnogo-hozyajstva
 			konstruktor-umnogo-hozyajstva\konstruktor-umnogo-hozyajstva.md
-		+KRUTJAK
+		-KRUTJAK
 			-Fritzing
 				KRUTJAK\Fritzing\Avtonom_v8.fzz
 				KRUTJAK\Fritzing\Avtonom_v8.jpg
@@ -1765,7 +1765,7 @@ Kvizzy
 					KRUTJAK\Krutjak_33\sk33\define_slave_kru.h
 					KRUTJAK\Krutjak_33\sk33\sk33.ino
 					KRUTJAK\Krutjak_33\sk33\timer2_kru.h
-			+MasterKrutjak
+			-MasterKrutjak
 				-mk02-OLED
 					-ShowMediumFont
 						KRUTJAK\MasterKrutjak\mk02-OLED\ShowMediumFont\ShowMediumFont.ino
@@ -1781,8 +1781,8 @@ Kvizzy
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\mk07-reciVCC.ino
 					KRUTJAK\MasterKrutjak\mk07-reciVCC\timer_kru.h
-				+mk08-Lead
-					Kvizzy30\Kvizzy30\common_kvizzy.cpp
+				-mk08-Lead
+					KRUTJAK\MasterKrutjak\mk08-Lead\common_master_kru.h
 					KRUTJAK\MasterKrutjak\mk08-Lead\define_master_kru.h
 					KRUTJAK\MasterKrutjak\mk08-Lead\mk08-Lead.ino
 					KRUTJAK\MasterKrutjak\mk08-Lead\timer1_kru.h
@@ -1914,15 +1914,35 @@ Kvizzy
 			-ArduinoJson
 				-Deserialization
 					Kvizzy30\ArduinoJson\Deserialization\Deserialization.ino
+				-JSON-Array
+					-cjson
+						Kvizzy30\ArduinoJson\JSON-Array\cjson\cJSON.c
+						Kvizzy30\ArduinoJson\JSON-Array\cjson\cJSON.h
+						Kvizzy30\ArduinoJson\JSON-Array\cjson\LICENSE
+					Kvizzy30\ArduinoJson\JSON-Array\Arduino_JSON.h
+					Kvizzy30\ArduinoJson\JSON-Array\JSON.cpp
+					Kvizzy30\ArduinoJson\JSON-Array\JSON.h
+					Kvizzy30\ArduinoJson\JSON-Array\JSON-Array.ino
+					Kvizzy30\ArduinoJson\JSON-Array\JSONVar.cpp
+					Kvizzy30\ArduinoJson\JSON-Array\JSONVar.h
+				-KvizzyProba
+					Kvizzy30\ArduinoJson\KvizzyProba\common_kvizzy.h
+					Kvizzy30\ArduinoJson\KvizzyProba\define_kvizzy.h
+					Kvizzy30\ArduinoJson\KvizzyProba\KvizzyProba.ino
+				-LearningJSON
+					Kvizzy30\ArduinoJson\LearningJSON\common_kvizzy.h
+					Kvizzy30\ArduinoJson\LearningJSON\LearningJSON.ino
 				-Serialization
 					Kvizzy30\ArduinoJson\Serialization\Serialization.ino
+				Kvizzy30\ArduinoJson\Arduino_JSON-master.zip
 				Kvizzy30\ArduinoJson\ArduinoJson.md
+				Kvizzy30\ArduinoJson\Kvizzy30.inoOld
 			-ESP32_StackUsage
 				-ex5-1-33_high-watermark
 					Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino
 				Kvizzy30\ESP32_StackUsage\ESP32_StackUsage.md
-			+ESP32_Watchdog
-				+ex5-1-33_BasicWDT
+			-ESP32_Watchdog
+				-ex5-1-33_BasicWDT
 					Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
 				-ex5-1-33_DeadLockWDT
 					Kvizzy30\ESP32_Watchdog\ex5-1-33_DeadLockWDT\ex5-1-33_DeadLockWDT.ino
@@ -1958,10 +1978,10 @@ Kvizzy
 					Kvizzy30\KlimovHelp\ServerPing\ServerPing.ino
 				Kvizzy30\KlimovHelp\ESP32Ping-master.zip
 				Kvizzy30\KlimovHelp\KlimovHelp.md
-			-Kvizzy30
+			+Kvizzy30
+				Kvizzy30\Kvizzy30\common_kvizzy.h
 				Kvizzy30\Kvizzy30\define_kvizzy.h
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
-				Kvizzy30\Kvizzy30\Kvizzy30.inoOld
 			-ParseXMLfile-LeadLEDs
 				Kvizzy30\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino
 				Kvizzy30\ParseXMLfile-LeadLEDs\tinyxml2.cpp
@@ -2072,16 +2092,16 @@ Kvizzy
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 1=Kvizzy30\Kvizzy30\define_kvizzy.h
-2=Kvizzy30\Kvizzy30\common_kvizzy.cpp
+2=Kvizzy30\Kvizzy30\common_kvizzy.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
+Selected=Kvizzy30\Kvizzy30\common_kvizzy.h
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=1
 Caret=1,31
 [Kvizzy30\Kvizzy30\define_kvizzy.h]
 TopLine=1
-Caret=50,32
-[Kvizzy30\Kvizzy30\common_kvizzy.cpp]
+Caret=79,38
+[Kvizzy30\Kvizzy30\common_kvizzy.h]
 TopLine=1
-Caret=12,16
+Caret=39,26

@@ -12,14 +12,75 @@
 
 #include <Arduino.h>
 
+// Определяем состояния светодиода с обратной логикой
+#define inHIGH LOW
+#define inLOW  HIGH 
+
+// Определяем общий JSON-документ контроллера и его датчиков и оборудования
 String thisController() 
 {
+   // Включаем в документ данные контроллера
+   
    doc["namectrl"] = "Esp32-CAM во двор дачи";
-   doc["idplace"]  = 201;   // 'Во двор дачи'
-   doc["tidctrl"]  = 1;     // 'Esp32-CAM'
-   doc["idctrl"]   = 201;   // идентификатор контроллера
+   doc["tidctrl"]  = 1;            // идентификатор типа контроллера
+   doc["typectrl"] = "Esp32-CAM";  // тип контроллера
+   
+   // Включаем в документ встроенные или подключенные устройства
+   JsonArray devices = doc.createNestedArray("devices");
+
+   // Нулевое "0" ядро контроллера
+   JsonObject device0 = devices.createNestedObject();
+   device0["iddev"] = 0;           // идентификатор устройства
+   device0["tiddev"] = 3;          // идентификатор типа устройства
+   device0["typedev"] = "Core32";  // тип устройства
+   JsonArray core_0 = device0.createNestedArray("core_0");
+   JsonObject core0 = core_0.createNestedObject();
+   core0["idcore"] = 0;            // идентификатор ядра
+   core0["stacksize"] = 0;         // выделенный размер стека
+   core0["minstack"] = 0;          // минимальный отмеченный размер
+
+   // Первое "1" ядро контроллера
+   JsonObject device1 = devices.createNestedObject();
+   device1["iddev"] = 1;           // идентификатор устройства
+   device1["tiddev"] = 3;          // идентификатор типа устройства
+   device1["typedev"] = "Core32";  // тип устройства
+   JsonArray core_1 = device1.createNestedArray("core_1");
+   JsonObject core1 = core_1.createNestedObject();
+   core1["idcore"] = 1;            // идентификатор ядра
+   core1["stacksize"] = 0;         // выделенный размер стека
+   core1["minstack"] = 0;          // минимальный отмеченный размер
+
+   // Контрольный светодиод
+   JsonObject device2 = devices.createNestedObject();
+   device2["iddev"] = 2;           // идентификатор устройства
+   device2["tiddev"] = 1;          // идентификатор типа устройства
+   device2["typedev"] = "inLed";   // тип устройства
+   JsonArray led_33 = device2.createNestedArray("led_33");
+   JsonObject led33 = led_33.createNestedObject();
+   led33["status"] = inLOW;        // текущее состояние светодиода     
+
+   // Вспышка
+   JsonObject device3 = devices.createNestedObject();
+   device3["iddev"] = 3;           // идентификатор устройства
+   device3["tiddev"] = 2;          // идентификатор типа устройства
+   device3["typedev"] = "Led";     // тип устройства
+   JsonArray led_4 = device3.createNestedArray("led_4");
+   JsonObject led4 = led_4.createNestedObject();
+   led4["status"] = LOW;           // текущее состояние светодиода     
+   
+   // Датчик температуры
+   JsonObject device4 = devices.createNestedObject();
+   device4["iddev"] = 4;           // идентификатор устройства
+   device4["tiddev"] = 5;          // идентификатор типа устройства
+   device4["typedev"] = "DHT22";   // тип устройства
+   JsonArray DHT_22 = device4.createNestedArray("DHT_22");
+   JsonObject DHT22 = DHT_22.createNestedObject();
+   DHT22["status"] = 0;            // текущее показание датчика     
+   
    String str = "";
-   serializeJson(doc,str);
+   //serializeJson(doc,str);
+   serializeJsonPretty(doc,str);
+
    return str;
 }
 
