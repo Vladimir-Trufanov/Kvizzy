@@ -24,13 +24,13 @@ void setup()
    Serial.begin(115200);
    while (!Serial) continue;
    
-   String sjson=jison1();
-   Serial.println(sjson);
-   ssetup(sjson);
+   String sjson=thisController();
+   //Serial.println(sjson);
+   //ssetup(sjson);
 
-   sjson=thisController();
-   Serial.print("Контроллер0: ");
-   Serial.println(sjson);
+   //sjson=thisController();
+   //Serial.print("Контроллер0: ");
+   //Serial.println(sjson);
 
 
    /*
@@ -53,12 +53,16 @@ void setup()
    Serial.print("Контроллер1: ");
    Serial.println(str);
    */
-   String str=thisA(sjson);
-   Serial.print("КонтроллерA: ");
+   String str=getEsp32CAM(sjson);
+   Serial.print("Контроллер: ");
    Serial.println(str);
 
-   str=thisB(sjson);
-   Serial.print("КонтроллерB: ");
+   str=getCore0(sjson);
+   Serial.print("getCore0: ");
+   Serial.println(str);
+
+   str=getDHT22(sjson);
+   Serial.print("getDHT22: ");
    Serial.println(str);
 
 

@@ -2095,13 +2095,13 @@ Kvizzy
 2=Kvizzy30\Kvizzy30\common_kvizzy.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\common_kvizzy.h
+Selected=Kvizzy30\Kvizzy30\define_kvizzy.h
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
-TopLine=1
+TopLine=7
 Caret=1,31
 [Kvizzy30\Kvizzy30\define_kvizzy.h]
-TopLine=1
+TopLine=27
 Caret=79,38
 [Kvizzy30\Kvizzy30\common_kvizzy.h]
-TopLine=1
+TopLine=5
 Caret=39,26

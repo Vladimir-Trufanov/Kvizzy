@@ -17,81 +17,70 @@
 #define inLOW  HIGH 
 
 // Определяем общий JSON-документ контроллера и его датчиков и оборудования
+// https://arduinojson.org/ 
 String thisController() 
 {
    // Включаем в документ данные контроллера
-   
    doc["namectrl"] = "Esp32-CAM во двор дачи";
-   doc["tidctrl"]  = 1;            // идентификатор типа контроллера
-   doc["typectrl"] = "Esp32-CAM";  // тип контроллера
-   
-   // Включаем в документ встроенные или подключенные устройства
-   JsonArray devices = doc.createNestedArray("devices");
+   doc["tidctrl"]  = 1;             // идентификатор типа контроллера
+   doc["typectrl"] = "Esp32-CAM";   // тип контроллера
 
    // Нулевое "0" ядро контроллера
-   JsonObject device0 = devices.createNestedObject();
-   device0["iddev"] = 0;           // идентификатор устройства
-   device0["tiddev"] = 3;          // идентификатор типа устройства
-   device0["typedev"] = "Core32";  // тип устройства
-   JsonArray core_0 = device0.createNestedArray("core_0");
-   JsonObject core0 = core_0.createNestedObject();
-   core0["idcore"] = 0;            // идентификатор ядра
-   core0["stacksize"] = 0;         // выделенный размер стека
-   core0["minstack"] = 0;          // минимальный отмеченный размер
+   JsonArray core0 = doc.createNestedArray("core0");
+   JsonObject core_0 = core0.createNestedObject();
+   core_0["iddev"] = 0;             // идентификатор устройства
+   core_0["tiddev"] = 3;            // идентификатор типа устройства
+   core_0["typedev"] = "Core32";    // тип устройства
+   core_0["idcore"] = 0;            // идентификатор ядра
+   core_0["stacksize"] = 0;         // выделенный размер стека
+   core_0["minstack"] = 0;          // минимальный отмеченный размер
 
    // Первое "1" ядро контроллера
-   JsonObject device1 = devices.createNestedObject();
-   device1["iddev"] = 1;           // идентификатор устройства
-   device1["tiddev"] = 3;          // идентификатор типа устройства
-   device1["typedev"] = "Core32";  // тип устройства
-   JsonArray core_1 = device1.createNestedArray("core_1");
-   JsonObject core1 = core_1.createNestedObject();
-   core1["idcore"] = 1;            // идентификатор ядра
-   core1["stacksize"] = 0;         // выделенный размер стека
-   core1["minstack"] = 0;          // минимальный отмеченный размер
+   JsonArray core1 = doc.createNestedArray("core1");
+   JsonObject core_1 = core1.createNestedObject();
+   core_1["iddev"] = 1;             // идентификатор устройства
+   core_1["tiddev"] = 3;            // идентификатор типа устройства
+   core_1["typedev"] = "Core32";    // тип устройства
+   core_1["idcore"] = 1;            // идентификатор ядра
+   core_1["stacksize"] = 0;         // выделенный размер стека
+   core_1["minstack"] = 0;          // минимальный отмеченный размер
 
    // Контрольный светодиод
-   JsonObject device2 = devices.createNestedObject();
-   device2["iddev"] = 2;           // идентификатор устройства
-   device2["tiddev"] = 1;          // идентификатор типа устройства
-   device2["typedev"] = "inLed";   // тип устройства
-   JsonArray led_33 = device2.createNestedArray("led_33");
-   JsonObject led33 = led_33.createNestedObject();
-   led33["status"] = inLOW;        // текущее состояние светодиода     
+   JsonArray led33 = doc.createNestedArray("led33");
+   JsonObject led_33 = led33.createNestedObject();
+   led_33["iddev"] = 2;             // идентификатор устройства
+   led_33["tiddev"] = 2;            // идентификатор типа устройства
+   led_33["typedev"] = "inLed";     // тип устройства
+   led_33["status"] = inLOW;        // текущее состояние светодиода     
 
    // Вспышка
-   JsonObject device3 = devices.createNestedObject();
-   device3["iddev"] = 3;           // идентификатор устройства
-   device3["tiddev"] = 2;          // идентификатор типа устройства
-   device3["typedev"] = "Led";     // тип устройства
-   JsonArray led_4 = device3.createNestedArray("led_4");
-   JsonObject led4 = led_4.createNestedObject();
-   led4["status"] = LOW;           // текущее состояние светодиода     
-   
-   // Датчик температуры
-   JsonObject device4 = devices.createNestedObject();
-   device4["iddev"] = 4;           // идентификатор устройства
-   device4["tiddev"] = 5;          // идентификатор типа устройства
-   device4["typedev"] = "DHT22";   // тип устройства
-   JsonArray DHT_22 = device4.createNestedArray("DHT_22");
-   JsonObject DHT22 = DHT_22.createNestedObject();
-   DHT22["status"] = 0;            // текущее показание датчика     
-   
-   String str = "";
-   //serializeJson(doc,str);
-   serializeJsonPretty(doc,str);
+   JsonArray led4 = doc.createNestedArray("led4");
+   JsonObject led_4 = led4.createNestedObject();
+   led_4["iddev"] = 3;              // идентификатор устройства
+   led_4["tiddev"] = 2;             // идентификатор типа устройства
+   led_4["typedev"] = "Led";        // тип устройства
+   led_4["status"] = LOW;           // текущее состояние светодиода     
 
+   // Датчик температуры
+   JsonArray DHT22 = doc.createNestedArray("DHT22");
+   JsonObject DHT_22 = DHT22.createNestedObject();
+   DHT_22["iddev"] = 4;             // идентификатор устройства
+   DHT_22["tiddev"] = 5;            // идентификатор типа устройства
+   DHT_22["typedev"] = "DHT22";     // тип устройства
+   DHT_22["status"] = 0;            // текущее состояние светодиода     
+
+   String str = "";
+   serializeJson(doc,str);
+   serializeJsonPretty(doc,Serial);
    return str;
 }
 
-String thisA(String sjson) 
+String getEsp32CAM(String sjson) 
 {
    JsonDocument filter;
-   filter["namectrl"] = true; // "Esp32-CAM во двор дачи";
-   filter["idplace"]  = true; // 'Во двор дачи'
-   filter["tidctrl"]  = true; // 'Esp32-CAM'
-   filter["idctrl"]   = true; // идентификатор контроллера
-   // Deserialize the document
+   filter["namectrl"] = true;  // "Esp32-CAM во двор дачи";
+   filter["tidctrl"] = true; 
+   filter["typectrl"]  = true; // 'Esp32-CAM'
    JsonDocument doc;
    deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
    String str = "";
@@ -99,16 +88,25 @@ String thisA(String sjson)
    return str;
 }
 
-String thisB(String sjson) 
+String getCore0(String sjson) 
 {
    JsonDocument filter;
-   filter["sensor"] = true; 
-   filter["time"]  = true; 
-   filter["data"]  = true; 
+   filter["core0"]= true;
    JsonDocument doc;
    deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
-   doc["data"][0]=1.0;
-   doc["data"][1]=1.1;
+   doc["minstack"]=34;
+   String str = "";
+   serializeJson(doc,str);
+   return str;
+}
+
+String getDHT22(String sjson) 
+{
+   JsonDocument filter;
+   filter["DHT22"]= true;
+   JsonDocument doc;
+   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
+   doc["status"]=128;
    String str = "";
    serializeJson(doc,str);
    return str;
