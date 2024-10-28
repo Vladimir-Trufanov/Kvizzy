@@ -22,6 +22,7 @@ String thisController()
 {
    // Включаем в документ данные контроллера
    doc["namectrl"] = "Esp32-CAM во двор дачи";
+   doc["idctrl"] = 1;               // идентификатор контроллера
    doc["tidctrl"]  = 1;             // идентификатор типа контроллера
    doc["typectrl"] = "Esp32-CAM";   // тип контроллера
 
@@ -79,6 +80,7 @@ String getEsp32CAM(String sjson)
 {
    JsonDocument filter;
    filter["namectrl"] = true;  // "Esp32-CAM во двор дачи";
+   filter["idctrl"] = true; 
    filter["tidctrl"] = true; 
    filter["typectrl"]  = true; // 'Esp32-CAM'
    JsonDocument doc;
@@ -91,10 +93,12 @@ String getEsp32CAM(String sjson)
 String getCore0(String sjson) 
 {
    JsonDocument filter;
-   filter["core0"]= true;
+   filter["idctrl"] = true; 
+   filter["core0"][0]["iddev"]= true;
+   filter["core0"][0]["minstack"]= true;
    JsonDocument doc;
    deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
-   doc["minstack"]=34;
+   doc["core0"][0]["minstack"]=34;
    String str = "";
    serializeJson(doc,str);
    return str;
@@ -103,10 +107,12 @@ String getCore0(String sjson)
 String getDHT22(String sjson) 
 {
    JsonDocument filter;
-   filter["DHT22"]= true;
+   filter["idctrl"] = true; 
+   filter["DHT22"][0]["iddev"]= true;
+   filter["DHT22"][0]["status"]= true;
    JsonDocument doc;
    deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
-   doc["status"]=128;
+   doc["DHT22"][0]["status"]=128;
    String str = "";
    serializeJson(doc,str);
    return str;

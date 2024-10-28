@@ -3,7 +3,7 @@
  * Kvizzy30 - модельное программное обеспечение для Esp32-CAM и двух встроенных
  * светодиодов: контрольного и вспышки
  * 
- * v3.1, 07.10.2024                                   Автор:      Труфанов В.Е.
+ * v3.1, 28.10.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 31.05.2024
  * 
  *           Kvizzy - система контроллеров, датчиков и исполнительных устройств 
@@ -25,34 +25,8 @@ void setup()
    while (!Serial) continue;
    
    String sjson=thisController();
-   //Serial.println(sjson);
-   //ssetup(sjson);
 
-   //sjson=thisController();
-   //Serial.print("Контроллер0: ");
-   //Serial.println(sjson);
-
-
-   /*
-   // The filter: it contains "true" for each value we want to keep
-   JsonDocument filter;
-   //filter["list"][0]["dt"] = true;
-   //filter["list"][0]["main"]["temp"] = true;
-
-   filter["namectrl"] = true; // "Esp32-CAM во двор дачи";
-   filter["idplace"]  = true; // 'Во двор дачи'
-   filter["tidctrl"]  = true; // 'Esp32-CAM'
-   filter["idctrl"]   = true; // идентификатор контроллера
-   
-   // Deserialize the document
-   JsonDocument doc;
-   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
-   // Print the result
-   String str = "";
-   serializeJson(doc,str);
-   Serial.print("Контроллер1: ");
-   Serial.println(str);
-   */
+   Serial.println("");
    String str=getEsp32CAM(sjson);
    Serial.print("Контроллер: ");
    Serial.println(str);
@@ -65,22 +39,7 @@ void setup()
    Serial.print("getDHT22: ");
    Serial.println(str);
 
-
-   /*
-   filter["idctrl"]   = false; // идентификатор контроллера
-   filter["sensor"]   = true;  
-   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
-   // Print the result
-   str = "";
-   serializeJson(doc,str);
-   Serial.print("Контроллер2: ");
-   Serial.println(str);
-   */
-
-
-
-
-   
+   ssetup(sjson); 
 }
 
 void loop() 
@@ -92,33 +51,26 @@ void ssetup(String g)
   // JSON input string.
   // const char* json = "12{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
   const char* json = g.c_str();
-
-
   // Deserialize the JSON document
   DeserializationError error = deserializeJson(doc, json);
-
   // Test if parsing succeeds.
-  if (error) {
+  if (error) 
+  {
     Serial.print(F("deserializeJson() failed: "));
     Serial.println(error.f_str());
     return;
   }
 
   // Fetch values.
-  //
   // Most of the time, you can rely on the implicit casts.
   // In other case, you can do doc["time"].as<long>();
-  const char* sensor = doc["sensor"];
-  long time = doc["time"];
-  double latitude = doc["data"][0];
-  double longitude = doc["data"][1];
-
+  const char* namectrl = doc["namectrl"];
+  double minstack = doc["core0"][0]["minstack"];
+  int DHT22status = doc["DHT22"][0]["status"];
   // Print values.
-  Serial.println(sensor);
-  Serial.println(time);
-  Serial.println(latitude, 6);
-  Serial.println(longitude, 6);
+  Serial.println(namectrl);
+  Serial.println(minstack,2);
+  Serial.println(DHT22status);
 }
-
 
 // *********************************************************** Kvizzy30.ino ***
