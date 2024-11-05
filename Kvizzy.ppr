@@ -1897,11 +1897,11 @@ Kvizzy
 			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
-		-Kvizzy30
-			-2024-09-04 Kvizzy
-				-Test06_Obmen_Esp32
+		+Kvizzy30
+			+2024-09-04 Kvizzy
+				+Test06_Obmen_Esp32
 					Kvizzy30\2024-09-04 Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
-				-Test06_Obmen_ProMini
+				+Test06_Obmen_ProMini
 					Kvizzy30\2024-09-04 Kvizzy\Test06_Obmen_ProMini\Test06_Obmen_ProMini.ino
 				Kvizzy30\2024-09-04 Kvizzy\2024-09-04 Kvizzy.md
 				Kvizzy30\2024-09-04 Kvizzy\ESP32-CAM-Pinout.png
@@ -1911,7 +1911,7 @@ Kvizzy
 				Kvizzy30\2024-09-04 Kvizzy\principialnaya-ehlektricheskaya-shema-foto-lovushki.png
 				Kvizzy30\2024-09-04 Kvizzy\Serial communication between Arduino and ESP32 CAM.webp
 				Kvizzy30\2024-09-04 Kvizzy\SPI between Arduino and ESP32 CAM.webp
-			-ArduinoJson
+			+ArduinoJson
 				-Deserialization
 					Kvizzy30\ArduinoJson\Deserialization\Deserialization.ino
 				-JSON-Array
@@ -1937,39 +1937,10 @@ Kvizzy
 				Kvizzy30\ArduinoJson\Arduino_JSON-master.zip
 				Kvizzy30\ArduinoJson\ArduinoJson.md
 				Kvizzy30\ArduinoJson\Kvizzy30.inoOld
-			-ESP32_StackUsage
-				-ex5-1-33_high-watermark
-					Kvizzy30\ESP32_StackUsage\ex5-1-33_high-watermark\ex5-1-33_high-watermark.ino
-				Kvizzy30\ESP32_StackUsage\ESP32_StackUsage.md
-			-ESP32_Watchdog
-				-ex5-1-33_BasicWDT
-					Kvizzy30\ESP32_Watchdog\ex5-1-33_BasicWDT\ex5-1-33_BasicWDT.ino
-				-ex5-1-33_DeadLockWDT
-					Kvizzy30\ESP32_Watchdog\ex5-1-33_DeadLockWDT\ex5-1-33_DeadLockWDT.ino
-				-ex5-1-33_Watchdog
-					Kvizzy30\ESP32_Watchdog\ex5-1-33_Watchdog\ex5-1-33_Watchdog.ino
-				-Listing2_DeadLockWDT
-					Kvizzy30\ESP32_Watchdog\Listing2_DeadLockWDT\Listing2_DeadLockWDT.ino
-				-Listing3_SanityCheckSingleLoop
-					Kvizzy30\ESP32_Watchdog\Listing3_SanityCheckSingleLoop\Listing3_SanityCheckSingleLoop.ino
-				-Listing4_SanityCheckRTOS
-					Kvizzy30\ESP32_Watchdog\Listing4_SanityCheckRTOS\Listing4_SanityCheckRTOS.ino
-				-Listing5_GreatWDT
-					Kvizzy30\ESP32_Watchdog\Listing5_GreatWDT\Listing5_GreatWDT.ino
-				-MakeException
-					Kvizzy30\ESP32_Watchdog\MakeException\MakeException.ino
-				-UsesMutex
-					Kvizzy30\ESP32_Watchdog\UsesMutex\UsesMutex.ino
-				Kvizzy30\ESP32_Watchdog\2.jpg
-				Kvizzy30\ESP32_Watchdog\3.jpg
-				Kvizzy30\ESP32_Watchdog\4.jpg
-				Kvizzy30\ESP32_Watchdog\A-typical-Watchdog-setup.jpg
-				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md
-				Kvizzy30\ESP32_Watchdog\ESP32_Watchdog.md.backup
 			-I2c_Scanner
 				Kvizzy30\I2c_Scanner\I2c_Scanner.fzz
 				Kvizzy30\I2c_Scanner\I2c_Scanner.ino
-			-KlimovHelp
+			+KlimovHelp
 				-FindExactTime
 					Kvizzy30\KlimovHelp\FindExactTime\FindExactTime.ino
 				-FindWeather
@@ -1978,7 +1949,7 @@ Kvizzy
 					Kvizzy30\KlimovHelp\ServerPing\ServerPing.ino
 				Kvizzy30\KlimovHelp\ESP32Ping-master.zip
 				Kvizzy30\KlimovHelp\KlimovHelp.md
-			-Kvizzy30
+			+Kvizzy30
 				Kvizzy30\Kvizzy30\common_kvizzy.h
 				Kvizzy30\Kvizzy30\define_kvizzy.h
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
@@ -1999,6 +1970,12 @@ Kvizzy
 				Kvizzy30\WalkSounds\Walk_Defines.h
 				Kvizzy30\WalkSounds\Walk_Sounds.cpp
 				Kvizzy30\WalkSounds\Walk_Sounds.h
+			-Настройка и трассировка FreeRTOS
+				Kvizzy30\Настройка и трассировка FreeRTOS\Настройка и трассировка FreeRTOS.md
+			-Обработчик завершения работы
+				Kvizzy30\Обработчик завершения работы\Обработчик завершения работы.md
+			-Отладка ошибок Arduino с помощью декодера исключений ESP32
+				Kvizzy30\Отладка ошибок Arduino с помощью декодера исключений ESP32\ Отладка ошибок Arduino с помощью декодера исключений ESP32.md
 			Kvizzy30\ESP32-CAM-ADC-Pins.webp
 			Kvizzy30\ESP32-CAM-Pinout.webp
 			Kvizzy30\ESP32-CAM-PWM-Pins.webp
@@ -2091,9 +2068,17 @@ Kvizzy
 		ЗАЧЕМ НА МОТОРЕ КОНДЕНСАТОРЫ.mp4
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
+1=Kvizzy30\Kvizzy30\define_kvizzy.h
+2=Kvizzy30\2024-09-04 Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
+Selected=Kvizzy30\2024-09-04 Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
-TopLine=7
+TopLine=13
 Caret=1,31
+[Kvizzy30\Kvizzy30\define_kvizzy.h]
+TopLine=31
+Caret=1,1
+[Kvizzy30\2024-09-04 Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino]
+TopLine=1
+Caret=1,1

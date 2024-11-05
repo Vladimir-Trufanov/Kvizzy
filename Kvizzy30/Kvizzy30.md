@@ -1,4 +1,4 @@
-## [Kvizzy30 - Фотоловушка на даче](#) 
+## [Kvizzy30 - Стремящееся к умному хозяйство](#) 
 
 ### [ESP32-CAM - справочник по распиновке](https://lastminuteengineers.com/esp32-cam-pinout-reference/)
 
