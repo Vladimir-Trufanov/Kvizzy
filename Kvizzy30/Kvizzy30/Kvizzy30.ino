@@ -1,9 +1,10 @@
 /** Arduino, Esp32-CAM *************************************** Kvizzy30.ino ***
  * 
  * Kvizzy30 - модельное программное обеспечение для Esp32-CAM и двух встроенных
- * светодиодов: контрольного и вспышки
+ *    светодиодов: контрольного и вспышки (нижний уровень стремящегося к умному
+ *                                                                   хозяйства)
  * 
- * v3.1, 28.10.2024                                   Автор:      Труфанов В.Е.
+ * v3.2, 05.11.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 31.05.2024
  * 
  *           Kvizzy - система контроллеров, датчиков и исполнительных устройств 
@@ -19,31 +20,184 @@ JsonDocument doc;
 #include "define_kvizzy.h"   // подключили общие определения 
 #include "common_kvizzy.h"   // подключили общие функции  
 
+
+// Определяем заголовок для объекта таймера
+hw_timer_t *timer = NULL;
+// Инициируем спинлок критической секции в обработчике таймерного прерывания
+portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+// Определяем число, которое будет считываться в основном цикле
+// с последовательного порта
+volatile int inumber;
+// Определяем задачи и их флаги
+void vTask1(void *pvParameters);
+void vTask2(void *pvParameters);
+void vCore1(void *pvParameters);
+void vCore0(void *pvParameters);
+int flag[] = {0, 0, 0, 0};
+
+// Обработка прерывания от таймера
+void IRAM_ATTR onTimer() 
+{
+   portENTER_CRITICAL_ISR(&timerMux);
+   // Если флаги всех задач установлены в 1, 
+   // то сбрасываем флаги задач и счетчик сторожевого таймера
+   if (flag[0] == 1 && flag[1] == 1 && flag[2] == 1 && flag[3] == 1) 
+   {
+      // Сбрасываем флаги задач
+      flag[0] = 0;
+      flag[1] = 0;
+      flag[2] = 0;
+      flag[3] = 0;
+      // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
+      timerWrite(timer, 0);
+   }
+   // Иначе перезагружаем контроллер
+   else 
+   {
+      ESP.restart();
+   }
+   portEXIT_CRITICAL_ISR(&timerMux);
+}
+
+// Начальная настройка: выделяем четыре задачи (две на 0 процессоре, две на 1)
+// и обеспечиваем запуск прерывания от таймера периодически через 3 секунды
 void setup() 
 {
    Serial.begin(115200);
    while (!Serial) continue;
-   
-   String sjson=thisController();
+   Serial.println("Последовательный порт работает!");
+
+   xTaskCreatePinnedToCore(
+      vTask1,                 // Task function
+      "Task1",                // Task name
+      1024,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      1,                      // Priority
+      NULL,                   // Task handle
+      0); //ARDUINO_RUNNING_CORE);
+
+   xTaskCreatePinnedToCore(
+      vTask2,                 // Task function
+      "Task2",                // Task name
+      1024,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      1,                      // Priority
+      NULL,                   // Task handle
+      0); //ARDUINO_RUNNING_CORE);
+
+   xTaskCreatePinnedToCore(
+      vCore1,                 // Task function
+      "Core1",                // Task name
+      2048,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      2,                      // Priority
+      NULL,                   // Task handle
+      1);
+
+   xTaskCreatePinnedToCore(
+      vCore0,                 // Task function
+      "Core0",                // Task name
+      2048,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      3,                      // Priority
+      NULL,                   // Task handle
+      0);
+
+   // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
+   timer = timerBegin(1000000);
+   // Подключаем функцию обработчика прерывания от таймера - onTimer
+   timerAttachInterrupt(timer, &onTimer);
+   // Настраиваем таймер: интервал перезапуска - 20 секунд (20000000 микросекунд),
+   // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
+   // раз (четвертый параметр = 0) 
+   timerAlarm(timer, 20000000, true, 0);
+
+   sjson=thisController();
 
    Serial.println("");
    String str=getEsp32CAM(sjson);
    Serial.print("Контроллер: ");
    Serial.println(str);
 
-   str=getCore0(sjson);
-   Serial.print("getCore0: ");
-   Serial.println(str);
+   ssetup(sjson); 
 
+   /*
    str=getDHT22(sjson);
    Serial.print("getDHT22: ");
    Serial.println(str);
-
-   ssetup(sjson); 
+   */
 }
 
+// Основной цикл: считываем с последовательного порта целое число
+// (так как в зависимости от окружения за целым числом может следовать нулевое значение,
+// то отсекаем 0)
 void loop() 
 {
+   if (Serial.available() > 0) 
+   {
+      int ii=Serial.parseInt();
+      if (ii>0) inumber=ii;
+      delay(100);
+   }
+}
+
+// Имитируем событие зависания процессора
+void MimicMCUhangEvent(String NameTask)
+{
+   while (true)
+   {
+      Serial.print(NameTask);
+      Serial.println(": зависание процессора!!!");
+   }
+}
+
+void vTask1(void* pvParameters) 
+{
+   for (;;)
+   {
+      //Serial.print("Task1 ");
+      // В обычном режиме делаем паузу 500 мсек и выставляем бит задачи в 1
+      vTaskDelay(500/portTICK_PERIOD_MS);
+      flag[0] = 1;
+      // Имитируем зависание микроконтроллера с помощью опознанного числа,
+      // принятого в последовательном порту
+      if (inumber == 1) MimicMCUhangEvent("Task1");   
+   }
+}
+void vTask2(void* pvParameters) 
+{
+   for ( ;; )
+   {
+      //Serial.print("Task2 ");
+      vTaskDelay(500/portTICK_PERIOD_MS);
+      flag[1] = 1;
+      if (inumber == 2) MimicMCUhangEvent("Task2");   
+   }
+}
+void vCore1(void* pvParameters) 
+{
+   for ( ;; )
+   {
+      String str=getCoreX(sjson);
+      Serial.print("getCore1: ");
+      Serial.println(str);
+      vTaskDelay(6000/portTICK_PERIOD_MS);   // 6 секунд задача
+      flag[2] = 1;
+      if (inumber == 3) MimicMCUhangEvent("Core1");   
+   }
+}
+void vCore0(void* pvParameters) 
+{
+   for ( ;; )
+   {
+      String str=getCoreX(sjson,"Core0");
+      Serial.print("getCore0: ");
+      Serial.println(str);
+
+      vTaskDelay(5000/portTICK_PERIOD_MS);   // 5 секунд задача 
+      flag[3] = 1;
+      if (inumber == 4) MimicMCUhangEvent("Core0");   
+   }
 }
 
 void ssetup(String g) 
@@ -73,4 +227,4 @@ void ssetup(String g)
   Serial.println(DHT22status);
 }
 
-// *********************************************************** Kvizzy30.ino ***
+// ************************************************* ex3-0-6-5-GreatWDT.ino ***

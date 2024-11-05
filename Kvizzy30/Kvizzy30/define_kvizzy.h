@@ -16,6 +16,8 @@
 #define inHIGH LOW
 #define inLOW  HIGH 
 
+String sjson;
+
 // Определяем общий JSON-документ контроллера и его датчиков и оборудования
 // https://arduinojson.org/ 
 String thisController() 
@@ -90,6 +92,7 @@ String getEsp32CAM(String sjson)
    return str;
 }
 
+/*
 String getCore0(String sjson) 
 {
    JsonDocument filter;
@@ -99,6 +102,21 @@ String getCore0(String sjson)
    JsonDocument doc;
    deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
    doc["core0"][0]["minstack"]=34;
+   String str = "";
+   serializeJson(doc,str);
+   return str;
+}
+*/
+
+String getCoreX(String sjson, String imjaCore="core1") 
+{
+   JsonDocument filter;
+   filter["idctrl"] = true; 
+   filter[imjaCore][0]["iddev"]= true;
+   filter[imjaCore][0]["minstack"]= true;
+   JsonDocument doc;
+   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
+   doc[imjaCore][0]["minstack"]=34;
    String str = "";
    serializeJson(doc,str);
    return str;
