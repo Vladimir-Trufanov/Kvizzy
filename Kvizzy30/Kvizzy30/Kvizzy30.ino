@@ -17,6 +17,12 @@
 #include <ArduinoJson.h>
 JsonDocument doc;
 
+
+// Определяем состояния светодиода с обратной логикой
+#define inHIGH LOW
+#define inLOW  HIGH 
+
+
 #include "define_kvizzy.h"   // подключили общие определения 
 #include "common_kvizzy.h"   // подключили общие функции  
 
@@ -28,6 +34,13 @@ portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
 // Определяем число, которое будет считываться в основном цикле
 // с последовательного порта
 volatile int inumber;
+// Пины для мигания лампочек
+#define LedWorkEsp32Cam  33     // контакт рабочего светодиода
+//
+volatile int mitLed33=millis();
+volatile int mittLed33=millis();
+volatile int mitMimic=millis();
+
 // Определяем задачи и их флаги
 void vTask1(void *pvParameters);
 void vTask2(void *pvParameters);
@@ -67,23 +80,28 @@ void setup()
    while (!Serial) continue;
    Serial.println("Последовательный порт работает!");
 
+   // Переводим контакты лампочек в режим вывода
+   pinMode(LedWorkEsp32Cam,OUTPUT);    // "работает"
+   digitalWrite(LedWorkEsp32Cam,true);
+
+
    xTaskCreatePinnedToCore(
       vTask1,                 // Task function
       "Task1",                // Task name
-      1024,                   // Stack size
+      2048,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      1,                      // Priority
+      10,                      // Priority
       NULL,                   // Task handle
-      0); //ARDUINO_RUNNING_CORE);
+      1); //ARDUINO_RUNNING_CORE);
 
    xTaskCreatePinnedToCore(
-      vTask2,                 // Task function
-      "Task2",                // Task name
+      vTastes,                // Task function
+      "Tastes",               // Task name
       1024,                   // Stack size
       NULL,                   // Parameters passed to the task function
       1,                      // Priority
       NULL,                   // Task handle
-      0); //ARDUINO_RUNNING_CORE);
+      1); 
 
    xTaskCreatePinnedToCore(
       vCore1,                 // Task function
@@ -128,17 +146,9 @@ void setup()
    */
 }
 
-// Основной цикл: считываем с последовательного порта целое число
-// (так как в зависимости от окружения за целым числом может следовать нулевое значение,
-// то отсекаем 0)
+// Основной цикл
 void loop() 
 {
-   if (Serial.available() > 0) 
-   {
-      int ii=Serial.parseInt();
-      if (ii>0) inumber=ii;
-      delay(100);
-   }
 }
 
 // Имитируем событие зависания процессора
@@ -146,32 +156,76 @@ void MimicMCUhangEvent(String NameTask)
 {
    while (true)
    {
-      Serial.print(NameTask);
-      Serial.println(": зависание процессора!!!");
+      int mitMimici=millis();
+      if ((mitMimici-mitMimic)>1005)
+      {
+         Serial.print(NameTask);
+         Serial.println(": зависание процессора!!!");
+         mitMimic = mitMimici;
+      }
    }
+}
+
+
+String getLed33(String sjson) 
+{
+   JsonDocument filter;
+   filter["nicctrl"] = true; 
+   filter["led33"][0]["typedev"]= true;
+   filter["led33"][0]["status"]= true;
+   JsonDocument doc;
+   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
+   int LedStatus=digitalRead(LedWorkEsp32Cam);
+   if (LedStatus==inHIGH) doc["led33"][0]["status"]="inHIGH";
+   else doc["led33"][0]["status"]="inLOW";
+   String str = "";
+   serializeJson(doc,str);
+   return str;
 }
 
 void vTask1(void* pvParameters) 
 {
    for (;;)
    {
-      //Serial.print("Task1 ");
-      // В обычном режиме делаем паузу 500 мсек и выставляем бит задачи в 1
-      vTaskDelay(500/portTICK_PERIOD_MS);
-      flag[0] = 1;
       // Имитируем зависание микроконтроллера с помощью опознанного числа,
       // принятого в последовательном порту
       if (inumber == 1) MimicMCUhangEvent("Task1");   
+
+      //int mittLed33i=millis();
+      //if ((mittLed33i-mittLed33)>1007)
+      //{
+         String str=getLed33(sjson);
+         Serial.print("getLed33: ");
+         Serial.println(str);
+         vTaskDelay(1007/portTICK_PERIOD_MS);   
+         //mittLed33 = mittLed33i;
+      //}
+      flag[0] = 1;
    }
 }
-void vTask2(void* pvParameters) 
+void vTastes(void* pvParameters) 
 {
    for ( ;; )
    {
-      //Serial.print("Task2 ");
-      vTaskDelay(500/portTICK_PERIOD_MS);
+      // Считываем с последовательного порта целое число
+      // (так как в зависимости от окружения за целым числом может следовать нулевое значение,
+      // то отсекаем 0)
+      if (Serial.available() > 0) 
+      {
+         int ii=Serial.parseInt();
+         if (ii>0) inumber=ii;
+         delay(100);
+      }
+      
+      // Мигаем лампочкой
+      int mitLed33i=millis();
+      if ((mitLed33i-mitLed33)>2016)
+      {
+         digitalWrite(LedWorkEsp32Cam,!digitalRead(LedWorkEsp32Cam));
+         mitLed33 = mitLed33i;
+      }
       flag[1] = 1;
-      if (inumber == 2) MimicMCUhangEvent("Task2");   
+      if (inumber == 2) MimicMCUhangEvent("Tastes");   
    }
 }
 void vCore1(void* pvParameters) 

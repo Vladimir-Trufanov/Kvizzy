@@ -12,10 +12,6 @@
 
 #include <Arduino.h>
 
-// Определяем состояния светодиода с обратной логикой
-#define inHIGH LOW
-#define inLOW  HIGH 
-
 String sjson;
 
 // Определяем общий JSON-документ контроллера и его датчиков и оборудования
@@ -24,9 +20,8 @@ String thisController()
 {
    // Включаем в документ данные контроллера
    doc["namectrl"] = "Esp32-CAM во двор дачи";
-   doc["idctrl"] = 1;               // идентификатор контроллера
+   doc["nicctrl"] = "myjoy";        // nic контроллера
    doc["tidctrl"]  = 1;             // идентификатор типа контроллера
-   doc["typectrl"] = "Esp32-CAM";   // тип контроллера
 
    // Нулевое "0" ядро контроллера
    JsonArray core0 = doc.createNestedArray("core0");
@@ -51,10 +46,8 @@ String thisController()
    // Контрольный светодиод
    JsonArray led33 = doc.createNestedArray("led33");
    JsonObject led_33 = led33.createNestedObject();
-   led_33["iddev"] = 2;             // идентификатор устройства
-   led_33["tiddev"] = 2;            // идентификатор типа устройства
    led_33["typedev"] = "inLed";     // тип устройства
-   led_33["status"] = inLOW;        // текущее состояние светодиода     
+   led_33["status"] = "inLOW";      // текущее состояние светодиода     
 
    // Вспышка
    JsonArray led4 = doc.createNestedArray("led4");
