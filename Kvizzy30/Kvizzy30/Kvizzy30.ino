@@ -12,6 +12,13 @@
  * 
 **/
 
+// Подключаем библиотеку для работы с HTTP-протоколом
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+// Вводим имя и пароль точки доступа
+const char* ssid     = "OPPO A9 2020";
+const char* password = "b277a4ee84e8";
 
 // Размещаем JSON-документ
 #include <ArduinoJson.h>
@@ -84,6 +91,15 @@ void setup()
    pinMode(LedWorkEsp32Cam,OUTPUT);    // "работает"
    digitalWrite(LedWorkEsp32Cam,true);
 
+  // подключаемся к Wi-Fi сети
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) 
+  {
+    delay(1000);
+    Serial.println("Соединяемся с Wi-Fi..");
+  }
+  Serial.println("Соединение с Wi-Fi установлено");
+
 
    xTaskCreatePinnedToCore(
       vTask1,                 // Task function
@@ -119,7 +135,7 @@ void setup()
       NULL,                   // Parameters passed to the task function
       3,                      // Priority
       NULL,                   // Task handle
-      0);
+      1);
 
    // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
    timer = timerBegin(1000000);
@@ -128,7 +144,7 @@ void setup()
    // Настраиваем таймер: интервал перезапуска - 20 секунд (20000000 микросекунд),
    // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
    // раз (четвертый параметр = 0) 
-   timerAlarm(timer, 20000000, true, 0);
+   timerAlarm(timer, 120000000, true, 0);
 
    sjson=thisController();
 
@@ -191,15 +207,11 @@ void vTask1(void* pvParameters)
       // принятого в последовательном порту
       if (inumber == 1) MimicMCUhangEvent("Task1");   
 
-      //int mittLed33i=millis();
-      //if ((mittLed33i-mittLed33)>1007)
-      //{
-         String str=getLed33(sjson);
-         Serial.print("getLed33: ");
-         Serial.println(str);
-         vTaskDelay(1007/portTICK_PERIOD_MS);   
-         //mittLed33 = mittLed33i;
-      //}
+      String str=getLed33(sjson);
+      Serial.print("getLed33: ");
+      Serial.println(str);
+      vTaskDelay(1007/portTICK_PERIOD_MS);   
+
       flag[0] = 1;
    }
 }
