@@ -10,6 +10,7 @@
  *           Kvizzy - система контроллеров, датчиков и исполнительных устройств 
  *                    моего, стремящегося к умному, хозяйства (нижний уровень).
  * 
+ * -------- 2024.11.07 Когда WiFi задачи на 0 ядре не размещать! Неустойчивая работа!
 **/
 
 // Подключаем библиотеку для работы с HTTP-протоколом
@@ -24,15 +25,12 @@ const char* password = "b277a4ee84e8";
 #include <ArduinoJson.h>
 JsonDocument doc;
 
-
 // Определяем состояния светодиода с обратной логикой
 #define inHIGH LOW
 #define inLOW  HIGH 
 
-
 #include "define_kvizzy.h"   // подключили общие определения 
 #include "common_kvizzy.h"   // подключили общие функции  
-
 
 // Определяем заголовок для объекта таймера
 hw_timer_t *timer = NULL;
@@ -49,8 +47,8 @@ volatile int mittLed33=millis();
 volatile int mitMimic=millis();
 
 // Определяем задачи и их флаги
-void vTask1(void *pvParameters);
-void vTask2(void *pvParameters);
+void vLed33(void *pvParameters);
+void vTastes(void *pvParameters);
 void vCore1(void *pvParameters);
 void vCore0(void *pvParameters);
 int flag[] = {0, 0, 0, 0};
@@ -91,25 +89,27 @@ void setup()
    pinMode(LedWorkEsp32Cam,OUTPUT);    // "работает"
    digitalWrite(LedWorkEsp32Cam,true);
 
-  // подключаемся к Wi-Fi сети
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) 
-  {
-    delay(1000);
-    Serial.println("Соединяемся с Wi-Fi..");
-  }
-  Serial.println("Соединение с Wi-Fi установлено");
-
+   // Подключаемся к Wi-Fi сети
+   WiFi.begin(ssid, password);
+   Serial.print("Соединяемся с Wi-Fi .");
+   while (WiFi.status() != WL_CONNECTED) 
+   {
+      delay(500);
+      Serial.print(".");
+   }
+   Serial.println(" ");
+   Serial.println("Соединение с Wi-Fi установлено");
 
    xTaskCreatePinnedToCore(
-      vTask1,                 // Task function
-      "Task1",                // Task name
+      vLed33,                 // Task function
+      "Led33",                // Task name
       2048,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      10,                      // Priority
+      5,                      // Priority
       NULL,                   // Task handle
-      1); //ARDUINO_RUNNING_CORE);
+      1); 
 
+   // Сделан низкий приоритет, так как часто (и занимается посл.порт на прием)
    xTaskCreatePinnedToCore(
       vTastes,                // Task function
       "Tastes",               // Task name
@@ -124,7 +124,7 @@ void setup()
       "Core1",                // Task name
       2048,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      2,                      // Priority
+      6,                      // Priority
       NULL,                   // Task handle
       1);
 
@@ -133,9 +133,9 @@ void setup()
       "Core0",                // Task name
       2048,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      3,                      // Priority
+      6,                      // Priority
       NULL,                   // Task handle
-      1);
+      0);
 
    // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
    timer = timerBegin(1000000);
@@ -144,8 +144,8 @@ void setup()
    // Настраиваем таймер: интервал перезапуска - 20 секунд (20000000 микросекунд),
    // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
    // раз (четвертый параметр = 0) 
-   timerAlarm(timer, 120000000, true, 0);
-
+   timerAlarm(timer, 20000000, true, 0);
+   
    sjson=thisController();
 
    Serial.println("");
@@ -153,8 +153,8 @@ void setup()
    Serial.print("Контроллер: ");
    Serial.println(str);
 
-   ssetup(sjson); 
-
+   //ssetup(sjson); 
+   
    /*
    str=getDHT22(sjson);
    Serial.print("getDHT22: ");
@@ -165,6 +165,35 @@ void setup()
 // Основной цикл
 void loop() 
 {
+   // выполняем проверку подключения к беспроводной сети
+   if ((WiFi.status() == WL_CONNECTED)) 
+   {
+      // Cоздаем объект для работы с HTTP
+      HTTPClient http;
+      // Подключаемся к веб-странице
+      // http.begin("https://doortry.ru/stihi/sorevnovanie-s-hakerami");
+      // http.begin("https://kwinflatht.nichost.ru/State");
+      http.begin("https://doortry.ru/State/");  // 2024-11-07 получилось
+      // http.begin("www.doortry.ru/State/") = "Ошибка HTTP-запроса";
+      
+      // Делаем GET запрос
+      int httpCode = http.GET();
+      // Проверяем успешность запроса
+      if (httpCode > 0) 
+      {
+         // Выводим ответ сервера
+         String ContentPage = http.getString();
+         Serial.println(httpCode);
+         Serial.println(ContentPage);
+      }
+      else 
+      {
+         Serial.println("Ошибка HTTP-запроса");
+      }
+      // Освобождаем ресурсы микроконтроллера
+      http.end();
+   }
+   delay(15000);
 }
 
 // Имитируем событие зависания процессора
@@ -199,13 +228,13 @@ String getLed33(String sjson)
    return str;
 }
 
-void vTask1(void* pvParameters) 
+void vLed33(void* pvParameters) 
 {
    for (;;)
    {
       // Имитируем зависание микроконтроллера с помощью опознанного числа,
       // принятого в последовательном порту
-      if (inumber == 1) MimicMCUhangEvent("Task1");   
+      if (inumber == 1) MimicMCUhangEvent("Led33");   
 
       String str=getLed33(sjson);
       Serial.print("getLed33: ");
@@ -215,6 +244,9 @@ void vTask1(void* pvParameters)
       flag[0] = 1;
    }
 }
+
+// Сделано часто, так как считываем целое число из последовательного порта
+// и мигаем лампочками
 void vTastes(void* pvParameters) 
 {
    for ( ;; )
@@ -226,7 +258,7 @@ void vTastes(void* pvParameters)
       {
          int ii=Serial.parseInt();
          if (ii>0) inumber=ii;
-         delay(100);
+         vTaskDelay(100/portTICK_PERIOD_MS);   
       }
       
       // Мигаем лампочкой
