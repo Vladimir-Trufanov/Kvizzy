@@ -2,7 +2,7 @@
  * 
  * Определить переменные и константы нижнего уровня умного хозяйства на двух светодиодах
  * 
- * v1.1, 26.10.2024                                   Автор:      Труфанов В.Е.
+ * v1.2, 08.11.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -12,17 +12,75 @@
 
 #include <Arduino.h>
 
+// Определяем задачи и их флаги
+void vLed33(void *pvParameters);
+void vTastes(void *pvParameters);
+void vCore1(void *pvParameters);
+void vCore0(void *pvParameters);
+int flag[] = {0, 0, 0, 0};
+
+// Определяем число, которое будет считываться в основном цикле
+// с последовательного порта
+volatile int inumber;
+
+//
+volatile int mitLed33=millis();
+volatile int mitMimic=millis();
+
+// Имитируем событие зависания процессора
+void MimicMCUhangEvent(String NameTask)
+{
+   while (true)
+   {
+      int mitMimici=millis();
+      if ((mitMimici-mitMimic)>1005)
+      {
+         Serial.print(NameTask);
+         Serial.println(": зависание процессора!!!");
+         mitMimic = mitMimici;
+      }
+   }
+}
+
+// Размещаем JSON-документ
+#include <ArduinoJson.h>
+JsonDocument doc;
+
+// Определяем пустую json-строку
+String jempty = "{}";
+
 String sjson;
 
 // Определяем общий JSON-документ контроллера и его датчиков и оборудования
 // https://arduinojson.org/ 
 String thisController() 
 {
-   // Включаем в документ данные контроллера
-   doc["namectrl"] = "Esp32-CAM во двор дачи";
-   doc["nicctrl"] = "myjoy";        // nic контроллера
-   doc["tidctrl"]  = 1;             // идентификатор типа контроллера
+   /*
+   // Идентификаторы и типы контроллеров "стремящегося к умному хозяйства" (ControllersType)
+      tidctrl typectrl
+      ----------------
+            1,'Esp32-CAM'
+            2,'Arduino Pro Mini'
+            3,'Esp01'
 
+   // Идентификаторы и типы устройств (DevicesType)
+       tiddev typedev
+       --------------
+            1,'inLed'      // светодиод c обратной логикой
+            2,'Led'        // светодиод
+            3,'Core32'     // ядро Esp32
+  
+   // Идентификаторы и типы датчиков (SensorsType)
+      tidsens typesens
+      ----------------
+            1,'DHT11'         
+            2,'DHT22'       
+   */
+
+   // Включаем в документ данные контроллера
+   doc["tidctrl"] = 1;                         // идентификатор типа контроллера
+   doc["namectrl"] = "Esp32-CAM во двор дачи"; //
+   doc["nicctrl"] = "myjoy";                   // nic контроллера
    // Нулевое "0" ядро контроллера
    JsonArray core0 = doc.createNestedArray("core0");
    JsonObject core_0 = core0.createNestedObject();
@@ -32,7 +90,6 @@ String thisController()
    core_0["idcore"] = 0;            // идентификатор ядра
    core_0["stacksize"] = 0;         // выделенный размер стека
    core_0["minstack"] = 0;          // минимальный отмеченный размер
-
    // Первое "1" ядро контроллера
    JsonArray core1 = doc.createNestedArray("core1");
    JsonObject core_1 = core1.createNestedObject();
@@ -42,13 +99,12 @@ String thisController()
    core_1["idcore"] = 1;            // идентификатор ядра
    core_1["stacksize"] = 0;         // выделенный размер стека
    core_1["minstack"] = 0;          // минимальный отмеченный размер
-
    // Контрольный светодиод
    JsonArray led33 = doc.createNestedArray("led33");
    JsonObject led_33 = led33.createNestedObject();
-   led_33["typedev"] = "inLed";     // тип устройства
+   led_33["tiddev"] = 1;            // идентификатор типа устройства
+   led_33["nicdev"] = "inLed";      // nic устройства
    led_33["status"] = "inLOW";      // текущее состояние светодиода     
-
    // Вспышка
    JsonArray led4 = doc.createNestedArray("led4");
    JsonObject led_4 = led4.createNestedObject();
@@ -56,7 +112,6 @@ String thisController()
    led_4["tiddev"] = 2;             // идентификатор типа устройства
    led_4["typedev"] = "Led";        // тип устройства
    led_4["status"] = LOW;           // текущее состояние светодиода     
-
    // Датчик температуры
    JsonArray DHT22 = doc.createNestedArray("DHT22");
    JsonObject DHT_22 = DHT22.createNestedObject();
@@ -85,22 +140,6 @@ String getEsp32CAM(String sjson)
    return str;
 }
 
-/*
-String getCore0(String sjson) 
-{
-   JsonDocument filter;
-   filter["idctrl"] = true; 
-   filter["core0"][0]["iddev"]= true;
-   filter["core0"][0]["minstack"]= true;
-   JsonDocument doc;
-   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
-   doc["core0"][0]["minstack"]=34;
-   String str = "";
-   serializeJson(doc,str);
-   return str;
-}
-*/
-
 String getCoreX(String sjson, String imjaCore="core1") 
 {
    JsonDocument filter;
@@ -128,25 +167,6 @@ String getDHT22(String sjson)
    serializeJson(doc,str);
    return str;
 }
-
-/*
-const int PinRes   = A0;  // аналоговый вход, к которому подключен потенциометр
-const int PinPWM_L = 10;  // цифровой (ШИМ) выход, к которому подключено левое плечо транзисторов
-const int PinPWM_R = 9;   // цифровой (ШИМ) выход, к которому подключено правое плечо
-
-#define LEDPIN         13 
-#define IR_RECEIVE_PIN 2
-
-
-// Состояние светодиода: "горит" - "не горит"
-bool doBurns;
-// Определяем счетчик прерываний от таймера и общее их количество до
-// события переключения светодиода = 1 секунде 
-volatile unsigned int cntr;
-const unsigned int BtnToggle = 62499;
-// Определяем флаг истечения 1 сек для запуска трассировок
-volatile boolean OneSecondFlag = false;
-*/
 
 #endif
 

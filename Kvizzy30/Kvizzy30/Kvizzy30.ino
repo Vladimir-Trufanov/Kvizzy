@@ -4,7 +4,7 @@
  *    светодиодов: контрольного и вспышки (нижний уровень стремящегося к умному
  *                                                                   хозяйства)
  * 
- * v3.2, 05.11.2024                                   Автор:      Труфанов В.Е.
+ * v3.3, 08.11.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 31.05.2024
  * 
  *           Kvizzy - система контроллеров, датчиков и исполнительных устройств 
@@ -21,37 +21,19 @@
 const char* ssid     = "OPPO A9 2020";
 const char* password = "b277a4ee84e8";
 
-// Размещаем JSON-документ
-#include <ArduinoJson.h>
-JsonDocument doc;
-
 // Определяем состояния светодиода с обратной логикой
-#define inHIGH LOW
-#define inLOW  HIGH 
+//#define inHIGH LOW
+//#define inLOW  HIGH 
 
 #include "define_kvizzy.h"   // подключили общие определения 
 #include "common_kvizzy.h"   // подключили общие функции  
+
+#include "Led33.h"           // подключили обработку контрольного светодиода 
 
 // Определяем заголовок для объекта таймера
 hw_timer_t *timer = NULL;
 // Инициируем спинлок критической секции в обработчике таймерного прерывания
 portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
-// Определяем число, которое будет считываться в основном цикле
-// с последовательного порта
-volatile int inumber;
-// Пины для мигания лампочек
-#define LedWorkEsp32Cam  33     // контакт рабочего светодиода
-//
-volatile int mitLed33=millis();
-volatile int mittLed33=millis();
-volatile int mitMimic=millis();
-
-// Определяем задачи и их флаги
-void vLed33(void *pvParameters);
-void vTastes(void *pvParameters);
-void vCore1(void *pvParameters);
-void vCore0(void *pvParameters);
-int flag[] = {0, 0, 0, 0};
 
 // Обработка прерывания от таймера
 void IRAM_ATTR onTimer() 
@@ -155,11 +137,6 @@ void setup()
 
    //ssetup(sjson); 
    
-   /*
-   str=getDHT22(sjson);
-   Serial.print("getDHT22: ");
-   Serial.println(str);
-   */
 }
 
 // Основной цикл
@@ -196,30 +173,18 @@ void loop()
    delay(15000);
 }
 
-// Имитируем событие зависания процессора
-void MimicMCUhangEvent(String NameTask)
-{
-   while (true)
-   {
-      int mitMimici=millis();
-      if ((mitMimici-mitMimic)>1005)
-      {
-         Serial.print(NameTask);
-         Serial.println(": зависание процессора!!!");
-         mitMimic = mitMimici;
-      }
-   }
-}
-
-
+/*
 String getLed33(String sjson) 
 {
    JsonDocument filter;
+   filter["tidctrl"] = true;     // идентификатор типа контроллера
    filter["nicctrl"] = true; 
-   filter["led33"][0]["typedev"]= true;
-   filter["led33"][0]["status"]= true;
+   filter["led33"][0]["tiddev"]= true;  // идентификатор типа устройства
+   filter["led33"][0]["nicdev"]= true;  // nic устройства
+   filter["led33"][0]["status"]= true;  // текущее состояние светодиода     
    JsonDocument doc;
    deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
+   // Выбираем состояние устройства
    int LedStatus=digitalRead(LedWorkEsp32Cam);
    if (LedStatus==inHIGH) doc["led33"][0]["status"]="inHIGH";
    else doc["led33"][0]["status"]="inLOW";
@@ -244,6 +209,7 @@ void vLed33(void* pvParameters)
       flag[0] = 1;
    }
 }
+*/
 
 // Сделано часто, так как считываем целое число из последовательного порта
 // и мигаем лампочками
