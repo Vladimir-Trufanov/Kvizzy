@@ -12,8 +12,23 @@
 
 #include <Arduino.h>
 
-// Определяем задачи и их флаги
+// Значения чисел, считанных из последовательного порта, 
+// иммитирующие ошибочные ситуации 
+#define loopingLed33     1     // зацикливание задачи vLed33
+#define loopingTastes    2     // зацикливание задачи vTastes
+#define loopingCore1     3     // зацикливание задачи vCore1
+#define loopingCore0     4     // зацикливание задачи vCore0
+#define disaflashing33  51     // отключение мигания контрольного светодиода
+#define enabflashing33  52     // включение мигания контрольного светодиода
+
+
+// Назначаем задачу определение состояния контрольного светодиода ESP32-CAM 
+// ("горит - не горит") и передачу данных на страницу сайта State  
 void vLed33(void *pvParameters);
+// Определяем флаг задачи для сторожевого таймера
+bool fwdtLed33 = false;
+
+// Определяем задачи и их флаги
 void vTastes(void *pvParameters);
 void vCore1(void *pvParameters);
 void vCore0(void *pvParameters);
@@ -21,7 +36,7 @@ int flag[] = {0, 0, 0, 0};
 
 // Определяем число, которое будет считываться в основном цикле
 // с последовательного порта
-volatile int inumber;
+volatile int iCreateSit;
 
 //
 volatile int mitLed33=millis();

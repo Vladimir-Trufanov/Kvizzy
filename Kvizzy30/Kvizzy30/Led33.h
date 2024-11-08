@@ -12,18 +12,21 @@
 #pragma once            
 
 #include <Arduino.h>
-#include "define_kvizzy.h"   // подключили общие определения 
+#include "define_kvizzy.h"    
 
-// Определяем состояния светодиода с обратной логикой
-#define inHIGH LOW
-#define inLOW  HIGH 
-
-// Пины для мигания лампочек
-#define LedWorkEsp32Cam  33     // контакт рабочего светодиода
+#define inHIGH LOW           // светодиод с обратной логикой включён
+#define inLOW  HIGH          // светодиод с обратной логикой ВЫКЛ
+#define LedWorkEsp32Cam  33  // пин рабочего светодиода
+#define tictrlLed33 15000    // интервал контрольной отправки состояния светодиода
 
 // Определяем переменную прежнего состояния светодиода
-volatile int oldStatus=inLOW; 
+volatile int oLed33Status=inLOW; 
+// Определяем время последнего учтенного (отправленного) состояния светодиода
+volatile int mitсLed33=millis();
 
+// ****************************************************************************
+// *          Проверить состояние светодиода и сформировать json-строку       *
+// ****************************************************************************
 String getLed33(String sjson) 
 {
    // Инициируем возвращаемую json-строку   
@@ -38,27 +41,44 @@ String getLed33(String sjson)
    JsonDocument doc;
    deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
    // Выбираем состояние устройства
-   int LedStatus=digitalRead(LedWorkEsp32Cam);
-   // Если состояние светодиода не изменилось, то возврашаем пустой json
-   if (LedStatus==oldStatus) return jstr;
+   int Led33Status=digitalRead(LedWorkEsp32Cam);
+   // Если состояние светодиода не изменилось, то, как правило, возврашаем пустой json
+   // для того, чтобы не передавать лишний раз данные на серверную страницу.
+   // Но если неизменное состояние длится более контрольного времени,
+   // то, всё-таки делаем контрольную отправку
+   if (Led33Status==oLed33Status) 
+   {
+      int mitсLed33i=millis();
+      if ((mitсLed33i-mitсLed33)>tictrlLed33)
+      {
+         if (oLed33Status==inHIGH) doc["led33"][0]["status"]="inHIGH";
+         else doc["led33"][0]["status"]="inLOW";
+         serializeJson(doc,jstr);
+         mitсLed33 = mitсLed33i;
+      }
+      return jstr;
+   }
    // Если состояние светодиода изменилось готовим новую json-строку
    else
    {
-      if (LedStatus==inHIGH) doc["led33"][0]["status"]="inHIGH";
+      if (Led33Status==inHIGH) doc["led33"][0]["status"]="inHIGH";
       else doc["led33"][0]["status"]="inLOW";
       serializeJson(doc,jstr);
-      oldStatus=LedStatus;
+      oLed33Status=Led33Status;
       return jstr;
    }
 }
-
+// * Задача FreRTOS ***********************************************************
+// *                Обеспечить определение состояния контрольного светодиода  *
+// * ESP32-CAM ("горит - не горит") и передачу данных на страницу сайта State *
+// ****************************************************************************
 void vLed33(void* pvParameters) 
 {
    for (;;)
    {
       // Имитируем зависание микроконтроллера с помощью опознанного числа,
       // принятого в последовательном порту
-      if (inumber == 1) MimicMCUhangEvent("Led33");   
+      if (iCreateSit == loopingLed33) MimicMCUhangEvent("Led33");   
 
       String jstr=getLed33(sjson);
       // Если состояние светодиода изменилось, то есть получена не пустая 
@@ -68,8 +88,9 @@ void vLed33(void* pvParameters)
          Serial.print("getLed33: ");
          Serial.println(jstr);
       }
-      vTaskDelay(507/portTICK_PERIOD_MS);   
-      flag[0] = 1;
+      vTaskDelay(507/portTICK_PERIOD_MS); 
+      // Отмечаем флагом, что цикл задачи успешно завершен   
+      fwdtLed33 = true;
    }
 }
 

@@ -9,8 +9,6 @@
  * 
  *           Kvizzy - система контроллеров, датчиков и исполнительных устройств 
  *                    моего, стремящегося к умному, хозяйства (нижний уровень).
- * 
- * -------- 2024.11.07 Когда WiFi задачи на 0 ядре не размещать! Неустойчивая работа!
 **/
 
 // Подключаем библиотеку для работы с HTTP-протоколом
@@ -41,10 +39,10 @@ void IRAM_ATTR onTimer()
    portENTER_CRITICAL_ISR(&timerMux);
    // Если флаги всех задач установлены в 1, 
    // то сбрасываем флаги задач и счетчик сторожевого таймера
-   if (flag[0] == 1 && flag[1] == 1 && flag[2] == 1 && flag[3] == 1) 
+   if (fwdtLed33 == true && flag[1] == 1 && flag[2] == 1 && flag[3] == 1) 
    {
       // Сбрасываем флаги задач
-      flag[0] = 0;
+      fwdtLed33 = false;
       flag[1] = 0;
       flag[2] = 0;
       flag[3] = 0;
@@ -82,15 +80,6 @@ void setup()
    Serial.println(" ");
    Serial.println("Соединение с Wi-Fi установлено");
 
-   xTaskCreatePinnedToCore(
-      vLed33,                 // Task function
-      "Led33",                // Task name
-      2048,                   // Stack size
-      NULL,                   // Parameters passed to the task function
-      5,                      // Priority
-      NULL,                   // Task handle
-      1); 
-
    // Сделан низкий приоритет, так как часто (и занимается посл.порт на прием)
    xTaskCreatePinnedToCore(
       vTastes,                // Task function
@@ -101,6 +90,17 @@ void setup()
       NULL,                   // Task handle
       1); 
 
+   // Подключаем задачу определение состояния контрольного светодиода ESP32-CAM 
+   // ("горит - не горит") и передачу данных на страницу сайта State  
+   xTaskCreatePinnedToCore(
+      vLed33,                 // Task function
+      "Led33",                // Task name
+      2048,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      5,                      // Priority
+      NULL,                   // Task handle
+      1); 
+   //
    xTaskCreatePinnedToCore(
       vCore1,                 // Task function
       "Core1",                // Task name
@@ -148,7 +148,6 @@ void loop()
       // Cоздаем объект для работы с HTTP
       HTTPClient http;
       // Подключаемся к веб-странице
-      // http.begin("https://doortry.ru/stihi/sorevnovanie-s-hakerami");
       // http.begin("https://kwinflatht.nichost.ru/State");
       http.begin("https://doortry.ru/State/");  // 2024-11-07 получилось
       // http.begin("www.doortry.ru/State/") = "Ошибка HTTP-запроса";
@@ -173,44 +172,6 @@ void loop()
    delay(15000);
 }
 
-/*
-String getLed33(String sjson) 
-{
-   JsonDocument filter;
-   filter["tidctrl"] = true;     // идентификатор типа контроллера
-   filter["nicctrl"] = true; 
-   filter["led33"][0]["tiddev"]= true;  // идентификатор типа устройства
-   filter["led33"][0]["nicdev"]= true;  // nic устройства
-   filter["led33"][0]["status"]= true;  // текущее состояние светодиода     
-   JsonDocument doc;
-   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
-   // Выбираем состояние устройства
-   int LedStatus=digitalRead(LedWorkEsp32Cam);
-   if (LedStatus==inHIGH) doc["led33"][0]["status"]="inHIGH";
-   else doc["led33"][0]["status"]="inLOW";
-   String str = "";
-   serializeJson(doc,str);
-   return str;
-}
-
-void vLed33(void* pvParameters) 
-{
-   for (;;)
-   {
-      // Имитируем зависание микроконтроллера с помощью опознанного числа,
-      // принятого в последовательном порту
-      if (inumber == 1) MimicMCUhangEvent("Led33");   
-
-      String str=getLed33(sjson);
-      Serial.print("getLed33: ");
-      Serial.println(str);
-      vTaskDelay(1007/portTICK_PERIOD_MS);   
-
-      flag[0] = 1;
-   }
-}
-*/
-
 // Сделано часто, так как считываем целое число из последовательного порта
 // и мигаем лампочками
 void vTastes(void* pvParameters) 
@@ -223,19 +184,22 @@ void vTastes(void* pvParameters)
       if (Serial.available() > 0) 
       {
          int ii=Serial.parseInt();
-         if (ii>0) inumber=ii;
+         if (ii>0) iCreateSit=ii;
          vTaskDelay(100/portTICK_PERIOD_MS);   
       }
-      
       // Мигаем лампочкой
-      int mitLed33i=millis();
-      if ((mitLed33i-mitLed33)>2016)
+      if (iCreateSit == disaflashing33) digitalWrite(LedWorkEsp32Cam,inLOW);
+      else
       {
-         digitalWrite(LedWorkEsp32Cam,!digitalRead(LedWorkEsp32Cam));
-         mitLed33 = mitLed33i;
+         int mitLed33i=millis();
+         if ((mitLed33i-mitLed33)>2016)
+         {
+            digitalWrite(LedWorkEsp32Cam,!digitalRead(LedWorkEsp32Cam));
+            mitLed33 = mitLed33i;
+         }
+         if (iCreateSit == loopingTastes) MimicMCUhangEvent("Tastes");   
       }
       flag[1] = 1;
-      if (inumber == 2) MimicMCUhangEvent("Tastes");   
    }
 }
 void vCore1(void* pvParameters) 
@@ -247,7 +211,7 @@ void vCore1(void* pvParameters)
       Serial.println(str);
       vTaskDelay(6000/portTICK_PERIOD_MS);   // 6 секунд задача
       flag[2] = 1;
-      if (inumber == 3) MimicMCUhangEvent("Core1");   
+      if (iCreateSit == 3) MimicMCUhangEvent("Core1");   
    }
 }
 void vCore0(void* pvParameters) 
@@ -260,7 +224,7 @@ void vCore0(void* pvParameters)
 
       vTaskDelay(5000/portTICK_PERIOD_MS);   // 5 секунд задача 
       flag[3] = 1;
-      if (inumber == 4) MimicMCUhangEvent("Core0");   
+      if (iCreateSit == loopingCore0) MimicMCUhangEvent("Core0");   
    }
 }
 

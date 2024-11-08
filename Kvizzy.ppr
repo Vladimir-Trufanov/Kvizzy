@@ -17,7 +17,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	+Kvizzy
+	-Kvizzy
 		-IrPlus
 			-GalaxyS4UniversalRemote
 				IrPlus\GalaxyS4UniversalRemote\Galaxy.S4.Универсальный.пульт.v.2.3.2.b.19.RUS.crk.apk
@@ -229,12 +229,11 @@ Kvizzy
 			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
-		+Kvizzy30
-			+Kvizzy30
+		-Kvizzy30
+			-Kvizzy30
 				Kvizzy30\Kvizzy30\common_kvizzy.h
 				Kvizzy30\Kvizzy30\define_kvizzy.h
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
-				Kvizzy30\Kvizzy30\Kvizzy30.inold
 				Kvizzy30\Kvizzy30\Led33.h
 			-Ревизия
 				-2024-09-04 Kvizzy
@@ -2076,13 +2075,13 @@ Kvizzy
 2=Kvizzy30\Kvizzy30\Led33.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
+Selected=Kvizzy30\Kvizzy30\define_kvizzy.h
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
-TopLine=40
-Caret=1,50
+TopLine=183
+Caret=38,199
 [Kvizzy30\Kvizzy30\define_kvizzy.h]
-TopLine=1
-Caret=1,1
+TopLine=5
+Caret=22,18
 [Kvizzy30\Kvizzy30\Led33.h]
-TopLine=7
-Caret=1,18
+TopLine=60
+Caret=12,75
