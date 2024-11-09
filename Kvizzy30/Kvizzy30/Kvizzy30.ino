@@ -95,7 +95,7 @@ void setup()
    xTaskCreatePinnedToCore(
       vLed33,                 // Task function
       "Led33",                // Task name
-      2048,                   // Stack size
+      4096,                   // Stack size
       NULL,                   // Parameters passed to the task function
       5,                      // Priority
       NULL,                   // Task handle
@@ -142,15 +142,17 @@ void setup()
 // Основной цикл
 void loop() 
 {
-   // выполняем проверку подключения к беспроводной сети
+   /*
+   // Выполняем проверку подключения к беспроводной сети
    if ((WiFi.status() == WL_CONNECTED)) 
    {
       // Cоздаем объект для работы с HTTP
       HTTPClient http;
       // Подключаемся к веб-странице
       // http.begin("https://kwinflatht.nichost.ru/State");
-      http.begin("https://doortry.ru/State/");  // 2024-11-07 получилось
-      // http.begin("www.doortry.ru/State/") = "Ошибка HTTP-запроса";
+      // http.begin("https://doortry.ru/State/");  // 2024-11-07 получилось
+      //http.begin(strcat("https://doortry.ru/State/?Com=","Privet"));  // 2024-11-09 получилось
+      http.begin("https://doortry.ru/State/?Com=Privet");  
       
       // Делаем GET запрос
       int httpCode = http.GET();
@@ -160,7 +162,7 @@ void loop()
          // Выводим ответ сервера
          String ContentPage = http.getString();
          Serial.println(httpCode);
-         Serial.println(ContentPage);
+         //Serial.println(ContentPage);
       }
       else 
       {
@@ -169,7 +171,8 @@ void loop()
       // Освобождаем ресурсы микроконтроллера
       http.end();
    }
-   delay(15000);
+   */
+   vTaskDelay(15000/portTICK_PERIOD_MS);   
 }
 
 // Сделано часто, так как считываем целое число из последовательного порта
