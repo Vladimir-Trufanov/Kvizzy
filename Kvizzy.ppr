@@ -233,6 +233,8 @@ Kvizzy
 			+Kvizzy30
 				Kvizzy30\Kvizzy30\common_kvizzy.h
 				Kvizzy30\Kvizzy30\define_kvizzy.h
+				Kvizzy30\Kvizzy30\Errme.h
+				Kvizzy30\Kvizzy30\Errme.hpp
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
 				Kvizzy30\Kvizzy30\Led33.h
 				Kvizzy30\Kvizzy30\State.h
@@ -1999,6 +2001,9 @@ Kvizzy
 					Kvizzy30\Ревизия\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino
 					Kvizzy30\Ревизия\ParseXMLfile-LeadLEDs\tinyxml2.cpp
 					Kvizzy30\Ревизия\ParseXMLfile-LeadLEDs\tinyxml2.h
+				-Programming-Arduino-with-Regular-Expressions
+					Kvizzy30\Ревизия\Programming-Arduino-with-Regular-Expressions\Programming-Arduino-with-Regular-Expressions.md
+					Kvizzy30\Ревизия\Programming-Arduino-with-Regular-Expressions\Programming-Arduino-with-Regular-Expressions.md.backup
 				-Test01_Buzer
 					Kvizzy30\Ревизия\Test01_Buzer\Test01_Buzer.ino
 				-Test03_HCSR501
@@ -2013,9 +2018,9 @@ Kvizzy
 					Kvizzy30\Ревизия\WalkSounds\Walk_Sounds.cpp
 					Kvizzy30\Ревизия\WalkSounds\Walk_Sounds.h
 				-Настройка и трассировка FreeRTOS
-					Kvizzy30\Ревизия\Настройка и трассировка FreeRTOS\Настройка и трассировка FreeRTOS.md
 				-Обработчик завершения работы
 					Kvizzy30\Ревизия\Обработчик завершения работы\Обработчик завершения работы.md
+					Kvizzy30\Ревизия\Обработчик завершения работы\Обработчик завершения работы.md.backup
 				-Отладка ошибок Arduino с помощью декодера исключений ESP32
 					Kvizzy30\Ревизия\Отладка ошибок Arduino с помощью декодера исключений ESP32\ Отладка ошибок Arduino с помощью декодера исключений ESP32.md
 			Kvizzy30\ESP32-CAM-ADC-Pins.webp
@@ -2075,18 +2080,30 @@ Kvizzy
 1=Kvizzy30\Kvizzy30\define_kvizzy.h
 2=Kvizzy30\Kvizzy30\Led33.h
 3=Kvizzy30\Kvizzy30\State.h
+4=..\Users\Евгеньевич\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.0.6\cores\esp32\esp32-hal-spi.h
+5=Kvizzy30\Kvizzy30\Errme.hpp
+6=Kvizzy30\Ревизия\Ассоциативные массивы\StringMap\SimpleMap.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
+Selected=Kvizzy30\Ревизия\Ассоциативные массивы\StringMap\SimpleMap.h
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
-TopLine=137
+TopLine=1
 Caret=8,147
 [Kvizzy30\Kvizzy30\define_kvizzy.h]
-TopLine=18
-Caret=22,18
+TopLine=135
+Caret=1,46
 [Kvizzy30\Kvizzy30\Led33.h]
-TopLine=74
+TopLine=5
 Caret=34,98
 [Kvizzy30\Kvizzy30\State.h]
-TopLine=12
-Caret=1,44
+TopLine=27
+Caret=1,1
+[..\Users\Евгеньевич\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.0.6\cores\esp32\esp32-hal-spi.h]
+TopLine=46
+Caret=102,45
+[Kvizzy30\Kvizzy30\Errme.hpp]
+TopLine=1
+Caret=15,3
+[Kvizzy30\Ревизия\Ассоциативные массивы\StringMap\SimpleMap.h]
+TopLine=1
+Caret=1,1

@@ -17,6 +17,7 @@
 // *     Отправить http-запрос с json-строкой на State и вернуть ответ        *
 // *               (если ответ сервера не 200, вернуть ошибку)                *
 // ****************************************************************************
+
 String sendState(String sjson) 
 {
    String Result;
@@ -30,8 +31,12 @@ String sendState(String sjson)
       // http.begin("https://doortry.ru/State/?Com="+"Privet");  
       
       //String shttp="https://doortry.ru/State/?Com=Privet";
-      String shttp="https://doortry.ru/State/?Com=";
-      //shttp += "Privetik";   
+      //String shttp="https://doortry.ru/State/e?Com=";  // Ответ: 404
+      //String shttp="https://doortryi.ru/State/?Com=";  // Ответ: -1
+      //String shttp="http://doortry.ru/State/?Com=";    // Ответ: 301
+      
+      String shttp="https://doortry.ru/State/?Com=";     //
+      
       shttp += sjson;   
       Serial.print("shttp: ");
       Serial.print(shttp);
