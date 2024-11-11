@@ -82,7 +82,7 @@ SNTP был специально разработан для небольших 
 
 ### [System Time](https://docs.espressif.com/projects/esp-idf/en/v5.3.1/esp32/api-reference/system/system_time.html)
 
-### [ESP-IDF System Time](https://microsin.net/programming/arm/esp-idf-system-time.html)
+### [ESP-IDF System Time]()
 
 ### [Настенные часы с синхронизацией через интернет](https://lesson.iarduino.ru/page/ntp_esp32/)
 
