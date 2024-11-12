@@ -1,28 +1,87 @@
-// LwIPSNTPexample.ino
-
-/** Arduino-Esp32-CAM                       *** SynchronizingESP32clock.ino ***
+/** Arduino-Esp32-CAM                               *** LwIPSNTPexample.ino ***
  * 
- *                          Синхронизировать дату и время ESP32 с сервером SNTP 
+ *       Использовать модуль LwIP SNTP для получения времени и даты с интернет-
+ *  серверов с помощью SNTP - «простого сетевого протокола времени». Библиотека 
+ *    LwIP SNTP обеспечивает получение текущего времени и синхронизацию таймера 
+ *                                                         ESP32 с сервером NTP
  *         для плат ESP32 в версии библиотеки от Espressif Systems версии 3.0.6
  *                                        (на контроллере AI-Thinker ESP32-CAM)
  * 
- * v1.1, 11.11.2024                                   Автор:      Труфанов В.Е.
+ * v1.1, 12.11.2024                                   Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 11.11.2024
- * 
- * По материалам статьи: How to synchronize ESP32 clock with SNTP server
- * https://www.makerguides.com/how-to-synchronize-esp32-clock-with-sntp-server/
 **/
 
+#include <Arduino.h>
+#include "nvs_flash.h"
+#include "nvs.h"
 
-/*
+// Готовим подключение к WiFi через имя и пароль точки доступа
 #include "WiFi.h"
-
-// Подключаем библиотеку для связи с сервером SNTP, которая является 
-// библиотекой ядра ESP32 по умолчанию и не требуют установки
-#include "esp_sntp.h"
-// Вводим имя и пароль точки доступа
 const char* ssid     = "OPPO A9 2020";
 const char* password = "b277a4ee84e8";
+
+// Подключаем библиотеку для связи с сервером SNTP:
+
+// - функция gettimeofday используется для получения текущей метки времени;
+// - функция settimeofday используется для установки текущего времени при 
+//   получении ответа от сервера NTP;
+// - функция sntp_get_sync_status() используется для получения информации о 
+//   состоянии синхронизации времени. Если время синхронизировано, то возвращается 
+//   ответ SNTP_SYNC_RETURN_COMPLETED. Если состояние сброшено, то возвращается 
+//   SNTP_SYC_STATUS_RESET. Кроме того, если происходит плавная синхронизация 
+//   времени, то возвращается ответ SNTP_SYNC_STATUS_IN_PROGRESS;
+// - функция sntp_set_sync_status() используется для установки статуса синхронизации 
+//   времени. Она принимает один параметр — «sync_status», который является 
+//   статусом синхронизации времени;
+// - функция sntp_get_sync_mode() используется для получения режима синхронизации 
+//   времени. Эта функция возвращает значение SNTP_SYNC_MODE_IMMEDIATE, если 
+//   синхронизация настроена на немедленное обновление времени. В противном случае 
+//   она возвращает SNTP_SYNC_MODE_SMOOTH - так как настроено плавное обновление времени;
+// - функция sntp_set_sync_mode() используется для установки режима синхронизации 
+//   времени. Она принимает один параметр «sync_mode», который является режимом 
+//   синхронизации. Режим может быть SNTP_SYNC_MODE_IMMEDIATE или SNTP_SYNC_MODE_SMOOTH. 
+//   Если выбран режим SNTP_SYNC_MODE_IMMEDIATE, системное время обновляется 
+//   сразу после получения данных с сервера SNTP. Если выбран режим SNTP_SYNC_MODE_SMOOTH, 
+//   устанавливается плавное обновление времени. В этом случае для уведомления 
+//   о времени используется функция adjtime;
+// - функция sntp_set_time_sync_notification_cb() используется для установки 
+//   функции обратного вызова по уведомлению о синхронизации времени. Она 
+//   принимает один параметр — функцию обратного вызова.
+
+//   ESP32 использует два аппаратных таймера для отслеживания системного 
+// времени: 
+// - таймер RTC: позволяет отслеживать время в различных режимах сна, а также 
+//   сохранять время при любых сбросах (за исключением сброса при включении питания, 
+//   который сбрасывает таймер RTC). Отклонение частоты зависит от источников 
+//   тактового сигнала таймера RTC и влияет на точность только в режимах сна, 
+//   в которых время будет измеряться с точностью до 6,6667 мкс;
+// - таймер с высоким разрешением: этот таймер недоступен в спящих режимах и не 
+//   сохраняется после перезагрузки, но обладает большей точностью. Таймер 
+//   использует источник тактовых импульсов APB_CLK (обычно 80 МГц), отклонение 
+//   частоты которого составляет менее ±10 частей на миллион. Время измеряется с 
+//   точностью до 1 мкс.
+// Системное время можно отслеживать с помощью одного или обоих аппаратных 
+// таймеров в зависимости от целей приложения и требований к точности системного 
+// времени (при умалчиваемом режиме подключены оба таймера, это гарантирует, что 
+// после синхронизации с сервером SNTP время будет отсчитываться с помощью обоих 
+// таймеров. Когда плата ESP32 будет находиться в режиме глубокого сна, для отслеживания 
+// времени будет использоваться встроенный таймер RTC, а таймер FRC1 с высоким 
+// разрешением обеспечит точность времени до микросекунд, пока плата будет 
+// находиться в активном режиме. 
+#include "esp_sntp.h"
+
+// Для обеспечения уровня абстракции приложения поверх стека TCP/IP и потокобезопасного
+// API-интерфейса (для стека TCP/IP lwIP) подключаем ESP-NETIF
+#include "esp_netif_sntp.h"
+#include "esp_netif.h"
+
+// Объявляем переменную, которая содержит количество перезагрузок ESP32. 
+// RTC_DATA_ATTR указывает на хранение этой статической переменной типа int 
+// в памяти RTC. Это гарантирует, что значение boot_count сохранится, когда плата 
+// ESP32 перейдёт в режим глубокого сна, а затем проснётся.
+RTC_DATA_ATTR static int boot_count = 0;  // !!! перезагрузка, потом разобраться
+
+static void obtain_time(void);
 
 // ****************************************************************************
 // *      Подключить ESP32 к указанной сети Wi-Fi (непрерывно проверять       *
@@ -33,190 +92,193 @@ void initWiFi()
    WiFi.begin(ssid, password);
    while (WiFi.status() != WL_CONNECTED) 
    {
-      delay(100);
-   }
-}
-// ****************************************************************************
-// * Настроить интервал синхронизации, имя сервера, режим работы и часовой пояс
-// ****************************************************************************
-void notify(struct timeval* t) 
-{
-   Serial.println("Синхронизировано!");
-}
-void initSNTP() 
-{ 
-   // Определяем, как часто синхронизировать внутренние часы ESP32 с сервером 
-   // SNTP. Интервал указывается в микросекундах. Интервал в 60*60*1000UL 
-   // микросекунд означает синхронизацию каждый час. Разумные интервалы запросов 
-   // обычно составляют от одного-двух раз в день до 5 раз в час. 
-   sntp_set_sync_interval(1 * 60 * 60 * 1000UL);  
-   // Указываем функцию уведомления (callback), которая вызывается при каждой с
-   // инхронизации. В данном коде для этой цели определяем функцию notify(), 
-   // которая просто выводит «synchronized». 
-   sntp_set_time_sync_notification_cb(notify);
-   // Устанавливаем режим работы: ESP_SNTP_OPMODE_POLL — просто опрашивать
-   // сервер SNTP (есть также ESP_SNTP_OPMODE_LISTENONLY)
-   esp_sntp_setoperatingmode(ESP_SNTP_OPMODE_POLL);
-   // Указываем имя/адрес сервера. При желании можно указать несколько серверов.
-   // Например:
-   //           esp_sntp_setservername(0, «pool.ntp.org»);
-   //           esp_sntp_setservername(1, «de.pool.ntp.org»);
-   //           esp_sntp_setservername(2, «time.nist.gov»);
-   esp_sntp_setservername(0, "pool.ntp.org");
-   // Запускаем службу SNTP с указанными выше параметрами
-   esp_sntp_init();
-   // Устанавливаем часовой пояс, поскольку сервер SNTP 
-   // возвращает время в формате UTC
-   setTimezone();
-}
-// ****************************************************************************
-// *                           Настроить часовой пояс                         *
-// ****************************************************************************
-void setTimezone() 
-{ 
-   // Здесь установливается стандартное время для региона - Европа/Москва
-   // https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv
-   setenv("TZ", "MSK-3", 1);
-   tzset();
-}
-// ****************************************************************************
-// *                            Ожидать синхронизацию                         *
-// ****************************************************************************
-void wait4SNTP() 
-{
-  while (sntp_get_sync_status() != SNTP_SYNC_STATUS_COMPLETED) 
-   {
       delay(500);
-      Serial.println("ожидание синхронизации ...");
+      Serial.print(".");
    }
+   Serial.println(" ");
 }
 // ****************************************************************************
-// *   Извлечь информацию о текущем времени и вывести ее в отформатированном  *
-// *   виде с помощью struct tm структуры данных:                             *
-// *                               https://cplusplus.com/reference/ctime/tm/  *
+// *     Обновить системное время (принимается единственный параметр ‘tv’,    *
+// *      который представляет собой время, полученное от SNTP-сервера)       *
 // ****************************************************************************
-/ *
- "%A, %B %d %Y %H:%M:%S" - это спецификаторы формата,  которые определяют,  как
- в struct tm timeinfo; будет отформатирован текст, а члены tm struct следующие:
-  
-  Тип элемента Значение                        Диапазон
-  -----------------------------------------------------
-  tm_sec  int  секунды после минуты            0-61*
-  tm_min  int  минуты после часа               0-59
-  tm_hour int  часы с полуночи                 0-23
-  tm_mday int  день месяца                     1-31
-  tm_mon  int  месяцы с января                 0-11
-  tm_year int  годы с 1900
-  tm_wday  —   количество дней с воскресенья   0-6
-  tm_yday  —   количество дней с 1 января      0-365
-  tm_isdst —   флаг перехода на летнее время 
-  
-  function strftime() - format time as string:
-  https://cplusplus.com/reference/ctime/strftime/
-* /
-void printTime() 
+/*
+void sntp_sync_time(struct timeval *tv)
 {
-   struct tm timeinfo;
-   getLocalTime(&timeinfo);
-   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+   // Устанавливаем текущее время, полученное от сервера NTP:
+   // первый параметр данное с типом данных timeval,
+   // второй параметр — это тип данных часового пояса, в данном случае равен NULL
+   settimeofday(tv, NULL);
+   // Отмечаем синхронизацию
+   Serial.println("Время синхронизировано с помощью пользовательского кода!");
+   // Устанавливаем статуса синхронизации времени как SNTP_SYNC_STATUS_COMPLETED
+   sntp_set_sync_status(SNTP_SYNC_STATUS_COMPLETED);
+}
+*/
+// ****************************************************************************
+// *              Вывести уведомление о событии синхронизации                 *
+// ****************************************************************************
+void time_sync_notification_cb(struct timeval *tv)
+{
+   Serial.println("Время синхронизировано!");
+}
+
+static void obtain_time(void)
+{
+   // Инициализируем хранилище NVS 
+   esp_err_t err = nvs_flash_init();
+   // Если раздел NVS не содержит пустых страниц или он содержит данные в 
+   // незнакомом формате, который не распознаётся текущей версией кода,
+   // то стираем весь раздел и снова вызываем инициализацию
+   if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) 
+   {
+      ESP_ERROR_CHECK(nvs_flash_erase());
+      err = nvs_flash_init();
+   }
+   ESP_ERROR_CHECK(err);
+   printf("Возврат nvs_flash_init() = %d: %s\n", err, esp_err_to_name(err));
+
+   //err = ESP_ERROR_CHECK(esp_netif_init());
+   // ESP_ERROR_CHECK(esp_event_loop_create_default()); - это для левого WiFi
+
+   Serial.print("LWIP_DHCP_GET_NTP_SRV: ");
+   Serial.println(LWIP_DHCP_GET_NTP_SRV);
+
+   #if LWIP_DHCP_GET_NTP_SRV
+   /**
+    * Адрес NTP-сервера может быть получен через DHCP, 
+    * смотрите следующие параметры настройки меню:
+    * 
+    * 'LWIP_DHCP_GET_NTP_SRV' - включить SNMP через DHCP
+    * 'LWIP_SNMP_DEBUG' - включить отладочные сообщения
+    * 
+    * ПРИМЕЧАНИЕ: Этот вызов должен быть выполнен до того, 
+    * как esp получит IP-адрес из DHCP,
+    * в противном случае опция NTP по умолчанию будет отклонена.
+   **/
+      
+      /*
+      ESP_LOGI(TAG, "Initializing SNTP");
+      //esp_sntp_config_t config = ESP_NETIF_SNTP_DEFAULT_CONFIG(CONFIG_SNTP_TIME_SERVER);
+      esp_sntp_config_t config = ESP_NETIF_SNTP_DEFAULT_CONFIG("pool.ntp.org");
+      config.start = false;                       // start SNTP service explicitly (after connecting)
+      config.server_from_dhcp = true;             // accept NTP offers from DHCP server, if any (need to enable *before* connecting)
+      config.renew_servers_after_new_IP = true;   // let esp-netif update configured SNTP server(s) after receiving DHCP lease
+      config.index_of_first_server = 1;           // updates from server num 1, leaving server 0 (from DHCP) intact
+      // configure the event on which we renew servers
+      #ifdef CONFIG_EXAMPLE_CONNECT_WIFI
+         config.ip_event_to_renew = IP_EVENT_STA_GOT_IP;
+      #else
+         config.ip_event_to_renew = IP_EVENT_ETH_GOT_IP;
+      #endif
+      config.sync_cb = time_sync_notification_cb; // only if we need the notification function
+      esp_netif_sntp_init(&config);
+      */
+      
+   #endif /* LWIP_DHCP_GET_NTP_SRV */
+
+   /* This helper function configures Wi-Fi or Ethernet, as selected in menuconfig.
+   * Read "Establishing Wi-Fi or Ethernet Connection" section in
+   * examples/protocols/README.md for more information about this function.
+   */
+/*
+#if LWIP_DHCP_GET_NTP_SRV
+    ESP_LOGI(TAG, "Starting SNTP");
+    esp_netif_sntp_start();
+#if LWIP_IPV6 && SNTP_MAX_SERVERS > 2
+    / * This demonstrates using IPv6 address as an additional SNTP server
+     * (statically assigned IPv6 address is also possible)
+     * /
+    ip_addr_t ip6;
+    if (ipaddr_aton("2a01:3f7::1", &ip6)) {    // ipv6 ntp source "ntp.netnod.se"
+        esp_sntp_setserver(2, &ip6);
+    }
+#endif  / * LWIP_IPV6 * /
+
+#else
+    ESP_LOGI(TAG, "Initializing and starting SNTP");
+#if CONFIG_LWIP_SNTP_MAX_SERVERS > 1
+    / * This demonstrates configuring more than one server
+     * /
+    esp_sntp_config_t config = ESP_NETIF_SNTP_DEFAULT_CONFIG_MULTIPLE(2,
+                               ESP_SNTP_SERVER_LIST(CONFIG_SNTP_TIME_SERVER, "pool.ntp.org" ) );
+#else
+    / *
+     * This is the basic default config with one server and starting the service
+     * /
+    esp_sntp_config_t config = ESP_NETIF_SNTP_DEFAULT_CONFIG(CONFIG_SNTP_TIME_SERVER);
+#endif
+    config.sync_cb = time_sync_notification_cb;     // Note: This is only needed if we want
+#ifdef CONFIG_SNTP_TIME_SYNC_METHOD_SMOOTH
+    config.smooth_sync = true;
+#endif
+
+    esp_netif_sntp_init(&config);
+#endif
+
+    print_servers();
+
+    // wait for time to be set
+    time_t now = 0;
+    struct tm timeinfo = { 0 };
+    int retry = 0;
+    const int retry_count = 15;
+    while (esp_netif_sntp_sync_wait(2000 / portTICK_PERIOD_MS) == ESP_ERR_TIMEOUT && ++retry < retry_count) {
+        ESP_LOGI(TAG, "Waiting for system time to be set... (%d/%d)", retry, retry_count);
+    }
+    time(&now);
+    localtime_r(&now, &timeinfo);
+
+    //ESP_ERROR_CHECK( example_disconnect() );
+    esp_netif_sntp_deinit();
+    */
 }
 
 void setup() 
 {
    Serial.begin(115200);
    initWiFi();
-   initSNTP();
-   wait4SNTP();
+   // initSNTP();
+   // wait4SNTP();
 }
 
 void loop() 
 {
-   printTime();
-   delay(10000);
+   // После каждой перезагрузки увеличиваем счётчик загрузок
+   // и выводим в терминал.
+   ++boot_count;
+   printf("Счетчик перезапусков = %d\n", boot_count);
+
+   // Создаем структуру времени timeinfo. Выбираем, преобразуем время в секундах 
+   // с начала эпохи в местное время и помещаем в эту структуру
+   time_t now;
+   struct tm timeinfo;
+   time(&now);
+   localtime_r(&now, &timeinfo);
+   printf("Установившийся год: %d\n", timeinfo.tm_year);
+
+   // Если правильное время ещё не установлено, вызываем функцию obtain_time(), 
+   // которая получает время с сервера SNTP 
+   if (timeinfo.tm_year < (2016 - 1900)) 
+   {
+      Serial.println("Время еще не установлено. Подключаемся к Wi-Fi и получаем время по протоколу NTP.");
+      obtain_time();
+      time(&now);
+   }
+   
+   delay(1000);
 }
-*/
 
-/* LwIP SNTP example
 
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-*/
 
 /*
-#include <string.h>
-#include <time.h>
-#include <sys/time.h>
-#include "esp_system.h"
-#include "esp_event.h"
-#include "esp_log.h"
-#include "esp_attr.h"
-#include "esp_sleep.h"
-#include "nvs_flash.h"
-#include "protocol_examples_common.h"
-#include "esp_netif_sntp.h"
-#include "lwip/ip_addr.h"
-#include "esp_sntp.h"
-*/
-
-
-#include <Arduino.h>
-#include "nvs_flash.h"
-#include "nvs.h"
-#include "esp_netif_sntp.h"
-#include "esp_netif.h"
 #include "NetworkEvents.h"
 #include "protocol_examples_common.h"
 
 #include "esp_sntp.h"
 
-
-static const char *TAG = "example";
-
-#ifndef INET6_ADDRSTRLEN
-#define INET6_ADDRSTRLEN 48
-#endif
-
-/* Variable holding number of times ESP32 restarted since first boot.
- * It is placed into RTC memory using RTC_DATA_ATTR and
- * maintains its value when ESP32 wakes from deep sleep.
- */
-RTC_DATA_ATTR static int boot_count = 0;
-
-static void obtain_time(void);
-
-#ifdef CONFIG_SNTP_TIME_SYNC_METHOD_CUSTOM
-void sntp_sync_time(struct timeval *tv)
-{
-   settimeofday(tv, NULL);
-   ESP_LOGI(TAG, "Time is synchronized from custom code");
-   sntp_set_sync_status(SNTP_SYNC_STATUS_COMPLETED);
-}
-#endif
-
-void time_sync_notification_cb(struct timeval *tv)
-{
-    ESP_LOGI(TAG, "Notification of a time synchronization event");
-}
-
 void app_main(void)
 {
-    ++boot_count;
-    ESP_LOGI(TAG, "Boot count: %d", boot_count);
-
-    time_t now;
-    struct tm timeinfo;
-    time(&now);
-    localtime_r(&now, &timeinfo);
-    // Is time set? If not, tm_year will be (1970 - 1900).
-    if (timeinfo.tm_year < (2016 - 1900)) {
-        ESP_LOGI(TAG, "Time is not set yet. Connecting to WiFi and getting time over NTP.");
-        obtain_time();
-        // update 'now' variable with current time
-        time(&now);
-    }
+    
 #ifdef CONFIG_SNTP_TIME_SYNC_METHOD_SMOOTH
     else {
         // add 500 ms error to the current system time.
@@ -295,7 +357,7 @@ static void obtain_time(void)
     ESP_ERROR_CHECK( esp_event_loop_create_default() );
 
 #if LWIP_DHCP_GET_NTP_SRV
-    /**
+    / **
      * NTP server address could be acquired via DHCP,
      * see following menuconfig options:
      * 'LWIP_DHCP_GET_NTP_SRV' - enable STNP over DHCP
@@ -303,7 +365,7 @@ static void obtain_time(void)
      *
      * NOTE: This call should be made BEFORE esp acquires IP address from DHCP,
      * otherwise NTP option would be rejected by default.
-     */
+     * /
     ESP_LOGI(TAG, "Initializing SNTP");
     //esp_sntp_config_t config = ESP_NETIF_SNTP_DEFAULT_CONFIG(CONFIG_SNTP_TIME_SERVER);
     esp_sntp_config_t config = ESP_NETIF_SNTP_DEFAULT_CONFIG("pool.ntp.org");
@@ -320,38 +382,38 @@ static void obtain_time(void)
     config.sync_cb = time_sync_notification_cb; // only if we need the notification function
     esp_netif_sntp_init(&config);
 
-#endif /* LWIP_DHCP_GET_NTP_SRV */
+#endif / * LWIP_DHCP_GET_NTP_SRV * /
 
-    /* This helper function configures Wi-Fi or Ethernet, as selected in menuconfig.
+    / * This helper function configures Wi-Fi or Ethernet, as selected in menuconfig.
      * Read "Establishing Wi-Fi or Ethernet Connection" section in
      * examples/protocols/README.md for more information about this function.
-     */
+     * /
     //ESP_ERROR_CHECK(example_connect());
 
 #if LWIP_DHCP_GET_NTP_SRV
     ESP_LOGI(TAG, "Starting SNTP");
     esp_netif_sntp_start();
 #if LWIP_IPV6 && SNTP_MAX_SERVERS > 2
-    /* This demonstrates using IPv6 address as an additional SNTP server
+    / * This demonstrates using IPv6 address as an additional SNTP server
      * (statically assigned IPv6 address is also possible)
-     */
+     * /
     ip_addr_t ip6;
     if (ipaddr_aton("2a01:3f7::1", &ip6)) {    // ipv6 ntp source "ntp.netnod.se"
         esp_sntp_setserver(2, &ip6);
     }
-#endif  /* LWIP_IPV6 */
+#endif  / * LWIP_IPV6 * /
 
 #else
     ESP_LOGI(TAG, "Initializing and starting SNTP");
 #if CONFIG_LWIP_SNTP_MAX_SERVERS > 1
-    /* This demonstrates configuring more than one server
-     */
+    / * This demonstrates configuring more than one server
+     * /
     esp_sntp_config_t config = ESP_NETIF_SNTP_DEFAULT_CONFIG_MULTIPLE(2,
                                ESP_SNTP_SERVER_LIST(CONFIG_SNTP_TIME_SERVER, "pool.ntp.org" ) );
 #else
-    /*
+    / *
      * This is the basic default config with one server and starting the service
-     */
+     * /
     esp_sntp_config_t config = ESP_NETIF_SNTP_DEFAULT_CONFIG(CONFIG_SNTP_TIME_SERVER);
 #endif
     config.sync_cb = time_sync_notification_cb;     // Note: This is only needed if we want
@@ -378,6 +440,6 @@ static void obtain_time(void)
     //ESP_ERROR_CHECK( example_disconnect() );
     esp_netif_sntp_deinit();
 }
+*/
 
-
-// ******************************************** SynchronizingESP32clock.ino ***
+// **************************************************** LwIPSNTPexample.ino ***

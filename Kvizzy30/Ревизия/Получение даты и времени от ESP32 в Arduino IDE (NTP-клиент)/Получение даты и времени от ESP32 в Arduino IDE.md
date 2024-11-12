@@ -84,6 +84,8 @@ SNTP был специально разработан для небольших 
 
 ### [ESP-IDF System Time](https://microsin.net/programming/arm/esp-idf-system-time.html)
 
+### [Deep Sleep Wake Stubs - заглушки для пробуждения в режиме глубокого сна](https://docs.espressif.com/projects/esp-idf/en/v5.3.1/esp32/api-guides/deep-sleep-stub.html)
+
 ### [Настенные часы с синхронизацией через интернет](https://lesson.iarduino.ru/page/ntp_esp32/)
 
 #### [ Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)](https://diytech.ru/projects/poluchenie-daty-i-vremeni-ot-esp32-v-arduino-ide-ntp-klient)
