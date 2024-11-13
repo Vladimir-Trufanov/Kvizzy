@@ -2038,17 +2038,18 @@ Kvizzy
 				-Отладка ошибок Arduino с помощью декодера исключений ESP32
 					Kvizzy30\Ревизия\Отладка ошибок Arduino с помощью декодера исключений ESP32\ Отладка ошибок Arduino с помощью декодера исключений ESP32.md
 				+Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)
-					+Advanced
+					-Advanced
 						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\Advanced\Advanced.ino
-					+Basic
+					-Basic
 						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\Basic\Basic.ino
-					+ESP32fromNTP
+					-ESP32fromNTP
 						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\ESP32fromNTP\ESP32fromNTP.ino
 					+LwIPSNTPexample
 						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\LwIPSNTPexample\LwIPSNTPexample.ino
-						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\LwIPSNTPexample\protocol_examples_common.h
 					-SynchronizingESP32clock
 						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\SynchronizingESP32clock\SynchronizingESP32clock.ino
+					-TimeNTP_ESP32WiFi
+						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\TimeNTP_ESP32WiFi\TimeNTP_ESP32WiFi.ino
 					Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\ActiveNTPservers.png
 					Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\image-18.png
 					Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\image-8.png
@@ -2124,5 +2125,5 @@ Caret=1,46
 TopLine=63
 Caret=17,63
 [Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\LwIPSNTPexample\LwIPSNTPexample.ino]
-TopLine=137
-Caret=1,133
+TopLine=208
+Caret=1,234
