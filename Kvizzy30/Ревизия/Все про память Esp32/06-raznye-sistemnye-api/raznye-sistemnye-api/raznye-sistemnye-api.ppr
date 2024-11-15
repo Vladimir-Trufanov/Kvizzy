@@ -1,0 +1,30 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.CompileOnBackground=0
+Compilator.ProgSaveAll=0
+Compilator.ProgRunSelection=0
+Compilator.LogType=0
+Compilator.LogEncoding=0
+DefaultDir=C:\ittve-ESP32-CAM\06-raznye-sistemnye-api\raznye-sistemnye-api
+DefaultCP=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+HTServer=localhost
+Extensions=*.*
+[Project tree]
+raznye-sistemnye-api
+	+raznye-sistemnye-api
+		raznye-sistemnye-api.ino
+		tveEsp32Cam10.h
+[Open project files]
+0=raznye-sistemnye-api.ino
+[Selected Project Files]
+Main=
+Selected=raznye-sistemnye-api.ino
+[raznye-sistemnye-api.ino]
+TopLine=1
+Caret=126,5
