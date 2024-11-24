@@ -21,6 +21,11 @@
 #define disaflashing33  51     // отключение мигания контрольного светодиода
 #define enabflashing33  52     // включение мигания контрольного светодиода
 
+// Управление светодиодами
+#define PinLedWork      33            // контакт рабочего светодиода
+volatile int lastLedWork = millis();  // прошлое время смены состояния контрольного светодиода
+volatile int millLedWork = 10017;     // текущий интервал смены состояния контрольного светодиода
+#define PinLedFlash      4            // контакт светодиода-вспышки
 
 // Назначаем задачу определение состояния контрольного светодиода ESP32-CAM 
 // ("горит - не горит") и передачу данных на страницу сайта State  
@@ -29,7 +34,7 @@ void vLed33(void *pvParameters);
 bool fwdtLed33 = false;
 
 // Определяем задачи и их флаги
-void vTastes(void *pvParameters);
+//void vTastes(void *pvParameters);
 void vCore1(void *pvParameters);
 void vCore0(void *pvParameters);
 int flag[] = {0, 0, 0, 0};
@@ -39,7 +44,6 @@ int flag[] = {0, 0, 0, 0};
 volatile int iCreateSit;
 
 //
-volatile int mitLed33=millis();
 volatile int mitMimic=millis();
 
 // Имитируем событие зависания процессора

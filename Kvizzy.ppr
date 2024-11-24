@@ -230,7 +230,7 @@ Kvizzy
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
 		+Kvizzy30
-			-Kvizzy30
+			+Kvizzy30
 				Kvizzy30\Kvizzy30\common_kvizzy.h
 				Kvizzy30\Kvizzy30\define_kvizzy.h
 				Kvizzy30\Kvizzy30\Errme.h
@@ -238,7 +238,8 @@ Kvizzy
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
 				Kvizzy30\Kvizzy30\Led33.h
 				Kvizzy30\Kvizzy30\State.h
-			+Ревизия
+				Kvizzy30\Kvizzy30\tveEsp32Cam10.h
+			-Ревизия
 				-2024-09-04 Kvizzy
 					-Test06_Obmen_Esp32
 						Kvizzy30\Ревизия\2024-09-04 Kvizzy\Test06_Obmen_Esp32\Test06_Obmen_Esp32.ino
@@ -2032,29 +2033,22 @@ Kvizzy
 						Kvizzy30\Ревизия\Ассоциативные массивы\StringMap\SimpleMap.h
 						Kvizzy30\Ревизия\Ассоциативные массивы\StringMap\StringMap.ino
 					Kvizzy30\Ревизия\Ассоциативные массивы\SimpleMap-master.zip
-				-Настройка и трассировка FreeRTOS
-				-Обработчик завершения работы
-					Kvizzy30\Ревизия\Обработчик завершения работы\Обработчик завершения работы.md
+				-Все про память Esp32
+					-handsontec-Esp32-Cam
+						Kvizzy30\Ревизия\Все про память Esp32\handsontec-Esp32-Cam\handsontec-Esp32-Cam.ino
+					Kvizzy30\Ревизия\Все про память Esp32\Cache-Block-Diagram.jpg
+					Kvizzy30\Ревизия\Все про память Esp32\Cache-memory-mode.jpg
+					Kvizzy30\Ревизия\Все про память Esp32\esp32_technical_reference_manual_en.pdf
+					Kvizzy30\Ревизия\Все про память Esp32\ESP32-CAM.pdf
+					Kvizzy30\Ревизия\Все про память Esp32\module-with-dma.jpg
+					Kvizzy30\Ревизия\Все про память Esp32\PeripheralAddressMapping1.jpg
+					Kvizzy30\Ревизия\Все про память Esp32\PeripheralAddressMapping2.jpg
+					Kvizzy30\Ревизия\Все про память Esp32\Win10ChDe352k.png
+					Kvizzy30\Ревизия\Все про память Esp32\Все про память Esp32.md
+					Kvizzy30\Ревизия\Все про память Esp32\Карта SRAM памяти Esp32.xls
+					Kvizzy30\Ревизия\Все про память Esp32\Карта памяти Esp32.xls
 				-Отладка ошибок Arduino с помощью декодера исключений ESP32
 					Kvizzy30\Ревизия\Отладка ошибок Arduino с помощью декодера исключений ESP32\ Отладка ошибок Arduino с помощью декодера исключений ESP32.md
-				+Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)
-					-Advanced
-						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\Advanced\Advanced.ino
-					-Basic
-						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\Basic\Basic.ino
-					-ESP32fromNTP
-						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\ESP32fromNTP\ESP32fromNTP.ino
-					+LwIPSNTPexample
-						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\LwIPSNTPexample\LwIPSNTPexample.ino
-					-SynchronizingESP32clock
-						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\SynchronizingESP32clock\SynchronizingESP32clock.ino
-					-TimeNTP_ESP32WiFi
-						Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\TimeNTP_ESP32WiFi\TimeNTP_ESP32WiFi.ino
-					Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\ActiveNTPservers.png
-					Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\image-18.png
-					Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\image-8.png
-					Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\Получение даты и времени от ESP32 в Arduino IDE.md
-					Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\Получение даты и времени от ESP32 в Arduino IDE.md.backup
 			Kvizzy30\ESP32-CAM-ADC-Pins.webp
 			Kvizzy30\ESP32-CAM-Pinout.webp
 			Kvizzy30\ESP32-CAM-PWM-Pins.webp
@@ -2110,20 +2104,12 @@ Kvizzy
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 1=Kvizzy30\Kvizzy30\define_kvizzy.h
-2=Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\SynchronizingESP32clock\SynchronizingESP32clock.ino
-3=Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\LwIPSNTPexample\LwIPSNTPexample.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\LwIPSNTPexample\LwIPSNTPexample.ino
+Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
-TopLine=108
-Caret=8,147
+TopLine=1
+Caret=4,15
 [Kvizzy30\Kvizzy30\define_kvizzy.h]
 TopLine=46
 Caret=1,46
-[Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\SynchronizingESP32clock\SynchronizingESP32clock.ino]
-TopLine=63
-Caret=17,63
-[Kvizzy30\Ревизия\Получение даты и времени от ESP32 в Arduino IDE (NTP-клиент)\LwIPSNTPexample\LwIPSNTPexample.ino]
-TopLine=208
-Caret=1,234

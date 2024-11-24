@@ -9,6 +9,20 @@
  * 
  *           Kvizzy - система контроллеров, датчиков и исполнительных устройств 
  *                    моего, стремящегося к умному, хозяйства (нижний уровень).
+ *                    
+ * !!!
+ * 1. Модуль ESP32 может обрабатывать до 32 прерываний на каждое ядро.
+ * 
+ * 
+ * 
+ * Тезисы проекта:
+ * 
+ * 1. Работают контрольный светодиод и вспышка. После запуска приложения контрольный светодиод мигает с интервалом в 1017 миллисекунд
+ *    (текущий интервал в микросекундах горит на экране). Со стороны сайта можно изменить интервал мигания, отключить мигание, 
+ *    включить мигание. Вспышка включается с сайта и горит почти 2 секунды и выключается.
+ * 2. Есть 2 обработчика прерывания: для контрольного светодиода по смене состояния 33 пина (CHANGE) и для вспышки
+ *    RISING - когда состояние 4 контакта изменяется с LOW на HIGH.
+ * 3. 
 **/
 
 // Подключаем библиотеку для работы с HTTP-протоколом
@@ -39,11 +53,10 @@ void IRAM_ATTR onTimer()
    portENTER_CRITICAL_ISR(&timerMux);
    // Если флаги всех задач установлены в 1, 
    // то сбрасываем флаги задач и счетчик сторожевого таймера
-   if (fwdtLed33 == true && flag[1] == 1 && flag[2] == 1 && flag[3] == 1) 
+   if (fwdtLed33 == true && flag[2] == 1 && flag[3] == 1) 
    {
       // Сбрасываем флаги задач
       fwdtLed33 = false;
-      flag[1] = 0;
       flag[2] = 0;
       flag[3] = 0;
       // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
@@ -57,6 +70,21 @@ void IRAM_ATTR onTimer()
    portEXIT_CRITICAL_ISR(&timerMux);
 }
 
+// Обработка прерывания для контрольного светодиода при смене состояния 33 пина (CHANGE)
+void IRAM_ATTR toggleLedWork()
+{
+   Serial.print("###");
+   Serial.print(digitalRead(PinLedWork));
+   Serial.println("###");
+}
+
+// Обработка прерывания для вспышки при изменении состояние 4 контакта с LOW на HIGH (RISING).
+void IRAM_ATTR onLedFlash()
+{
+  
+}
+
+
 // Начальная настройка: выделяем четыре задачи (две на 0 процессоре, две на 1)
 // и обеспечиваем запуск прерывания от таймера периодически через 3 секунды
 void setup() 
@@ -65,9 +93,11 @@ void setup()
    while (!Serial) continue;
    Serial.println("Последовательный порт работает!");
 
-   // Переводим контакты лампочек в режим вывода
-   pinMode(LedWorkEsp32Cam,OUTPUT);    // "работает"
-   digitalWrite(LedWorkEsp32Cam,true);
+   // Переводим контакты лампочек в режим вывода и подключаем обработку прерываний
+   pinMode(PinLedWork,OUTPUT);    // контрольный светодиод
+   attachInterrupt(PinLedWork,toggleLedWork,CHANGE);
+   pinMode(PinLedFlash,OUTPUT);   // вспышка
+   attachInterrupt(PinLedFlash,onLedFlash,RISING);
 
    // Подключаемся к Wi-Fi сети
    WiFi.begin(ssid, password);
@@ -80,6 +110,7 @@ void setup()
    Serial.println(" ");
    Serial.println("Соединение с Wi-Fi установлено");
 
+   /*
    // Сделан низкий приоритет, так как часто (и занимается посл.порт на прием)
    xTaskCreatePinnedToCore(
       vTastes,                // Task function
@@ -89,7 +120,8 @@ void setup()
       1,                      // Priority
       NULL,                   // Task handle
       1); 
-
+   */
+   
    // Подключаем задачу определение состояния контрольного светодиода ESP32-CAM 
    // ("горит - не горит") и передачу данных на страницу сайта State  
    xTaskCreatePinnedToCore(
@@ -142,6 +174,15 @@ void setup()
 // Основной цикл
 void loop() 
 {
+   int currMillis = millis(); // время начала текущего цикла
+
+   // Переключаем состояние контрольного светодиода через заданное количество микросекунд
+   if ((currMillis < lastLedWork)||(currMillis - lastLedWork > millLedWork))
+   { 
+      lastLedWork = millis();  
+      digitalWrite(PinLedWork, !digitalRead(PinLedWork));
+   }
+  
    /*
    // Выполняем проверку подключения к беспроводной сети
    if ((WiFi.status() == WL_CONNECTED)) 
@@ -175,6 +216,8 @@ void loop()
    vTaskDelay(15000/portTICK_PERIOD_MS);   
 }
 
+
+/*
 // Сделано часто, так как считываем целое число из последовательного порта
 // и мигаем лампочками
 void vTastes(void* pvParameters) 
@@ -205,6 +248,8 @@ void vTastes(void* pvParameters)
       flag[1] = 1;
    }
 }
+*/
+
 void vCore1(void* pvParameters) 
 {
    for ( ;; )
@@ -257,5 +302,25 @@ void ssetup(String g)
   Serial.println(minstack,2);
   Serial.println(DHT22status);
 }
+
+
+/*
+#define pushButton_pin   33
+#define LED_pin   32
+void IRAM_ATTR toggleLED()
+{
+  digitalWrite(LED_pin, !digitalRead(LED_pin));
+}
+void setup()
+{
+  pinMode(LED_pin, OUTPUT);
+  pinMode(pushButton_pin, INPUT_PULLUP);
+  attachInterrupt(pushButton_pin, toggleLED, RISING);
+} 
+void loop()
+{
+}
+ 
+*/
 
 // ************************************************* ex3-0-6-5-GreatWDT.ino ***
