@@ -13,7 +13,10 @@
  * !!!
  * 1. Модуль ESP32 может обрабатывать до 32 прерываний на каждое ядро.
  * 
+ * Словарь
  * 
+ * Деятельность - выделенная часть основного цикла приложения, выполняющая
+ *     отдельную задачу.
  * 
  * Тезисы проекта:
  * 
@@ -33,14 +36,13 @@
 const char* ssid     = "OPPO A9 2020";
 const char* password = "b277a4ee84e8";
 
-// Определяем состояния светодиода с обратной логикой
-//#define inHIGH LOW
-//#define inLOW  HIGH 
-
 #include "define_kvizzy.h"   // подключили общие определения 
+#include "define_json.h"     // подключили работу с документом JSON 
 #include "common_kvizzy.h"   // подключили общие функции  
 
+// Подключаем задачи
 #include "Led33.h"           // подключили обработку контрольного светодиода 
+#include "Core.h"            // подключили обработку состояния процессоров 
 
 // Определяем заголовок для объекта таймера
 hw_timer_t *timer = NULL;
@@ -53,12 +55,13 @@ void IRAM_ATTR onTimer()
    portENTER_CRITICAL_ISR(&timerMux);
    // Если флаги всех задач установлены в 1, 
    // то сбрасываем флаги задач и счетчик сторожевого таймера
-   if (fwdtLed33 == true && flag[2] == 1 && flag[3] == 1) 
+   if (fwdtLed33==true && fwdtCore0==true && fwdtCore1==true && fwdtLoop==true) 
    {
       // Сбрасываем флаги задач
       fwdtLed33 = false;
-      flag[2] = 0;
-      flag[3] = 0;
+      fwdtCore0 = false;
+      fwdtCore1 = false;
+      fwdtLoop  = false;
       // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
       timerWrite(timer, 0);
    }
@@ -110,18 +113,6 @@ void setup()
    Serial.println(" ");
    Serial.println("Соединение с Wi-Fi установлено");
 
-   /*
-   // Сделан низкий приоритет, так как часто (и занимается посл.порт на прием)
-   xTaskCreatePinnedToCore(
-      vTastes,                // Task function
-      "Tastes",               // Task name
-      1024,                   // Stack size
-      NULL,                   // Parameters passed to the task function
-      1,                      // Priority
-      NULL,                   // Task handle
-      1); 
-   */
-   
    // Подключаем задачу определение состояния контрольного светодиода ESP32-CAM 
    // ("горит - не горит") и передачу данных на страницу сайта State  
    xTaskCreatePinnedToCore(
@@ -159,168 +150,29 @@ void setup()
    // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
    // раз (четвертый параметр = 0) 
    timerAlarm(timer, 20000000, true, 0);
-   
+   // Формируем общий json-документ
    sjson=thisController();
 
    Serial.println("");
    String str=getEsp32CAM(sjson);
    Serial.print("Контроллер: ");
    Serial.println(str);
-
-   //ssetup(sjson); 
-   
 }
 
 // Основной цикл
 void loop() 
 {
    int currMillis = millis(); // время начала текущего цикла
-
    // Переключаем состояние контрольного светодиода через заданное количество микросекунд
    if ((currMillis < lastLedWork)||(currMillis - lastLedWork > millLedWork))
    { 
       lastLedWork = millis();  
       digitalWrite(PinLedWork, !digitalRead(PinLedWork));
    }
-  
-   /*
-   // Выполняем проверку подключения к беспроводной сети
-   if ((WiFi.status() == WL_CONNECTED)) 
-   {
-      // Cоздаем объект для работы с HTTP
-      HTTPClient http;
-      // Подключаемся к веб-странице
-      // http.begin("https://kwinflatht.nichost.ru/State");
-      // http.begin("https://doortry.ru/State/");  // 2024-11-07 получилось
-      //http.begin(strcat("https://doortry.ru/State/?Com=","Privet"));  // 2024-11-09 получилось
-      http.begin("https://doortry.ru/State/?Com=Privet");  
-      
-      // Делаем GET запрос
-      int httpCode = http.GET();
-      // Проверяем успешность запроса
-      if (httpCode > 0) 
-      {
-         // Выводим ответ сервера
-         String ContentPage = http.getString();
-         Serial.println(httpCode);
-         //Serial.println(ContentPage);
-      }
-      else 
-      {
-         Serial.println("Ошибка HTTP-запроса");
-      }
-      // Освобождаем ресурсы микроконтроллера
-      http.end();
-   }
-   */
-   vTaskDelay(15000/portTICK_PERIOD_MS);   
+   // Отмечаем флагом, что цикл задачи успешно завершен   
+   fwdtLoop = true;
+   // Ничего не делаем пол секунды
+   vTaskDelay(500/portTICK_PERIOD_MS);   
 }
 
-
-/*
-// Сделано часто, так как считываем целое число из последовательного порта
-// и мигаем лампочками
-void vTastes(void* pvParameters) 
-{
-   for ( ;; )
-   {
-      // Считываем с последовательного порта целое число
-      // (так как в зависимости от окружения за целым числом может следовать нулевое значение,
-      // то отсекаем 0)
-      if (Serial.available() > 0) 
-      {
-         int ii=Serial.parseInt();
-         if (ii>0) iCreateSit=ii;
-         vTaskDelay(100/portTICK_PERIOD_MS);   
-      }
-      // Мигаем лампочкой
-      if (iCreateSit == disaflashing33) digitalWrite(LedWorkEsp32Cam,inLOW);
-      else
-      {
-         int mitLed33i=millis();
-         if ((mitLed33i-mitLed33)>2016)
-         {
-            digitalWrite(LedWorkEsp32Cam,!digitalRead(LedWorkEsp32Cam));
-            mitLed33 = mitLed33i;
-         }
-         if (iCreateSit == loopingTastes) MimicMCUhangEvent("Tastes");   
-      }
-      flag[1] = 1;
-   }
-}
-*/
-
-void vCore1(void* pvParameters) 
-{
-   for ( ;; )
-   {
-      String str=getCoreX(sjson);
-      Serial.print("getCore1: ");
-      Serial.println(str);
-      vTaskDelay(6000/portTICK_PERIOD_MS);   // 6 секунд задача
-      flag[2] = 1;
-      if (iCreateSit == 3) MimicMCUhangEvent("Core1");   
-   }
-}
-void vCore0(void* pvParameters) 
-{
-   for ( ;; )
-   {
-      String str=getCoreX(sjson,"Core0");
-      Serial.print("getCore0: ");
-      Serial.println(str);
-
-      vTaskDelay(5000/portTICK_PERIOD_MS);   // 5 секунд задача 
-      flag[3] = 1;
-      if (iCreateSit == loopingCore0) MimicMCUhangEvent("Core0");   
-   }
-}
-
-void ssetup(String g) 
-{
-  // JSON input string.
-  // const char* json = "12{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
-  const char* json = g.c_str();
-  // Deserialize the JSON document
-  DeserializationError error = deserializeJson(doc, json);
-  // Test if parsing succeeds.
-  if (error) 
-  {
-    Serial.print(F("deserializeJson() failed: "));
-    Serial.println(error.f_str());
-    return;
-  }
-
-  // Fetch values.
-  // Most of the time, you can rely on the implicit casts.
-  // In other case, you can do doc["time"].as<long>();
-  const char* namectrl = doc["namectrl"];
-  double minstack = doc["core0"][0]["minstack"];
-  int DHT22status = doc["DHT22"][0]["status"];
-  // Print values.
-  Serial.println(namectrl);
-  Serial.println(minstack,2);
-  Serial.println(DHT22status);
-}
-
-
-/*
-#define pushButton_pin   33
-#define LED_pin   32
-void IRAM_ATTR toggleLED()
-{
-  digitalWrite(LED_pin, !digitalRead(LED_pin));
-}
-void setup()
-{
-  pinMode(LED_pin, OUTPUT);
-  pinMode(pushButton_pin, INPUT_PULLUP);
-  attachInterrupt(pushButton_pin, toggleLED, RISING);
-} 
-void loop()
-{
-}
- 
-*/
-
-// ************************************************* ex3-0-6-5-GreatWDT.ino ***
+// *********************************************************** Kvizzy30.ino ***

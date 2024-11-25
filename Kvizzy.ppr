@@ -232,13 +232,14 @@ Kvizzy
 		+Kvizzy30
 			+Kvizzy30
 				Kvizzy30\Kvizzy30\common_kvizzy.h
+				Kvizzy30\Kvizzy30\Core.h
+				Kvizzy30\Kvizzy30\define_json.h
 				Kvizzy30\Kvizzy30\define_kvizzy.h
 				Kvizzy30\Kvizzy30\Errme.h
 				Kvizzy30\Kvizzy30\Errme.hpp
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
 				Kvizzy30\Kvizzy30\Led33.h
 				Kvizzy30\Kvizzy30\State.h
-				Kvizzy30\Kvizzy30\tveEsp32Cam10.h
 			-Ревизия
 				-2024-09-04 Kvizzy
 					-Test06_Obmen_Esp32
@@ -253,6 +254,7 @@ Kvizzy
 					Kvizzy30\Ревизия\2024-09-04 Kvizzy\principialnaya-ehlektricheskaya-shema-foto-lovushki.png
 					Kvizzy30\Ревизия\2024-09-04 Kvizzy\Serial communication between Arduino and ESP32 CAM.webp
 					Kvizzy30\Ревизия\2024-09-04 Kvizzy\SPI between Arduino and ESP32 CAM.webp
+					Kvizzy30\Ревизия\2024-09-04 Kvizzy\tveEsp32Cam10.h
 				-ArduinoJson
 					-Deserialization
 						Kvizzy30\Ревизия\ArduinoJson\Deserialization\Deserialization.ino
@@ -2049,6 +2051,8 @@ Kvizzy
 					Kvizzy30\Ревизия\Все про память Esp32\Карта памяти Esp32.xls
 				-Отладка ошибок Arduino с помощью декодера исключений ESP32
 					Kvizzy30\Ревизия\Отладка ошибок Arduino с помощью декодера исключений ESP32\ Отладка ошибок Arduino с помощью декодера исключений ESP32.md
+				-Работа с прерываниями
+					Kvizzy30\Ревизия\Работа с прерываниями\Работа с прерываниями.md
 			Kvizzy30\ESP32-CAM-ADC-Pins.webp
 			Kvizzy30\ESP32-CAM-Pinout.webp
 			Kvizzy30\ESP32-CAM-PWM-Pins.webp
@@ -2103,13 +2107,33 @@ Kvizzy
 		README.md
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
-1=Kvizzy30\Kvizzy30\define_kvizzy.h
+1=Kvizzy30\Kvizzy30\State.h
+2=Kvizzy30\Kvizzy30\common_kvizzy.h
+3=Kvizzy30\Kvizzy30\define_json.h
+4=Kvizzy30\Kvizzy30\define_kvizzy.h
+5=Kvizzy30\Kvizzy30\Core.h
+6=Kvizzy30\Kvizzy30\Led33.h
 [Selected Project Files]
 Main=
 Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
+TopLine=17
+Caret=1,116
+[Kvizzy30\Kvizzy30\State.h]
+TopLine=17
+Caret=1,1
+[Kvizzy30\Kvizzy30\common_kvizzy.h]
 TopLine=1
-Caret=4,15
+Caret=1,1
+[Kvizzy30\Kvizzy30\define_json.h]
+TopLine=81
+Caret=1,117
 [Kvizzy30\Kvizzy30\define_kvizzy.h]
-TopLine=46
-Caret=1,46
+TopLine=30
+Caret=9,45
+[Kvizzy30\Kvizzy30\Core.h]
+TopLine=21
+Caret=16,63
+[Kvizzy30\Kvizzy30\Led33.h]
+TopLine=65
+Caret=1,99

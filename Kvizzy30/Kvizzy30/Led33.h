@@ -91,31 +91,13 @@ void vLed33(void* pvParameters)
            
          // Отправляем json-строку на сайт
          String ContentPage = sendState(jstr); 
-         Serial.print("Ответ: ");
-         Serial.println(ContentPage);
-        
-         /*
-         int httpCode = sendState(jstr); 
-         // Проверяем успешность запроса
-         if (httpCode==200) 
-         {
-            // Выводим ответ сервера
-            //String ContentPage = http.getString();
-            //Serial.println(ContentPage);
-            Serial.print(" => ");
-         }
-         else 
-         {
-            Serial.print(" => http-запрос отправлен с ошибкой ");
-         }
-         Serial.println(httpCode);
-           
-         //Serial.println(" !!!");
-         */
-     }
-      vTaskDelay(507/portTICK_PERIOD_MS); 
+         //Serial.print("Ответ: ");
+         //Serial.println(ContentPage);
+      }
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtLed33 = true;
+      // Пропускаем все полсекунды
+      vTaskDelay(507/portTICK_PERIOD_MS); 
    }
 }
 
