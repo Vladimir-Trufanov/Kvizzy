@@ -239,6 +239,7 @@ Kvizzy
 				Kvizzy30\Kvizzy30\Errme.hpp
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
 				Kvizzy30\Kvizzy30\Led33.h
+				Kvizzy30\Kvizzy30\Serme.h
 				Kvizzy30\Kvizzy30\State.h
 			-Ревизия
 				-2024-09-04 Kvizzy
@@ -2111,14 +2112,14 @@ Kvizzy
 2=Kvizzy30\Kvizzy30\common_kvizzy.h
 3=Kvizzy30\Kvizzy30\define_json.h
 4=Kvizzy30\Kvizzy30\define_kvizzy.h
-5=Kvizzy30\Kvizzy30\Core.h
+5=Kvizzy30\Kvizzy30\Serme.h
 6=Kvizzy30\Kvizzy30\Led33.h
 [Selected Project Files]
 Main=
 Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
-TopLine=17
-Caret=1,116
+TopLine=27
+Caret=2,47
 [Kvizzy30\Kvizzy30\State.h]
 TopLine=17
 Caret=1,1
@@ -2131,9 +2132,9 @@ Caret=1,117
 [Kvizzy30\Kvizzy30\define_kvizzy.h]
 TopLine=30
 Caret=9,45
-[Kvizzy30\Kvizzy30\Core.h]
-TopLine=21
-Caret=16,63
+[Kvizzy30\Kvizzy30\Serme.h]
+TopLine=1
+Caret=1,19
 [Kvizzy30\Kvizzy30\Led33.h]
 TopLine=65
 Caret=1,99
