@@ -17,7 +17,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	+Kvizzy
+	-Kvizzy
 		-IrPlus
 			-GalaxyS4UniversalRemote
 				IrPlus\GalaxyS4UniversalRemote\Galaxy.S4.Универсальный.пульт.v.2.3.2.b.19.RUS.crk.apk
@@ -229,8 +229,8 @@ Kvizzy
 			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
-		+Kvizzy30
-			+Kvizzy30
+		-Kvizzy30
+			-Kvizzy30
 				Kvizzy30\Kvizzy30\common_kvizzy.h
 				Kvizzy30\Kvizzy30\Core.h
 				Kvizzy30\Kvizzy30\define_json.h
@@ -2052,6 +2052,14 @@ Kvizzy
 					Kvizzy30\Ревизия\Все про память Esp32\Карта памяти Esp32.xls
 				-Отладка ошибок Arduino с помощью декодера исключений ESP32
 					Kvizzy30\Ревизия\Отладка ошибок Arduino с помощью декодера исключений ESP32\ Отладка ошибок Arduino с помощью декодера исключений ESP32.md
+				-Очереди в esp32
+					-QueueHandleOne
+						Kvizzy30\Ревизия\Очереди в esp32\QueueHandleOne\QueueHandleOne.ino
+					-QueueHandlMulti
+						Kvizzy30\Ревизия\Очереди в esp32\QueueHandlMulti\QueueHandlMulti.ino
+					-QueueHandlMulti2
+						Kvizzy30\Ревизия\Очереди в esp32\QueueHandlMulti2\QueueHandlMulti2.ino
+					Kvizzy30\Ревизия\Очереди в esp32\Очереди в Esp32.md
 				-Работа с прерываниями
 					Kvizzy30\Ревизия\Работа с прерываниями\Работа с прерываниями.md
 			Kvizzy30\ESP32-CAM-ADC-Pins.webp
@@ -2110,10 +2118,6 @@ Kvizzy
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 1=Kvizzy30\Kvizzy30\State.h
 2=Kvizzy30\Kvizzy30\common_kvizzy.h
-3=Kvizzy30\Kvizzy30\define_json.h
-4=Kvizzy30\Kvizzy30\define_kvizzy.h
-5=Kvizzy30\Kvizzy30\Serme.h
-6=Kvizzy30\Kvizzy30\Led33.h
 [Selected Project Files]
 Main=
 Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
@@ -2126,15 +2130,3 @@ Caret=1,1
 [Kvizzy30\Kvizzy30\common_kvizzy.h]
 TopLine=1
 Caret=1,1
-[Kvizzy30\Kvizzy30\define_json.h]
-TopLine=81
-Caret=1,117
-[Kvizzy30\Kvizzy30\define_kvizzy.h]
-TopLine=30
-Caret=9,45
-[Kvizzy30\Kvizzy30\Serme.h]
-TopLine=1
-Caret=1,19
-[Kvizzy30\Kvizzy30\Led33.h]
-TopLine=65
-Caret=1,99
