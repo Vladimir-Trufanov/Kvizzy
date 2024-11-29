@@ -96,6 +96,9 @@ void setup()
    while (!Serial) continue;
    Serial.println("Последовательный порт работает!");
 
+   // Проверяем пример
+   // schastr();
+
    // Переводим контакты лампочек в режим вывода и подключаем обработку прерываний
    pinMode(PinLedWork,OUTPUT);    // контрольный светодиод
    attachInterrupt(PinLedWork,toggleLedWork,CHANGE);

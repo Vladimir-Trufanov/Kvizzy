@@ -2052,14 +2052,6 @@ Kvizzy
 					Kvizzy30\Ревизия\Все про память Esp32\Карта памяти Esp32.xls
 				-Отладка ошибок Arduino с помощью декодера исключений ESP32
 					Kvizzy30\Ревизия\Отладка ошибок Arduino с помощью декодера исключений ESP32\ Отладка ошибок Arduino с помощью декодера исключений ESP32.md
-				-Очереди в esp32
-					-QueueHandleOne
-						Kvizzy30\Ревизия\Очереди в esp32\QueueHandleOne\QueueHandleOne.ino
-					-QueueHandlMulti
-						Kvizzy30\Ревизия\Очереди в esp32\QueueHandlMulti\QueueHandlMulti.ino
-					-QueueHandlMulti2
-						Kvizzy30\Ревизия\Очереди в esp32\QueueHandlMulti2\QueueHandlMulti2.ino
-					Kvizzy30\Ревизия\Очереди в esp32\Очереди в Esp32.md
 				-Работа с прерываниями
 					Kvizzy30\Ревизия\Работа с прерываниями\Работа с прерываниями.md
 			Kvizzy30\ESP32-CAM-ADC-Pins.webp
@@ -2118,9 +2110,10 @@ Kvizzy
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 1=Kvizzy30\Kvizzy30\State.h
 2=Kvizzy30\Kvizzy30\common_kvizzy.h
+3=Kvizzy30\Kvizzy30\Serme.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
+Selected=Kvizzy30\Kvizzy30\Serme.h
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=27
 Caret=2,47
@@ -2128,5 +2121,8 @@ Caret=2,47
 TopLine=17
 Caret=1,1
 [Kvizzy30\Kvizzy30\common_kvizzy.h]
+TopLine=1
+Caret=1,1
+[Kvizzy30\Kvizzy30\Serme.h]
 TopLine=1
 Caret=1,1
