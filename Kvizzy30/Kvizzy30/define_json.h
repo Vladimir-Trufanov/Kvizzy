@@ -73,8 +73,8 @@ String thisController()
    led_33["tiddev"] = 1;            // идентификатор типа устройства
    led_33["nicdev"] = "inLed";      // nic устройства
    led_33["status"] = "inLOW";      // текущее состояние светодиода     
-   led_33["light"]  = 55;           // процент времени свечения     
-   led_33["time"]   = 4;            // длительность цикла "горит - не горит" (сек)     
+   led_33["light"]  = 55;           // процент времени свечения в цикле     
+   led_33["time"]   = 4;            // длительность цикла "горит - не горит" (мсек)     
    // Вспышка
    JsonArray led4 = doc.createNestedArray("led4");
    JsonObject led_4 = led4.createNestedObject();
