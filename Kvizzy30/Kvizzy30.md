@@ -1,5 +1,23 @@
 ## [Kvizzy30 - Стремящееся к умному хозяйство](#) 
 
+```
+###1###
+send Led33: {"tidctrl":1,"nicctrl":"myjoy","led33":[{"tiddev":1,"nicdev":"inLed","status":"inLOW"}]}
+shttp: https://doortry.ru/State/?Com={"tidctrl":1,"nicctrl":"myjoy","led33":[{"tiddev":1,"nicdev":"inLed","status":"inLOW"}]}***
+getCore0: {"Core0":[{"minstack":34}]}
+###0###
+getCore1: {"core1":[{"iddev":1,"minstack":34}]}
+send Led33: {"tidctrl":1,"nicctrl":"myjoy","led33":[{"tiddev":1,"nicdev":"inLed","status":"inHIGH"}]}
+shttp: https://doortry.ru/State/?Com={"tidctrl":1,"nicctrl":"myjoy","led33":[{"tiddev":1,"nicdev":"inLed","status":"inHIGH"}]}***
+getCore0: {"Core0":[{"minstack":34}]}
+###1###
+send Led33: {"tidctrl":1,"nicctrl":"myjoy","led33":[{"tiddev":1,"nicdev":"inLed","status":"inLOW"}]}
+shttp: https://doortry.ru/State/?Com={"tidctrl":1,"nicctrl":"myjoy","led33":[{"tiddev":1,"nicdev":"inLed","status":"inLOW"}]}***
+getCore1: {"core1":[{"iddev":1,"minstack":34}]}
+
+```
+
+
 ### [ESP32-CAM - справочник по распиновке](https://lastminuteengineers.com/esp32-cam-pinout-reference/)
 
 ![](ESP32-CAM-Pinout.webp)

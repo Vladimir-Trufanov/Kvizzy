@@ -73,6 +73,8 @@ String thisController()
    led_33["tiddev"] = 1;            // идентификатор типа устройства
    led_33["nicdev"] = "inLed";      // nic устройства
    led_33["status"] = "inLOW";      // текущее состояние светодиода     
+   led_33["light"]  = 55;           // процент времени свечения     
+   led_33["time"]   = 4;            // длительность цикла "горит - не горит" (сек)     
    // Вспышка
    JsonArray led4 = doc.createNestedArray("led4");
    JsonObject led_4 = led4.createNestedObject();
@@ -108,7 +110,7 @@ String getEsp32CAM(String sjson)
    {
       Serial.print(F("deserializeJson() failed: "));
       Serial.println(error.f_str());
-      return;
+      // return;
    }
    String str = "";
    serializeJson(doc,str);
