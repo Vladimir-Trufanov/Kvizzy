@@ -40,8 +40,8 @@ void vCore0(void* pvParameters)
    for ( ;; )
    {
       String str=getCoreX(sjson,"Core0");
-      Serial.print("getCore0: ");
-      Serial.println(str);
+      //Serial.print("getCore0: ");
+      //Serial.println(str);
 
       vTaskDelay(5000/portTICK_PERIOD_MS);   // 5 секунд задача 
       fwdtCore0 = true;
@@ -57,8 +57,8 @@ void vCore1(void* pvParameters)
    for ( ;; )
    {
       String str=getCoreX(sjson);
-      Serial.print("getCore1: ");
-      Serial.println(str);
+      //Serial.print("getCore1: ");
+      //Serial.println(str);
       vTaskDelay(6000/portTICK_PERIOD_MS);   // 6 секунд задача
       fwdtCore1 = true;
       if (iCreateSit == 3) MimicMCUhangEvent("Core1");   

@@ -1,16 +1,13 @@
 /** Arduino, Esp32-CAM ******************************************** State.h ***
  * 
- *           ---Обеспечить определение состояния контрольного светодиода ESP32-CAM
- *           ---    ("горит - не горит") и передачу данных на страницу сайта State
+ *        Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
+ *            и показаниях датчиков из очереди и отправить их на страницу State 
  * 
- * v1.2, 08.11.2024                                   Автор:      Труфанов В.Е.
+ * v3.3.2, 23.12.2024                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
-#ifndef State_
-#define State_
 #pragma once            
-
 #include <Arduino.h>
 
 // ****************************************************************************
@@ -27,46 +24,57 @@ String sendState(String sjson)
       // Cоздаем объект для работы с HTTP
       HTTPClient http;
       // Подключаемся к веб-странице
-      // http://localhost:100/State/?Com={%22nicctrl%22:%22myjoy%22,%22led33%22:[{%22typedev%22:%22inLed%22,%22status%22:%22inHIGH%22}]}
-      // http.begin("https://doortry.ru/State/?Com="+"Privet");  
-      
-      //String shttp="https://doortry.ru/State/?Com=Privet";
       //String shttp="https://doortry.ru/State/e?Com=";  // Ответ: 404
       //String shttp="https://doortryi.ru/State/?Com=";  // Ответ: -1
       //String shttp="http://doortry.ru/State/?Com=";    // Ответ: 301
       
-      String shttp="https://doortry.ru/State/?Com=";     //
+      //String shttp="https://doortry.ru/State/?Com=";   //
+      String shttp="http://probatv.ru/?Com=State"; 
       
-      shttp += sjson;   
-      Serial.print("shttp: ");
-      Serial.print(shttp);
-      Serial.println("***");
-
-
-      //shttp="https://doortry.ru/State/?Com=Privetik";
-      http.begin(shttp);  
+      //shttp += sjson;   
+      Serial.print("shttp: "); Serial.println(shttp);
 
       // Делаем GET запрос
+      http.begin(shttp);  
       int httpCode = http.GET();
-      // Проверяем успешность запроса
-      if (httpCode == 200) 
-      {
-         // Получаем ответ сервера
-         Result = http.getString();
-         //Serial.println(httpCode);
-         //Serial.println(ContentPage);
-      }
-      else 
-      {
-         Result = String(httpCode);
-         //Serial.println("Ошибка HTTP-запроса");
-      }
+      // Если запрос успешный получаем ответ сервера
+      if (httpCode == 200) Result = http.getString();
+      // Иначе сообщение о коде ошибки
+      else Result = String(httpCode);
       // Освобождаем ресурсы микроконтроллера
       http.end();
    }
    return Result;
 }
+// * Задача FreRTOS ***********************************************************
+// *   Выбрать накопившиеся json-сообщения о состоянии устройств контроллера  *
+// *     и показаниях датчиков из очереди и отправить их на страницу State    *
+// ****************************************************************************
+void vState(void* pvParameters) 
+{
+   for (;;)
+   {
+      /*
+      // Имитируем зависание микроконтроллера с помощью опознанного числа,
+      // принятого в последовательном порту
+      if (iCreateSit == loopingLed33) MimicMCUhangEvent("Led33");  
+      */ 
 
-#endif
+      String jstr="&cjson=";
+      String sjson="95";
+      jstr +=sjson;
+           
+      // Отправляем json-строку на сайт
+      String ContentPage = sendState(jstr); 
+      
+      Serial.print("Ответ: ");
+      Serial.println(ContentPage);
+
+      // Отмечаем флагом, что цикл задачи успешно завершен   
+      fwdtState = true;
+      // Пропускаем интервал 386 мсек
+      vTaskDelay(386/portTICK_PERIOD_MS); 
+   }
+}
 
 // **************************************************************** State.h ***

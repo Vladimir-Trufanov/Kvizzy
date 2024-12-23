@@ -4,13 +4,11 @@
  *                                           контрольным и вспышкой, через сайт
  *                    (модель нижнего уровня, стремящегося к умному, хозяйства)
  * 
- * v3.3.1, 22.12.2024                                 Автор:      Труфанов В.Е.
+ * v3.3.2, 23.12.2024                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 31.05.2024
  * 
  *            Kvizzy: нижний уровень "умного хозяйства" - системы контроллеров, 
  *                  датчиков и исполнительных устройств, управляемых через сайт 
- *                    
- * 
  * 
 **/
 
@@ -22,14 +20,14 @@
 const char* ssid     = "OPPO A9 2020";
 const char* password = "b277a4ee84e8";
 
-#include "define_kvizzy.h"   // подключили общие определения 
-#include "define_json.h"     // подключили работу с документом JSON 
-#include "common_kvizzy.h"   // подключили общие функции  
+#include "define_kvizzy.h"   // общие определения 
+#include "define_json.h"     // работа с документом JSON 
+#include "common_kvizzy.h"   // общие функции  
 
 // Подключаем задачи и деятельности
-#include "Led33.h"           // подключили обработку контрольного светодиода 
+#include "State.h"           // выборка сообщений о состоянии 
+#include "Led33.h"           // обработка контрольного светодиода 
 #include "Core.h"            // подключили обработку состояния процессоров 
-#include "Serme.h"           // подключили общий вывод в последовательный порт
 // Определяем заголовок для объекта таймера
 hw_timer_t *timer = NULL;
 // Инициируем спинлок критической секции в обработчике таймерного прерывания
@@ -41,13 +39,14 @@ void IRAM_ATTR onTimer()
    portENTER_CRITICAL_ISR(&timerMux);
    // Если флаги всех задач установлены в 1, 
    // то сбрасываем флаги задач и счетчик сторожевого таймера
-   if (fwdtLed33==true && fwdtCore0==true && fwdtCore1==true && fwdtLoop==true) 
+   if (fwdtLed33==true && fwdtCore0==true && fwdtCore1==true && fwdtLoop==true && fwdtState==true) 
    {
       // Сбрасываем флаги задач
       fwdtLed33 = false;
       fwdtCore0 = false;
       fwdtCore1 = false;
       fwdtLoop  = false;
+      fwdtState = false;
       // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
       timerWrite(timer, 0);
    }
@@ -62,9 +61,11 @@ void IRAM_ATTR onTimer()
 // Обработка прерывания для контрольного светодиода при смене состояния 33 пина (CHANGE)
 void IRAM_ATTR toggleLedWork()
 {
+   /*
    Serial.print("###");
    Serial.print(digitalRead(PinLedWork));
    Serial.println("###");
+   */
 }
 
 // Обработка прерывания для вспышки при изменении состояние 4 контакта с LOW на HIGH (RISING).
@@ -130,6 +131,16 @@ void setup()
       6,                      // Priority
       NULL,                   // Task handle
       0);
+   // Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
+   // и показаниях датчиков из очереди и отправить их на страницу State 
+   xTaskCreatePinnedToCore(
+      vState,                 // Task function
+      "State",                // Task name
+      2048,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      9,                      // Priority
+      NULL,                   // Task handle
+      1);
 
    // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
    timer = timerBegin(1000000);
@@ -143,9 +154,11 @@ void setup()
    sjson=thisController();
 
    Serial.println("");
+   /*
    String str=getEsp32CAM(sjson);
    Serial.print("Контроллер: ");
    Serial.println(str);
+   */
 }
 
 // Основной цикл

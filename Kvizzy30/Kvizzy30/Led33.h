@@ -13,7 +13,7 @@
 
 #include <Arduino.h>
 #include "define_kvizzy.h"    
-#include "State.h"    
+//#include "State.h"    
 
 #define inHIGH LOW           // светодиод с обратной логикой включён
 #define inLOW  HIGH          // светодиод с обратной логикой ВЫКЛ
@@ -77,6 +77,7 @@ void vLed33(void* pvParameters)
 {
    for (;;)
    {
+      /*
       // Имитируем зависание микроконтроллера с помощью опознанного числа,
       // принятого в последовательном порту
       if (iCreateSit == loopingLed33) MimicMCUhangEvent("Led33");   
@@ -96,6 +97,7 @@ void vLed33(void* pvParameters)
       }
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtLed33 = true;
+      */
       // Пропускаем все полсекунды
       vTaskDelay(507/portTICK_PERIOD_MS); 
    }
