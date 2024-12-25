@@ -31,6 +31,7 @@ String getCoreX(String sjson, String imjaCore="core1")
    serializeJson(doc,str);
    return str;
 }
+/*
 // * Задача FreRTOS ***********************************************************
 // *                            Обеспечить определение состояния процессора 0 *
 // *                                и передачу данных на страницу сайта State *
@@ -48,6 +49,7 @@ void vCore0(void* pvParameters)
       if (iCreateSit == loopingCore0) MimicMCUhangEvent("Core0");   
    }
 }
+*/
 // * Задача FreRTOS ***********************************************************
 // *                            Обеспечить определение состояния процессора 1 *
 // *                                и передачу данных на страницу сайта State *

@@ -21,20 +21,20 @@ String sendState(String sjson)
    // Выполняем проверку подключения к беспроводной сети
    if ((WiFi.status() == WL_CONNECTED)) 
    {
-      // Cоздаем объект для работы с HTTP
-      HTTPClient http;
       // Подключаемся к веб-странице
       //String shttp="https://doortry.ru/State/e?Com=";  // Ответ: 404
       //String shttp="https://doortryi.ru/State/?Com=";  // Ответ: -1
       //String shttp="http://doortry.ru/State/?Com=";    // Ответ: 301
       
       //String shttp="https://doortry.ru/State/?Com=";   //
-      String shttp="http://probatv.ru/?Com=State"; 
+      //String shttp="http://probatv.ru/?Com=State"; 
+      String shttp="http://probatv.ru/kv/";
       
       //shttp += sjson;   
       Serial.print("shttp: "); Serial.println(shttp);
 
       // Делаем GET запрос
+      /*
       http.begin(shttp);  
       int httpCode = http.GET();
       // Если запрос успешный получаем ответ сервера
@@ -43,6 +43,53 @@ String sendState(String sjson)
       else Result = String(httpCode);
       // Освобождаем ресурсы микроконтроллера
       http.end();
+      */
+
+        // Если разрешено, трассируем память контроллера
+        #ifdef tmr_TRACEMEMORY
+         // Получаем полный размер кучи в памяти
+         printf("Общий размер ВСТРОЕННОЙ памяти:     %u\n", ESP.getHeapSize());
+         // Количество доступной кучи в памяти
+         printf("Оставшаяся доступная память в куче: %u\n", ESP.getFreeHeap());
+         // Самый низкий уровень свободной кучи с момента загрузки
+         printf("Минимальная свободная с загрузки:   %u\n", ESP.getMinFreeHeap());
+         // Размер общей кучи SPI PSRAM
+         printf("Общий размер SPI PSRAM:             %u\n", ESP.getPsramSize());
+         // Количество свободной PSRAM
+         printf("Количество свободной PSRAM:         %d\n", ESP.getFreePsram());
+         // Минимальный размер свободной памяти в SPI RAM
+         printf("Минимум свободной SPI PSRAM:        %d\n", ESP.getMinFreePsram());
+         // Размер самого большого блока PSRAM, который может быть выделен
+         printf("Самый большой блок для выделения:   %d\n", ESP.getMaxAllocPsram());
+      #endif
+
+
+      
+      http.begin(shttp);
+      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+      int httpCode = http.GET();
+      // httpCode will be negative on error
+      if (httpCode > 0) 
+      {
+         // file found at server
+         if (httpCode == HTTP_CODE_OK) 
+         {
+            Result = http.getString();
+         } 
+         else 
+         {
+            // HTTP header has been send and Server response header has been handled
+            Serial.printf("[HTTP] GET... code: %d\n", httpCode);
+         }
+      } 
+      else 
+      {
+         Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
+      }
+      http.end();
+      
+      // Также для завершения сеанса связи нужно вызвать функцию esp_http_client_cleanup(). 
+      // Она закроет текущее соединение и освободит всю память, выделенную экземпляру HTTP-клиента.
    }
    return Result;
 }
@@ -67,13 +114,22 @@ void vState(void* pvParameters)
       // Отправляем json-строку на сайт
       String ContentPage = sendState(jstr); 
       
-      Serial.print("Ответ: ");
+      //Serial.print("Ответ: ");
+      iAll++;
+      Serial.print(iAll); Serial.print(": ");
       Serial.println(ContentPage);
 
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtState = true;
       // Пропускаем интервал 386 мсек
-      vTaskDelay(386/portTICK_PERIOD_MS); 
+      //iState++; 
+      //if (iState>5)
+      //{
+      //  iState=0;
+      //  vTaskDelay(60000/portTICK_PERIOD_MS); 
+      //}
+      //else 
+      vTaskDelay(986/portTICK_PERIOD_MS); 
    }
 }
 

@@ -31,6 +31,8 @@ void vLed33(void *pvParameters);
 bool fwdtLed33 = false;
 void vState(void *pvParameters);
 bool fwdtState = false;
+void vPrint(void *pvParameters);
+bool fwdtPrint = false;
 void vCore0(void *pvParameters);
 bool fwdtCore0 = false;
 void vCore1(void *pvParameters);

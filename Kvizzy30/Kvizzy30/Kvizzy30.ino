@@ -16,9 +16,26 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
+//#include <Watchdog.h>
+//Watchdog watchdog;
+
 // Вводим имя и пароль точки доступа
 const char* ssid     = "OPPO A9 2020";
 const char* password = "b277a4ee84e8";
+
+//#include "esp_http_client.h"
+
+// Cоздаем объект для работы с HTTP
+HTTPClient http;
+
+int iState=0;
+int iAll=0;
+
+// Подключаем файлы обеспечения передачи и приёма сообщений через очередь                
+#include "Kvizzy30_Message.h" // сообщения приложения (примера по обработке очередей)    
+#include <QueMessage.h>       // заголовочный файл класса TQueMessage                    
+// Назначаем объект работы с сообщениями через очередь                                   
+TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);                                         
 
 #include "define_kvizzy.h"   // общие определения 
 #include "define_json.h"     // работа с документом JSON 
@@ -39,14 +56,16 @@ void IRAM_ATTR onTimer()
    portENTER_CRITICAL_ISR(&timerMux);
    // Если флаги всех задач установлены в 1, 
    // то сбрасываем флаги задач и счетчик сторожевого таймера
-   if (fwdtLed33==true && fwdtCore0==true && fwdtCore1==true && fwdtLoop==true && fwdtState==true) 
+   if (fwdtLed33==true && /*fwdtCore0==true &&*/ fwdtCore1==true && fwdtLoop==true && 
+   fwdtState==true && fwdtPrint==true) 
    {
       // Сбрасываем флаги задач
       fwdtLed33 = false;
-      fwdtCore0 = false;
+      /*fwdtCore0 = false;*/
       fwdtCore1 = false;
       fwdtLoop  = false;
       fwdtState = false;
+      fwdtPrint = false;
       // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
       timerWrite(timer, 0);
    }
@@ -83,6 +102,18 @@ void setup()
    while (!Serial) continue;
    Serial.println("Последовательный порт работает!");
 
+   // Создаем очередь                                                                   
+   String inMess=queMessa.Create();                                                      
+   // Если не получилось, сообщаем "Очередь не была создана и не может использоваться"    
+   if (inMess==QueueNotCreate) Serial.println(QueueNotCreate);                           
+   // Если очередь получилась, то отмечаем  "Очередь сформирована"                       
+   else Serial.println(QueueBeformed);                                                   
+   // Подключаем функцию передачи сообщения на периферию                                 
+   queMessa.attachFunction(transmess);                                                  
+
+ // Setup watchdog
+//  watchdog.enable(Watchdog::TIMEOUT_8S);
+   
    // Проверяем пример
    // schastr();
 
@@ -93,6 +124,7 @@ void setup()
    attachInterrupt(PinLedFlash,onLedFlash,RISING);
 
    // Подключаемся к Wi-Fi сети
+   WiFi.disconnect();
    WiFi.begin(ssid, password);
    Serial.print("Соединяемся с Wi-Fi .");
    while (WiFi.status() != WL_CONNECTED) 
@@ -122,7 +154,7 @@ void setup()
       6,                      // Priority
       NULL,                   // Task handle
       1);
-
+   /*
    xTaskCreatePinnedToCore(
       vCore0,                 // Task function
       "Core0",                // Task name
@@ -131,6 +163,7 @@ void setup()
       6,                      // Priority
       NULL,                   // Task handle
       0);
+   */
    // Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
    // и показаниях датчиков из очереди и отправить их на страницу State 
    xTaskCreatePinnedToCore(
@@ -141,7 +174,15 @@ void setup()
       9,                      // Priority
       NULL,                   // Task handle
       1);
-
+   // Выбрать из очереди и вывести сообщения в последовательный порт
+   xTaskCreatePinnedToCore(
+      vPrint,                 // Task function
+      "Print",                // Task name
+      2048,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      9,                      // Priority
+      NULL,                   // Task handle
+      1);
    // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
    timer = timerBegin(1000000);
    // Подключаем функцию обработчика прерывания от таймера - onTimer
@@ -174,7 +215,7 @@ void loop()
    // Отмечаем флагом, что цикл задачи успешно завершен   
    fwdtLoop = true;
    // Ничего не делаем пол секунды
-   vTaskDelay(500/portTICK_PERIOD_MS);   
+   vTaskDelay(500/portTICK_PERIOD_MS); 
 }
 
 // *********************************************************** Kvizzy30.ino ***

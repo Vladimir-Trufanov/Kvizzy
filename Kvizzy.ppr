@@ -17,7 +17,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	-Kvizzy
+	+Kvizzy
 		-IrPlus
 			-GalaxyS4UniversalRemote
 				IrPlus\GalaxyS4UniversalRemote\Galaxy.S4.Универсальный.пульт.v.2.3.2.b.19.RUS.crk.apk
@@ -229,8 +229,8 @@ Kvizzy
 			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
-		-Kvizzy30
-			-Kvizzy30
+		+Kvizzy30
+			+Kvizzy30
 				Kvizzy30\Kvizzy30\common_kvizzy.h
 				Kvizzy30\Kvizzy30\Core.h
 				Kvizzy30\Kvizzy30\define_json.h
@@ -239,7 +239,6 @@ Kvizzy
 				Kvizzy30\Kvizzy30\Errme.hpp
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
 				Kvizzy30\Kvizzy30\Led33.h
-				Kvizzy30\Kvizzy30\Serme.h
 				Kvizzy30\Kvizzy30\State.h
 			-Ревизия
 				-2024-09-04 Kvizzy
@@ -2110,19 +2109,19 @@ Kvizzy
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 1=Kvizzy30\Kvizzy30\State.h
 2=Kvizzy30\Kvizzy30\common_kvizzy.h
-3=Kvizzy30\Kvizzy30\Serme.h
+3=Kvizzy30\Kvizzy30\Led33.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\Serme.h
+Selected=Kvizzy30\Kvizzy30\State.h
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=27
 Caret=2,47
 [Kvizzy30\Kvizzy30\State.h]
-TopLine=17
+TopLine=1
 Caret=1,1
 [Kvizzy30\Kvizzy30\common_kvizzy.h]
 TopLine=1
 Caret=1,1
-[Kvizzy30\Kvizzy30\Serme.h]
-TopLine=1
+[Kvizzy30\Kvizzy30\Led33.h]
+TopLine=9
 Caret=1,1

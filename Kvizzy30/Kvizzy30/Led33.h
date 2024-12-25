@@ -95,9 +95,9 @@ void vLed33(void* pvParameters)
          //Serial.print("Ответ: ");
          //Serial.println(ContentPage);
       }
+      */
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtLed33 = true;
-      */
       // Пропускаем все полсекунды
       vTaskDelay(507/portTICK_PERIOD_MS); 
    }
