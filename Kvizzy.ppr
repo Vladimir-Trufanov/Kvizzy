@@ -238,6 +238,8 @@ Kvizzy
 				Kvizzy30\Kvizzy30\Errme.h
 				Kvizzy30\Kvizzy30\Errme.hpp
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
+				Kvizzy30\Kvizzy30\Kvizzy30_Message.h
+				Kvizzy30\Kvizzy30\Lead.h
 				Kvizzy30\Kvizzy30\Led33.h
 				Kvizzy30\Kvizzy30\State.h
 			-Ревизия
@@ -1985,6 +1987,8 @@ Kvizzy
 						Kvizzy30\Ревизия\Buzzer_Sounds\Mozzi\WaveShaper.h
 					Kvizzy30\Ревизия\Buzzer_Sounds\Buzzer_Sounds.md
 					Kvizzy30\Ревизия\Buzzer_Sounds\Mozzi-master.zip
+				-Http
+					Kvizzy30\Ревизия\Http\Http.md
 				-I2c_Scanner
 					Kvizzy30\Ревизия\I2c_Scanner\I2c_Scanner.fzz
 					Kvizzy30\Ревизия\I2c_Scanner\I2c_Scanner.ino
@@ -1997,8 +2001,6 @@ Kvizzy
 						Kvizzy30\Ревизия\KlimovHelp\ServerPing\ServerPing.ino
 					Kvizzy30\Ревизия\KlimovHelp\ESP32Ping-master.zip
 					Kvizzy30\Ревизия\KlimovHelp\KlimovHelp.md
-				-konstruktor-umnogo-hozyajstva
-					Kvizzy30\Ревизия\konstruktor-umnogo-hozyajstva\konstruktor-umnogo-hozyajstva.md
 				-ParseXMLfile-LeadLEDs
 					Kvizzy30\Ревизия\ParseXMLfile-LeadLEDs\ParseXMLfile-LeadLEDs.ino
 					Kvizzy30\Ревизия\ParseXMLfile-LeadLEDs\tinyxml2.cpp
@@ -2018,6 +2020,10 @@ Kvizzy
 					Kvizzy30\Ревизия\WalkSounds\Walk_Defines.h
 					Kvizzy30\Ревизия\WalkSounds\Walk_Sounds.cpp
 					Kvizzy30\Ревизия\WalkSounds\Walk_Sounds.h
+				-Wdt
+					Kvizzy30\Ревизия\Wdt\Wdt.md
+				-WiFi
+					Kvizzy30\Ревизия\WiFi\WiFi.md
 				-Ассоциативные массивы
 					-SimpleMap-master
 						-SimpleMap-master
@@ -2057,6 +2063,7 @@ Kvizzy
 			Kvizzy30\ESP32-CAM-Pinout.webp
 			Kvizzy30\ESP32-CAM-PWM-Pins.webp
 			Kvizzy30\Kvizzy30.md
+			Kvizzy30\Kvizzy30.md.backup
 		-LedyEs
 			-Blink
 				LedyEs\Blink\Blink.ino
@@ -2107,21 +2114,17 @@ Kvizzy
 		README.md
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
-1=Kvizzy30\Kvizzy30\State.h
-2=Kvizzy30\Kvizzy30\common_kvizzy.h
-3=Kvizzy30\Kvizzy30\Led33.h
+1=Kvizzy30\Kvizzy30\Lead.h
+2=Kvizzy30\Kvizzy30\State.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\State.h
+Selected=Kvizzy30\Kvizzy30\Lead.h
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
-TopLine=27
-Caret=2,47
+TopLine=149
+Caret=9,171
+[Kvizzy30\Kvizzy30\Lead.h]
+TopLine=10
+Caret=87,47
 [Kvizzy30\Kvizzy30\State.h]
-TopLine=1
-Caret=1,1
-[Kvizzy30\Kvizzy30\common_kvizzy.h]
-TopLine=1
-Caret=1,1
-[Kvizzy30\Kvizzy30\Led33.h]
-TopLine=9
-Caret=1,1
+TopLine=125
+Caret=19,161

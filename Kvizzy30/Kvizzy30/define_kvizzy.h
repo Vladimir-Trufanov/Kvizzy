@@ -29,12 +29,14 @@ volatile int millLedWork = 3017;      // текущий интервал сме�
 // Назначаем задачи и флаги сторожевого таймера
 void vLed33(void *pvParameters);
 bool fwdtLed33 = false;
+void vLead(void *pvParameters);
+bool fwdtLead = false;
 void vState(void *pvParameters);
 bool fwdtState = false;
 void vPrint(void *pvParameters);
 bool fwdtPrint = false;
-void vCore0(void *pvParameters);
-bool fwdtCore0 = false;
+//void vCore0(void *pvParameters);
+//bool fwdtCore0 = false;
 void vCore1(void *pvParameters);
 bool fwdtCore1 = false;
 

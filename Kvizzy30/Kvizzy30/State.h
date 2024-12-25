@@ -17,7 +17,7 @@
 
 String sendState(String sjson) 
 {
-   String Result;
+   String Result="96";
    // Выполняем проверку подключения к беспроводной сети
    if ((WiFi.status() == WL_CONNECTED)) 
    {
@@ -29,21 +29,53 @@ String sendState(String sjson)
       //String shttp="https://doortry.ru/State/?Com=";   //
       //String shttp="http://probatv.ru/?Com=State"; 
       String shttp="http://probatv.ru/kv/";
+      //String shttp="http://localhost:100/kv/";
       
       //shttp += sjson;   
-      Serial.print("shttp: "); Serial.println(shttp);
+      //Serial.print("shttp: "); Serial.println(shttp);
 
-      // Делаем GET запрос
       /*
+      // Cоздаем объект для работы с HTTP
+      HTTPClient http;
+      // Делаем GET запрос
       http.begin(shttp);  
       int httpCode = http.GET();
       // Если запрос успешный получаем ответ сервера
-      if (httpCode == 200) Result = http.getString();
+      if (httpCode == 200) 
+      {
+        http.getString();
+        Result = "http.getString()";
+      }
       // Иначе сообщение о коде ошибки
       else Result = String(httpCode);
       // Освобождаем ресурсы микроконтроллера
       http.end();
       */
+
+      HTTPClient http;
+      String queryString = "temperature=26&humidity=70";
+      http.begin(shttp);  
+      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+      int httpCode = http.POST(queryString);
+      // httpCode will be negative on error
+      if (httpCode > 0) 
+      {
+         // file found at server
+         if (httpCode == HTTP_CODE_OK) 
+         {
+            Result = http.getString();
+         } 
+         else 
+         {
+            // HTTP header has been send and Server response header has been handled
+            Serial.printf("[HTTP] POST... code: %d\n", httpCode);
+         }
+      } 
+      else 
+      {
+         Serial.printf("[HTTP] POST... failed, error: %s\n", http.errorToString(httpCode).c_str());
+      }
+      http.end();
 
         // Если разрешено, трассируем память контроллера
         #ifdef tmr_TRACEMEMORY
@@ -64,9 +96,9 @@ String sendState(String sjson)
       #endif
 
 
-      
+      /*
       http.begin(shttp);
-      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+      //http.addHeader("Content-Type", "application/x-www-form-urlencoded");
       int httpCode = http.GET();
       // httpCode will be negative on error
       if (httpCode > 0) 
@@ -87,9 +119,7 @@ String sendState(String sjson)
          Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
       }
       http.end();
-      
-      // Также для завершения сеанса связи нужно вызвать функцию esp_http_client_cleanup(). 
-      // Она закроет текущее соединение и освободит всю память, выделенную экземпляру HTTP-клиента.
+      */
    }
    return Result;
 }
@@ -114,7 +144,6 @@ void vState(void* pvParameters)
       // Отправляем json-строку на сайт
       String ContentPage = sendState(jstr); 
       
-      //Serial.print("Ответ: ");
       iAll++;
       Serial.print(iAll); Serial.print(": ");
       Serial.println(ContentPage);
@@ -129,7 +158,7 @@ void vState(void* pvParameters)
       //  vTaskDelay(60000/portTICK_PERIOD_MS); 
       //}
       //else 
-      vTaskDelay(986/portTICK_PERIOD_MS); 
+      vTaskDelay(2986/portTICK_PERIOD_MS); 
    }
 }
 

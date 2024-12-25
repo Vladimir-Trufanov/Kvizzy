@@ -25,8 +25,6 @@ const char* password = "b277a4ee84e8";
 
 //#include "esp_http_client.h"
 
-// Cоздаем объект для работы с HTTP
-HTTPClient http;
 
 int iState=0;
 int iAll=0;
@@ -42,6 +40,7 @@ TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);
 #include "common_kvizzy.h"   // общие функции  
 
 // Подключаем задачи и деятельности
+#include "Lead.h"           // выборка сообщений о состоянии 
 #include "State.h"           // выборка сообщений о состоянии 
 #include "Led33.h"           // обработка контрольного светодиода 
 #include "Core.h"            // подключили обработку состояния процессоров 
@@ -57,13 +56,14 @@ void IRAM_ATTR onTimer()
    // Если флаги всех задач установлены в 1, 
    // то сбрасываем флаги задач и счетчик сторожевого таймера
    if (fwdtLed33==true && /*fwdtCore0==true &&*/ fwdtCore1==true && fwdtLoop==true && 
-   fwdtState==true && fwdtPrint==true) 
+   fwdtLead==true && fwdtState==true && fwdtPrint==true) 
    {
       // Сбрасываем флаги задач
       fwdtLed33 = false;
       /*fwdtCore0 = false;*/
       fwdtCore1 = false;
       fwdtLoop  = false;
+      fwdtLead = false;
       fwdtState = false;
       fwdtPrint = false;
       // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
@@ -164,6 +164,14 @@ void setup()
       NULL,                   // Task handle
       0);
    */
+   xTaskCreatePinnedToCore(
+      vLead,                 // Task function
+      "Lead",                // Task name
+      2048,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      10,                      // Priority
+      NULL,                   // Task handle
+      1);
    // Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
    // и показаниях датчиков из очереди и отправить их на страницу State 
    xTaskCreatePinnedToCore(
