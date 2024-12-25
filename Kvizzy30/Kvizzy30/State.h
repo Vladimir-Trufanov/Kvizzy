@@ -15,7 +15,7 @@
 // *               (если ответ сервера не 200, вернуть ошибку)                *
 // ****************************************************************************
 
-String sendState(String sjson) 
+String sendState(uint32_t iState, String sjson) 
 {
    String Result="96";
    // Выполняем проверку подключения к беспроводной сети
@@ -26,35 +26,10 @@ String sendState(String sjson)
       //String shttp="https://doortryi.ru/State/?Com=";  // Ответ: -1
       //String shttp="http://doortry.ru/State/?Com=";    // Ответ: 301
       
-      //String shttp="https://doortry.ru/State/?Com=";   //
-      //String shttp="http://probatv.ru/?Com=State"; 
-      String shttp="http://probatv.ru/kv/";
-      //String shttp="http://localhost:100/kv/";
-      
-      //shttp += sjson;   
-      //Serial.print("shttp: "); Serial.println(shttp);
-
-      /*
-      // Cоздаем объект для работы с HTTP
       HTTPClient http;
-      // Делаем GET запрос
-      http.begin(shttp);  
-      int httpCode = http.GET();
-      // Если запрос успешный получаем ответ сервера
-      if (httpCode == 200) 
-      {
-        http.getString();
-        Result = "http.getString()";
-      }
-      // Иначе сообщение о коде ошибки
-      else Result = String(httpCode);
-      // Освобождаем ресурсы микроконтроллера
-      http.end();
-      */
-
-      HTTPClient http;
-      String queryString = "temperature=26&humidity=70";
-      http.begin(shttp);  
+      String queryString = "cycle="+String(iState);
+      String ehttp=shttp+"State/";
+      http.begin(ehttp);
       http.addHeader("Content-Type", "application/x-www-form-urlencoded");
       int httpCode = http.POST(queryString);
       // httpCode will be negative on error
@@ -77,8 +52,8 @@ String sendState(String sjson)
       }
       http.end();
 
-        // Если разрешено, трассируем память контроллера
-        #ifdef tmr_TRACEMEMORY
+      // Если разрешено, трассируем память контроллера
+      #ifdef tmr_TRACEMEMORY
          // Получаем полный размер кучи в памяти
          printf("Общий размер ВСТРОЕННОЙ памяти:     %u\n", ESP.getHeapSize());
          // Количество доступной кучи в памяти
@@ -94,7 +69,6 @@ String sendState(String sjson)
          // Размер самого большого блока PSRAM, который может быть выделен
          printf("Самый большой блок для выделения:   %d\n", ESP.getMaxAllocPsram());
       #endif
-
 
       /*
       http.begin(shttp);
@@ -120,6 +94,25 @@ String sendState(String sjson)
       }
       http.end();
       */
+      
+      /*
+      // Cоздаем объект для работы с HTTP
+      HTTPClient http;
+      // Делаем GET запрос
+      http.begin(shttp);  
+      int httpCode = http.GET();
+      // Если запрос успешный получаем ответ сервера
+      if (httpCode == 200) 
+      {
+        http.getString();
+        Result = "http.getString()";
+      }
+      // Иначе сообщение о коде ошибки
+      else Result = String(httpCode);
+      // Освобождаем ресурсы микроконтроллера
+      http.end();
+      */
+
    }
    return Result;
 }
@@ -129,6 +122,7 @@ String sendState(String sjson)
 // ****************************************************************************
 void vState(void* pvParameters) 
 {
+   int iTrass=0;
    for (;;)
    {
       /*
@@ -140,25 +134,21 @@ void vState(void* pvParameters)
       String jstr="&cjson=";
       String sjson="95";
       jstr +=sjson;
-           
-      // Отправляем json-строку на сайт
-      String ContentPage = sendState(jstr); 
       
-      iAll++;
-      Serial.print(iAll); Serial.print(": ");
-      Serial.println(ContentPage);
-
+      iState++;
+     // Отправляем json-строку на сайт
+      String ContentPage = sendState(iState,jstr); 
+      // Трассировочное сообщение в очередь
+      iTrass++;
+      if (iTrass>7)
+      {
+         iTrass=0;
+         Serial.print(iState); Serial.print("-State : "); Serial.println(ContentPage);
+      }
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtState = true;
-      // Пропускаем интервал 386 мсек
-      //iState++; 
-      //if (iState>5)
-      //{
-      //  iState=0;
-      //  vTaskDelay(60000/portTICK_PERIOD_MS); 
-      //}
-      //else 
-      vTaskDelay(2986/portTICK_PERIOD_MS); 
+      // Пропускаем интервал 986 мсек
+      vTaskDelay(986/portTICK_PERIOD_MS); 
    }
 }
 

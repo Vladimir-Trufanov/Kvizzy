@@ -2,7 +2,7 @@
  * 
  *                                          Обеспечить работу с документом JSON
  * 
- * v1.3, 25.11.2024                                   Автор:      Труфанов В.Е.
+ * v1.3.1, 25.12.2024                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -82,6 +82,7 @@ String thisController()
    led_4["tiddev"] = 2;             // идентификатор типа устройства
    led_4["typedev"] = "Led";        // тип устройства
    led_4["status"] = LOW;           // текущее состояние светодиода     
+   /*
    // Датчик температуры
    JsonArray DHT22 = doc.createNestedArray("DHT22");
    JsonObject DHT_22 = DHT22.createNestedObject();
@@ -89,13 +90,13 @@ String thisController()
    DHT_22["tiddev"] = 5;            // идентификатор типа устройства
    DHT_22["typedev"] = "DHT22";     // тип устройства
    DHT_22["status"] = 0;            // текущее состояние светодиода     
-
+   */
    String str = "";
    serializeJson(doc,str);
-   serializeJsonPretty(doc,Serial);
+   //serializeJsonPretty(doc,Serial);
    return str;
 }
-
+/*
 String getEsp32CAM(String sjson) 
 {
    JsonDocument filter;
@@ -116,7 +117,7 @@ String getEsp32CAM(String sjson)
    serializeJson(doc,str);
    return str;
 }
-
+*/
 #endif
 
 // ********************************************************** define_json.h ***

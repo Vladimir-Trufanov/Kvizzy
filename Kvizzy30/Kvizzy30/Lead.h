@@ -11,71 +11,65 @@
 #include <Arduino.h>
 
 // ****************************************************************************
-// *     Отправить http-запрос с json-строкой на State и вернуть ответ        *
-// *               (если ответ сервера не 200, вернуть ошибку)                *
+// *      Отправить регулярный (по таймеру) запрос контроллера на изменение   *
+// *                  состояний его устройств к странице Lead                 *
 // ****************************************************************************
-
-String sendLead(String sjson) 
+String sendLead(uint32_t iLead) 
 {
    String Result="113";
    // Выполняем проверку подключения к беспроводной сети
    if ((WiFi.status() == WL_CONNECTED)) 
    {
-      String shttp="http://probatv.ru/Lead/";
-
-      HTTPClient httpl;
-      String queryString = "temperature=26&humidity=70";
-      httpl.begin(shttp);  
-      httpl.addHeader("Content-Type", "application/x-www-form-urlencoded");
-      int httplCode = httpl.POST(queryString);
+      HTTPClient http;
+      String queryString = "cycle="+String(iLead);
+      String ehttp=shttp+"Lead/";
+      http.begin(ehttp);
+      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+      int httpCode = http.POST(queryString);
       // httpCode will be negative on error
-      if (httplCode > 0) 
+      if (httpCode > 0) 
       {
          // file found at server
-         if (httplCode == HTTP_CODE_OK) 
+         if (httpCode == HTTP_CODE_OK) 
          {
-            Result = httpl.getString();
+            Result = http.getString();
          } 
          else 
          {
             // HTTP header has been send and Server response header has been handled
-            Serial.printf("[HTTP] POST... code: %d\n", httplCode);
+            Serial.printf("[HTTP] POST... code: %d\n", httpCode);
          }
       } 
       else 
       {
-         Serial.printf("[HTTP] POST... failed, error: %s\n", httpl.errorToString(httplCode).c_str());
+         Serial.printf("[HTTP] POST... failed, error: %s\n", http.errorToString(httpCode).c_str());
       }
-      httpl.end();
+      http.end();
    }
    return Result;
 }
 // * Задача FreRTOS ***********************************************************
-// *   Выбрать накопившиеся json-сообщения о состоянии устройств контроллера  *
-// *     и показаниях датчиков из очереди и отправить их на страницу State    *
+// *      Отправить регулярный (по таймеру) запрос контроллера на изменение   *
+// *                  состояний его устройств к странице Lead                 *
 // ****************************************************************************
 void vLead(void* pvParameters) 
 {
+   int iTrass=0;
    for (;;)
    {
-      String jlstr="&cjson=";
-
-      // Отправляем json-строку на сайт
-      String ContentPage = sendLead(jlstr); 
-      
-      Serial.print("Lead: ");
-      Serial.println(ContentPage);
-
+      iLead++;
+      // Делаем запрос к Lead
+      String ContentPage = sendLead(iLead); 
+      // Трассировочное сообщение в очередь
+      iTrass++;
+      if (iTrass>5)
+      {
+         iTrass=0;
+         Serial.print(iLead); Serial.print("-Lead : "); Serial.println(ContentPage);
+      }
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtLead = true;
-      // Пропускаем интервал 386 мсек
-      //iState++; 
-      //if (iState>5)
-      //{
-      //  iState=0;
-      //  vTaskDelay(60000/portTICK_PERIOD_MS); 
-      //}
-      //else 
+      // Пропускаем интервал 897 мсек
       vTaskDelay(897/portTICK_PERIOD_MS); 
    }
 }

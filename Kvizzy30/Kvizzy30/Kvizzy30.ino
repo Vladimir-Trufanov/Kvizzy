@@ -4,7 +4,7 @@
  *                                           контрольным и вспышкой, через сайт
  *                    (модель нижнего уровня, стремящегося к умному, хозяйства)
  * 
- * v3.3.2, 23.12.2024                                 Автор:      Труфанов В.Е.
+ * v3.3.3, 25.12.2024                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 31.05.2024
  * 
  *            Kvizzy: нижний уровень "умного хозяйства" - системы контроллеров, 
@@ -16,18 +16,9 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-//#include <Watchdog.h>
-//Watchdog watchdog;
-
 // Вводим имя и пароль точки доступа
 const char* ssid     = "OPPO A9 2020";
 const char* password = "b277a4ee84e8";
-
-//#include "esp_http_client.h"
-
-
-int iState=0;
-int iAll=0;
 
 // Подключаем файлы обеспечения передачи и приёма сообщений через очередь                
 #include "Kvizzy30_Message.h" // сообщения приложения (примера по обработке очередей)    
@@ -40,8 +31,8 @@ TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);
 #include "common_kvizzy.h"   // общие функции  
 
 // Подключаем задачи и деятельности
-#include "Lead.h"           // выборка сообщений о состоянии 
-#include "State.h"           // выборка сообщений о состоянии 
+#include "Lead.h"            // 10-897 запрос контроллера на изменение состояний устройств
+#include "State.h"           //  9-986 выборка сообщений о состоянии и отправка 
 #include "Led33.h"           // обработка контрольного светодиода 
 #include "Core.h"            // подключили обработку состояния процессоров 
 // Определяем заголовок для объекта таймера
@@ -86,16 +77,13 @@ void IRAM_ATTR toggleLedWork()
    Serial.println("###");
    */
 }
-
 // Обработка прерывания для вспышки при изменении состояние 4 контакта с LOW на HIGH (RISING).
 void IRAM_ATTR onLedFlash()
 {
   
 }
-
-
-// Начальная настройка: выделяем четыре задачи (две на 0 процессоре, две на 1)
-// и обеспечиваем запуск прерывания от таймера периодически через 3 секунды
+// Начальная настройка: выделяем задачи 
+// и обеспечиваем запуск прерывания от таймера периодически через 20 секунд
 void setup() 
 {
    Serial.begin(115200);
@@ -110,12 +98,6 @@ void setup()
    else Serial.println(QueueBeformed);                                                   
    // Подключаем функцию передачи сообщения на периферию                                 
    queMessa.attachFunction(transmess);                                                  
-
- // Setup watchdog
-//  watchdog.enable(Watchdog::TIMEOUT_8S);
-   
-   // Проверяем пример
-   // schastr();
 
    // Переводим контакты лампочек в режим вывода и подключаем обработку прерываний
    pinMode(PinLedWork,OUTPUT);    // контрольный светодиод
@@ -134,6 +116,7 @@ void setup()
    }
    Serial.println(" ");
    Serial.println("Соединение с Wi-Fi установлено");
+   Serial.println("");
 
    // Подключаем задачу определение состояния контрольного светодиода ESP32-CAM 
    // ("горит - не горит") и передачу данных на страницу сайта State  
@@ -164,12 +147,14 @@ void setup()
       NULL,                   // Task handle
       0);
    */
+   // Выполнить регулярный (по таймеру) запрос контроллера на изменение   
+   // состояний его устройств к странице Lead             
    xTaskCreatePinnedToCore(
-      vLead,                 // Task function
-      "Lead",                // Task name
+      vLead,                  // Task function
+      "Lead",                 // Task name
       2048,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      10,                      // Priority
+      10,                     // Priority
       NULL,                   // Task handle
       1);
    // Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
@@ -201,13 +186,6 @@ void setup()
    timerAlarm(timer, 20000000, true, 0);
    // Формируем общий json-документ
    sjson=thisController();
-
-   Serial.println("");
-   /*
-   String str=getEsp32CAM(sjson);
-   Serial.print("Контроллер: ");
-   Serial.println(str);
-   */
 }
 
 // Основной цикл
