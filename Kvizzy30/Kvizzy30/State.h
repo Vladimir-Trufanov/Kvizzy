@@ -140,11 +140,11 @@ void vState(void* pvParameters)
       String ContentPage = sendState(iState,jstr); 
       // Трассировочное сообщение в очередь
       iTrass++;
-      if (iTrass>7)
-      {
-         iTrass=0;
+      //if (iTrass>7)
+      //{
+      //   iTrass=0;
          Serial.print(iState); Serial.print("-State : "); Serial.println(ContentPage);
-      }
+      //}
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtState = true;
       // Пропускаем интервал 986 мсек

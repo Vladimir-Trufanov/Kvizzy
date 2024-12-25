@@ -162,7 +162,7 @@ void setup()
    xTaskCreatePinnedToCore(
       vState,                 // Task function
       "State",                // Task name
-      2048,                   // Stack size
+      3072,                   // Stack size
       NULL,                   // Parameters passed to the task function
       9,                      // Priority
       NULL,                   // Task handle

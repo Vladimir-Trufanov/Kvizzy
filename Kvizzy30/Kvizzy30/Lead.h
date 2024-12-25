@@ -14,6 +14,7 @@
 // *      Отправить регулярный (по таймеру) запрос контроллера на изменение   *
 // *                  состояний его устройств к странице Lead                 *
 // ****************************************************************************
+/*
 String sendLead(uint32_t iLead) 
 {
    String Result="113";
@@ -48,25 +49,33 @@ String sendLead(uint32_t iLead)
    }
    return Result;
 }
+*/
 // * Задача FreRTOS ***********************************************************
 // *      Отправить регулярный (по таймеру) запрос контроллера на изменение   *
 // *                  состояний его устройств к странице Lead                 *
 // ****************************************************************************
 void vLead(void* pvParameters) 
 {
+   tQueryMessage tQuery;
+   String queryString = "cycle="+String(iLead);
+   String ehttp=shttp+"Leadi/";
    int iTrass=0;
+
    for (;;)
    {
       iLead++;
       // Делаем запрос к Lead
-      String ContentPage = sendLead(iLead); 
+      //String ContentPage = sendLead(iLead); 
+      tQuery = postQuery(ehttp, queryString); 
       // Трассировочное сообщение в очередь
       iTrass++;
-      if (iTrass>5)
-      {
-         iTrass=0;
-         Serial.print(iLead); Serial.print("-Lead : "); Serial.println(ContentPage);
-      }
+      //if (iTrass>5)
+      //{
+      //   iTrass=0;
+        String inMess=queMessa.Send(tmt_NOTICE,SendLongMess);
+        if (inMess!=isOk) Serial.println(inMess); 
+        Serial.print(iLead); Serial.print("-Lead : "); Serial.println(tQuery.httpText);
+      //}
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtLead = true;
       // Пропускаем интервал 897 мсек
