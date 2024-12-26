@@ -143,7 +143,7 @@ void vState(void* pvParameters)
       //if (iTrass>7)
       //{
       //   iTrass=0;
-         Serial.print(iState); Serial.print("-State : "); Serial.println(ContentPage);
+         Serial.print(iState); Serial.print("-State: "); Serial.println(ContentPage);
       //}
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtState = true;

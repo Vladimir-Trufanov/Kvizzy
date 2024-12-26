@@ -72,9 +72,7 @@ void vLead(void* pvParameters)
       //if (iTrass>5)
       //{
       //   iTrass=0;
-        String inMess=queMessa.Send(tmt_NOTICE,SendLongMess);
-        if (inMess!=isOk) Serial.println(inMess); 
-        Serial.print(iLead); Serial.print("-Lead : "); Serial.println(tQuery.httpText);
+         Serial.print(iLead); Serial.print("-Lead: "); Serial.println(tQuery.httpText);
       //}
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtLead = true;
