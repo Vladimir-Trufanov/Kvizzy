@@ -3,54 +3,62 @@
  *        Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
  *            и показаниях датчиков из очереди и отправить их на страницу State 
  * 
- * v3.3.2, 23.12.2024                                 Автор:      Труфанов В.Е.
+ * v3.3.3, 27.12.2024                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
 #pragma once            
 #include <Arduino.h>
 
-// ****************************************************************************
-// *     Отправить http-запрос с json-строкой на State и вернуть ответ        *
-// *               (если ответ сервера не 200, вернуть ошибку)                *
-// ****************************************************************************
 
-String sendState(uint32_t iState, String sjson) 
+ // * Задача FreRTOS ***********************************************************
+// *   Выбрать накопившиеся json-сообщения о состоянии устройств контроллера  *
+// *     и показаниях датчиков из очереди и отправить их на страницу State    *
+// ****************************************************************************
+void vState(void* pvParameters) 
 {
-   String Result="96";
-   // Выполняем проверку подключения к беспроводной сети
-   if ((WiFi.status() == WL_CONNECTED)) 
+   // Подключаемся к веб-странице
+   //String shttp="https://doortry.ru/State/e?Com=";  // Ответ: 404
+   //String shttp="https://doortryi.ru/State/?Com=";  // Ответ: -1
+   //String shttp="http://doortry.ru/State/?Com=";    // Ответ: 301
+
+   // Готовим запрос к странице State
+   String ehttp=shttp+"State/";                   // запрос
+   String queryString = "cycle="+String(iState);  // параметры
+   tQueryMessage tQuery;                          // ответ
+   // Инициируем счетчик нечастой трассировки успешных запросов
+   int iTrass=0;
+   // Зацикливаем задачу
+   for (;;)
    {
-      // Подключаемся к веб-странице
-      //String shttp="https://doortry.ru/State/e?Com=";  // Ответ: 404
-      //String shttp="https://doortryi.ru/State/?Com=";  // Ответ: -1
-      //String shttp="http://doortry.ru/State/?Com=";    // Ответ: 301
-      
-      HTTPClient http;
-      String queryString = "cycle="+String(iState);
-      String ehttp=shttp+"State/";
-      http.begin(ehttp);
-      http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-      int httpCode = http.POST(queryString);
-      // httpCode will be negative on error
-      if (httpCode > 0) 
+      /*
+      // Имитируем зависание микроконтроллера с помощью опознанного числа,
+      // принятого в последовательном порту
+      if (iCreateSit == loopingLed33) MimicMCUhangEvent("Led33");  
+      */ 
+
+      String jstr="&cjson=";
+      String sjson="95";
+      jstr +=sjson;
+
+      iState++;
+      // Делаем запрос к State
+      tQuery = postQuery(ehttp, queryString);
+      // Обрабатываем успешный запрос 
+      if (tQuery.httpCode == HTTP_CODE_OK) 
       {
-         // file found at server
-         if (httpCode == HTTP_CODE_OK) 
+         // Трассировочное сообщение в очередь
+         iTrass++;
+         if (iTrass>7)
          {
-            Result = http.getString();
-         } 
-         else 
-         {
-            // HTTP header has been send and Server response header has been handled
-            Serial.printf("[HTTP] POST... code: %d\n", httpCode);
+            iTrass=0;
+            Serial.print(iState); Serial.print("-State: "); Serial.println(tQuery.httpText);
          }
-      } 
-      else 
-      {
-         Serial.printf("[HTTP] POST... failed, error: %s\n", http.errorToString(httpCode).c_str());
       }
-      http.end();
+      // Реагируем на ошибку Post-запроса
+      {
+         // Пока ничего не делаем, сообщения об ошибках отправлены в postQuery   
+      }
 
       // Если разрешено, трассируем память контроллера
       #ifdef tmr_TRACEMEMORY
@@ -69,82 +77,7 @@ String sendState(uint32_t iState, String sjson)
          // Размер самого большого блока PSRAM, который может быть выделен
          printf("Самый большой блок для выделения:   %d\n", ESP.getMaxAllocPsram());
       #endif
-
-      /*
-      http.begin(shttp);
-      //http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-      int httpCode = http.GET();
-      // httpCode will be negative on error
-      if (httpCode > 0) 
-      {
-         // file found at server
-         if (httpCode == HTTP_CODE_OK) 
-         {
-            Result = http.getString();
-         } 
-         else 
-         {
-            // HTTP header has been send and Server response header has been handled
-            Serial.printf("[HTTP] GET... code: %d\n", httpCode);
-         }
-      } 
-      else 
-      {
-         Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
-      }
-      http.end();
-      */
       
-      /*
-      // Cоздаем объект для работы с HTTP
-      HTTPClient http;
-      // Делаем GET запрос
-      http.begin(shttp);  
-      int httpCode = http.GET();
-      // Если запрос успешный получаем ответ сервера
-      if (httpCode == 200) 
-      {
-        http.getString();
-        Result = "http.getString()";
-      }
-      // Иначе сообщение о коде ошибки
-      else Result = String(httpCode);
-      // Освобождаем ресурсы микроконтроллера
-      http.end();
-      */
-
-   }
-   return Result;
-}
-// * Задача FreRTOS ***********************************************************
-// *   Выбрать накопившиеся json-сообщения о состоянии устройств контроллера  *
-// *     и показаниях датчиков из очереди и отправить их на страницу State    *
-// ****************************************************************************
-void vState(void* pvParameters) 
-{
-   int iTrass=0;
-   for (;;)
-   {
-      /*
-      // Имитируем зависание микроконтроллера с помощью опознанного числа,
-      // принятого в последовательном порту
-      if (iCreateSit == loopingLed33) MimicMCUhangEvent("Led33");  
-      */ 
-
-      String jstr="&cjson=";
-      String sjson="95";
-      jstr +=sjson;
-      
-      iState++;
-     // Отправляем json-строку на сайт
-      String ContentPage = sendState(iState,jstr); 
-      // Трассировочное сообщение в очередь
-      iTrass++;
-      //if (iTrass>7)
-      //{
-      //   iTrass=0;
-         Serial.print(iState); Serial.print("-State: "); Serial.println(ContentPage);
-      //}
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtState = true;
       // Пропускаем интервал 986 мсек

@@ -41,38 +41,32 @@ tQueryMessage postQuery(String ehttp, String queryString)
       if (tQuery.httpCode > 0) 
       {
          // Если запрос успешно отправлен
-         if (tQuery.httpCode == HTTP_CODE_OK) 
-         {
-            tQuery.httpText = http.getString();
-         }
+         if (tQuery.httpCode == HTTP_CODE_OK) inMess = http.getString();
          // Если ошибка после того, как HTTP-заголовок был отправлен
          // и заголовок ответа сервера был обработан
          else 
          {
-            inMess=queMessa.Send(tmt_WARNING,TaskNoQueue,tmk_HTTP);
-            if (inMess!=isOk) Serial.println(inMess); 
-            inMess=queMessa.Send(tmt_WARNING,TaskNoQueue);
-            if (inMess!=isOk) Serial.println(inMess); 
             inMess=queMessa.Send(tmt_WARNING,tQuery.httpCode,tmk_HTTP);
             if (inMess!=isOk) Serial.println(inMess); 
-            //Serial.printf("[HTTP] POST... code: %d\n", tQuery.httpCode);
-            tQuery.httpText=inMess;
          }
       }
       // Если ошибка при отправке POST-запроса 
       else 
       {
-         Serial.printf("[HTTP] POST... failed, error: %s\n", http.errorToString(tQuery.httpCode).c_str());
-         tQuery.httpText=http.errorToString(tQuery.httpCode);
+         inMess=http.errorToString(tQuery.httpCode);
+         Serial.printf("Ошибка POST-запроса: %s\n", inMess.c_str());
       }
       http.end();
    }
    // Если "Нет подключения к WiFi перед передачей POST-запроса"
    else
    {
+      tQuery.httpCode=http997;
       inMess=queMessa.Send(tmt_WARNING,http997,tmk_HTTP);
       if (inMess!=isOk) Serial.println(inMess); 
    }
+   // Вкладываем ответное сообщение в возвращаемую структуру
+   tQuery.httpText=inMess;
    return tQuery;
 }
 

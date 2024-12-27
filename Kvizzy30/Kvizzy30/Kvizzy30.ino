@@ -20,6 +20,9 @@
 const char* ssid     = "OPPO A9 2020";
 const char* password = "b277a4ee84e8";
 
+// Определяем директивы отладки
+// #define tmr_TRACEMEMORY
+
 // Подключаем файлы обеспечения передачи и приёма сообщений через очередь                
 #include "Kvizzy30_Message.h" // сообщения приложения (примера по обработке очередей)    
 #include <QueMessage.h>       // заголовочный файл класса TQueMessage                    
@@ -35,6 +38,7 @@ TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);
 #include "State.h"           //  9-986 выборка сообщений о состоянии и отправка 
 #include "Led33.h"           // обработка контрольного светодиода 
 #include "Core.h"            // подключили обработку состояния процессоров 
+
 // Определяем заголовок для объекта таймера
 hw_timer_t *timer = NULL;
 // Инициируем спинлок критической секции в обработчике таймерного прерывания
@@ -97,7 +101,7 @@ void setup()
    // Если очередь получилась, то отмечаем  "Очередь сформирована"                       
    else Serial.println(QueueBeformed);                                                   
    // Подключаем функцию передачи сообщения на периферию                                 
-   queMessa.attachFunction(transmess);                                                  
+   queMessa.attachFunction(transmess);      
 
    // Переводим контакты лампочек в режим вывода и подключаем обработку прерываний
    pinMode(PinLedWork,OUTPUT);    // контрольный светодиод
@@ -114,9 +118,11 @@ void setup()
       delay(500);
       Serial.print(".");
    }
-   Serial.println(" ");
-   Serial.println("Соединение с Wi-Fi установлено");
    Serial.println("");
+
+   // Отмечаем, что соединение с Wi-Fi установлено
+   inMess=queMessa.Send(tmt_NOTICE,WifiEstablished,tmk_Queue);
+   if (inMess!=isOk) Serial.println(inMess); 
 
    // Подключаем задачу определение состояния контрольного светодиода ESP32-CAM 
    // ("горит - не горит") и передачу данных на страницу сайта State  
