@@ -12,7 +12,8 @@
  * 
 **/
 
-// Подключаем библиотеку для работы с HTTP-протоколом
+#include <Arduino.h>
+#include "AttachSNTP.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
 
@@ -23,6 +24,8 @@ const char* password = "b277a4ee84e8";
 // Определяем директивы отладки
 // #define tmr_TRACEMEMORY
 
+// Определяем объект для синхронизации времени 
+TAttachSNTP oSNTP;
 // Подключаем файлы обеспечения передачи и приёма сообщений через очередь                
 #include "Kvizzy30_Message.h" // сообщения приложения (примера по обработке очередей)    
 #include <QueMessage.h>       // заголовочный файл класса TQueMessage                    
@@ -84,7 +87,6 @@ void IRAM_ATTR toggleLedWork()
 // Обработка прерывания для вспышки при изменении состояние 4 контакта с LOW на HIGH (RISING).
 void IRAM_ATTR onLedFlash()
 {
-  
 }
 // Начальная настройка: выделяем задачи 
 // и обеспечиваем запуск прерывания от таймера периодически через 20 секунд
@@ -94,6 +96,22 @@ void setup()
    while (!Serial) continue;
    Serial.println("Последовательный порт работает!");
 
+   // Подключаемся к Wi-Fi сети
+   WiFi.disconnect();
+   WiFi.begin(ssid, password);
+   Serial.print("Соединяемся с Wi-Fi .");
+   while (WiFi.status() != WL_CONNECTED) 
+   {
+      delay(500);
+      Serial.print(".");
+   }
+   Serial.println("");
+
+   // Проверяем системное время, если время еще не установлено, производим его 
+   // синхронизацию по протоколу SNTP с серверами точного времени,
+   oSNTP.Create();
+   Serial.println("");
+   
    // Создаем очередь                                                                   
    String inMess=queMessa.Create();                                                      
    // Если не получилось, сообщаем "Очередь не была создана и не может использоваться"    
@@ -109,22 +127,11 @@ void setup()
    pinMode(PinLedFlash,OUTPUT);   // вспышка
    attachInterrupt(PinLedFlash,onLedFlash,RISING);
 
-   // Подключаемся к Wi-Fi сети
-   WiFi.disconnect();
-   WiFi.begin(ssid, password);
-   Serial.print("Соединяемся с Wi-Fi .");
-   while (WiFi.status() != WL_CONNECTED) 
-   {
-      delay(500);
-      Serial.print(".");
-   }
-   Serial.println("");
-
    // Отмечаем, что соединение с Wi-Fi установлено
    inMess=queMessa.Send(tmt_NOTICE,WifiEstablished,tmk_Queue);
    if (inMess!=isOk) Serial.println(inMess); 
 
-   // Подключаем задачу определение состояния контрольного светодиода ESP32-CAM 
+   // Подключаем задачу определения состояния контрольного светодиода ESP32-CAM 
    // ("горит - не горит") и передачу данных на страницу сайта State  
    xTaskCreatePinnedToCore(
       vLed33,                 // Task function

@@ -2,7 +2,7 @@
  * 
  * Определить общие функции нижнего уровня умного хозяйства на двух светодиодах
  * 
- * v1.1.1, 24.12.2024                                 Автор:      Труфанов В.Е.
+ * v1.1.2, 03.01.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -50,7 +50,9 @@ tQueryMessage postQuery(String ehttp, String queryString)
             if (inMess!=isOk) Serial.println(inMess); 
          }
       }
-      // Если ошибка при отправке POST-запроса 
+      // Если ошибка при отправке POST-запроса
+      //    Ошибка POST-запроса: "read Timeout"       - "истекло время ожидания чтения"
+      //    Ошибка POST-запроса: "connection refused" - "В соединении отказано"
       else 
       {
          inMess=http.errorToString(tQuery.httpCode);
