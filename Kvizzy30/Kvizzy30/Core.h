@@ -20,6 +20,8 @@
 // ****************************************************************************
 String getCoreX(String sjson, String imjaCore="core1") 
 {
+   String str = "";
+   /*
    JsonDocument filter;
    filter["idctrl"] = true; 
    filter[imjaCore][0]["iddev"]= true;
@@ -27,8 +29,8 @@ String getCoreX(String sjson, String imjaCore="core1")
    JsonDocument doc;
    deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
    doc[imjaCore][0]["minstack"]=34;
-   String str = "";
    serializeJson(doc,str);
+   */
    return str;
 }
 /*

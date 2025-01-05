@@ -32,6 +32,7 @@ String getLed33(String sjson)
 {
    // Инициируем возвращаемую json-строку   
    String jstr = jempty;
+   /*
    // Формируем json по состоянию контрольного светодиода 
    JsonDocument filter;
    filter["tidctrl"] = true;            // идентификатор типа контроллера
@@ -57,7 +58,6 @@ String getLed33(String sjson)
          serializeJson(doc,jstr);
          mitсLed33 = mitсLed33i;
       }
-      return jstr;
    }
    // Если состояние светодиода изменилось готовим новую json-строку
    else
@@ -66,8 +66,9 @@ String getLed33(String sjson)
       else doc["led33"][0]["status"]="inLOW";
       serializeJson(doc,jstr);
       oLed33Status=Led33Status;
-      return jstr;
    }
+   */
+   return jstr;
 }
 // * Задача FreRTOS ***********************************************************
 // *                Обеспечить определение состояния контрольного светодиода  *

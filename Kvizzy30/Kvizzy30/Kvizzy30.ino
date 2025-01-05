@@ -4,7 +4,7 @@
  *                                           контрольным и вспышкой, через сайт
  *                    (модель нижнего уровня, стремящегося к умному, хозяйства)
  * 
- * v3.3.3, 25.12.2024                                 Автор:      Труфанов В.Е.
+ * v3.3.4, 05.01.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 31.05.2024
  * 
  *            Kvizzy: нижний уровень "умного хозяйства" - системы контроллеров, 
@@ -13,9 +13,11 @@
 **/
 
 #include <Arduino.h>
-#include "AttachSNTP.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
+
+#include "AttachSNTP.h"
+#include "jsonBase.h"       
 
 // Вводим имя и пароль точки доступа
 const char* ssid     = "OPPO A9 2020";
@@ -23,17 +25,18 @@ const char* password = "b277a4ee84e8";
 
 // Определяем директивы отладки
 // #define tmr_TRACEMEMORY
-
 // Определяем объект для синхронизации времени 
 TAttachSNTP oSNTP;
+// Определяем объект для работs с документом JSON
+TJsonBase oJSON;
+
 // Подключаем файлы обеспечения передачи и приёма сообщений через очередь                
-#include "Kvizzy30_Message.h" // сообщения приложения (примера по обработке очередей)    
+#include "Kvizzy30_Message.h" // сообщения приложения  
 #include <QueMessage.h>       // заголовочный файл класса TQueMessage                    
 // Назначаем объект работы с сообщениями через очередь                                   
 TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);                                         
 
 #include "define_kvizzy.h"   // общие определения 
-#include "define_json.h"     // работа с документом JSON 
 #include "common_kvizzy.h"   // общие функции  
 
 // Подключаем задачи и деятельности
@@ -197,8 +200,8 @@ void setup()
    // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
    // раз (четвертый параметр = 0) 
    timerAlarm(timer, 20000000, true, 0);
-   // Формируем общий json-документ
-   sjson=thisController();
+   // Создаём объект и строку всего JSON-документа         
+   oJSON.Create();
 }
 
 // Основной цикл
