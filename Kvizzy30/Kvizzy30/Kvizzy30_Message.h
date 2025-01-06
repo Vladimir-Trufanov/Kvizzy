@@ -30,7 +30,7 @@ typedef enum {http400=400, http403=403, http404=404, http405=405, http408=408, h
 // Формируем список сообщений приложения
 tmessAPP amessAPP[] = 
 {
-    {WifiEstablished, tvm_simpmes, "Соединение с Wi-Fi установлено"},                      // the Wi-Fi connection is established
+    {WifiEstablished, tvm_simpmes, "Соединение с Wi-Fi установлено"},    
     {SendFromISR,     tvm_1intmes, "Передано %s сообщение из прерывания"},
     {SendFromTask,    tvm_2intmes, "Передано %s сообщение из задачи на %s миллисекунде"},
 

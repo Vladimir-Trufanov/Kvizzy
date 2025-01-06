@@ -233,10 +233,10 @@ Kvizzy
 			+Kvizzy30
 				Kvizzy30\Kvizzy30\common_kvizzy.h
 				Kvizzy30\Kvizzy30\Core.h
-				Kvizzy30\Kvizzy30\define_json.h
 				Kvizzy30\Kvizzy30\define_kvizzy.h
 				Kvizzy30\Kvizzy30\Errme.h
 				Kvizzy30\Kvizzy30\Errme.hpp
+				Kvizzy30\Kvizzy30\jsonBase.h
 				Kvizzy30\Kvizzy30\Kvizzy30.ino
 				Kvizzy30\Kvizzy30\Kvizzy30_Message.h
 				Kvizzy30\Kvizzy30\Lead.h
@@ -2063,7 +2063,6 @@ Kvizzy
 			Kvizzy30\ESP32-CAM-Pinout.webp
 			Kvizzy30\ESP32-CAM-PWM-Pins.webp
 			Kvizzy30\Kvizzy30.md
-			Kvizzy30\Kvizzy30.md.backup
 		-LedyEs
 			-Blink
 				LedyEs\Blink\Blink.ino
@@ -2114,33 +2113,9 @@ Kvizzy
 		README.md
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
-1=Kvizzy30\Kvizzy30\Lead.h
-2=Kvizzy30\Kvizzy30\State.h
-3=Kvizzy30\Kvizzy30\define_kvizzy.h
-4=Kvizzy30\Kvizzy30\Kvizzy30_Message.h
-5=Kvizzy30\Kvizzy30\common_kvizzy.h
-6=Kvizzy30\Kvizzy30\define_json.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\Lead.h
+Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=3
 Caret=21,3
-[Kvizzy30\Kvizzy30\Lead.h]
-TopLine=6
-Caret=11,14
-[Kvizzy30\Kvizzy30\State.h]
-TopLine=49
-Caret=1,88
-[Kvizzy30\Kvizzy30\define_kvizzy.h]
-TopLine=25
-Caret=15,25
-[Kvizzy30\Kvizzy30\Kvizzy30_Message.h]
-TopLine=1
-Caret=1,1
-[Kvizzy30\Kvizzy30\common_kvizzy.h]
-TopLine=5
-Caret=32,5
-[Kvizzy30\Kvizzy30\define_json.h]
-TopLine=7
-Caret=37,13

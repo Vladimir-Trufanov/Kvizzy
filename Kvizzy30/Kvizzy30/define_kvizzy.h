@@ -19,12 +19,15 @@ String inMess="";                      // метка отправленного 
 #define loopingState     2     // зацикливание задачи vState
 #define loopingCore1     3     // зацикливание задачи vCore1
 #define loopingCore0     4     // зацикливание задачи vCore0
-#define disaflashing33  51     // отключение мигания контрольного светодиода
-#define enabflashing33  52     // включение мигания контрольного светодиода
+//#define disaflashing33  51     // отключение мигания контрольного светодиода
+//#define enabflashing33  52     // включение мигания контрольного светодиода
 
 // Инициируем счетчики циклов задач (от 0 до 4 294 967 295)
-uint32_t iLead=0;     // запрос к странице Lead
-uint32_t iState=0;    // запрос к странице State
+// и флаги включения режимов работы 
+uint32_t iLead=0;       // запрос к странице Lead
+uint32_t iState=0;      // запрос к странице State
+bool Led33Start=true;   // включить режим работы контрольного светодиода
+
 // Управление светодиодами
 #define PinLedWork      33            // контакт рабочего светодиода
 volatile int lastLedWork = millis();  // прошлое время смены состояния контрольного светодиода

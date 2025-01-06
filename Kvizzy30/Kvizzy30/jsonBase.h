@@ -86,7 +86,7 @@ void TJsonBase::Create()
    led_33["nicdev"] = "led33";      // nic устройства
    led_33["tiddev"] = 1;            // идентификатор типа устройства
    led_33["light"]  = 55;           // процент времени свечения в цикле     
-   led_33["time"]   = 2004;         // длительность цикла "горит - не горит" (мсек)     
+   led_33["time"]   = 4007;         // длительность цикла "горит - не горит" (мсек)     
    led_33["regim"]  = 0;            // режим работы: 0 - выключен, 1 - включён     
    led_33["status"] = "inLOW";      // текущее состояние светодиода     
    // Вспышка
@@ -94,11 +94,10 @@ void TJsonBase::Create()
    JsonObject led_4 = led4.createNestedObject();
    led_4["nicdev"]  = "led4";       // nic устройства
    led_4["tiddev"]  = 2;            // идентификатор типа устройства
-   led_4["typedev"] = "Led";        // тип устройства
-   led_4["status"]  = LOW;          // текущее состояние светодиода 
+   led_4["status"]  = "LOW";        // текущее состояние светодиода 
    // Выбираем весь json-документ в строку
    AllJson=thisController();
-   Serial.println(AllJson); 
+   //Serial.println(AllJson); 
 }
 // ****************************************************************************
 // *   Выбрать общий JSON-документ контроллера и его датчиков и оборудования  *
@@ -115,10 +114,25 @@ String TJsonBase::thisController()
 // *    Выбрать из JSON-документа режим и состояние контрольного светодиода   *
 // ****************************************************************************
 String TJsonBase::jsongetLed33()
+/*
+{
+  "led33": [
+    {
+      "nicdev": "led33",
+      "tiddev": 1,
+      "light": 55,
+      "time": 2004,
+      "regim": 0,
+      "status": "inLOW"
+    }
+  ]
+}
+
+sjson={"led33":[{"nicdev":"led33","tiddev":1,"light":55,"time":2004,"regim":0,"status":"inLOW"}]}
+*/
 {
    // Инициируем возвращаемую json-строку   
    String sjson = jempty;
-   /*
    // Формируем json по состоянию контрольного светодиода 
    JsonDocument filter;
    filter["led33"][0]["nicdev"]= true;  // nic устройства
@@ -128,14 +142,9 @@ String TJsonBase::jsongetLed33()
    filter["led33"][0]["regim"] = true;  // режим работы: 0 - выключен, 1 - включён  
    filter["led33"][0]["status"]= true;  // текущее состояние светодиода     
    JsonDocument doc;
-   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
-
-   
-   
-   String str;
-   serializeJson(doc,str);
+   deserializeJson(doc, AllJson, DeserializationOption::Filter(filter));
+   serializeJson(doc,sjson);
    serializeJsonPretty(doc,Serial);
-   */
    return sjson;
 }
 

@@ -33,8 +33,10 @@ TJsonBase oJSON;
 // Подключаем файлы обеспечения передачи и приёма сообщений через очередь                
 #include "Kvizzy30_Message.h" // сообщения приложения  
 #include <QueMessage.h>       // заголовочный файл класса TQueMessage                    
-// Назначаем объект работы с сообщениями через очередь                                   
-TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);                                         
+#include "QueChar.h"          // заголовочный файл класса TQueMessage                        
+// Назначаем объекты работы с сообщениями через очередь                                   
+TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);    // для периферии                                     
+TQue queState;                                      // для страницы State
 
 #include "define_kvizzy.h"   // общие определения 
 #include "common_kvizzy.h"   // общие функции  
@@ -77,16 +79,6 @@ void IRAM_ATTR onTimer()
    }
    portEXIT_CRITICAL_ISR(&timerMux);
 }
-
-// Обработка прерывания для контрольного светодиода при смене состояния 33 пина (CHANGE)
-void IRAM_ATTR toggleLedWork()
-{
-   /*
-   Serial.print("###");
-   Serial.print(digitalRead(PinLedWork));
-   Serial.println("###");
-   */
-}
 // Обработка прерывания для вспышки при изменении состояние 4 контакта с LOW на HIGH (RISING).
 void IRAM_ATTR onLedFlash()
 {
@@ -115,24 +107,36 @@ void setup()
    oSNTP.Create();
    Serial.println("");
    
-   // Создаем очередь                                                                   
+   // Создаем очередь сообщений на периферию                                                                   
    String inMess=queMessa.Create();                                                      
    // Если не получилось, сообщаем "Очередь не была создана и не может использоваться"    
    if (inMess==QueueNotCreate) Serial.println(QueueNotCreate);                           
    // Если очередь получилась, то отмечаем  "Очередь сформирована"                       
    else Serial.println(QueueBeformed);                                                   
    // Подключаем функцию передачи сообщения на периферию                                 
-   queMessa.attachFunction(transmess);      
+   queMessa.attachFunction(transmess);  
+
+   // Создаем очередь сообщений на страницу State                                                                    
+   inMess=queState.Create();                                                      
+   // Если не получилось, сообщаем "Очередь не была создана и не может использоваться"    
+   if (inMess==tQueueNotCreate) Serial.println(tQueueNotCreate);                         
+   // Если очередь получилась, то отмечаем  "Очередь сформирована"                      
+   else Serial.println(tQueueBeformed);                                                  
+   // Подключаем функцию передачи сообщения на периферию                                
+   queState.attachFunction(transState);                                                  
+
+   // Отмечаем, что соединение с Wi-Fi установлено
+   inMess=queMessa.Send(tmt_NOTICE,WifiEstablished,tmk_Queue);
+   if (inMess!=isOk) Serial.println(inMess); 
+
+   // Создаём объект и строку всего JSON-документа         
+   oJSON.Create();
 
    // Переводим контакты лампочек в режим вывода и подключаем обработку прерываний
    pinMode(PinLedWork,OUTPUT);    // контрольный светодиод
    attachInterrupt(PinLedWork,toggleLedWork,CHANGE);
    pinMode(PinLedFlash,OUTPUT);   // вспышка
    attachInterrupt(PinLedFlash,onLedFlash,RISING);
-
-   // Отмечаем, что соединение с Wi-Fi установлено
-   inMess=queMessa.Send(tmt_NOTICE,WifiEstablished,tmk_Queue);
-   if (inMess!=isOk) Serial.println(inMess); 
 
    // Подключаем задачу определения состояния контрольного светодиода ESP32-CAM 
    // ("горит - не горит") и передачу данных на страницу сайта State  
@@ -200,20 +204,11 @@ void setup()
    // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
    // раз (четвертый параметр = 0) 
    timerAlarm(timer, 20000000, true, 0);
-   // Создаём объект и строку всего JSON-документа         
-   oJSON.Create();
 }
 
 // Основной цикл
 void loop() 
 {
-   int currMillis = millis(); // время начала текущего цикла
-   // Переключаем состояние контрольного светодиода через заданное количество микросекунд
-   if ((currMillis < lastLedWork)||(currMillis - lastLedWork > millLedWork))
-   { 
-      lastLedWork = millis();  
-      digitalWrite(PinLedWork, !digitalRead(PinLedWork));
-   }
    // Отмечаем флагом, что цикл задачи успешно завершен   
    fwdtLoop = true;
    // Ничего не делаем пол секунды

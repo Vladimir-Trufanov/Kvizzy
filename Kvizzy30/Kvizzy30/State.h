@@ -10,8 +10,7 @@
 #pragma once            
 #include <Arduino.h>
 
-
- // * Задача FreRTOS ***********************************************************
+// * Задача FreRTOS ***********************************************************
 // *   Выбрать накопившиеся json-сообщения о состоянии устройств контроллера  *
 // *     и показаниях датчиков из очереди и отправить их на страницу State    *
 // ****************************************************************************
@@ -31,12 +30,19 @@ void vState(void* pvParameters)
    // Зацикливаем задачу
    for (;;)
    {
+      // Отправляем на сайт все, накопившиеся, сообщения
+      queState.PostAll();
+    
+    
       /*
       // Имитируем зависание микроконтроллера с помощью опознанного числа,
       // принятого в последовательном порту
       if (iCreateSit == loopingLed33) MimicMCUhangEvent("Led33");  
       */ 
 
+
+
+      /*
       String jstr="&cjson=";
       String sjson="95";
       jstr +=sjson;
@@ -52,7 +58,7 @@ void vState(void* pvParameters)
          if (iTrass>7)
          {
             iTrass=0;
-            Serial.print(iState); Serial.print("-State: "); Serial.println(tQuery.httpText);
+            Serial.print(iState); Serial.print("State: "); Serial.println(tQuery.httpText);
          }
       }
       // Реагируем на ошибку Post-запроса
@@ -77,6 +83,7 @@ void vState(void* pvParameters)
          // Размер самого большого блока PSRAM, который может быть выделен
          printf("Самый большой блок для выделения:   %d\n", ESP.getMaxAllocPsram());
       #endif
+      */
       
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtState = true;
@@ -84,5 +91,15 @@ void vState(void* pvParameters)
       vTaskDelay(986/portTICK_PERIOD_MS); 
    }
 }
+// ****************************************************************************
+// *                    Передать сообщения на страницу State                  *
+// *     и показаниях датчиков из очереди и отправить их на страницу State    *
+// ****************************************************************************
+inline void transState(char *mess, char *prefix) 
+{
+   Serial.print("transState: ");  // передали префикс
+   Serial.println(mess);          // передали сообщение
+}
+
 
 // **************************************************************** State.h ***
