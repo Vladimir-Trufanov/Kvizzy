@@ -3,7 +3,7 @@
  *        Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
  *            и показаниях датчиков из очереди и отправить их на страницу State 
  * 
- * v3.3.4, 07.01.2025                                 Автор:      Труфанов В.Е.
+ * v3.3.5, 16.01.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -78,24 +78,21 @@ inline void transState(char *mess, char *prefix)
    String sjson=String(mess); sjson="&sjson="+sjson;
    queryString=queryString+sjson;
 
-   // Делаем запрос к State
-   Serial.print("Запрос: "); Serial.println(queryString);  
+   // Трассируем запрос к State
+   if (isTrassState) {Serial.print("To State: "); Serial.println(queryString);}  
    tQuery = postQuery(ehttp, queryString);
    // Обрабатываем успешный запрос 
    if (tQuery.httpCode == HTTP_CODE_OK) 
    {
-      // Трассировочное сообщение в очередь
-      //iTrass++;
-      //if (iTrass>7)
-      //{
-      //   iTrass=0;
-         Serial.print(iState); Serial.print(" State: "); Serial.println(tQuery.httpText);
-      //}
+      // Трассируем ответ от State
+      if (isTrassState) {Serial.print("<= State: "); Serial.println(tQuery.httpText);}
    }
    else
    // Реагируем на ошибку Post-запроса
    {
       Serial.print("Ошибка Post-запроса: "); Serial.println(tQuery.httpCode);
    }
+   // Делаем паузу 10 тиков - дать наверху серверу передохнуть
+   vTaskDelay(10/portTICK_PERIOD_MS); 
 }
 // **************************************************************** State.h ***

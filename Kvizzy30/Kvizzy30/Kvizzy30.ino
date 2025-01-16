@@ -206,9 +206,52 @@ void setup()
    timerAlarm(timer, 20000000, true, 0);
 }
 
+// Инициируем прием кодов и заполнение строки
+int incomingByte = 0; 
+int incomingCode = 0; 
+String data = "";
+
 // Основной цикл
 void loop() 
 {
+   // Проверяем, есть ли байты в последовательном порту
+   if (Serial.available() > 0) 
+   {
+      // Читаем очередной байт
+      incomingByte = Serial.read();
+      // Получаем по коду символ
+      char character = (char)incomingByte;
+      // Выводим код полученного символа
+      //Serial.print("Получен: ");
+      //Serial.println(incomingByte);
+      // Если не "перевод строки" то складываем
+      // символ в формируемую строку
+      if (character != '\n')
+      {
+         data.concat(character);
+      }
+      // Иначе выводим текст
+      else
+      {
+         // Выводим текст в последовательный порт
+         incomingCode = data.toInt();
+         Serial.print("["); Serial.print(incomingCode); Serial.print("] "); 
+         
+         // Управляем трассировкой сообщений к State 
+         if (incomingCode==enabTrassState) 
+         {
+            Serial.println("Включение трассировки сообщений к State!"); 
+            isTrassState=true;
+         }
+         else if (incomingCode==disaTrassState) 
+         {
+            Serial.println("Отключение трассировки сообщений к State!"); 
+            isTrassState=false;
+         }
+         // Готовим прием нового текста
+         data = "";
+      }
+   }
    // Отмечаем флагом, что цикл задачи успешно завершен   
    fwdtLoop = true;
    // Ничего не делаем пол секунды
