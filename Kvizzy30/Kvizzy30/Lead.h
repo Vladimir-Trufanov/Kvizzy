@@ -9,7 +9,32 @@
 
 #pragma once            
 #include <Arduino.h>
+#include <Regexp.h>
 
+void getJsonLead(String httpText)
+// "<Lead><p>{"led33":[{"regim":0}]}</p></Lead>"
+
+{
+  unsigned long count;
+  // Загружаем в буфер текст, в котором будет осуществляться поиск
+  char buf[100];
+  count=httpText.length();
+  if (count+1>100) Serial.println("Ошибка, httpText превышает 100 символов!");
+  httpText.toCharArray(buf,count+1);  
+  // Создаем объект поиска соответствий
+  MatchState ms(buf);
+  // Выводим исходное содержимое буфера
+  Serial.print ("Начальная  строка: "); Serial.println (buf);
+  // Формируем регулярное выражение ("соответствие")
+  //const char * match="<p>%a+</p>";
+  //const char * match="<p>[{}\"a-z0-9]:";
+  const char * match="<p>{\"[a-z]+";
+  // Выполняем поиск по соответствию
+  count = ms.GlobalReplace (match, "-"); // "replace_callback");
+  // Показываем результаты
+  Serial.print ("Изменённая строка: "); Serial.println (buf);
+  Serial.print ("Найдено "); Serial.print (count); Serial.println (" соответствий.");
+}
 // ****************************************************************************
 // *             Выполнить нечастую трассировку успешных запросов             *
 // ****************************************************************************
@@ -23,6 +48,7 @@ void saytrass(String httpText, int nTrass=5)
    {
       iTrass=0;
       Serial.print(iLead); Serial.print("-Lead: "); Serial.println(httpText);
+      getJsonLead(httpText);
    }
 }
 
