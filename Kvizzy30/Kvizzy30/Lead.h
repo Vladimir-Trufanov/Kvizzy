@@ -10,6 +10,22 @@
 #pragma once            
 #include <Arduino.h>
 
+// ****************************************************************************
+// *             Выполнить нечастую трассировку успешных запросов             *
+// ****************************************************************************
+// Инициируем счетчик нечастой трассировки успешных запросов
+int iTrass=0;
+void saytrass(String httpText, int nTrass=5) 
+{
+   // Трассировочное сообщение в очередь
+   iTrass++;
+   if (iTrass>nTrass)
+   {
+      iTrass=0;
+      Serial.print(iLead); Serial.print("-Lead: "); Serial.println(httpText);
+   }
+}
+
 // * Задача FreRTOS ***********************************************************
 // *      Отправить регулярный (по таймеру) запрос контроллера на изменение   *
 // *                  состояний его устройств к странице Lead                 *
@@ -20,8 +36,7 @@ void vLead(void* pvParameters)
    String ehttp=shttp+"Lead/";                   // запрос
    String queryString = "cycle="+String(iLead);  // параметры
    tQueryMessage tQuery;                         // ответ
-   // Инициируем счетчик нечастой трассировки успешных запросов
-   int iTrass=0;
+   String httpText;                              // текст ответного сообщения
    // Зацикливаем задачу
    for (;;)
    {
@@ -31,13 +46,8 @@ void vLead(void* pvParameters)
       // Обрабатываем успешный запрос 
       if (tQuery.httpCode == HTTP_CODE_OK) 
       {
-         // Трассировочное сообщение в очередь
-         iTrass++;
-         if (iTrass>5)
-         {
-            iTrass=0;
-            Serial.print(iLead); Serial.print("-Lead: "); Serial.println(tQuery.httpText);
-         }
+         httpText=tQuery.httpText; 
+         saytrass(httpText,0);  
       }
       // Реагируем на ошибку Post-запроса
       {
