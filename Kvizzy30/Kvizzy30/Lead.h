@@ -11,9 +11,26 @@
 #include <Arduino.h>
 #include <Regexp.h>
 
-void getJsonLead(String httpText)
-// "<Lead><p>{"led33":[{"regim":0}]}</p></Lead>"
 
+
+// Вызывается при каждом совпадении
+void replace_callback (const char * match,                 // текущий фрагмент, который найден по соответствию
+                       const unsigned int length,          // длина фрагмента
+                       char * & replacement,               // текст, которым заменяем соответствия
+                       unsigned int & replacement_length,  // длина замещающего текста
+                       const MatchState & ms)              // хранилище найденных фрагментов
+{
+  // Показываем очередной найденный фрагмент
+  Serial.print("Match = ");
+  Serial.write((byte *) match, length);
+  Serial.println (); 
+
+  replacement = "";
+  replacement_length = 0;
+}  
+
+
+void getJsonLead(String httpText)
 {
   unsigned long count;
   // Загружаем в буфер текст, в котором будет осуществляться поиск
@@ -24,16 +41,14 @@ void getJsonLead(String httpText)
   // Создаем объект поиска соответствий
   MatchState ms(buf);
   // Выводим исходное содержимое буфера
-  Serial.print ("Начальная  строка: "); Serial.println (buf);
-  // Формируем регулярное выражение ("соответствие")
-  //const char * match="<p>%a+</p>";
-  //const char * match="<p>[{}\"a-z0-9]:";
-  const char * match="<p>{\"[a-z]+";
+  //Serial.print ("Начальная  строка: "); Serial.println (buf);
+  // Формируем регулярное выражение ("соответствие") 
+  // для поиска json-сообщений:
+  // "<Lead><p>{"led33":[{"regim":0}]}</p></Lead>"
+  //const char * match="<p>[{\"a-z0-9:%[}%]]*";
+    const char * match="<p>[{\"a-z0-9:%[}%]]*";
   // Выполняем поиск по соответствию
-  count = ms.GlobalReplace (match, "-"); // "replace_callback");
-  // Показываем результаты
-  Serial.print ("Изменённая строка: "); Serial.println (buf);
-  Serial.print ("Найдено "); Serial.print (count); Serial.println (" соответствий.");
+  count = ms.GlobalReplace (match, replace_callback);
 }
 // ****************************************************************************
 // *             Выполнить нечастую трассировку успешных запросов             *
