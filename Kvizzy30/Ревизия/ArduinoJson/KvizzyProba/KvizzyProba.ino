@@ -1,88 +1,46 @@
 /** Arduino, Esp32-CAM *************************************** KvizzyProba.ino ***
  * 
- * Kvizzy30 - модельное программное обеспечение для Esp32-CAM и двух встроенных
- * светодиодов: контрольного и вспышки
+ *                         Kvizzy - пример создания Json-документа и его изменения
  * 
- * v3.1, 07.10.2024                                   Автор:      Труфанов В.Е.
- * Copyright © 2024 tve                               Дата создания: 31.05.2024
- * 
- *           Kvizzy - система контроллеров, датчиков и исполнительных устройств 
- *                    моего, стремящегося к умному, хозяйства (нижний уровень).
- * 
+ * v3.1, 25.01.2025                                      Автор:      Труфанов В.Е.
+ * Copyright © 2024 tve                                  Дата создания: 31.05.2024
 **/
-
-
 // Размещаем JSON-документ
 #include <ArduinoJson.h>
 JsonDocument doc;
 
 #include "define_kvizzy.h"   // подключили общие определения 
-#include "common_kvizzy.h"   // подключили общие функции  
 
 void setup() 
 {
    Serial.begin(115200);
    while (!Serial) continue;
-   
-   String sjson=jison1();
+   // Строим json-документ
+   String sjson=thisController();
+   Serial.println("Контроллер:");
    Serial.println(sjson);
-   ssetup(sjson);
-
-   sjson=thisController();
-   Serial.print("Контроллер0: ");
-   Serial.println(sjson);
-
-
-   /*
-   // The filter: it contains "true" for each value we want to keep
-   JsonDocument filter;
-   //filter["list"][0]["dt"] = true;
-   //filter["list"][0]["main"]["temp"] = true;
-
-   filter["namectrl"] = true; // "Esp32-CAM во двор дачи";
-   filter["idplace"]  = true; // 'Во двор дачи'
-   filter["tidctrl"]  = true; // 'Esp32-CAM'
-   filter["idctrl"]   = true; // идентификатор контроллера
-   
-   // Deserialize the document
-   JsonDocument doc;
-   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
-   // Print the result
-   String str = "";
-   serializeJson(doc,str);
-   Serial.print("Контроллер1: ");
+   Serial.println("");
+   // Строим выжимку json-документа
+   String str=thisMake(sjson);
+   Serial.println("Изменение:");
    Serial.println(str);
-   */
-   String str=thisA(sjson);
-   Serial.print("КонтроллерA: ");
+   Serial.println("");
+   // Делаем замену в глобальном json-документе
+   str=Proba(sjson);
+   Serial.println("Proba:");
    Serial.println(str);
-
-   str=thisB(sjson);
-   Serial.print("КонтроллерB: ");
-   Serial.println(str);
-
-
-   /*
-   filter["idctrl"]   = false; // идентификатор контроллера
-   filter["sensor"]   = true;  
-   deserializeJson(doc, sjson, DeserializationOption::Filter(filter));
-   // Print the result
-   str = "";
-   serializeJson(doc,str);
-   Serial.print("Контроллер2: ");
-   Serial.println(str);
-   */
-
-
-
-
-   
+   Serial.println("");
+   // Показываем вариант обработки ошибок
+   //String g = "12{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
+   String g = "{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
+   ssetup(g); 
 }
 
 void loop() 
 {
 }
 
+// Показать вариант обработки ошибок
 void ssetup(String g) 
 {
   // JSON input string.
@@ -115,6 +73,5 @@ void ssetup(String g)
   Serial.println(latitude, 6);
   Serial.println(longitude, 6);
 }
-
 
 // *********************************************************** KvizzyProba.ino ***
