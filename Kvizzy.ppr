@@ -231,6 +231,8 @@ Kvizzy
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
 		+Kvizzy30
 			+Kvizzy30
+				Kvizzy30\Kvizzy30\AttachSNTP.cpp
+				Kvizzy30\Kvizzy30\AttachSNTP.h
 				Kvizzy30\Kvizzy30\common_kvizzy.h
 				Kvizzy30\Kvizzy30\Core.h
 				Kvizzy30\Kvizzy30\define_kvizzy.h
@@ -241,7 +243,36 @@ Kvizzy
 				Kvizzy30\Kvizzy30\Kvizzy30_Message.h
 				Kvizzy30\Kvizzy30\Lead.h
 				Kvizzy30\Kvizzy30\Led33.h
+				Kvizzy30\Kvizzy30\QueChar.cpp
+				Kvizzy30\Kvizzy30\QueChar.h
+				Kvizzy30\Kvizzy30\QueMessage.cpp
+				Kvizzy30\Kvizzy30\QueMessage.h
 				Kvizzy30\Kvizzy30\State.h
+			-TEsparTools-main
+				-examples
+					-LwIPSNTP
+						Kvizzy30\TEsparTools-main\examples\LwIPSNTP\LwIPSNTP.ino
+					-QueueChar
+						Kvizzy30\TEsparTools-main\examples\QueueChar\QueueChar.ino
+					-QueueHandlMulti
+						Kvizzy30\TEsparTools-main\examples\QueueHandlMulti\QHM_Message.h
+						Kvizzy30\TEsparTools-main\examples\QueueHandlMulti\QueueHandlMulti.ino
+				-extras
+					Kvizzy30\TEsparTools-main\extras\TAttachSNTP.md
+					Kvizzy30\TEsparTools-main\extras\TQue.md
+					Kvizzy30\TEsparTools-main\extras\TQueMessage.md
+				-src
+					Kvizzy30\TEsparTools-main\src\AttachSNTP.cpp
+					Kvizzy30\TEsparTools-main\src\AttachSNTP.h
+					Kvizzy30\TEsparTools-main\src\QueChar.cpp
+					Kvizzy30\TEsparTools-main\src\QueChar.h
+					Kvizzy30\TEsparTools-main\src\QueMessage.cpp
+					Kvizzy30\TEsparTools-main\src\QueMessage.h
+				Kvizzy30\TEsparTools-main\keywords.txt
+				Kvizzy30\TEsparTools-main\library.properties
+				Kvizzy30\TEsparTools-main\LICENSE
+				Kvizzy30\TEsparTools-main\README.md
+				Kvizzy30\TEsparTools-main\TEsparTools.ppr
 			-Ревизия
 				-2024-09-04 Kvizzy
 					-Test06_Obmen_Esp32
@@ -272,12 +303,15 @@ Kvizzy
 						Kvizzy30\Ревизия\ArduinoJson\JSON-Array\JSONVar.cpp
 						Kvizzy30\Ревизия\ArduinoJson\JSON-Array\JSONVar.h
 					-KvizzyProba
-						Kvizzy30\Ревизия\ArduinoJson\KvizzyProba\common_kvizzy.h
 						Kvizzy30\Ревизия\ArduinoJson\KvizzyProba\define_kvizzy.h
 						Kvizzy30\Ревизия\ArduinoJson\KvizzyProba\KvizzyProba.ino
 					-LearningJSON
 						Kvizzy30\Ревизия\ArduinoJson\LearningJSON\common_kvizzy.h
 						Kvizzy30\Ревизия\ArduinoJson\LearningJSON\LearningJSON.ino
+					-ProbaOld
+						Kvizzy30\Ревизия\ArduinoJson\ProbaOld\common_kvizzy.h
+						Kvizzy30\Ревизия\ArduinoJson\ProbaOld\define_kvizzy.h
+						Kvizzy30\Ревизия\ArduinoJson\ProbaOld\KvizzyProba.ino
 					-Serialization
 						Kvizzy30\Ревизия\ArduinoJson\Serialization\Serialization.ino
 					Kvizzy30\Ревизия\ArduinoJson\Arduino_JSON-master.zip
@@ -2006,6 +2040,16 @@ Kvizzy
 					Kvizzy30\Ревизия\ParseXMLfile-LeadLEDs\tinyxml2.cpp
 					Kvizzy30\Ревизия\ParseXMLfile-LeadLEDs\tinyxml2.h
 				-Programming-Arduino-with-Regular-Expressions
+					-GlobalMatch
+						Kvizzy30\Ревизия\Programming-Arduino-with-Regular-Expressions\GlobalMatch\GlobalMatch.ino
+					-GlobalReplace
+						Kvizzy30\Ревизия\Programming-Arduino-with-Regular-Expressions\GlobalReplace\GlobalReplace.ino
+					-GlobalReplace_Entities
+						Kvizzy30\Ревизия\Programming-Arduino-with-Regular-Expressions\GlobalReplace_Entities\GlobalReplace_Entities.ino
+					-Match
+						Kvizzy30\Ревизия\Programming-Arduino-with-Regular-Expressions\Match\Match.ino
+					-MatchCount
+						Kvizzy30\Ревизия\Programming-Arduino-with-Regular-Expressions\MatchCount\MatchCount.ino
 					Kvizzy30\Ревизия\Programming-Arduino-with-Regular-Expressions\Programming-Arduino-with-Regular-Expressions.md
 				-Test01_Buzer
 					Kvizzy30\Ревизия\Test01_Buzer\Test01_Buzer.ino
@@ -2113,9 +2157,57 @@ Kvizzy
 		README.md
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
+1=Kvizzy30\Kvizzy30\State.h
+2=Kvizzy30\Kvizzy30\Led33.h
+3=Kvizzy30\Kvizzy30\Lead.h
+4=Kvizzy30\Kvizzy30\Kvizzy30_Message.h
+5=Kvizzy30\Kvizzy30\jsonBase.h
+6=Kvizzy30\Kvizzy30\common_kvizzy.h
+7=Kvizzy30\Kvizzy30\QueMessage.h
+8=Kvizzy30\Kvizzy30\QueMessage.cpp
+9=Kvizzy30\TEsparTools-main\examples\QueueHandlMulti\QHM_Message.h
+10=Kvizzy30\TEsparTools-main\extras\TQueMessage.md
+11=Kvizzy30\TEsparTools-main\src\QueMessage.cpp
+12=Kvizzy30\TEsparTools-main\src\QueMessage.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\Kvizzy30.ino
+Selected=Kvizzy30\TEsparTools-main\src\QueMessage.h
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=3
 Caret=21,3
+[Kvizzy30\Kvizzy30\State.h]
+TopLine=63
+Caret=6,98
+[Kvizzy30\Kvizzy30\Led33.h]
+TopLine=78
+Caret=1,1
+[Kvizzy30\Kvizzy30\Lead.h]
+TopLine=63
+Caret=9,100
+[Kvizzy30\Kvizzy30\Kvizzy30_Message.h]
+TopLine=16
+Caret=23,33
+[Kvizzy30\Kvizzy30\jsonBase.h]
+TopLine=25
+Caret=1,1
+[Kvizzy30\Kvizzy30\common_kvizzy.h]
+TopLine=23
+Caret=1,1
+[Kvizzy30\Kvizzy30\QueMessage.h]
+TopLine=15
+Caret=4,26
+[Kvizzy30\Kvizzy30\QueMessage.cpp]
+TopLine=240
+Caret=33,251
+[Kvizzy30\TEsparTools-main\examples\QueueHandlMulti\QHM_Message.h]
+TopLine=18
+Caret=20,32
+[Kvizzy30\TEsparTools-main\extras\TQueMessage.md]
+TopLine=88
+Caret=20,98
+[Kvizzy30\TEsparTools-main\src\QueMessage.cpp]
+TopLine=240
+Caret=33,251
+[Kvizzy30\TEsparTools-main\src\QueMessage.h]
+TopLine=15
+Caret=4,26

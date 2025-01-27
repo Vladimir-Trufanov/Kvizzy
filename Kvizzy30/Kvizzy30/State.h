@@ -43,6 +43,7 @@ void vState(void* pvParameters)
    // Зацикливаем задачу
    for (;;)
    {
+      // Serial.println("*** vState ***");
       // Отправляем на сайт все, накопившиеся, сообщения
       queState.PostAll();
       // Пропускаем интервал 986 мсек
@@ -51,14 +52,15 @@ void vState(void* pvParameters)
       fwdtState = true;
    }
 }
+
 // ****************************************************************************
 // *                    Передать сообщения на страницу State                  *
 // *     и показаниях датчиков из очереди и отправить их на страницу State    *
 // ****************************************************************************
 inline void transState(char *mess, char *prefix) 
 {
-   //Serial.print("State: ");  // передали префикс
-   //Serial.println(mess);     // передали сообщение
+   // Serial.print("State: ");  // передали префикс
+   // Serial.println(mess);     // передали сообщение
 
    // Подключаемся к веб-странице
    //String shttp="https://doortry.ru/State/e?Com=";  // Ответ: 404
@@ -77,7 +79,6 @@ inline void transState(char *mess, char *prefix)
    // Включаем в параметр запроса json-сообщение
    String sjson=String(mess); sjson="&sjson="+sjson;
    queryString=queryString+sjson;
-
    // Трассируем запрос к State
    if (isTrassState) {Serial.print("To State: "); Serial.println(queryString);}  
    tQuery = postQuery(ehttp, queryString);

@@ -37,8 +37,8 @@ TJsonBase oJSON;
 
 // Подключаем файлы обеспечения передачи и приёма сообщений через очередь                
 #include "Kvizzy30_Message.h" // сообщения приложения  
-#include <QueMessage.h>       // заголовочный файл класса TQueMessage                    
-#include "QueChar.h"          // заголовочный файл класса TQueMessage                        
+#include "QueMessage.h"       // заголовочный файл класса TQueMessage                    
+#include "QueChar.h"          // заголовочный файл класса TQueChar                        
 // Назначаем объекты работы с сообщениями через очередь                                   
 TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);    // для периферии                                     
 TQue queState;                                      // для страницы State
@@ -50,7 +50,6 @@ TQue queState;                                      // для страницы S
 #include "Lead.h"            // 10-897 запрос контроллера на изменение состояний устройств
 #include "State.h"           //  9-986 выборка сообщений о состоянии и отправка 
 #include "Led33.h"           // обработка контрольного светодиода 
-#include "Core.h"            // подключили обработку состояния процессоров 
 
 // Определяем заголовок для объекта таймера
 hw_timer_t *timer = NULL;
@@ -63,14 +62,12 @@ void IRAM_ATTR onTimer()
    portENTER_CRITICAL_ISR(&timerMux);
    // Если флаги всех задач установлены в 1, 
    // то сбрасываем флаги задач и счетчик сторожевого таймера
-   if (fwdtLed33==true && /*fwdtCore0==true &&*/ fwdtCore1==true && fwdtLoop==true && 
+   if (fwdtLoop==true && fwdtLed33==true &&  
    fwdtLead==true && fwdtState==true && fwdtPrint==true) 
    {
       // Сбрасываем флаги задач
-      fwdtLed33 = false;
-      /*fwdtCore0 = false;*/
-      fwdtCore1 = false;
       fwdtLoop  = false;
+      fwdtLed33 = false;
       fwdtLead = false;
       fwdtState = false;
       fwdtPrint = false;
@@ -95,7 +92,9 @@ void setup()
    Serial.begin(115200);
    while (!Serial) continue;
    Serial.println("Последовательный порт работает!");
-
+   // Создаём объект и строку всего JSON-документа         
+   oJSON.Create();
+   Serial.println("");
    // Подключаемся к Wi-Fi сети
    WiFi.disconnect();
    WiFi.begin(ssid, password);
@@ -117,25 +116,25 @@ void setup()
    // Если не получилось, сообщаем "Очередь не была создана и не может использоваться"    
    if (inMess==QueueNotCreate) Serial.println(QueueNotCreate);                           
    // Если очередь получилась, то отмечаем  "Очередь сформирована"                       
-   else Serial.println(QueueBeformed);                                                   
+   else {Serial.print(QueueBeformed); Serial.println(" для сообщений на периферию");}                                                   
    // Подключаем функцию передачи сообщения на периферию                                 
-   queMessa.attachFunction(transmess);  
+   queMessa.attachFunction(transPrint);  
 
    // Создаем очередь сообщений на страницу State                                                                    
    inMess=queState.Create();                                                      
    // Если не получилось, сообщаем "Очередь не была создана и не может использоваться"    
    if (inMess==tQueueNotCreate) Serial.println(tQueueNotCreate);                         
    // Если очередь получилась, то отмечаем  "Очередь сформирована"                      
-   else Serial.println(tQueueBeformed);                                                  
-   // Подключаем функцию передачи сообщения на периферию                                
+   else  {Serial.print(QueueBeformed); Serial.println(" для сообщений на страницу State");}         
+   // Подключаем функцию передачи сообщения на страницу State                                
    queState.attachFunction(transState);                                                  
-
    // Отмечаем, что соединение с Wi-Fi установлено
    inMess=queMessa.Send(tmt_NOTICE,WifiEstablished,tmk_Queue);
    if (inMess!=isOk) Serial.println(inMess); 
 
-   // Создаём объект и строку всего JSON-документа         
-   oJSON.Create();
+   //oJSON.jsonset();
+   //oJSON.ViewDoc();
+   Serial.println("");
 
    // Переводим контакты лампочек в режим вывода и подключаем обработку прерываний
    pinMode(PinLedWork,OUTPUT);    // контрольный светодиод
@@ -153,25 +152,6 @@ void setup()
       5,                      // Priority
       NULL,                   // Task handle
       1); 
-   //
-   xTaskCreatePinnedToCore(
-      vCore1,                 // Task function
-      "Core1",                // Task name
-      2048,                   // Stack size
-      NULL,                   // Parameters passed to the task function
-      6,                      // Priority
-      NULL,                   // Task handle
-      1);
-   /*
-   xTaskCreatePinnedToCore(
-      vCore0,                 // Task function
-      "Core0",                // Task name
-      2048,                   // Stack size
-      NULL,                   // Parameters passed to the task function
-      6,                      // Priority
-      NULL,                   // Task handle
-      0);
-   */
    // Выполнить регулярный (по таймеру) запрос контроллера на изменение   
    // состояний его устройств к странице Lead             
    xTaskCreatePinnedToCore(
@@ -198,7 +178,7 @@ void setup()
       "Print",                // Task name
       2048,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      9,                      // Priority
+      8,                      // Priority
       NULL,                   // Task handle
       1);
    // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
@@ -219,6 +199,7 @@ String data = "";
 // Основной цикл
 void loop() 
 {
+   // Serial.println("*** loop ***");
    // Проверяем, есть ли байты в последовательном порту
    if (Serial.available() > 0) 
    {

@@ -2,7 +2,7 @@
  * 
  * Определить общие функции нижнего уровня умного хозяйства на двух светодиодах
  * 
- * v1.1.3, 07.01.2025                                 Автор:      Труфанов В.Е.
+ * v1.1.4, 27.01.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -10,18 +10,27 @@
 #include <Arduino.h>
 
 // * Задача FreRTOS ***********************************************************
-// *      Выбрать из очереди и вывести сообщения в последовательный порт      *
+// *               Выбрать из очереди и вывести сообщения на периферию        *
 // ****************************************************************************
 void vPrint(void* pvParameters) 
 {
    for (;;)
    {
+      // Serial.println("*** vPrint ***");
       queMessa.PostAll();
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtPrint = true;
       vTaskDelay(439/portTICK_PERIOD_MS); 
    }
 }
+// ****************************************************************************
+// *                        Передать сообщение на периферию                   *
+// ****************************************************************************
+inline void transPrint(char *mess, char *prefix="") 
+{
+   Serial.println(mess);  // передали сообщение
+}
+
 // ****************************************************************************
 // *                     Выполнить POST-запрос к странице сайта               *
 // ****************************************************************************
@@ -81,20 +90,7 @@ uint32_t incUINT32T(uint32_t value)
    return value;  
 }
 
-
-
-
-// ****************************************************************************
-// *                      --Преобразовать json-документ в строку              *
-// *                      --https://arduinojson.org/                          *
-// ****************************************************************************
-String jison1()
-{
-   String str = "***";
-   return str;
-}
-
-
+/*
 // Может пригодится!!!
 
 // Сделать определитель типов:
@@ -105,4 +101,34 @@ String types(String a) {return tstr;}
 String types(char *a)  {return tchr;}
 String types(int a)    {return tint;}
 
+// Перевести массив char в String и обратно
+void schastr()
+{
+   // Определяем структуру изменяемого сообщения
+   struct AMessage
+   {
+      int  ucSize;        // Длина сообщения (максимально 256 байт)
+      char ucData[256];   // Текст сообщения
+   }  xMessage;
+   
+   String temp = "Всем привет!";
+   strcpy(xMessage.ucData, temp.c_str());
+   xMessage.ucSize = 0;
+   while (xMessage.ucData[xMessage.ucSize]>0) 
+   {
+      xMessage.ucSize++;
+   }
+   Serial.println(temp);
+   Serial.println(types(temp));
+   Serial.println(xMessage.ucData);
+   Serial.println(types(xMessage.ucData));
+   Serial.println(xMessage.ucSize);
+   Serial.println(types(xMessage.ucSize));
+   
+   String temp1=String(xMessage.ucData);
+   Serial.println(temp1);
+   Serial.println(temp1.length());
+   Serial.println("-----");
+}
+*/
 // ******************************************************** common_kvizzy.h ***

@@ -2,7 +2,7 @@
  * 
  *                                          Обеспечить работу с документом JSON
  * 
- * v1.3.3, 04.01.2025                                 Автор:      Труфанов В.Е.
+ * v1.3.4, 27.01.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -26,6 +26,10 @@ class TJsonBase
    String thisController();
    // Выбрать из JSON-документа режим и состояние контрольного светодиода
    String jsongetLed33();
+   // ---Определить объект (конструктор класса)        
+   void jsonset();
+   // Показать текущее состояние json-документа            
+   void ViewDoc();
 
    private:
 
@@ -85,9 +89,9 @@ void TJsonBase::Create()
    JsonObject led_33 = led33.createNestedObject();
    led_33["nicdev"] = "led33";      // nic устройства
    led_33["tiddev"] = 1;            // идентификатор типа устройства
-   led_33["light"]  = 55;           // процент времени свечения в цикле     
-   led_33["time"]   = 4007;         // длительность цикла "горит - не горит" (мсек)     
-   led_33["regim"]  = 0;            // режим работы: 0 - выключен, 1 - включён     
+   led_33["light"]  = 10;           // процент времени свечения в цикле     
+   led_33["time"]   = 2000;         // длительность цикла "горит - не горит" (мсек)     
+   led_33["regim"]  = 1;            // режим работы: 0 - выключен, 1 - включён     
    led_33["status"] = "inLOW";      // текущее состояние светодиода     
    // Вспышка
    JsonArray led4 = doc.createNestedArray("led4");
@@ -96,8 +100,8 @@ void TJsonBase::Create()
    led_4["tiddev"]  = 2;            // идентификатор типа устройства
    led_4["status"]  = "LOW";        // текущее состояние светодиода 
    // Выбираем весь json-документ в строку
-   AllJson=thisController();
-   //Serial.println(AllJson); 
+   serializeJson(doc,AllJson);
+   serializeJsonPretty(doc,Serial); 
 }
 // ****************************************************************************
 // *   Выбрать общий JSON-документ контроллера и его датчиков и оборудования  *
@@ -106,7 +110,7 @@ void TJsonBase::Create()
 String TJsonBase::thisController()
 {
    String str;
-   serializeJson(doc,str);
+   //serializeJson(doc,str);
    //serializeJsonPretty(doc,Serial);
    return str;
 }
@@ -120,15 +124,15 @@ String TJsonBase::jsongetLed33()
     {
       "nicdev": "led33",
       "tiddev": 1,
-      "light": 55,
-      "time": 2004,
-      "regim": 0,
+      "light": 10,
+      "time": 2000,
+      "regim": 1,
       "status": "inLOW"
     }
   ]
 }
 
-sjson={"led33":[{"nicdev":"led33","tiddev":1,"light":55,"time":2004,"regim":0,"status":"inLOW"}]}
+sjson={"led33":[{"nicdev":"led33","tiddev":1,"light":10,"time":2000,"regim":1,"status":"inLOW"}]}
 */
 {
    // Инициируем возвращаемую json-строку   
@@ -142,9 +146,10 @@ sjson={"led33":[{"nicdev":"led33","tiddev":1,"light":55,"time":2004,"regim":0,"s
    filter["led33"][0]["regim"] = true;  // режим работы: 0 - выключен, 1 - включён  
    filter["led33"][0]["status"]= true;  // текущее состояние светодиода     
    JsonDocument doc;
-   deserializeJson(doc, AllJson, DeserializationOption::Filter(filter));
+   // Заполняем фильтр данными из всего документа
+   deserializeJson(doc,AllJson,DeserializationOption::Filter(filter));
+   // Формируем json-строку с информацией по контрольному светодиоду
    serializeJson(doc,sjson);
-   serializeJsonPretty(doc,Serial);
    return sjson;
 }
 
@@ -174,11 +179,20 @@ String getEsp32CAM(String sjson)
 */
 
 // ****************************************************************************
-// *                  Определить объект (конструктор класса)                  *
+// *                  ---Определить объект (конструктор класса)                  *
 // ****************************************************************************
 void TJsonBase::jsonset()
 {
+  doc["nicctrl"] = "myjoy1"; 
+  doc["led33"][0]["time"] = 118;
 }
 
+// ****************************************************************************
+// *                  Показать текущее состояние json-документа               *
+// ****************************************************************************
+void TJsonBase::ViewDoc()
+{
+   serializeJsonPretty(doc,Serial);
+}
 
 // ************************************************************* jsonBase.h ***

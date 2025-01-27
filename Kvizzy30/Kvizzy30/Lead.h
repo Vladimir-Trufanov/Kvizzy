@@ -11,8 +11,6 @@
 #include <Arduino.h>
 #include <Regexp.h>
 
-
-
 // Вызывается при каждом совпадении
 void replace_callback (const char * match,                 // текущий фрагмент, который найден по соответствию
                        const unsigned int length,          // длина фрагмента
@@ -63,7 +61,7 @@ void saytrass(String httpText, int nTrass=5)
    {
       iTrass=0;
       Serial.print(iLead); Serial.print("-Lead: "); Serial.println(httpText);
-      getJsonLead(httpText);
+      //getJsonLead(httpText);
    }
 }
 
@@ -81,7 +79,9 @@ void vLead(void* pvParameters)
    // Зацикливаем задачу
    for (;;)
    {
+      Serial.println("*** vLead ***");
       iLead++;
+      /*
       // Делаем запрос к Lead
       tQuery = postQuery(ehttp, queryString);
       // Обрабатываем успешный запрос 
@@ -94,6 +94,8 @@ void vLead(void* pvParameters)
       {
          // Пока ничего не делаем, сообщения об ошибках отправлены в postQuery   
       }
+      */
+      
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtLead = true;
       // Пропускаем интервал 897 мсек

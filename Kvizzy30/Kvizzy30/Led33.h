@@ -7,13 +7,10 @@
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
-#ifndef led_33
-#define led_33
 #pragma once            
 
 #include <Arduino.h>
 #include "define_kvizzy.h"    
-//#include "State.h"    
 
 #define inHIGH LOW           // светодиод с обратной логикой включён
 #define inLOW  HIGH          // светодиод с обратной логикой ВЫКЛ
@@ -71,6 +68,7 @@ void vLed33(void* pvParameters)
 
    for (;;)
    {
+      // Serial.println("*** vLed33 ***");
       /*
       // Имитируем зависание микроконтроллера с помощью опознанного числа,
       // принятого в последовательном порту
@@ -81,18 +79,18 @@ void vLed33(void* pvParameters)
       if (Led33Start)
       {
          sjson=oJSON.jsongetLed33();
-         //Serial.print("sjson:  "); Serial.println(sjson); 
+         Serial.print("sjson:  "); Serial.println(sjson); 
          JsonDocument docL33;
          deserializeJson(docL33, sjson);
          iTime  = docL33["led33"][0]["time"];
          iLight = docL33["led33"][0]["light"];
          // Рассчитываем времена свечения и несвечения контрольного светодиода
-         nLight=iTime*iLight/100;
-         nNoLight=iTime-nLight;
+         nLight=iTime*iLight/100;  // 2000*10/100=200
+         nNoLight=iTime-nLight;    // 2000-200=1800
          // Устанавливаем флаг свечения светодиода
          fLight=inHIGH;
-         //Serial.print("nLight:   "); Serial.println(nLight); 
-         //Serial.print("nNoLight: "); Serial.println(nNoLight);
+         Serial.print("nLight:   "); Serial.println(nLight); 
+         Serial.print("nNoLight: "); Serial.println(nNoLight);
          // Сбрасываем флаг включения режима
          Led33Start=false; 
       }
@@ -113,7 +111,5 @@ void vLed33(void* pvParameters)
       fwdtLed33 = true;
    }
 }
-
-#endif
 
 // **************************************************************** Led33.h ***

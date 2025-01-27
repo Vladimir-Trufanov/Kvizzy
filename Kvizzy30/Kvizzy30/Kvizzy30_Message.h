@@ -10,7 +10,7 @@
 
 #pragma once 
 
-#include <QueMessage.h>    // заголовочный файл класса TQueMessage                   
+#include "QueMessage.h"    // заголовочный файл класса TQueMessage                   
 
 // Определяем источник сообщений  
 #define tmk_APP   "KVZ"    // Kvizzy
