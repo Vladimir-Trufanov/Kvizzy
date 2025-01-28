@@ -9,7 +9,6 @@
 
 #pragma once            
 #include <Arduino.h>
-#include <Regexp.h>
 
 // * Задача FreeRTOS **********************************************************
 // *   Выбрать накопившиеся json-сообщения о состоянии устройств контроллера  *
@@ -63,14 +62,6 @@ inline void transState(char *mess, char *prefix)
    // Serial.print("State: ");  // передали префикс
    // Serial.println(mess);     // передали сообщение
 
-
-
-
-
-
-
-   
-
    // Подключаемся к веб-странице
    //String shttp="https://doortry.ru/State/e?Com=";  // Ответ: 404
    //String shttp="https://doortryi.ru/State/?Com=";  // Ответ: -1
@@ -96,8 +87,8 @@ inline void transState(char *mess, char *prefix)
    {
       // Трассируем ответ от State
       if (isTrassState) {Serial.print("<= State: "); Serial.println(tQuery.httpText);}
+      // Обновляем json-документ
       oJSON.UpdateDoc(String(mess));
-
    }
    else
    // Реагируем на ошибку Post-запроса

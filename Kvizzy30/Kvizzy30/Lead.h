@@ -3,7 +3,7 @@
  *        Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
  *            и показаниях датчиков из очереди и отправить их на страницу State 
  * 
- * v3.3.3, 27.12.2024                                 Автор:      Труфанов В.Е.
+ * v3.3.4, 28.01.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -11,25 +11,42 @@
 #include <Arduino.h>
 #include <Regexp.h>
 
-// Вызывается при каждом совпадении
-void replace_callback (const char * match,                 // текущий фрагмент, который найден по соответствию
-                       const unsigned int length,          // длина фрагмента
-                       char * & replacement,               // текст, которым заменяем соответствия
-                       unsigned int & replacement_length,  // длина замещающего текста
-                       const MatchState & ms)              // хранилище найденных фрагментов
+// ****************************************************************************
+// *    Выбрать и обработать текущее json-сообщение из ответа страницы Lead   *
+// ****************************************************************************
+void match_callback(const char * match,const unsigned int length,const MatchState & ms)
 {
-  // Показываем очередной найденный фрагмент
-  Serial.print("Match:");
-  Serial.write((byte *) match, length);
-  Serial.println("---"); 
-  Serial.println(String(match)); 
-  Serial.println(); 
-
-  replacement = "";
-  replacement_length = 0;
-}  
-
-
+   // Выбираем очередной найденный фрагмент
+   // {"led33":[{"regim":0}]}
+   String sjson = String(match);
+   sjson = sjson.substring(0,length);
+   
+   // Обрабатываем очередной найденный фрагмент
+   
+   // "режим контрольного светодиода выключен"
+   if (sjson==s33_MODE0) 
+   {
+      Serial.println(); 
+      Serial.println(sjson); 
+      Serial.println("Выключаем режим контрольного светодиода"); 
+      Serial.println("Обновляем json-документ"); 
+      Serial.println("Отправляем сообщение на State"); 
+      Serial.println(sjson); 
+   }
+   else if (sjson==s33_LOW) 
+   { 
+      Serial.println(); 
+      Serial.println("match_callback.ELSE-IF"); 
+   }
+   else 
+   { 
+      Serial.println(); 
+      Serial.println("match_callback.ELSE"); 
+   }
+}
+// ****************************************************************************
+// *      Выполнить выборку всех json-сообщений из ответа страницы Lead       *
+// ****************************************************************************
 void getJsonLead(String httpText)
 {
   unsigned long count;
@@ -40,32 +57,11 @@ void getJsonLead(String httpText)
   httpText.toCharArray(buf,count+1);  
   // Создаем объект поиска соответствий
   MatchState ms(buf);
-  // Выводим исходное содержимое буфера
-  //Serial.print ("Начальная  строка: "); Serial.println (buf);
-  // Формируем регулярное выражение ("соответствие") 
-  // для поиска json-сообщений:
+  // Формируем регулярное выражение ("соответствие") для поиска json-сообщений:
   // "<Lead><p>{"led33":[{"regim":0}]}</p></Lead>"
-  //const char * match="<p>[{\"a-z0-9:%[}%]]*";
-  //const char * match="<p>[{\"a-z0-9:%[}%]]*";
-    const char * match="{[{\"a-z0-9:%[}%]]*}";
+  const char * match="{[{\"a-z0-9:%[}%]]*}";
   // Выполняем поиск по соответствию
-  count = ms.GlobalReplace (match, replace_callback);
-}
-// ****************************************************************************
-// *             Выполнить нечастую трассировку успешных запросов             *
-// ****************************************************************************
-// Инициируем счетчик нечастой трассировки успешных запросов
-int iTrass=0;
-void saytrass(String httpText, int nTrass=5) 
-{
-   // Трассировочное сообщение в очередь
-   iTrass++;
-   if (iTrass>nTrass)
-   {
-      iTrass=0;
-      Serial.print(iLead); Serial.print("-Lead: "); Serial.println(httpText);
-      getJsonLead(httpText);
-   }
+  count = ms.GlobalMatch(match,match_callback);
 }
 // * Задача FreRTOS ***********************************************************
 // *      Отправить регулярный (по таймеру) запрос контроллера на изменение   *
@@ -88,8 +84,8 @@ void vLead(void* pvParameters)
       // Обрабатываем успешный запрос 
       if (tQuery.httpCode == HTTP_CODE_OK) 
       {
-         httpText=tQuery.httpText; 
-         saytrass(httpText,0);  
+         // Выбираем json-сообщения из ответа Lead 
+         getJsonLead(tQuery.httpText);
       }
       // Реагируем на ошибку Post-запроса
       {

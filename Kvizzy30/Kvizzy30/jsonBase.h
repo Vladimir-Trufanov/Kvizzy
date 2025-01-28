@@ -2,7 +2,7 @@
  * 
  *                                          Обеспечить работу с документом JSON
  * 
- * v1.3.4, 27.01.2025                                 Автор:      Труфанов В.Е.
+ * v1.3.5, 28.01.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -10,13 +10,10 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 
-
-
-// json-сообщение о включенном состоянии контрольного светодиода
-const String s33_HIGH="{\"led33\":[{\"status\":\"inHIGH\"}]}";
-// json-сообщение о выключенном контрольном светодиоде
-const String s33_LOW="{\"led33\":[{\"status\":\"inLOW\"}]}";
-
+// Реестр json-сообщений на страницу State
+const String s33_HIGH  = "{\"led33\":[{\"status\":\"inHIGH\"}]}";  // "контрольный светодиод включен"
+const String s33_LOW   = "{\"led33\":[{\"status\":\"inLOW\"}]}";   // "контрольный светодиод ВЫКЛЮЧЕН"
+const String s33_MODE0 = "{\"led33\":[{\"regim\":0}]}";            // "режим контрольного светодиода выключен"
 
 String jempty = "{}";  // пустая json-строка
 String sjson;          // выборка из json-документа
@@ -35,17 +32,13 @@ class TJsonBase
    void jsonset();
    // Показать текущее состояние json-документа            
    void ViewDoc();
-   // Обновить строку полного json-документа
-   //void UpdateDoc(bool isView=false);
+   // Обновить json-документ
    void UpdateDoc(String sjson);
-   // Изменить состояние светодиода led33 в json-документе             
-   void jsonset_led33_status(String status);
-
+   
    private:
 
-   // JSON-документ и строка
-   JsonDocument doc;      
-   String AllJson;
+   JsonDocument doc;      // JSON-документ
+   String AllJson;        // строка всего документа
 };
 // ****************************************************************************
 // *                  Определить объект (конструктор класса)                  *
@@ -74,7 +67,6 @@ void TJsonBase::Create()
       1,'DHT11'         
       2,'DHT22'       
    */
-
    // Включаем в документ данные контроллера
    doc["tidctrl"] = 1;                         // идентификатор типа контроллера
    doc["namectrl"] = "Esp32-CAM во двор дачи"; //
@@ -152,9 +144,6 @@ sjson={"led33":[{"nicdev":"led33","tiddev":1,"light":10,"time":2000,"regim":1,"s
    serializeJson(doc,sjson);
    return sjson;
 }
-
-
-
 /*
 String getEsp32CAM(String sjson) 
 {
@@ -178,13 +167,6 @@ String getEsp32CAM(String sjson)
 }
 */
 // ****************************************************************************
-// *         Изменить состояние светодиода led33 в json-документе             *
-// ****************************************************************************
-void TJsonBase::jsonset_led33_status(String status)
-{
-  doc["led33"][0]["status"] = status;
-}
-// ****************************************************************************
 // *                  Показать текущее состояние json-документа               *
 // ****************************************************************************
 void TJsonBase::ViewDoc()
@@ -192,34 +174,33 @@ void TJsonBase::ViewDoc()
    serializeJsonPretty(doc,Serial);
 }
 // ****************************************************************************
-// *                 Обновить строку полного json-документа                   *
+// *                             Обновить json-документ                       *
 // ****************************************************************************
 void TJsonBase::UpdateDoc(String sjson)
 {
-   Serial.print("***");
-   Serial.print(sjson);
-   Serial.println("***");
+   // Показываем предыдущее состояние json-документа
+   // serializeJsonPretty(doc,Serial);
+   // ViewDoc(); 
+
+   // "контрольный светодиод включен"
    if (sjson==s33_HIGH) 
    {
-      Serial.println("s33_HIGH");
-      serializeJsonPretty(doc,Serial);  
-      doc["led33"][0]["status"] = "567r";
-      serializeJsonPretty(doc,Serial);  
-      serializeJson(doc,AllJson);
-      Serial.println(AllJson);
+      doc["led33"][0]["status"] = "inHIGH";
    }
-   //serializeJsonPretty(doc,Serial);  
-   //deserializeJson(doc, sjson);
-   //serializeJsonPretty(doc,Serial);  
-   //serializeJson(doc,AllJson);
-   //if (isView) ViewDoc(); 
-}
-/*
-void TJsonBase::UpdateDoc(bool isView)
-{
+   // "контрольный светодиод ВЫКЛЮЧЕН"
+   else if (sjson==s33_LOW) 
+   { 
+      doc["led33"][0]["status"] = "inLOW";
+   }
+   else 
+   { 
+      // Safe! Continue usual tasks.
+   }
+   // Пересобираем json (строку) всего документа
    serializeJson(doc,AllJson);
-   if (isView) ViewDoc(); 
+   // Показываем текущее состояние json-документа
+   // ViewDoc(); 
+   // Serial.println(AllJson);
 }
-*/
 
 // ************************************************************* jsonBase.h ***

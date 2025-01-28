@@ -132,11 +132,7 @@ void setup()
    inMess=queMessa.Send(tmt_NOTICE,WifiEstablished,tmk_Queue);
    if (inMess!=isOk) Serial.println(inMess); 
 
-   //oJSON.ViewDoc();
-   //Serial.println("oJSON.UpdateDoc(sjson);");
-   //sjson="{\"led33\":[{\"status\":\"inLOW\"}]}";
-   //oJSON.UpdateDoc(sjson);
-   //Serial.println("");
+   Serial.println("");
 
    // Переводим контакты лампочек в режим вывода и подключаем обработку прерываний
    pinMode(PinLedWork,OUTPUT);    // контрольный светодиод
