@@ -85,8 +85,8 @@ void IRAM_ATTR onTimer()
 void IRAM_ATTR onLedFlash()
 {
 }
-// Начальная настройка: выделяем задачи 
-// и обеспечиваем запуск прерывания от таймера периодически через 20 секунд
+// Начальная настройка: выделяем задачи и обеспечиваем 
+// запуск прерывания от сторожевого таймера периодически через 20 секунд
 void setup() 
 {
    Serial.begin(115200);
@@ -132,9 +132,11 @@ void setup()
    inMess=queMessa.Send(tmt_NOTICE,WifiEstablished,tmk_Queue);
    if (inMess!=isOk) Serial.println(inMess); 
 
-   //oJSON.jsonset();
    //oJSON.ViewDoc();
-   Serial.println("");
+   //Serial.println("oJSON.UpdateDoc(sjson);");
+   //sjson="{\"led33\":[{\"status\":\"inLOW\"}]}";
+   //oJSON.UpdateDoc(sjson);
+   //Serial.println("");
 
    // Переводим контакты лампочек в режим вывода и подключаем обработку прерываний
    pinMode(PinLedWork,OUTPUT);    // контрольный светодиод

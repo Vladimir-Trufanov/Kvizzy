@@ -25,20 +25,15 @@
 // *     33 пина (CHANGE)  и передать в очередь новое состояние контакта      *
 // ****************************************************************************
 
-// json-сообщение о включенном состоянии контрольного светодиода
-const String s33_HIGH="{\"led33\":[{\"status\":\"inHIGH\"}]}";
-// json-сообщение о выключенном контрольном светодиоде
-const String s33_LOW="{\"led33\":[{\"status\":\"inLOW\"}]}";
-
 void IRAM_ATTR toggleLedWork()
 {
    String inMess;
    // Выбираем состояние устройства
    int Led33Status=digitalRead(PinLedWork);
    if (Led33Status==inHIGH) inMess=queState.SendISR(s33_HIGH);
-   else inMess=queState.SendISR(s33_LOW); 
+   else inMess=queState.SendISR(s33_LOW);  
    // Если невозможно отправить сообщение, то сообщаем
-   if (inMess!=tisOk) Serial.println(inMess);
+   if (inMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendISRled33,tmk_Queue);
 }
 // * Задача FreRTOS ***********************************************************
 // *     Отработать заданный режим работы контрольного светодиода ESP32-CAM   *

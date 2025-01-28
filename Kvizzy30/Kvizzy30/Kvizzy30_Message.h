@@ -22,6 +22,7 @@ typedef enum {
    WifiEstablished,        // 0 
    SendFromISR,            // 1 
    SendFromTask,           // 2 
+   NoSendISRled33,         // 3
 }; 
 // Определяем перечисления ошибок http-запросов
 #define tmk_HTTP "HTTP" 
@@ -33,6 +34,7 @@ tmessAPP amessAPP[] =
     {WifiEstablished, tvm_simpmes, "Соединение с Wi-Fi установлено"},    
     {SendFromISR,     tvm_1intmes, "Передано %s сообщение из прерывания"},
     {SendFromTask,    tvm_2intmes, "Передано %s сообщение из задачи на %s миллисекунде"},
+    {NoSendISRled33,  tvm_simpmes, "Не удалось отправить сообщение из прерывания led33"},
 
     {http400,         tvm_simpmes, "Плохой запрос и он не может быть обработан из-за синтаксической ошибки"},
     {http403,         tvm_simpmes, "Запрещено, сервер отказывает в выполнении вашего запроса"},

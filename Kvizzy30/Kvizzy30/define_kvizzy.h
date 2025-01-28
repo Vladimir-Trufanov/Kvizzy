@@ -25,7 +25,7 @@ String inMess="";                      // метка отправленного 
 // Управление трассировкой сообщений к State 
 #define enabTrassState   53    // включение трассировки сообщений к State
 #define disaTrassState   54    // отключение 
-bool isTrassState=true;        // "выключена трассировка сообщений к State" 
+bool isTrassState=false;       // "выключена трассировка сообщений к State" 
 
 // Инициируем счетчики циклов задач (от 0 до 4 294 967 295)
 // и флаги включения режимов работы 
@@ -51,11 +51,6 @@ bool fwdtLed33 = false;
 
 void vPrint(void *pvParameters);
 bool fwdtPrint = false;
-
-//void vCore0(void *pvParameters);
-//bool fwdtCore0 = false;
-//void vCore1(void *pvParameters);
-//bool fwdtCore1 = false;
 
 // Сбрасываем флаг основного цикла
 bool fwdtLoop = false;

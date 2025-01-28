@@ -19,9 +19,11 @@ void replace_callback (const char * match,                 // текущий ф�
                        const MatchState & ms)              // хранилище найденных фрагментов
 {
   // Показываем очередной найденный фрагмент
-  Serial.print("Match = ");
+  Serial.print("Match:");
   Serial.write((byte *) match, length);
-  Serial.println (); 
+  Serial.println("---"); 
+  Serial.println(String(match)); 
+  Serial.println(); 
 
   replacement = "";
   replacement_length = 0;
@@ -44,7 +46,8 @@ void getJsonLead(String httpText)
   // для поиска json-сообщений:
   // "<Lead><p>{"led33":[{"regim":0}]}</p></Lead>"
   //const char * match="<p>[{\"a-z0-9:%[}%]]*";
-    const char * match="<p>[{\"a-z0-9:%[}%]]*";
+  //const char * match="<p>[{\"a-z0-9:%[}%]]*";
+    const char * match="{[{\"a-z0-9:%[}%]]*}";
   // Выполняем поиск по соответствию
   count = ms.GlobalReplace (match, replace_callback);
 }
@@ -61,10 +64,9 @@ void saytrass(String httpText, int nTrass=5)
    {
       iTrass=0;
       Serial.print(iLead); Serial.print("-Lead: "); Serial.println(httpText);
-      //getJsonLead(httpText);
+      getJsonLead(httpText);
    }
 }
-
 // * Задача FreRTOS ***********************************************************
 // *      Отправить регулярный (по таймеру) запрос контроллера на изменение   *
 // *                  состояний его устройств к странице Lead                 *
@@ -81,7 +83,6 @@ void vLead(void* pvParameters)
    {
       Serial.println("*** vLead ***");
       iLead++;
-      /*
       // Делаем запрос к Lead
       tQuery = postQuery(ehttp, queryString);
       // Обрабатываем успешный запрос 
@@ -94,7 +95,6 @@ void vLead(void* pvParameters)
       {
          // Пока ничего не делаем, сообщения об ошибках отправлены в postQuery   
       }
-      */
       
       // Отмечаем флагом, что цикл задачи успешно завершен   
       fwdtLead = true;

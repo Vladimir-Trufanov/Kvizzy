@@ -10,9 +10,16 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 
+
+
+// json-сообщение о включенном состоянии контрольного светодиода
+const String s33_HIGH="{\"led33\":[{\"status\":\"inHIGH\"}]}";
+// json-сообщение о выключенном контрольном светодиоде
+const String s33_LOW="{\"led33\":[{\"status\":\"inLOW\"}]}";
+
+
 String jempty = "{}";  // пустая json-строка
 String sjson;          // выборка из json-документа
-JsonDocument doc;      // глобальный json-документ
 
 class TJsonBase
 {
@@ -22,18 +29,22 @@ class TJsonBase
    TJsonBase();
    // Создать объект и строку всего JSON-документа
    void Create();
-   // Выбрать общий JSON-документ контроллера и его датчиков и оборудования 
-   String thisController();
    // Выбрать из JSON-документа режим и состояние контрольного светодиода
    String jsongetLed33();
    // ---Определить объект (конструктор класса)        
    void jsonset();
    // Показать текущее состояние json-документа            
    void ViewDoc();
+   // Обновить строку полного json-документа
+   //void UpdateDoc(bool isView=false);
+   void UpdateDoc(String sjson);
+   // Изменить состояние светодиода led33 в json-документе             
+   void jsonset_led33_status(String status);
 
    private:
 
-   // Строка всего JSON-документа
+   // JSON-документ и строка
+   JsonDocument doc;      
    String AllJson;
 };
 // ****************************************************************************
@@ -101,18 +112,7 @@ void TJsonBase::Create()
    led_4["status"]  = "LOW";        // текущее состояние светодиода 
    // Выбираем весь json-документ в строку
    serializeJson(doc,AllJson);
-   serializeJsonPretty(doc,Serial); 
-}
-// ****************************************************************************
-// *   Выбрать общий JSON-документ контроллера и его датчиков и оборудования  *
-// *                        https://arduinojson.org/                          *
-// ****************************************************************************
-String TJsonBase::thisController()
-{
-   String str;
-   //serializeJson(doc,str);
-   //serializeJsonPretty(doc,Serial);
-   return str;
+   //serializeJsonPretty(doc,Serial); 
 }
 // ****************************************************************************
 // *    Выбрать из JSON-документа режим и состояние контрольного светодиода   *
@@ -177,16 +177,13 @@ String getEsp32CAM(String sjson)
    return str;
 }
 */
-
 // ****************************************************************************
-// *                  ---Определить объект (конструктор класса)                  *
+// *         Изменить состояние светодиода led33 в json-документе             *
 // ****************************************************************************
-void TJsonBase::jsonset()
+void TJsonBase::jsonset_led33_status(String status)
 {
-  doc["nicctrl"] = "myjoy1"; 
-  doc["led33"][0]["time"] = 118;
+  doc["led33"][0]["status"] = status;
 }
-
 // ****************************************************************************
 // *                  Показать текущее состояние json-документа               *
 // ****************************************************************************
@@ -194,5 +191,35 @@ void TJsonBase::ViewDoc()
 {
    serializeJsonPretty(doc,Serial);
 }
+// ****************************************************************************
+// *                 Обновить строку полного json-документа                   *
+// ****************************************************************************
+void TJsonBase::UpdateDoc(String sjson)
+{
+   Serial.print("***");
+   Serial.print(sjson);
+   Serial.println("***");
+   if (sjson==s33_HIGH) 
+   {
+      Serial.println("s33_HIGH");
+      serializeJsonPretty(doc,Serial);  
+      doc["led33"][0]["status"] = "567r";
+      serializeJsonPretty(doc,Serial);  
+      serializeJson(doc,AllJson);
+      Serial.println(AllJson);
+   }
+   //serializeJsonPretty(doc,Serial);  
+   //deserializeJson(doc, sjson);
+   //serializeJsonPretty(doc,Serial);  
+   //serializeJson(doc,AllJson);
+   //if (isView) ViewDoc(); 
+}
+/*
+void TJsonBase::UpdateDoc(bool isView)
+{
+   serializeJson(doc,AllJson);
+   if (isView) ViewDoc(); 
+}
+*/
 
 // ************************************************************* jsonBase.h ***
