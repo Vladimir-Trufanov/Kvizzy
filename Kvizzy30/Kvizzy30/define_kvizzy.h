@@ -25,7 +25,8 @@ String inMess="";                      // метка отправленного 
 // Управление трассировкой сообщений к State 
 #define enabTrassState   53    // включение трассировки сообщений к State
 #define disaTrassState   54    // отключение 
-bool isTrassState=false;       // "выключена трассировка сообщений к State" 
+bool toTrassState=false;       // "выключена трассировка сообщений к State" 
+bool fromTrassState=false;     // "выключена трассировка ответов от State" 
 
 // Инициируем счетчики циклов задач (от 0 до 4 294 967 295)
 // и флаги включения режимов работы 

@@ -30,8 +30,10 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
       Serial.println(sjson); 
       Serial.println("Выключаем режим контрольного светодиода"); 
       Serial.println("Обновляем json-документ"); 
-      Serial.println("Отправляем сообщение на State"); 
-      Serial.println(sjson); 
+      
+      // Отправляем сообщение на State
+      String inMess=queState.Send(s33_MODE0);
+      if (inMess!=tisOk) queMessa.Send(tmt_WARNING,NoSend33_MODE0,tmk_Queue);
    }
    else if (sjson==s33_LOW) 
    { 
@@ -77,7 +79,7 @@ void vLead(void* pvParameters)
    // Зацикливаем задачу
    for (;;)
    {
-      Serial.println("*** vLead ***");
+      //Serial.println("*** vLead ***");
       iLead++;
       // Делаем запрос к Lead
       tQuery = postQuery(ehttp, queryString);

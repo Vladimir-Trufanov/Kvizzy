@@ -59,8 +59,8 @@ void vState(void* pvParameters)
 // ****************************************************************************
 inline void transState(char *mess, char *prefix) 
 {
-   // Serial.print("State: ");  // передали префикс
-   // Serial.println(mess);     // передали сообщение
+    //Serial.print("State: ");  // передали префикс
+    //Serial.println(mess);     // передали сообщение
 
    // Подключаемся к веб-странице
    //String shttp="https://doortry.ru/State/e?Com=";  // Ответ: 404
@@ -80,13 +80,13 @@ inline void transState(char *mess, char *prefix)
    String sjson=String(mess); sjson="&sjson="+sjson;
    queryString=queryString+sjson;
    // Трассируем запрос к State
-   if (isTrassState) {Serial.print("To State: "); Serial.println(queryString);}  
+   if (toTrassState) {Serial.print("To State: "); Serial.println(queryString);}  
    tQuery = postQuery(ehttp, queryString);
    // Обрабатываем успешный запрос 
    if (tQuery.httpCode == HTTP_CODE_OK) 
    {
       // Трассируем ответ от State
-      if (isTrassState) {Serial.print("<= State: "); Serial.println(tQuery.httpText);}
+      if (fromTrassState) {Serial.print("<= State: "); Serial.println(tQuery.httpText);}
       // Обновляем json-документ
       oJSON.UpdateDoc(String(mess));
    }

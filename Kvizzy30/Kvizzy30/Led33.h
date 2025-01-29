@@ -32,7 +32,6 @@ void IRAM_ATTR toggleLedWork()
    int Led33Status=digitalRead(PinLedWork);
    if (Led33Status==inHIGH) inMess=queState.SendISR(s33_HIGH);
    else inMess=queState.SendISR(s33_LOW);  
-   // Если невозможно отправить сообщение, то сообщаем
    if (inMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendISRled33,tmk_Queue);
 }
 // * Задача FreRTOS ***********************************************************

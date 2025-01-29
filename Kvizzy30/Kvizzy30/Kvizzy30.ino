@@ -225,12 +225,14 @@ void loop()
          if (incomingCode==enabTrassState) 
          {
             Serial.println("Включение трассировки сообщений к State!"); 
-            isTrassState=true;
+            toTrassState=true;
+            fromTrassState=true;
          }
          else if (incomingCode==disaTrassState) 
          {
             Serial.println("Отключение трассировки сообщений к State!"); 
-            isTrassState=false;
+            toTrassState=false;
+            fromTrassState=false;
          }
          // Готовим прием нового текста
          data = "";

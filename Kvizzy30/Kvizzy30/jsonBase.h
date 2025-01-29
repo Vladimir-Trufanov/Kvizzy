@@ -2,7 +2,7 @@
  * 
  *                                          Обеспечить работу с документом JSON
  * 
- * v1.3.5, 28.01.2025                                 Автор:      Труфанов В.Е.
+ * v1.3.6, 29.01.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -17,6 +17,12 @@ const String s33_MODE0 = "{\"led33\":[{\"regim\":0}]}";            // "режи�
 
 String jempty = "{}";  // пустая json-строка
 String sjson;          // выборка из json-документа
+
+/*
+sla6en9edged
+browscap=/home/kwinflatht/browscap.ini
+browscap=/home/u542632/browscap.ini
+*/
 
 class TJsonBase
 {
@@ -179,19 +185,16 @@ void TJsonBase::ViewDoc()
 void TJsonBase::UpdateDoc(String sjson)
 {
    // Показываем предыдущее состояние json-документа
-   // serializeJsonPretty(doc,Serial);
    // ViewDoc(); 
 
-   // "контрольный светодиод включен"
-   if (sjson==s33_HIGH) 
-   {
-      doc["led33"][0]["status"] = "inHIGH";
-   }
-   // "контрольный светодиод ВЫКЛЮЧЕН"
-   else if (sjson==s33_LOW) 
-   { 
-      doc["led33"][0]["status"] = "inLOW";
-   }
+   // "контрольный светодиод включен" -            {"led33":[{"status":"inHIGH"}]}
+   if (sjson==s33_HIGH)                            doc["led33"][0]["status"] = "inHIGH";
+
+   // "контрольный светодиод ВЫКЛЮЧЕН" -           {"led33":[{"status":"inLOW"}]}
+   else if (sjson==s33_LOW)                        doc["led33"][0]["status"] = "inLOW";
+
+   // "режим контрольного светодиода выключен" -   {"led33":[{"regim":0}]}
+   else if (sjson==s33_MODE0)                      doc["led33"][0]["regim"] = 0;
    else 
    { 
       // Safe! Continue usual tasks.
