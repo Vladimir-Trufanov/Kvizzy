@@ -38,12 +38,12 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
    else if (sjson==s33_LOW) 
    { 
       Serial.println(); 
-      Serial.println("match_callback.ELSE-IF"); 
+      Serial.print(sjson); Serial.println(" -> match_callback.ELSE-IF"); 
    }
    else 
    { 
       Serial.println(); 
-      Serial.println("match_callback.ELSE"); 
+      Serial.print(sjson); Serial.println(" -> match_callback.ELSE"); 
    }
 }
 // ****************************************************************************
