@@ -1,3 +1,18 @@
+
+// Потоковая передача в веб-браузер          ESP32-devcam-tve.ino
+
+/**
+ * Это довольно простой способ транслировать видео с камеры Wi-Fi. По сути, 
+ * ESP32 запускает веб-сервер и при подключении веб-браузера отправляет 
+ * изображения с камеры в веб-браузер. Таким образом, это не настоящий поток 
+ * данных с камеры, а скорее поток изображений.
+ * 
+ * Для включения потоковой передачи в веб-браузер используется веб-сервер 
+ * из фреймворка Arduino ESP32.
+ * 
+**/
+
+
 #include "OV2640.h"
 #include <WiFi.h>
 #include <WebServer.h>
@@ -13,6 +28,7 @@
 #define ENABLE_WEBSERVER
 //#define ENABLE_RTSPSERVER
 
+/*
 #ifdef ENABLE_OLED
 #include "SSD1306.h"
 #define OLED_ADDRESS 0x3c
@@ -21,33 +37,38 @@
 SSD1306Wire display(OLED_ADDRESS, I2C_SDA, I2C_SCL, GEOMETRY_128_32);
 bool hasDisplay; // we probe for the device at runtime
 #endif
+*/
 
 OV2640 cam;
 
-#ifdef ENABLE_WEBSERVER
+// Инициализируем веб-сервер для обработки входящих HTTP-запросов на порту 80
+//#ifdef ENABLE_WEBSERVER
 WebServer server(80);
-#endif
-
-#ifdef ENABLE_RTSPSERVER
-WiFiServer rtspServer(8554);
-#endif
-
-
+//#endif
+//#ifdef ENABLE_RTSPSERVER
+//WiFiServer rtspServer(8554);
+//#endif
+// 
+/*
 #ifdef SOFTAP_MODE
    IPAddress apIP = IPAddress(192, 168, 1, 1);
 #else
-   //#include "wifikeys.h"
+*/
    const char* ssid     = "OPPO A9 2020";
    const char* password = "b277a4ee84e8";
-#endif
-
+/*
+#endif 
+*/
+// ****************************************************************************
+// *
+// ****************************************************************************
 #ifdef ENABLE_WEBSERVER
 void handle_jpg_stream(void)
 {
-    WiFiClient client = server.client();
-    String response = "HTTP/1.1 200 OK\r\n";
-    response += "Content-Type: multipart/x-mixed-replace; boundary=frame\r\n\r\n";
-    server.sendContent(response);
+   WiFiClient client = server.client();
+   String response = "HTTP/1.1 200 OK\r\n";
+   response += "Content-Type: multipart/x-mixed-replace; boundary=frame\r\n\r\n";
+   server.sendContent(response);
 
     while (1)
     {
@@ -67,40 +88,40 @@ void handle_jpg_stream(void)
 
 void handle_jpg(void)
 {
-    WiFiClient client = server.client();
-
-    cam.run();
-    if (!client.connected())
-    {
-        return;
-    }
-    String response = "HTTP/1.1 200 OK\r\n";
-    response += "Content-disposition: inline; filename=capture.jpg\r\n";
-    response += "Content-type: image/jpeg\r\n\r\n";
-    server.sendContent(response);
-    client.write((char *)cam.getfb(), cam.getSize());
+   WiFiClient client = server.client();
+   cam.run();
+   if (!client.connected())
+   {
+      return;
+   }
+   String response = "HTTP/1.1 200 OK\r\n";
+   response += "Content-disposition: inline; filename=capture.jpg\r\n";
+   response += "Content-type: image/jpeg\r\n\r\n";
+   server.sendContent(response);
+   client.write((char *)cam.getfb(), cam.getSize());
 }
 
 void handleNotFound()
 {
-    String message = "Server is running!\n\n";
-    message += "URI: ";
-    message += server.uri();
-    message += "\nMethod: ";
-    message += (server.method() == HTTP_GET) ? "GET" : "POST";
-    message += "\nArguments: ";
-    message += server.args();
-    message += "\n";
-    server.send(200, "text/plain", message);
+   String message = "Server is running!\n\n";
+   message += "URI: ";
+   message += server.uri();
+   message += "\nMethod: ";
+   message += (server.method() == HTTP_GET) ? "GET" : "POST";
+   message += "\nArguments: ";
+   message += server.args();
+   message += "\n";
+   server.send(200, "text/plain", message);
 }
 #endif
 
-#ifdef ENABLE_OLED
-#define LCD_MESSAGE(msg) lcdMessage(msg)
-#else
+//#ifdef ENABLE_OLED
+//#define LCD_MESSAGE(msg) lcdMessage(msg)
+//#else
 #define LCD_MESSAGE(msg)
-#endif
+//#endif
 
+/*
 #ifdef ENABLE_OLED
 void lcdMessage(String msg)
 {
@@ -111,32 +132,34 @@ void lcdMessage(String msg)
     }
 }
 #endif
+*/
 
 CStreamer *streamer;
 
 void setup()
 {
-  #ifdef ENABLE_OLED
-    hasDisplay = display.init();
-    if(hasDisplay) {
-        display.flipScreenVertically();
-        display.setFont(ArialMT_Plain_16);
-        display.setTextAlignment(TEXT_ALIGN_CENTER);
-    }
-  #endif
-    LCD_MESSAGE("booting");
-
-    Serial.begin(115200);
-    while (!Serial)
-    {
-        ;
-    }
-    //cam.init(esp32cam_config);
-    cam.init(esp32cam_aithinker_config);
+/*
+   #ifdef ENABLE_OLED
+   hasDisplay = display.init();
+   if(hasDisplay) {
+      display.flipScreenVertically();
+      display.setFont(ArialMT_Plain_16);
+      display.setTextAlignment(TEXT_ALIGN_CENTER);
+   }
+   #endif
+*/
+   LCD_MESSAGE("booting");
+   Serial.begin(115200);
+   while (!Serial)
+   {
+      ;
+   }
+   //cam.init(esp32cam_config);
+   cam.init(esp32cam_aithinker_config);
     
     IPAddress ip;
 
-
+/*
 #ifdef SOFTAP_MODE
     const char *hostname = "devcam";
     // WiFi.hostname(hostname); // FIXME - find out why undefined
@@ -158,43 +181,56 @@ void setup()
         ip = WiFi.softAPIP();
     }
 #else
-    LCD_MESSAGE(String("join ") + ssid);
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        delay(500);
-        Serial.print(F("."));
-    }
-    ip = WiFi.localIP();
-    Serial.println(F("WiFi connected"));
-    Serial.println("");
-    Serial.println(ip);
-#endif
+*/
+   LCD_MESSAGE(String("join ") + ssid);
+   WiFi.mode(WIFI_STA);
+   WiFi.begin(ssid, password);
+   while (WiFi.status() != WL_CONNECTED)
+   {
+      delay(500);
+      Serial.print(F("."));
+   }
+   ip = WiFi.localIP();
+   Serial.println(F("WiFi connected"));
+   Serial.println("");
+   Serial.println(ip);
+//#endif
 
-    LCD_MESSAGE(ip.toString());
+LCD_MESSAGE(ip.toString());
 
+// Определяем действия при различных HTTP-запросах. Простой запрос http://<IP-АДРЕС>/ 
+// запускает непрерывную потоковую передачу изображений в веб-браузер.
+// http://<IP-АДРЕС>/jpg отправляет одно изображение с камеры в веб-браузер.
+// Все остальные запросы игнорируются.
 #ifdef ENABLE_WEBSERVER
-    server.on("/", HTTP_GET, handle_jpg_stream);
-    server.on("/jpg", HTTP_GET, handle_jpg);
-    server.onNotFound(handleNotFound);
+   // Устанавливаем функцию для обработки потоковых запросов
+	server.on("/", HTTP_GET, handle_jpg_stream);
+   // Устанавливаем функцию для обработки запросов на отдельные изображения
+	server.on("/jpg", HTTP_GET, handle_jpg);
+	// Set the function to handle other requests
+   // Устанавливаем функцию для обработки других запросов
+	server.onNotFound(handleNotFound);
+   // Запускаем веб-сервер
     server.begin();
 #endif
-
+/*
 #ifdef ENABLE_RTSPSERVER
     rtspServer.begin();
 
     //streamer = new SimStreamer(true);             // our streamer for UDP/TCP based RTP transport
     streamer = new OV2640Streamer(cam);             // our streamer for UDP/TCP based RTP transport
 #endif
+*/
 }
 
 void loop()
 {
-#ifdef ENABLE_WEBSERVER
-    server.handleClient();
-#endif
+//#ifdef ENABLE_WEBSERVER
+   // Проверяем, есть ли на сервере клиенты и обрабатываем запросы
+   server.handleClient();
+//#endif
 
+/*
 #ifdef ENABLE_RTSPSERVER
     uint32_t msecPerFrame = 100;
     static uint32_t lastimage = millis();
@@ -224,4 +260,5 @@ void loop()
         streamer->addSession(rtspClient);
     }
 #endif
+*/
 }

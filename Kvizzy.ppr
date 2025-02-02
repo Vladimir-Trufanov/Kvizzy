@@ -3614,6 +3614,26 @@ Kvizzy
 				esp32-2432S028-R\hmi-displej-240x320-s-rezistivnym-sensorom-esp32-2432s028r\One-screen-in-the-palm-of-your-hand.jpeg
 				esp32-2432S028-R\hmi-displej-240x320-s-rezistivnym-sensorom-esp32-2432s028r\WIFI-Bluetooth Development Board.jpeg
 			esp32-2432S028-R\esp32-2432S028-R.md
+		+ESP32-devcam-tve
+			ESP32-devcam-tve\CRtspSession.cpp
+			ESP32-devcam-tve\CRtspSession.h
+			ESP32-devcam-tve\CStreamer.cpp
+			ESP32-devcam-tve\CStreamer.h
+			ESP32-devcam-tve\ESP32-devcam-tve.ino
+			ESP32-devcam-tve\JPEGSamples.cpp
+			ESP32-devcam-tve\JPEGSamples.h
+			ESP32-devcam-tve\LinkedListElement.h
+			ESP32-devcam-tve\OV2640.cpp
+			ESP32-devcam-tve\OV2640.h
+			ESP32-devcam-tve\OV2640Streamer.cpp
+			ESP32-devcam-tve\OV2640Streamer.h
+			ESP32-devcam-tve\platformio.ini
+			ESP32-devcam-tve\platglue.h
+			ESP32-devcam-tve\platglue-esp32.h
+			ESP32-devcam-tve\platglue-mbed.h
+			ESP32-devcam-tve\platglue-posix.h
+			ESP32-devcam-tve\SimStreamer.cpp
+			ESP32-devcam-tve\SimStreamer.h
 		-IrPlus
 			-GalaxyS4UniversalRemote
 				IrPlus\GalaxyS4UniversalRemote\Galaxy.S4.Универсальный.пульт.v.2.3.2.b.19.RUS.crk.apk
@@ -3825,28 +3845,7 @@ Kvizzy
 			KRUTJAK\podklyuchenie-OLED.png
 			KRUTJAK\podklyuchenie-programmatora-krutyak-master.png
 			KRUTJAK\raspinovka-arduino-pro-mini.jpg
-		+Kvizzy30
-			-ESP32-devcam-tve
-				Kvizzy30\ESP32-devcam-tve\CRtspSession.cpp
-				Kvizzy30\ESP32-devcam-tve\CRtspSession.h
-				Kvizzy30\ESP32-devcam-tve\CStreamer.cpp
-				Kvizzy30\ESP32-devcam-tve\CStreamer.h
-				Kvizzy30\ESP32-devcam-tve\ESP32-devcam-tve.ino
-				Kvizzy30\ESP32-devcam-tve\JPEGSamples.cpp
-				Kvizzy30\ESP32-devcam-tve\JPEGSamples.h
-				Kvizzy30\ESP32-devcam-tve\LinkedListElement.h
-				Kvizzy30\ESP32-devcam-tve\OV2640.cpp
-				Kvizzy30\ESP32-devcam-tve\OV2640.h
-				Kvizzy30\ESP32-devcam-tve\OV2640Streamer.cpp
-				Kvizzy30\ESP32-devcam-tve\OV2640Streamer.h
-				Kvizzy30\ESP32-devcam-tve\platformio.ini
-				Kvizzy30\ESP32-devcam-tve\platglue.h
-				Kvizzy30\ESP32-devcam-tve\platglue-esp32.h
-				Kvizzy30\ESP32-devcam-tve\platglue-mbed.h
-				Kvizzy30\ESP32-devcam-tve\platglue-posix.h
-				Kvizzy30\ESP32-devcam-tve\SimStreamer.cpp
-				Kvizzy30\ESP32-devcam-tve\SimStreamer.h
-				Kvizzy30\ESP32-devcam-tve\wifikeys.h
+		-Kvizzy30
 			-Kvizzy30
 				Kvizzy30\Kvizzy30\common_kvizzy.h
 				Kvizzy30\Kvizzy30\define_kvizzy.h
@@ -5688,12 +5687,10 @@ Kvizzy
 					Kvizzy30\Ревизия\Отладка ошибок Arduino с помощью декодера исключений ESP32\ Отладка ошибок Arduino с помощью декодера исключений ESP32.md
 				-Работа с прерываниями
 					Kvizzy30\Ревизия\Работа с прерываниями\Работа с прерываниями.md
-			Kvizzy30\18-potokovaya-peredacha-video-cherez-brauzer-i-rtsp.md
 			Kvizzy30\ESP32-CAM-ADC-Pins.webp
 			Kvizzy30\ESP32-CAM-Pinout.webp
 			Kvizzy30\ESP32-CAM-PWM-Pins.webp
 			Kvizzy30\Kvizzy30.md
-			Kvizzy30\nastroiki-scetcha.jpeg
 		-LedyEs
 			-Blink
 				LedyEs\Blink\Blink.ino
@@ -5744,33 +5741,13 @@ Kvizzy
 		README.md
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
-1=Kvizzy30\Kvizzy30\State.h
-2=Kvizzy30\Kvizzy30\Led33.h
-3=Kvizzy30\Kvizzy30\Lead.h
-4=Kvizzy30\Kvizzy30\Kvizzy30_Message.h
-5=Kvizzy30\Kvizzy30\jsonBase.h
-6=Kvizzy30\Kvizzy30\common_kvizzy.h
+1=ESP32-devcam-tve\ESP32-devcam-tve.ino
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30\common_kvizzy.h
+Selected=ESP32-devcam-tve\ESP32-devcam-tve.ino
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=3
 Caret=21,3
-[Kvizzy30\Kvizzy30\State.h]
-TopLine=60
-Caret=6,98
-[Kvizzy30\Kvizzy30\Led33.h]
-TopLine=68
-Caret=1,1
-[Kvizzy30\Kvizzy30\Lead.h]
-TopLine=63
-Caret=9,100
-[Kvizzy30\Kvizzy30\Kvizzy30_Message.h]
-TopLine=16
-Caret=23,33
-[Kvizzy30\Kvizzy30\jsonBase.h]
-TopLine=25
-Caret=1,1
-[Kvizzy30\Kvizzy30\common_kvizzy.h]
-TopLine=23
-Caret=1,1
+[ESP32-devcam-tve\ESP32-devcam-tve.ino]
+TopLine=224
+Caret=2,263
