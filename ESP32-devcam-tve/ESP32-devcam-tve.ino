@@ -22,43 +22,16 @@
 #include "OV2640Streamer.h"
 #include "CRtspSession.h"
 
-//#define ENABLE_OLED //if want use oled ,turn on thi macro
-
-// #define SOFTAP_MODE // If you want to run our own softap turn this on
 #define ENABLE_WEBSERVER
-//#define ENABLE_RTSPSERVER
-
-/*
-#ifdef ENABLE_OLED
-#include "SSD1306.h"
-#define OLED_ADDRESS 0x3c
-#define I2C_SDA 14
-#define I2C_SCL 13
-SSD1306Wire display(OLED_ADDRESS, I2C_SDA, I2C_SCL, GEOMETRY_128_32);
-bool hasDisplay; // we probe for the device at runtime
-#endif
-*/
 
 OV2640 cam;
 
 // Инициализируем веб-сервер для обработки входящих HTTP-запросов на порту 80
-//#ifdef ENABLE_WEBSERVER
 WebServer server(80);
-//#endif
-//#ifdef ENABLE_RTSPSERVER
-//WiFiServer rtspServer(8554);
-//#endif
-// 
-/*
-#ifdef SOFTAP_MODE
-   IPAddress apIP = IPAddress(192, 168, 1, 1);
-#else
-*/
-   const char* ssid     = "OPPO A9 2020";
-   const char* password = "b277a4ee84e8";
-/*
-#endif 
-*/
+
+const char* ssid     = "OPPO A9 2020";
+const char* password = "b277a4ee84e8";
+
 // ****************************************************************************
 // *
 // ****************************************************************************
@@ -115,73 +88,19 @@ void handleNotFound()
 }
 #endif
 
-//#ifdef ENABLE_OLED
-//#define LCD_MESSAGE(msg) lcdMessage(msg)
-//#else
 #define LCD_MESSAGE(msg)
-//#endif
-
-/*
-#ifdef ENABLE_OLED
-void lcdMessage(String msg)
-{
-    if(hasDisplay) {
-        display.clear();
-        display.drawString(128 / 2, 32 / 2, msg);
-        display.display();
-    }
-}
-#endif
-*/
 
 CStreamer *streamer;
 
 void setup()
 {
-/*
-   #ifdef ENABLE_OLED
-   hasDisplay = display.init();
-   if(hasDisplay) {
-      display.flipScreenVertically();
-      display.setFont(ArialMT_Plain_16);
-      display.setTextAlignment(TEXT_ALIGN_CENTER);
-   }
-   #endif
-*/
    LCD_MESSAGE("booting");
    Serial.begin(115200);
-   while (!Serial)
-   {
-      ;
-   }
-   //cam.init(esp32cam_config);
+   while (!Serial) {;}
    cam.init(esp32cam_aithinker_config);
     
-    IPAddress ip;
+   IPAddress ip;
 
-/*
-#ifdef SOFTAP_MODE
-    const char *hostname = "devcam";
-    // WiFi.hostname(hostname); // FIXME - find out why undefined
-    LCD_MESSAGE("starting softAP");
-    WiFi.mode(WIFI_AP);
-    WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-    bool result = WiFi.softAP(hostname, "12345678", 1, 0);
-    if (!result)
-    {
-        Serial.println("AP Config failed.");
-        return;
-    }
-    else
-    {
-        Serial.println("AP Config Success.");
-        Serial.print("AP MAC: ");
-        Serial.println(WiFi.softAPmacAddress());
-
-        ip = WiFi.softAPIP();
-    }
-#else
-*/
    LCD_MESSAGE(String("join ") + ssid);
    WiFi.mode(WIFI_STA);
    WiFi.begin(ssid, password);
@@ -194,15 +113,14 @@ void setup()
    Serial.println(F("WiFi connected"));
    Serial.println("");
    Serial.println(ip);
-//#endif
 
-LCD_MESSAGE(ip.toString());
+   LCD_MESSAGE(ip.toString());
 
-// Определяем действия при различных HTTP-запросах. Простой запрос http://<IP-АДРЕС>/ 
-// запускает непрерывную потоковую передачу изображений в веб-браузер.
-// http://<IP-АДРЕС>/jpg отправляет одно изображение с камеры в веб-браузер.
-// Все остальные запросы игнорируются.
-#ifdef ENABLE_WEBSERVER
+   // Определяем действия при различных HTTP-запросах. Простой запрос http://<IP-АДРЕС>/ 
+   // запускает непрерывную потоковую передачу изображений в веб-браузер.
+   // http://<IP-АДРЕС>/jpg отправляет одно изображение с камеры в веб-браузер.
+   // Все остальные запросы игнорируются.
+
    // Устанавливаем функцию для обработки потоковых запросов
 	server.on("/", HTTP_GET, handle_jpg_stream);
    // Устанавливаем функцию для обработки запросов на отдельные изображения
@@ -211,54 +129,10 @@ LCD_MESSAGE(ip.toString());
    // Устанавливаем функцию для обработки других запросов
 	server.onNotFound(handleNotFound);
    // Запускаем веб-сервер
-    server.begin();
-#endif
-/*
-#ifdef ENABLE_RTSPSERVER
-    rtspServer.begin();
-
-    //streamer = new SimStreamer(true);             // our streamer for UDP/TCP based RTP transport
-    streamer = new OV2640Streamer(cam);             // our streamer for UDP/TCP based RTP transport
-#endif
-*/
+   server.begin();
 }
 
 void loop()
 {
-//#ifdef ENABLE_WEBSERVER
-   // Проверяем, есть ли на сервере клиенты и обрабатываем запросы
    server.handleClient();
-//#endif
-
-/*
-#ifdef ENABLE_RTSPSERVER
-    uint32_t msecPerFrame = 100;
-    static uint32_t lastimage = millis();
-
-    // If we have an active client connection, just service that until gone
-    streamer->handleRequests(0); // we don't use a timeout here,
-    // instead we send only if we have new enough frames
-    uint32_t now = millis();
-    if(streamer->anySessions()) {
-        if(now > lastimage + msecPerFrame || now < lastimage) { // handle clock rollover
-            streamer->streamImage(now);
-            lastimage = now;
-
-            // check if we are overrunning our max frame rate
-            now = millis();
-            if(now > lastimage + msecPerFrame) {
-                printf("warning exceeding max frame rate of %d ms\n", now - lastimage);
-            }
-        }
-    }
-    
-    WiFiClient rtspClient = rtspServer.accept();
-    if(rtspClient) {
-        Serial.print("client: ");
-        Serial.print(rtspClient.remoteIP());
-        Serial.println();
-        streamer->addSession(rtspClient);
-    }
-#endif
-*/
 }
