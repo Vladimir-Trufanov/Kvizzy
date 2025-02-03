@@ -12,7 +12,6 @@
  * 
 **/
 
-
 #include "OV2640.h"
 #include <WiFi.h>
 #include <WebServer.h>
@@ -29,8 +28,11 @@ OV2640 cam;
 // Инициализируем веб-сервер для обработки входящих HTTP-запросов на порту 80
 WebServer server(80);
 
-const char* ssid     = "OPPO A9 2020";
-const char* password = "b277a4ee84e8";
+//const char* ssid     = "OPPO A9 2020";
+//const char* password = "b277a4ee84e8";
+
+const char* ssid     = "TP-Link_B394";
+const char* password = "18009217";
 
 // ****************************************************************************
 // *   Для непрерывной потоковой передачи изображений выполнить две задачи:   *
@@ -38,6 +40,7 @@ const char* password = "b277a4ee84e8";
 // *      #2 - отправлять изображения с камеры в цикле до тех пор, пока       *
 // *           веб-браузер не отключится                                      *
 // ****************************************************************************
+int ii=0;
 void handle_jpg_stream(void)
 {
    // Обрабатываем запросы веб-потока: выдаём первый ответ для подготовки потоковой передачи,
@@ -49,16 +52,26 @@ void handle_jpg_stream(void)
    server.sendContent(response);
    while (1)
    {
+      ii++;
+      Serial.print("ii: "); Serial.println(ii);
       cam.run();
       if (!client.connected()) break;
       response = "--frame\r\n";
       response += "Content-Type: image/jpeg\r\n\r\n";
       server.sendContent(response);
+      delay(500);
 
       client.write((char *)cam.getfb(), cam.getSize());
+      Serial.println("1-r-n");
       server.sendContent("\r\n");
+      Serial.println("2-r-n");
       // delay(150); // 2025-02-03
-      if (!client.connected()) break;
+      if (!client.connected())
+      { 
+         Serial.println("!client.connected()");
+         break;
+      }
+      Serial.println("3-r-n");
    }
 }
 // ****************************************************************************
@@ -94,20 +107,16 @@ void handleNotFound()
    server.send(200, "text/plain", message);
 }
 
-//#define LCD_MESSAGE(msg)
-
 CStreamer *streamer;
 
 void setup()
 {
-   //LCD_MESSAGE("booting");
    Serial.begin(115200);
    while (!Serial) {;}
    cam.init(esp32cam_aithinker_config);
     
    IPAddress ip;
 
-   //LCD_MESSAGE(String("join ") + ssid);
    WiFi.mode(WIFI_STA);
    WiFi.begin(ssid, password);
    while (WiFi.status() != WL_CONNECTED)
@@ -120,8 +129,6 @@ void setup()
    Serial.println("");
    Serial.println(ip);
 
-   //LCD_MESSAGE(ip.toString());
-
    // Определяем действия при различных HTTP-запросах. Простой запрос http://<IP-АДРЕС>/ 
    // запускает непрерывную потоковую передачу изображений в веб-браузер.
    // http://<IP-АДРЕС>/jpg отправляет одно изображение с камеры в веб-браузер.
@@ -131,7 +138,6 @@ void setup()
 	server.on("/", HTTP_GET, handle_jpg_stream);
    // Устанавливаем функцию для обработки запросов на отдельные изображения
 	server.on("/jpg", HTTP_GET, handle_jpg);
-	// Set the function to handle other requests
    // Устанавливаем функцию для обработки других запросов
 	server.onNotFound(handleNotFound);
    // Запускаем веб-сервер

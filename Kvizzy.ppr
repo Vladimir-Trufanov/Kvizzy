@@ -5753,5 +5753,5 @@ Selected=ESP32-devcam-tve\ESP32-devcam-tve.ino
 TopLine=3
 Caret=21,3
 [ESP32-devcam-tve\ESP32-devcam-tve.ino]
-TopLine=105
-Caret=6,123
+TopLine=43
+Caret=1,54
