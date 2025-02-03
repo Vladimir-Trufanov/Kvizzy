@@ -33,46 +33,53 @@ const char* ssid     = "OPPO A9 2020";
 const char* password = "b277a4ee84e8";
 
 // ****************************************************************************
-// *
+// *   Для непрерывной потоковой передачи изображений выполнить две задачи:   *
+// *      #1 - сообщить веб-браузеру о данных, которые будут отправляться;    *
+// *      #2 - отправлять изображения с камеры в цикле до тех пор, пока       *
+// *           веб-браузер не отключится                                      *
 // ****************************************************************************
-#ifdef ENABLE_WEBSERVER
 void handle_jpg_stream(void)
 {
+   // Обрабатываем запросы веб-потока: выдаём первый ответ для подготовки потоковой передачи,
+   // затем запускаемся в цикле для обновления веб-контента каждый раз, когда становится 
+   // доступен новый кадр
    WiFiClient client = server.client();
    String response = "HTTP/1.1 200 OK\r\n";
    response += "Content-Type: multipart/x-mixed-replace; boundary=frame\r\n\r\n";
    server.sendContent(response);
+   while (1)
+   {
+      cam.run();
+      if (!client.connected()) break;
+      response = "--frame\r\n";
+      response += "Content-Type: image/jpeg\r\n\r\n";
+      server.sendContent(response);
 
-    while (1)
-    {
-        cam.run();
-        if (!client.connected())
-            break;
-        response = "--frame\r\n";
-        response += "Content-Type: image/jpeg\r\n\r\n";
-        server.sendContent(response);
-
-        client.write((char *)cam.getfb(), cam.getSize());
-        server.sendContent("\r\n");
-        if (!client.connected())
-            break;
-    }
+      client.write((char *)cam.getfb(), cam.getSize());
+      server.sendContent("\r\n");
+      // delay(150); // 2025-02-03
+      if (!client.connected()) break;
+   }
 }
-
+// ****************************************************************************
+// *    Обработать запросы на отдельные изображения: считать изображение с    *
+// *               камеры и отправить его в веб-браузер.                      *
+// ****************************************************************************
 void handle_jpg(void)
 {
    WiFiClient client = server.client();
    cam.run();
-   if (!client.connected())
-   {
-      return;
-   }
+   if (!client.connected()) return;
    String response = "HTTP/1.1 200 OK\r\n";
    response += "Content-disposition: inline; filename=capture.jpg\r\n";
    response += "Content-type: image/jpeg\r\n\r\n";
    server.sendContent(response);
    client.write((char *)cam.getfb(), cam.getSize());
 }
+// ****************************************************************************
+// *       Обработать все остальные запросы - отправить простой ответ         *
+// *               с инструкциями обратно в веб-браузер                       *
+// ****************************************************************************
 
 void handleNotFound()
 {
@@ -86,22 +93,21 @@ void handleNotFound()
    message += "\n";
    server.send(200, "text/plain", message);
 }
-#endif
 
-#define LCD_MESSAGE(msg)
+//#define LCD_MESSAGE(msg)
 
 CStreamer *streamer;
 
 void setup()
 {
-   LCD_MESSAGE("booting");
+   //LCD_MESSAGE("booting");
    Serial.begin(115200);
    while (!Serial) {;}
    cam.init(esp32cam_aithinker_config);
     
    IPAddress ip;
 
-   LCD_MESSAGE(String("join ") + ssid);
+   //LCD_MESSAGE(String("join ") + ssid);
    WiFi.mode(WIFI_STA);
    WiFi.begin(ssid, password);
    while (WiFi.status() != WL_CONNECTED)
@@ -114,7 +120,7 @@ void setup()
    Serial.println("");
    Serial.println(ip);
 
-   LCD_MESSAGE(ip.toString());
+   //LCD_MESSAGE(ip.toString());
 
    // Определяем действия при различных HTTP-запросах. Простой запрос http://<IP-АДРЕС>/ 
    // запускает непрерывную потоковую передачу изображений в веб-браузер.

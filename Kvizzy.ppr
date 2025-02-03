@@ -17,7 +17,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy
-	-Kvizzy
+	+Kvizzy
 		-esp32-2432S028-R
 			-ARDUINO_ESP32-2432S028R
 				esp32-2432S028-R\ARDUINO_ESP32-2432S028R\ESP32_2432S028R_Display3.ino
@@ -3614,7 +3614,7 @@ Kvizzy
 				esp32-2432S028-R\hmi-displej-240x320-s-rezistivnym-sensorom-esp32-2432s028r\One-screen-in-the-palm-of-your-hand.jpeg
 				esp32-2432S028-R\hmi-displej-240x320-s-rezistivnym-sensorom-esp32-2432s028r\WIFI-Bluetooth Development Board.jpeg
 			esp32-2432S028-R\esp32-2432S028-R.md
-		-ESP32-devcam-tve
+		+ESP32-devcam-tve
 			-RES
 				ESP32-devcam-tve\RES\ESP32-devcam-tve.ino
 			ESP32-devcam-tve\CRtspSession.cpp
@@ -5687,6 +5687,8 @@ Kvizzy
 					Kvizzy30\Ревизия\Все про память Esp32\Карта памяти Esp32.xls
 				-Отладка ошибок Arduino с помощью декодера исключений ESP32
 					Kvizzy30\Ревизия\Отладка ошибок Arduino с помощью декодера исключений ESP32\ Отладка ошибок Arduino с помощью декодера исключений ESP32.md
+				-Почему в win11 не идет поток изображений
+					Kvizzy30\Ревизия\Почему в win11 не идет поток изображений\Почему в win11 не идет поток изображений.md
 				-Работа с прерываниями
 					Kvizzy30\Ревизия\Работа с прерываниями\Работа с прерываниями.md
 			Kvizzy30\ESP32-CAM-ADC-Pins.webp
@@ -5751,5 +5753,5 @@ Selected=ESP32-devcam-tve\ESP32-devcam-tve.ino
 TopLine=3
 Caret=21,3
 [ESP32-devcam-tve\ESP32-devcam-tve.ino]
-TopLine=99
-Caret=1,138
+TopLine=105
+Caret=6,123
