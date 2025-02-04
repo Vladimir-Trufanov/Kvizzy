@@ -5746,12 +5746,16 @@ Kvizzy
 [Open project files]
 0=Kvizzy30\Kvizzy30\Kvizzy30.ino
 1=ESP32-devcam-tve\ESP32-devcam-tve.ino
+2=Новый1.txt
 [Selected Project Files]
 Main=
-Selected=ESP32-devcam-tve\ESP32-devcam-tve.ino
+Selected=Новый1.txt
 [Kvizzy30\Kvizzy30\Kvizzy30.ino]
 TopLine=3
 Caret=21,3
 [ESP32-devcam-tve\ESP32-devcam-tve.ino]
 TopLine=43
 Caret=1,54
+[Новый1.txt]
+TopLine=7
+Caret=35,75
