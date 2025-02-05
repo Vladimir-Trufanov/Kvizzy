@@ -861,29 +861,30 @@ void logLine() {
   logPrint(" \n");
 }
 
-void logSetup() {
-  // prep logging environment
-  Serial.begin(115200);
-  Serial.setDebugOutput(DBG_ON);
-  printf("\n\n");
-  if (DEBUG_MEM) printf("init > Free: heap %lu\n", ESP.getFreeHeap()); 
-  if (!DBG_ON) esp_log_level_set("*", ESP_LOG_NONE); // suppress ESP_LOG_ERROR messages
-  if (crashLoop == MAGIC_NUM) snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Crash loop detected");
-  crashLoop = MAGIC_NUM;
-  logSemaphore = xSemaphoreCreateBinary(); // flag that log message formatted
-  logMutex = xSemaphoreCreateMutex(); // control access to log formatter
-  xSemaphoreGive(logSemaphore);
-  xSemaphoreGive(logMutex);
-  xTaskCreate(logTask, "logTask", LOG_STACK_SIZE, NULL, LOG_PRI, &logHandle);
-  if (mlogEnd >= RAM_LOG_LEN) ramLogClear(); // init
-  LOG_INF("Setup RAM based log, size %u, starting from %u\n\n", RAM_LOG_LEN, mlogEnd);
-  LOG_INF("=============== %s %s ===============", APP_NAME, APP_VER);
-  initBrownout();
-  LOG_INF("Compiled with arduino-esp32 v%d.%d.%d", ESP_ARDUINO_VERSION_MAJOR, ESP_ARDUINO_VERSION_MINOR, ESP_ARDUINO_VERSION_PATCH);
-  ////LOG_INF(" ESP32 Arduino core version: %s", ESP_ARDUINO_VERSION_STR);
-  wakeupResetReason();
-  if (alertBuffer == NULL) alertBuffer = (byte*)ps_malloc(MAX_ALERT); 
-  debugMemory("logSetup"); 
+void logSetup() 
+{
+   // prep logging environment
+   Serial.begin(115200);
+   Serial.setDebugOutput(DBG_ON);
+   printf("\n\n");
+   if (DEBUG_MEM) printf("init > Free: heap %lu\n", ESP.getFreeHeap()); 
+   if (!DBG_ON) esp_log_level_set("*", ESP_LOG_NONE); // suppress ESP_LOG_ERROR messages
+   if (crashLoop == MAGIC_NUM) snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Crash loop detected - Обнаружен аварийный цикл, недостаточное питание");
+   crashLoop = MAGIC_NUM;
+   logSemaphore = xSemaphoreCreateBinary(); // flag that log message formatted
+   logMutex = xSemaphoreCreateMutex();      // control access to log formatter
+   xSemaphoreGive(logSemaphore);
+   xSemaphoreGive(logMutex);
+   xTaskCreate(logTask, "logTask", LOG_STACK_SIZE, NULL, LOG_PRI, &logHandle);
+   if (mlogEnd >= RAM_LOG_LEN) ramLogClear(); // init
+   LOG_INF("Setup RAM based log, size %u, starting from %u\n\n", RAM_LOG_LEN, mlogEnd);
+   LOG_INF("=============== %s %s ===============", APP_NAME, APP_VER);
+   initBrownout();
+   LOG_INF("Compiled with arduino-esp32 v%d.%d.%d", ESP_ARDUINO_VERSION_MAJOR, ESP_ARDUINO_VERSION_MINOR, ESP_ARDUINO_VERSION_PATCH);
+   ////LOG_INF(" ESP32 Arduino core version: %s", ESP_ARDUINO_VERSION_STR);
+   wakeupResetReason();
+   if (alertBuffer == NULL) alertBuffer = (byte*)ps_malloc(MAX_ALERT); 
+   debugMemory("logSetup"); 
 }
 
 void formatHex(const char* inData, size_t inLen) {

@@ -1,0 +1,107 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.CompileOnBackground=0
+Compilator.ProgSaveAll=0
+Compilator.ProgRunSelection=0
+Compilator.LogType=0
+Compilator.LogEncoding=0
+DefaultDir=C:\Kvizzy\ESP32-CAM_MJPEG2SD-v98
+DefaultCP=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+HTServer=localhost
+Extensions=*.*
+[Project tree]
+ESP32-CAM_MJPEG2SD-v98
+	+ESP32-CAM_MJPEG2SD-v98
+		+data
+			data\common.js
+			data\MJPEG2SD.htm
+		+extras
+			extras\motion.png
+			extras\partitions.csv
+			extras\portForward.png
+			extras\telegram.png
+			extras\TinyML.png
+			extras\webdav.png
+		appGlobals.h
+		appSpecific.cpp
+		audio.cpp
+		avi.cpp
+		camera_pins.h
+		certificates.cpp
+		ESP32-CAM_MJPEG2SD-v98.ino
+		ESP32-CAM_MJPEG2SD-v98.md
+		externalHeartbeat.cpp
+		ftp.cpp
+		globals.h
+		LICENSE
+		mjpeg2sd.cpp
+		motionDetect.cpp
+		mqtt.cpp
+		peripherals.cpp
+		photogram.cpp
+		prefs.cpp
+		README.md
+		setupAssist.cpp
+		smtp.cpp
+		streamServer.cpp
+		telegram.cpp
+		telemetry.cpp
+		uart.cpp
+		utils.cpp
+		utilsFS.cpp
+		webDav.cpp
+		webServer.cpp
+[Open project files]
+0=ESP32-CAM_MJPEG2SD-v98.ino
+1=appGlobals.h
+2=webServer.cpp
+3=ESP32-CAM_MJPEG2SD-v98.md
+4=data\MJPEG2SD.htm
+5=photogram.cpp
+6=streamServer.cpp
+7=mjpeg2sd.cpp
+8=audio.cpp
+9=globals.h
+10=utils.cpp
+[Selected Project Files]
+Main=
+Selected=utils.cpp
+[ESP32-CAM_MJPEG2SD-v98.ino]
+TopLine=1
+Caret=12,12
+[appGlobals.h]
+TopLine=78
+Caret=73,78
+[webServer.cpp]
+TopLine=483
+Caret=133,486
+[ESP32-CAM_MJPEG2SD-v98.md]
+TopLine=149
+Caret=43,178
+[data\MJPEG2SD.htm]
+TopLine=4
+Caret=76,4
+[photogram.cpp]
+TopLine=65
+Caret=1,1
+[streamServer.cpp]
+TopLine=304
+Caret=1,1
+[mjpeg2sd.cpp]
+TopLine=791
+Caret=48,830
+[audio.cpp]
+TopLine=370
+Caret=19,409
+[globals.h]
+TopLine=1
+Caret=11,22
+[utils.cpp]
+TopLine=805
+Caret=4,883

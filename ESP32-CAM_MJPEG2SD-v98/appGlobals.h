@@ -74,15 +74,15 @@ CAMERA_MODEL_ESP32S3_CAM_LCD
 //#define SIDE_ALARM // leave commented out
 #define STATIC_IP_OCTAL "133" // dev only
 #define DEBUG_MEM false // leave as false
-#define FLUSH_DELAY 0 // for debugging crashes
-#define DBG_ON false // esp debug output
+#define FLUSH_DELAY 0   // for debugging crashes
+#define DBG_ON false    // esp debug output - отключили отладочный вывод
 #define DOT_MAX 50
 #define HOSTNAME_GRP 99
 //#define REPORT_IDLE // core processor idle time monitoring
 #define USE_IP6 true
  
-#define APP_NAME "ESP-CAM_MJPEG" // max 15 chars
-#define APP_VER "9.9.1"
+#define APP_NAME "ESP-CAM_MJPEG" // max 15 chars - имя приложения
+#define APP_VER  "9.9.1"         // версия приложения
 
 #define HTTP_CLIENTS 2 // http(s), ws(s)
 #define MAX_STREAMS 4 // (web stream, playback, download), NVR, audio, subtitle
