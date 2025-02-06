@@ -54,109 +54,100 @@ password = "18009217";
 
 - ??? хотел перейти на смартфон, но похоже приложение только один запуск в день разрешает.
 
-***1 запуск:***
+#### 2025-02-06:
+
+***1 запуск: CD-карта не была вставлена !!!***
 
 ```
-[00:00:00.474 logSetup] Setup RAM based log, size 7168, starting from 0
-[00:00:00.475 logSetup] =============== ESP-CAM_MJPEG 9.9.1 ===============
-[00:00:00.485 logSetup] Compiled with arduino-esp32 v3.0.3
-[00:00:00.485 printResetReason] Power on reset
-[00:00:00.496 printWakeupReason] Wakeup by reset
-[00:00:00.543 infoSD] SD card type SDHC, Size: 14.7GB
-[00:00:00.544 listFolder] Sketch size 1.7MB
-[00:00:00.893 listFolder] File: /data/configs.txt, size: 6736 bytes
-[00:00:00.894 listFolder] SD_MMC: 1.2MB used of 14.7GB
-[00:00:00.894 loadConfig] Load config
-[00:00:01.147 updateAppStatus] Enabling motion detection
-[00:00:01.156 SRAM size: 4.0MB
-[00:00:01.349 prepCam] Camera init OK for model OV2640 on board CAMERA_MODEL_AI_THINKER
-[00:00:01.600 setWifiSTA] Wifi Station IP from DHCP
-[00:00:01.626 WARN startWifi] SSID  not connected not available, use AP 
-[00:00:01.629 onWiFiEvent] Wifi AP SSID: ESP-CAM_MJPEG_90B3DB7CE5A4 started, use 'http://192.168.4.1' to connect
+[00:00:00.473 logSetup] Setup RAM based log, size 7168, starting from 0
 
-[00:00:07.754 isNight] Night time
-[00:00:10.259 resetWatchDog] WatchDog started using task: ping
-[00:03:43.230 onWiFiEvent] WiFi AP client connection
-[00:05:24.548 savePrefs] Saved preferences
-[00:05:24.570 saveConfigVect] Config file saved 
-[00:05:24.666 doRestart] Controlled restart: User requested restart 
-[00:05:26.669 onWiFiEvent] Wifi Sti⸮Z⸮jո⸮ed TP-Link_B394
 
-[00:05:27.733 logSetup] Setup RAM based log, size 7168, starting from 2261
+[00:00:00.473 logSetup] =============== ESP-CAM_MJPEG 9.9.1 ===============
+[00:00:00.483 logSetup] Compiled with arduino-esp32 v3.0.7
+[00:00:00.484 printResetReason] Power on reset
+[00:00:00.494 printWakeupReason] Wakeup by reset
+[00:00:00.522 WARN prepSD_MMC] SD card mount failed 
+[00:00:00.709 setWifiSTA] Wifi Station IP from DHCP
+[00:00:00.715 WARN startWifi] SSID  not connected not available, use AP 
+[00:00:03.931 startPing] Started ping monitoring - On
+[00:00:03.934 startWebServer] Starting web server on port: 80
+[00:00:03.935 startWebServer] Remote server certificates not checked
+[00:00:03.945 WARN setup] Startup Failure: Check SD card inserted 
+[00:00:03.945 loop] =============== Total tasks: 13 ===============
 
-[00:05:27.734 logSetup] =============== ESP-CAM_MJPEG 9.9.1 ===============
-[00:05:27.744 logSetup] Compiled with arduino-esp32 v3.0.3
-[00:05:27.744 printResetReason] Software reset via esp_restart
-[00:05:27.755 printWakeupReason] Wakeup by reset
-[00:05:27.803 infoSD] SD card type SDHC, Size: 14.7GB
-[00:05:27.804 listFolder] Sketch size 1.7MB
-[00:05:28.153 listFolder] File: /data/configs.txt, size: 6747 bytes
-[00:05:28.154 listFolder] SD_MMC: 1.2MB used of 14.7GB
-[00:05:28.154 loadConfig] Load config
-[00:05:28.409 updateAppStatus] Enabling motion detection
-[00:05:28.418 setup] PSRAM size: 4.0MB
-[00:05:28.611 prepCam] Camera init OK for model OV2640 on board CAMERA_MODEL_AI_THINKER
-[00:05:28.881 setWifiSTA] Wifi Station IP from DHCP
-[00:05:29.477 onWiFiEvent] WiFi Station connection to TP-Link_B394, using hostname: ESP-CAM_MJPEG_90B3DB7CE5A4
-[00:05:30.003 onWiFiEvent] Wifi Station IP, use 'http://192.168.0.104' to connect
-[00:05:30.435 ESP-CAM_MJPEG_90B3DB7CE5A4 started, use 'http://192.168.4.1' to connect
-[00:05:30.656 onWiFiEvent] Station interface V6 IP addr is preferred
-[00:05:34.060 startWifi] Wifi stats for TP-Link_B394 - signal stre⸮-'HKMMH⸮⸮m; Encrypion: WPA2_PSK; channel: 3
-[00:05:34.062 startPing] Started ping monitoring - OnWatchDog] WatchDog started using task: ping
-[00:05:34.073 getLocalNTP] Using NTP server: pool.ntp.org
-[00:05:34.084 WARN getLocalNTP] Not yet synced with NTP 
-[00:05:34.084 startWebServer] Starting web server on port: 80
-[00:05:34.095 startWebServer] R⸮e server certificates not checked
-[00:05:34.095 startSustainTasks] Started 1 HTTP sustain tasks
-[00:05:34.106 prepUpload] File uploads will use FTP server
-[00:05:34.106 prepTelegram] Telegram not being used
-[00:05:34.143 updateAppStatus] Enabling motion detection
-[00:05:34.559 wgetFile] Downloading /data/common.js from /s60sc/ESP32-CAM_MJPEG2SD/master/data/common.js
-[00:05:35.202 wgetFile] Downloaded /data/common.js, size 38896 bytes
-[00:05:35.806 wgetFile] Downloading /data/MJPEG2SD.htm from /s60sc/ESP32-CAM_MJPEG2SD/master/data/MJPEG2SD.htm
-[00:05:36.514 isNight] Night time
-[00:05:36.968 wgetFile] Downloaded /data/MJPEG2SD.htm, size 92KB
-[17:46:47.672 onWiFiEvent] WiFi AP client connection
-[17:47:11.039 getLocalNTP] Using NTP server: pool.ntp.org
-[17:47:11.039 showLos setAlarm] Alarm scheduled at 03/08/2024 01:00:00
-[17:47:41.898 saveConfigVect] Config file saved 
-[17:47:41.912 doAppPing] Daily rollover
+[00:00:08.932 resetWatchDog] WatchDog started using task: ping
 ```
 
-Понажимал по всякому клавиши, протокол сом-порта:
+***2 запуск: CD-карта вставлена!***
 
 ```
-[00:05:27.733 logSetup] Setup RAM based log, size 7168, starting from 2261
-[00:05:27.734 logSetup] =============== ESP-CAM_MJPEG 9.9.1 ===============
-[00:05:27.744 logSetup] Compiled with arduino-esp32 v3.0.3
-[00:05:27.744 printResetReason] Software reset via esp_restart
-[00:05:27.755 printWakeupReason] Wakeup by reset
-[00:05:27.803 infoSD] SD card type SDHC, Size: 14.7GB
-[00:05:27.804 listFolder] Sketch size 1.7MB
-[00:05:28.153 listFolder] File: /data/configs.txt, size: 6747 bytes
-[00:05:28.154 listFolder] SD_MMC: 1.2MB used of 14.7GB
-[00:05:28.154 loadConfig] Load config
-[00:05:28.409 updateAppStatus] Enabling motion detection
-[00:05:28.418 setup] PSRAM size: 4.0MB
-[00:05:28.611 prepCam] Camera init OK for model OV2640 on board CAMERA_MODEL_AI_THINKER
-[00:05:28.881 setWifiSTA] Wifi Station IP from DHCP
-..[00:05:29.477 onWiFiEvent] WiFi Station connection to TP-Link_B394, using hostname: ESP-CAM_MJPEG_90B3DB7CE5A4
-.[00:05:30.003 onWiFiEvent] Wifi Station IP, use 'http://192.168.0.104' to connect
-[00:05:30.435 on ESP-CAM_MJPEG_90B3DB7CE5A4 started, use 'http://192.168.4.1' to connect
-[00:05:30.656 onWiFiEvent] Station interface V6 IP addr is preferred
-[00:05:34.060 startWifi] Wifi stats for TP-Link_B394 - signal stre⸮-'HKMMH⸮⸮m; Encrypion: WPA2_PSK; channel: 3
-[00:05:34.062 startPing] Started ping monitoring - On⸮҂⸮Қ⸮r⸮⸮⸮⸮⸮se⸮WatchDog] WatchDog started using task: ping
-[00:05:34.073 getLocalNTP] Using NTP server: pool.ntp.org
-[00:05:34.084 WARN getLocalNTP] Not yet synced with NTP 
-[00:05:34.084 startWebServer] Starting web server on port: 80
-[00:05:34.095 startWebServer] R⸮e server certificates not checked
-[00:05:34.095 startSustainTasks] Started 1 HTTP sustain tasks
-[00:05:34.106 prepUpload] File uploads will use FTP server
-[00:05:34.106 prepTelegram] Telegram not being used
-[00:05:34.143 updateAppStatus] Enabling motion detection
+[00:00:00.480 logSetup] Setup RAM based log, size 7168, starting from 0
+
+
+[00:00:00.481 logSetup] =============== ESP-CAM_MJPEG 9.9.1 ===============
+[00:00:00.491 logSetup] Compiled with arduino-esp32 v3.0.7
+[00:00:00.491 printResetReason] Power on reset
+[00:00:00.501 printWakeupReason] Wakeup by reset
+[00:00:00.679 infoSD] SD card type SDHC, Size: 14.7GB
+[00:00:00.679 listFolder] Sketch size 1.7MB
+[00:00:01.031 listFolder] File: /data/configs.txt, size: 6761 bytes
+[00:00:01.033 listFolder] File: /data/common.js, size: 46192 bytes
+[00:00:01.036 listFolder] File: /data/MJPEG2SD.htm, size: 97KB
+[00:00:01.046 listFolder] SD_MMC: 77.9MB used of 14.7GB
+[00:00:01.047 loadConfig] Load config
+[00:00:01.290 updateAppStatus] Enabling motion detection
+[00:00:01.297 setup] PSRAM size: 4.0MB
+[00:00:01.490 prepCam] Camera init OK for model OV2640 on board CAMERA_MODEL_AI_THINKER
+[00:00:01.739 setWifiSTA] Wifi Station IP from DHCP
+[00:00:01.762 WARN startWifi] SSID  not connected not available, use AP 
+[00:00:01.765 onWiFiEvent] Wifi AP SSID: ESP-CAM_MJPEG_90B3DB7CE5A4 started, use 'http://192.168.4.1' to connect
+[00:00:05.194 startPing] Started ping monitoring - On
+[00:00:05.199 startWebServer] Starting web server on port: 80
+[00:00:05.199 startWebServer] Remote server certificates not checked
+[00:00:05.194 startPing] Started ping monitoring - On
+[00:00:05.199 startWebServer] Starting web server on port: 80
+[00:00:05.199 startWebServer] Remote server certificates not checked
+[00:00:05.199 startSustainTasks] Started 1 HTTP sustain tasks
+[00:00:05.210 prepUpload] File uploads will use FTP server
+[00:00:05.210 prepTelegram] Telegram not being used
+[00:00:05.255 updateAppStatus] Enabling motion detection
+[00:00:05.405 prepRecording] To record new AVI, do one of:
+[00:00:05.405 prepRecording] - press Start Recording on web page
+[00:00:05.405 prepRecording] - move in front of camera
+ 
+[00:00:05.416 prepRecording] Camera model OV2640 on board CAMERA_MODEL_AI_THINKER ready @ 20MHz
+[00:00:05.426 checkMemory]  Free: heap 93508, block: 69620, min: 93492, pSRAM 1485952
+[00:00:05.426 loop] =============== Total tasks: 17 ===============
+
+[00:00:07.694 isNight] Night time
+[00:00:10.196 resetWatchDog] WatchDog started using task: ping
+[00:00:13.509 isNight] Day time
 ```
 
-***2 запуск:***
+***3 запуск: Пытался сделать настройку на TP-Link***
+
+// const char* ssid     = "OPPO A9 2020";
+
+// const char* password = "b277a4ee84e8";
+
+const char* ssid     = "TP-Link_B394";
+
+const char* password = "18009217";
+
+http://192.168.4.1
+
+Подсоединялся на моноблоке, ноутбуке, смартфоне. Везде "Crash loop detected". Отсоединялся.
+
+```
+[00:37:41.722 onWiFiEvent] WiFi AP client connection
+[00:41:38.721 onWiFiEvent] WiFi AP client disconnection
+[00:43:01.815 onWiFiEvent] WiFi AP client connection
+[00:46:47.816 onWiFiEvent] WiFi AP client disconnection
+[00:47:16.848 onWiFiEvent] WiFi AP client connection
+[00:49:00.797 onWiFiEvent] WiFi AP client disconnection
+```
+
+***4 запуск: После перехода на ESP32-CAM-MB***
 
 ```
 [00:00:00.677 listFolder] Sketch size 1.7MB
@@ -169,8 +160,8 @@ password = "18009217";
 [00:00:01.296 setup] PSRAM size: 4.0MB
 [00:00:01.489 prepCam] Camera init OK for model OV2640 on board CAMERA_MODEL_AI_THINKER
 [00:00:01.805 setWifiSTA] Wifi Station IP from DHCP
-.[00:00:01.952 onWiFiEvent] WiFi Station connection to TP-Link_B394, using hostname: ESP-CAM_MJPEG_90B3DB7CE5A4
-.[00:00:02.489 onWiFiEvent] Wifi Station IP, use 'http://192.168.0.105' to connect
+[00:00:01.952 onWiFiEvent] WiFi Station connection to TP-Link_B394, using hostname: ESP-CAM_MJPEG_90B3DB7CE5A4
+[00:00:02.489 onWiFiEvent] Wifi Station IP, use 'http://192.168.0.105' to connect
 [00:00:02.834 onWiFiEvent] Wifi AP SSID: ESP-CAM_MJPEG_90B3DB7CE5A4 started, use 'http://192.168.4.1' to connect
 [00:00:03.535 onWiFiEvent] Station interface V6 IP addr is preferred
 [00:00:06.457 startWifi] Wifi stats for TP-Link_B394 - signal strength: -49 dBm; Encryption: WPA2_PSK; channel: 11
