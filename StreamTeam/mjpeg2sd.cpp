@@ -90,7 +90,7 @@ static void IRAM_ATTR frameISR() {
 }
 
 void controlFrameTimer(bool restartTimer) {
-  // frame timer control
+  // frame timer control - управление таймером кадра
   static hw_timer_t* frameTimer = NULL;
   // stop current timer
   if (frameTimer) {
@@ -127,6 +127,9 @@ void controlFrameTimer(bool restartTimer) {
 static void openAvi() {
   // derive filename from date & time, store in date folder
   // time to open a new file on SD increases with the number of files already present
+  // извлеките имя файла из даты и времени, сохраните в папке data время, 
+  // необходимое для открытия нового файла на SD-карте, 
+  // увеличивается с увеличением количества уже имеющихся файлов
   oTime = millis();
   dateFormat(partName, sizeof(partName), true);
   STORAGE.mkdir(partName); // make date folder if not present

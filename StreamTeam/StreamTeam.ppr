@@ -18,9 +18,13 @@ Extensions=*.*
 [Project tree]
 StreamTeam
 	+StreamTeam
-		-data
+		-BP1
+			BP1\StreamTeam.bp1
+		+data
 			data\common.js
+			data\configs.txt
 			data\MJPEG2SD.htm
+			data\README.md
 		-extras
 			extras\motion.png
 			extras\partitions.csv
@@ -59,9 +63,41 @@ StreamTeam
 		webServer.cpp
 [Open project files]
 0=StreamTeam.ino
+1=setupAssist.cpp
+2=appSpecific.cpp
+3=utils.cpp
+4=data\MJPEG2SD.htm
+5=streamServer.cpp
+6=mjpeg2sd.cpp
+7=appGlobals.h
+8=globals.h
 [Selected Project Files]
 Main=
-Selected=StreamTeam.ino
+Selected=utils.cpp
 [StreamTeam.ino]
-TopLine=1
-Caret=1,79
+TopLine=41
+Caret=7,68
+[setupAssist.cpp]
+TopLine=75
+Caret=7,96
+[appSpecific.cpp]
+TopLine=312
+Caret=7,324
+[utils.cpp]
+TopLine=816
+Caret=15,837
+[data\MJPEG2SD.htm]
+TopLine=971
+Caret=35,982
+[streamServer.cpp]
+TopLine=224
+Caret=13,224
+[mjpeg2sd.cpp]
+TopLine=350
+Caret=5,362
+[appGlobals.h]
+TopLine=226
+Caret=9,238
+[globals.h]
+TopLine=113
+Caret=6,124

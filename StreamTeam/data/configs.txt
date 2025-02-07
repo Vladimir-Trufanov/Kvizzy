@@ -1,0 +1,183 @@
+AP_Pass~~0~T~AP Password
+AP_SSID~ESP-CAM_MJPEG_90B3DB7CE5A4~0~T~AP SSID name
+AP_gw~~0~T~AP gateway
+AP_ip~~0~T~AP IP Address if not 192.168.4.1
+AP_sn~~0~T~AP subnet
+AtakePhotos~Start~5~A~Start photogrammetry
+Auth_Name~~99~~na
+BabortPhotos~Abort~5~A~Abort photogrammetry
+PGactive~0~3~C~Enable photogrammetry
+RCactive~0~3~C~Enable remote control
+RPM~1~5~N~Turntable revolution speed as RPM
+ST_SSID~TP-Link_B394~99~~na
+ST_gw~~0~T~Router IP address
+ST_ip~~0~T~Static IP address
+ST_ns1~~0~T~DNS server
+ST_ns2~~0~T~Alt DNS server
+ST_sn~255.255.255.0~0~T~Router subnet
+ae_level~-2~98~~na
+aec~1~98~~na
+aec2~1~98~~na
+aec_value~204~98~~na
+agc~1~98~~na
+agc_gain~0~98~~na
+alarmHour~1~2~N~Hour of day for daily actions
+allowAP~1~0~C~Allow simultaneous AP 
+allowReverse~1~4~C~Reverse motion required
+appId~ESP-CAM_MJPEG~99~~na
+autoControl~1~4~C~Stop motor or center steering if control inactive
+autoUpload~0~98~~na
+awb~1~98~~na
+awb_gain~1~98~~na
+bpc~1~98~~na
+brightness~0~98~~na
+buzzerDuration~~3~N~Duration of buzzer sound in secs
+buzzerPin~~3~N~Pin used for active buzzer
+buzzerUse~0~3~C~Use active buzzer
+cfgVer~15~99~T~na
+clockwise~1~5~C~Clockwise turntable if true
+colorbar~0~98~~na
+contrast~0~98~~na
+dcw~1~98~~na
+deleteAfter~0~98~~na
+denoise~4~98~~na
+depthColor~0~1~C~Color depth for motion detection: Gray <> RGB
+detectChangeThreshold~15~1~N~Pixel difference to indicate change
+detectEndBand~8~1~N~Bottom band where motion is checked
+detectMotionFrames~5~1~N~Num changed frames to start motion
+detectNightFrames~10~1~N~Min dark frames to indicate night
+detectNumBands~10~1~N~Total num of detection bands
+detectStartBand~3~1~N~Top band where motion is checked
+devHub~0~2~C~Show Camera Hub tab
+doGetExtIP~1~0~C~Enable get external IP
+ds18b20Pin~~3~N~Pin used for DS18B20 temperature sensor
+enableMotion~1~98~~na
+extCam~0~5~C~Use external camera
+extIP~185.90.100.110~99~~na
+external_heartbeat_active~0~2~C~External Heartbeat Server enabled
+external_heartbeat_domain~~2~T~Heartbeat receiver domain or IP (eg. www.espsee.com)
+external_heartbeat_port~443~2~N~Heartbeat receiver port
+external_heartbeat_token~~2~T~Heartbeat receiver auth token
+external_heartbeat_uri~~2~T~Heartbeat receiver URI (eg. /heartbeat/)
+formatIfMountFailed~0~2~C~Format file system on failure
+fps~20~98~~na
+framesize~9~98~~na
+fsPort~21~99~~na
+fsServer~~99~~na
+fsUse~~99~~na
+fsWd~~99~~na
+ftpUser~~99~~na
+gainceiling~0~98~~na
+gearing~5.7~5~N~Turntable / motor gearing ratio
+hmirror~0~98~~na
+hostName~ESP-CAM_MJPEG_90B3DB7CE5A4~99~T~Device host name
+lampLevel~0~98~~na
+lampPin~~3~N~Pin used for Lamp
+lampType~0~3~S:Manual:PIR~How lamp activated
+lampUse~0~3~C~Use lamp
+lenc~1~98~~na
+lightsRCpin~~4~N~Pin used for RC lights output
+logType~0~99~N~Output log selection
+lswitch~20~98~~na
+maxDutyCycle~100~4~N~Max motor duty cycle % (speed)
+maxFrames~20000~1~N~Max frames in recording
+maxSteerAngle~45~4~N~Max steering angle from straightahead
+micGain~0~98~~na
+micSWsPin~-1~3~N~pin for mic I2S WS, PDM CLK
+micSckPin~-1~3~N~pin for mic I2S SCK 
+micSdPin~-1~3~N~pin for mic I2S SD, PDM DAT 
+micUse~0~3~C~Use microphone
+minDutyCycle~10~4~N~Min motor duty cycle % (stop)
+minf~5~98~~na
+mlProbability~0.8~1~N~ML minimum positive probability 0.0 - 1.0
+mlUse~0~1~C~Use Machine Learning
+motionVal~8~98~~na
+motorFwdPin~~4~N~Pin used for motor forward
+motorRevPin~~4~N~Pin used for motor reverse
+moveStartChecks~5~1~N~Checks per second for start motion
+moveStopSecs~2~1~N~Non movement to stop recording (secs)
+mqtt_active~0~2~C~Mqtt enabled
+mqtt_broker~~2~T~Mqtt server ip to connect
+mqtt_port~1883~2~N~Mqtt server port
+mqtt_topic_prefix~homeassistant/sensor/~2~T~Mqtt topic path prefix
+mqtt_user~~2~T~Mqtt user name
+mqtt_user_Pass~~2~T~Mqtt user password
+ntpServer~pool.ntp.org~0~T~NTP Server address
+numberOfPhotos~20~5~N~Number of photos
+pinFocus~-1~5~N~Pin connected to camera focus
+pinShutter~-1~5~N~Pin connected to camera shutter
+pirPin~~3~N~Pin used for PIR
+pirUse~0~3~C~Use PIR for detection
+pwmFreq~50~4~N~RC Motor PWM frequency
+quality~12~98~~na
+raw_gma~1~98~~na
+record~1~98~~na
+refreshVal~5~2~N~Web page refresh rate (secs)
+responseTimeoutSecs~10~2~N~Server response timeout (secs)
+restart~~99~~na
+saturation~0~98~~na
+sdFreeSpaceMode~1~2~S:No Check:Delete oldest:Ftp then delete~Action mode on SD min free
+sdLog~0~99~~na
+sdMinCardFreeSpace~100~2~N~Min free MBytes on SD before action
+servoCenter~90~3~N~Angle at which servo centered
+servoDelay~0~3~N~Delay between each 1 degree change (ms)
+servoMaxAngle~180~3~N~Set max angle for servo model
+servoMaxPulseWidth~2400~3~N~Set max pulse width for servo model (usecs)
+servoMinAngle~0~3~N~Set min angle for servo model
+servoMinPulseWidth~544~3~N~Set min pulse width for servo model (usecs)
+servoPanPin~~3~N~Pin used for Pan Servo
+servoSteerPin~~4~N~Pin used for steering servo
+servoTiltPin~~3~N~Pin used for Tilt Servo
+servoUse~0~3~C~Use servos
+sharpness~0~98~~na
+smtpMaxEmails~10~2~N~Max daily alerts
+smtpUse~0~2~C~Enable email sending
+smtp_email~~99~~na
+smtp_login~~99~~na
+smtp_port~465~99~~na
+smtp_server~smtp.gmail.com~99~~na
+special_effect~0~98~~na
+stepIN1pin~-1~5~N~Stepper IN1 pin number
+stepIN2pin~-1~5~N~Stepper IN2 pin number
+stepIN3pin~-1~5~N~Stepper IN3 pin number
+stepIN4pin~-1~5~N~Stepper IN4 pin number
+stickUse~0~4~C~Use joystick
+stickXpin~~4~N~Pin used for joystick steering
+stickYpin~~4~N~Pin used for joystick motor
+stickzPushPin~~4~N~Pin used for joystick lights
+streamNvr~0~1~C~Enable NVR Video stream: /sustain?video=1
+streamSnd~0~1~C~Enable NVR Audio stream: /sustain?audio=1
+streamSrt~0~1~C~Enable NVR Subtitle stream: /sustain?srt=1
+teleInterval~1~3~N~Telemetry collection interval (secs)
+teleUse~0~3~C~Use telemetry recording
+tgramChatId~~2~T~Telegram chat identifier
+tgramToken~~2~T~Telegram Bot token
+tgramUse~0~2~C~Use Telegram Bot
+timeForFocus~0~5~N~Time allocated to auto focus (secs)
+timeForPhoto~2~5~N~Time allocated to take photo (secs)
+timeLapseOn~0~98~~na
+timezone~GMT0~98~~na
+tlDurationMins~720~1~N~Timelapse duration (mins)
+tlPlaybackFPS~1~1~N~Timelapse playback FPS
+tlSecsBetweenFrames~600~1~N~Timelapse interval (secs)
+uartRxdPin~~3~N~UART1 RX pin
+uartTxdPin~~3~N~UART1 TX pin
+useFtps~~99~~na
+useHttps~~99~~na
+useIOextender~0~3~C~Use another ESP as IO Extender
+usePing~1~0~C~Use ping
+useSecure~~99~~na
+useUART0~0~3~C~Use UART0 for IO Extender
+vflip~0~98~~na
+voltDivider~2~3~N~Voltage divider resistor ratio
+voltInterval~5~3~N~Voltage check interval (mins)
+voltLow~3~3~N~Warning level for low voltage
+voltPin~~3~N~ADC Pin used for battery voltage
+voltUse~0~3~C~Use Voltage check
+waitTime~20~4~N~Min wait (ms) between updates to ESP32
+wakePin~~3~N~Pin used for to wake app from sleep
+wakeUse~0~3~C~Deep sleep app during night
+wb_mode~0~98~~na
+wifiTimeoutSecs~30~0~N~WiFi connect timeout (secs)
+wpc~1~98~~na
+xclkMhz~20~98~~na

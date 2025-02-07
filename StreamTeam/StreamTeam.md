@@ -1,5 +1,14 @@
 # ESP32-CAM_MJPEG2SD
 
+ssid     = "TP-Link_B394";
+password = "18009217";
+
+
+
+
+
+
+
 Application for ESP32 / ESP32S3 with OV2640 / OV5640 camera to record JPEGs to SD card as AVI files and playback to browser as an MJPEG stream. The AVI format allows recordings to replay at correct frame rate on media players. If a microphone is installed then a WAV file is also created and stored in the AVI file.  
 The application supports:
 * [Motion detection by camera](#motion-detection-by-camera) or PIR / radar sensor

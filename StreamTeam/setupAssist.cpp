@@ -1,3 +1,12 @@
+/** Arduino, Esp32-CAM ************************************ setupAssist.cpp ***
+ * 
+ *                           Помощь в настройке при установке новых приложений,
+ *                                               оригинал предоставлен gemi254
+ * 
+ * v3.0.1, 07.02.2025                                 Автор:      Труфанов В.Е.
+ * s60sc 2020 - 2024 and tve 2025                     Дата создания: 31.05.2024
+ * 
+ **/
 
 // Помощь в настройке при установке новых приложений,
 // оригинал предоставлен gemi254
@@ -12,61 +21,89 @@ const char* git_rootCACertificate = "";
 
 static fs::FS fp = STORAGE;
 
-static bool wgetFile(const char* filePath) {
-  // download required data file from github repository and store
-  bool res = false;
-  if (fp.exists(filePath)) {
-    // if file exists but is empty, delete it to allow re-download
-    File f = fp.open(filePath, FILE_READ);
-    size_t fSize = f.size();
-    f.close(); 
-    if (!fSize) fp.remove(filePath);
-  }
-  if (!fp.exists(filePath)) {
-    char downloadURL[150];
-    snprintf(downloadURL, 150, "%s%s", GITHUB_PATH, filePath);
-    File f = fp.open(filePath, FILE_WRITE);
-    if (f) {
-      WiFiClientSecure wclient;
-      if (remoteServerConnect(wclient, GITHUB_HOST, HTTPS_PORT, git_rootCACertificate, SETASSIST)) {
-        HTTPClient https;
-        if (https.begin(wclient, GITHUB_HOST, HTTPS_PORT, downloadURL, true)) {
-          LOG_INF("Downloading %s from %s", filePath, downloadURL);    
-          int httpCode = https.GET();
-          int fileSize = 0;
-          if (httpCode == HTTP_CODE_OK) {
-            fileSize = https.writeToStream(&f);
-            if (fileSize <= 0) {
-              LOG_WRN("Download failed: writeToStream - %s", https.errorToString(fileSize).c_str());
-              httpCode = 0;
-            } else LOG_INF("Downloaded %s, size %s", filePath, fmtSize(fileSize));       
-          } else LOG_WRN("Download failed, error: %s", https.errorToString(httpCode).c_str());    
-          https.end();
-          f.close();
-          if (httpCode == HTTP_CODE_OK) {
-            if (!strcmp(filePath, CONFIG_FILE_PATH)) doRestart("Config file downloaded");
-            res = true;
-          } else {
-            LOG_WRN("HTTP Get failed with code: %d", httpCode);
-            fp.remove(filePath);
-          }
-        }
+/******************************************************************************
+ *  Загрузить необходимый файл данных из репозитория github и сохранить его
+ *  GITHUB_PATH="/s60sc/ESP32-CAM_MJPEG2SD/master"
+ **/
+static bool wgetFile(const char* filePath) 
+{
+   bool res = false;
+   LOG_INF("Загружаем: %s\n", filePath);
+   if (fp.exists(filePath)) 
+   {
+      // Если файл существует, но пуст, удаляем его, чтобы разрешить повторную загрузку
+      File f = fp.open(filePath, FILE_READ);
+      size_t fSize = f.size();
+      f.close(); 
+      if (!fSize) fp.remove(filePath);
+   }
+   if (!fp.exists(filePath)) 
+   {
+      char downloadURL[150];
+      snprintf(downloadURL, 150, "%s%s", GITHUB_PATH, filePath);
+      File f = fp.open(filePath, FILE_WRITE);
+      if (f) 
+      {
+         WiFiClientSecure wclient;
+         if (remoteServerConnect(wclient, GITHUB_HOST, HTTPS_PORT, git_rootCACertificate, SETASSIST)) 
+         {
+            HTTPClient https;
+            if (https.begin(wclient, GITHUB_HOST, HTTPS_PORT, downloadURL, true)) 
+            {
+               LOG_INF("Downloading %s from %s", filePath, downloadURL);    
+               int httpCode = https.GET();
+               int fileSize = 0;
+               if (httpCode == HTTP_CODE_OK) 
+               {
+                  fileSize = https.writeToStream(&f);
+                  if (fileSize <= 0) 
+                  {
+                     LOG_WRN("Download failed: writeToStream - %s", https.errorToString(fileSize).c_str());
+                     httpCode = 0;
+                  } 
+                  else LOG_INF("Downloaded %s, size %s", filePath, fmtSize(fileSize));       
+               } 
+               else LOG_WRN("Download failed, error: %s", https.errorToString(httpCode).c_str());    
+               https.end();
+               f.close();
+               if (httpCode == HTTP_CODE_OK) 
+               {
+                  if (!strcmp(filePath, CONFIG_FILE_PATH)) doRestart("Config file downloaded");
+                  res = true;
+               } 
+               else 
+               {
+                  LOG_WRN("HTTP Get failed with code: %d", httpCode);
+                  fp.remove(filePath);
+               }
+            }
+         } 
+         remoteServerClose(wclient);
       } 
-      remoteServerClose(wclient);
-    } else LOG_WRN("Open failed: %s", filePath);
-  } else res = true;
-  return res;
+      else LOG_WRN("Open failed: %s", filePath);
+   } 
+   else res = true;
+   return res;
 }
-
-bool checkDataFiles() {
-  // Download any missing data files
-  bool res = false;
-  if (strlen(GITHUB_PATH)) {
-    res = wgetFile(COMMON_JS_PATH); 
-    if (res) res = wgetFile(INDEX_PAGE_PATH); 
-    if (res) res = appDataFiles(); 
-  } else res = true; // no download needed
-  return res;
+/******************************************************************************
+ *  Загрузить все недостающие файлы данных
+ *  GITHUB_PATH="/s60sc/ESP32-CAM_MJPEG2SD/master"
+ **/
+bool checkDataFiles() 
+{
+   // 2025-02-07. Здесь отключена загрузка с GITHUB_PATH, файлы MJPEG2SD.htm, 
+   // common.js редактируются вручную и переносятся на SD
+   // return true;
+   // ---
+   bool res = false;
+   if (strlen(GITHUB_PATH)) 
+   {
+      res = wgetFile(COMMON_JS_PATH); 
+      if (res) res = wgetFile(INDEX_PAGE_PATH); 
+      if (res) res = appDataFiles(); 
+   } 
+   else res = true; // no download needed
+   return res;
 }
 
 const char* setupPage_html = R"~(
