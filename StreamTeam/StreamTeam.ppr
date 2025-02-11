@@ -86,8 +86,8 @@ Caret=7,96
 TopLine=528
 Caret=48,540
 [utils.cpp]
-TopLine=966
-Caret=48,966
+TopLine=806
+Caret=18,866
 [data\MJPEG2SD.htm]
 TopLine=971
 Caret=35,982
@@ -98,8 +98,8 @@ Caret=13,224
 TopLine=350
 Caret=5,362
 [globals.h]
-TopLine=340
-Caret=72,369
+TopLine=338
+Caret=38,369
 [appGlobals.h]
 TopLine=450
 Caret=40,450

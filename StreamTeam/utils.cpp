@@ -717,24 +717,26 @@ float smoothSensor(float latestVal, float smoothedVal, float alpha) {
   return (latestVal * alpha) + smoothedVal * (1.0 - alpha);
 }
 
-/*********************** Remote loggging ***********************/
-/*
- * Log mode selection in user interface: 
- * false : log to serial / web monitor only
- * true  : also saves log on SD card. To download the log generated, either:
- *  - To view the log, press Show Log button on the browser
- * - To clear the log file contents, on log web page press Clear Log link
- */
+/**                                                     Удаленный показ журнала
+ * ----------------------------------------------------------------------------                                                     
+ * Выбор режима ведения журнала в пользовательском интерфейсе: 
+ *    false: вывод журнала на последовательный порт или на веб-монитор
+ *    true: дополнительно сохранение журнал на SD-карту. 
+ * Для того, чтобы показать (загрузить) созданный журнал нажмите кнопку 
+ *    "Показать журнал" в браузере.
+ * Для того, чтобы очистить содержимое журнала, на веб-странице журнала 
+ *    нажмите ссылку "Очистить журнал"
+**/
  
-#define MAX_OUT 200
-static va_list arglist;
-static char fmtBuf[MAX_OUT];
-static char outBuf[MAX_OUT];
+#define MAX_OUT 200                            // размер выходного буфера строк журнала
+static va_list arglist;                        // нефиксированный набор параметров форматирования строки
+static char fmtBuf[MAX_OUT];                   // буфер неотформатированных (исходных строк журнала)
+static char outBuf[MAX_OUT];                   // выходной буфер строк журнала
 char alertMsg[MAX_OUT];
 TaskHandle_t logHandle = NULL;
-static SemaphoreHandle_t logSemaphore = NULL;      // флаг того, что сообщение журнала отформатировано
-static SemaphoreHandle_t logMutex = NULL;          // мьютекс контроля доступа к форматировщику сообщений журнала
-static int logWait = 100; // ms
+static SemaphoreHandle_t logSemaphore = NULL;  // флаг того, что сообщение журнала отформатировано
+static SemaphoreHandle_t logMutex = NULL;      // мьютекс контроля доступа к форматировщику сообщений журнала
+static int logWait = 100;                      // интервал ожидания освобождения семафора для строки журнала (ms)
 bool useLogColors = false;  // true to colorise log messages (eg if using idf.py, but not arduino)
 bool wsLog = false;
 
@@ -818,95 +820,81 @@ void remote_log_init() {
 /******************************************************************************
  *                   Регулировать ведение журнала приложения в отдельной задаче  
  *                                для уменьшения размера стека в других задачах
+ *                   (то есть вместо мьютекса используем прямое уведомление для 
+ *                                 расформатирования выходной строки сообщения)              
 **/
 static void logTask(void *arg) 
 {
    while(true) 
    {
-      // #include "task.h"
-      // uint32_t ulTaskNotifyTake(BaseType_t xClearCountOnExit, TickType_t xTicksToWait); 
-      //    Функция позволяет задаче ждать в состоянии блокировки, пока значение уведомления 
-      // не станет больше нуля, а также либо уменьшает, либо очищает значение уведомления задачи перед возвратом. 
-      //    Каждая задача RTOS имеет 32-битное значение уведомления, которое инициализируется нулём 
-      // при создании задачи RTOS. Уведомление задачи RTOS — это событие, отправляемое непосредственно 
-      // задаче, которая может разблокировать принимающую задачу и при необходимости обновить значение 
-      // уведомления принимающей задачи.
-      //    Функция ulTaskNotifyTake() предназначена для использования, когда уведомление о задаче 
-      // используется в качестве более быстрого и лёгкого двоичного или счётного семафора в качестве альтернативы. 
-      // Семафоры FreeRTOS берутся с помощью функции API xSemaphoreTake(), а ulTaskNotifyTake() является 
-      // эквивалентом, который вместо этого использует уведомление о задаче.
-      //    Когда задача использует значение своего уведомления в качестве двоичного или счётного семафора, 
-      // другие задачи и прерывания должны отправлять ей уведомления с помощью либо макроса xTaskNotifyGive(), 
-      // либо функции xTaskNotify() с параметром eAction, установленным в eIncrement (эти два варианта эквивалентны).
-      //    Функция ulTaskNotifyTake() может либо обнулять значение уведомления задачи при выходе, в этом случае 
-      // значение уведомления действует как двоичный семафор, либо уменьшать значение уведомления 
-      // задачи при выходе, в этом случае значение уведомления действует как счётный семафор.
-      //    Задача RTOS может использовать функцию ulTaskNotifyTake() для [опционального] блокирования в ожидании 
-      // ненулевого значения уведомления задачи. Задача не потребляет процессорное время, пока находится в 
-      // заблокированном состоянии.
-      //    В то время как xTaskNotifyWait() возвращает значение, когда ожидается уведомление, ulTaskNotifyTake() 
-      // возвращает значение, когда значение уведомления задачи не равно нулю, уменьшая значение уведомления 
-      // задачи перед возвратом.
-      //    Параметры: 
-      //    xClearCountOnExit - если получено уведомление о задаче RTOS и для xClearCountOnExit 
-      // установлено значение pdFALSE, то значение уведомления задачи RTOS уменьшается до выхода из функции 
-      // ulTaskNotifyTake(). Это эквивалентно уменьшению значения счётного семафора при успешном вызове xSemaphoreTake().
-      // Если получено уведомление о задаче RTOS и для xClearCountOnExit установлено значение pdTRUE, 
-      // то значение уведомления задачи RTOS сбрасывается до 0 перед выходом из функции ulTaskNotifyTake(). 
-      // Это эквивалентно значению двоичного семафора, оставленному равным нулю (или пустому, или «недоступному») 
-      // после успешного вызова xSemaphoreTake().
-      //    xTicksToWait - максимальное время ожидания в заблокированном состоянии до получения уведомления, 
-      // если уведомление ещё не ожидаемо при вызове ulTaskNotifyTake(). Задача RTOS не потребляет 
-      // процессорное время, когда находится в заблокированном состоянии. Время указывается в периодах 
-      // тиков RTOS. Макрос pdMS_TO_TICKS() можно использовать для преобразования времени, 
-      // указанного в миллисекундах, во время, указанное в тиках.
-      //    ВОЗВРАТ:
-      // Значение уведомления задачи до его уменьшения или очистки (см. описание xClearCountOnExit).
-      // Примеры: https://microsin.net/programming/arm/freertos-task-notifications.html
-      
+      // Ожидаем поступления уведомления для форматирования очередной строки
+      // неограниченное время (уведомление используетя, как двоичный семафор и
+      // сбросится в ноль перед завершением работы ulTaskNotifyTake())
       ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-      vsnprintf(outBuf, MAX_OUT, fmtBuf, arglist);
+      // Выводим отформатированный список аргументов в выходной буфер,
+      // преобразуя каждую запись в списке аргументов в соответствии со 
+      // спецификатором формата
+      vsnprintf(outBuf,MAX_OUT,fmtBuf,arglist);
+      // Выходим из функции с переменным списком параметров 
       va_end(arglist);
+      // Занимаем семафор для вывода строки журнала
       xSemaphoreGive(logSemaphore);
    }
 }
-
-void logPrint(const char *format, ...) {
-  // feeds logTask to format message, then outputs as required
-  if (xSemaphoreTake(logMutex, pdMS_TO_TICKS(logWait)) == pdTRUE) {
-    strncpy(fmtBuf, format, MAX_OUT);
-    va_start(arglist, format); 
-    vTaskPrioritySet(logHandle, uxTaskPriorityGet(NULL) + 1);
-    xTaskNotifyGive(logHandle);
-    outBuf[MAX_OUT - 2] = '\n'; 
-    outBuf[MAX_OUT - 1] = 0; // ensure always have ending newline
-    xSemaphoreTake(logSemaphore, portMAX_DELAY); // wait for logTask to complete        
-    // output to monitor console if attached
-    size_t msgLen = strlen(outBuf);
-    if (outBuf[msgLen - 2] == '~') {
-      // set up alert message for browser
-      outBuf[msgLen - 2] = ' ';
-      strncpy(alertMsg, outBuf, MAX_OUT - 1);
-      alertMsg[msgLen - 2] = 0;
-    }
-    ramLogStore(msgLen); // store in rtc ram 
-    if (monitorOpen) Serial.print(outBuf); 
-    else delay(10); // allow time for other tasks
-    if (sdLog) {
-      if (log_remote_fp != NULL) {
-        // output to SD if file opened
-        fwrite(outBuf, sizeof(char), msgLen, log_remote_fp); // log.txt
-        // periodic sync to SD
-        if (counter_write++ % WRITE_CACHE_CYCLE == 0) fsync(fileno(log_remote_fp));
-      } 
-    }
-    // output to web socket if open
-    if (msgLen > 1) {
-      outBuf[msgLen - 1] = 0; // lose final '/n'
-      if (wsLog) wsAsyncSend(outBuf);
-    }
-    xSemaphoreGive(logMutex);
-  } 
+/******************************************************************************
+ *                                     Обеспечить вывод текущей строки в журнал
+ *                                            в защищенном режиме через мьютекс
+**/
+void logPrint(const char *format, ...) 
+{
+   // Запускаем задачу logTask в защищенном режиме после захвата мьютекса
+   // для форматирования сообщения, а затем выводим по мере необходимости
+   if (xSemaphoreTake(logMutex, pdMS_TO_TICKS(logWait)) == pdTRUE) 
+   {
+      // Перемещаем входную строку в промежуточный буфер для форматирования
+      strncpy(fmtBuf, format, MAX_OUT);
+      // Инициализируем список аргументов для последующего форматирования
+      va_start(arglist,format); 
+      // Увеличиваем на 1 приоритет задачи ведения журнала
+      vTaskPrioritySet(logHandle, uxTaskPriorityGet(NULL) + 1);
+      // Отправляем уведомление, как двоичный семафор, задаче ведения журнала 
+      xTaskNotifyGive(logHandle);
+      // Завершаем формирование выходной строки переходом на новую
+      // и завершающим нулём
+      outBuf[MAX_OUT - 2] = '\n'; 
+      outBuf[MAX_OUT - 1] = 0; 
+      // Освобождаем семафор - дожидаемся завершения задачи ведения журнала logTask
+      xSemaphoreTake(logSemaphore, portMAX_DELAY); // wait for logTask to complete        
+      // output to monitor console if attached
+      size_t msgLen = strlen(outBuf);
+      if (outBuf[msgLen - 2] == '~') 
+      {
+         // set up alert message for browser
+         outBuf[msgLen - 2] = ' ';
+         strncpy(alertMsg, outBuf, MAX_OUT - 1);
+         alertMsg[msgLen - 2] = 0;
+      }
+      ramLogStore(msgLen); // store in rtc ram 
+      if (monitorOpen) Serial.print(outBuf); 
+      else delay(10); // allow time for other tasks
+      if (sdLog) 
+      {
+         if (log_remote_fp != NULL) 
+         {
+            // output to SD if file opened
+            fwrite(outBuf, sizeof(char), msgLen, log_remote_fp); // log.txt
+            // periodic sync to SD
+            if (counter_write++ % WRITE_CACHE_CYCLE == 0) fsync(fileno(log_remote_fp));
+         } 
+      }
+      // output to web socket if open
+      if (msgLen > 1) 
+      {
+         outBuf[msgLen - 1] = 0; // lose final '/n'
+         if (wsLog) wsAsyncSend(outBuf);
+      }
+      xSemaphoreGive(logMutex);
+   } 
 }
 /******************************************************************************
  *                        Завершить вывод текущей строки и перейти на следующую
