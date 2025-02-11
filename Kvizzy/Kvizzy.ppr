@@ -1,0 +1,46 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.CompileOnBackground=0
+Compilator.ProgSaveAll=0
+Compilator.ProgRunSelection=0
+Compilator.LogType=0
+Compilator.LogEncoding=0
+DefaultDir=C:\Kvizzy\Kvizzy
+DefaultCP=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+HTServer=localhost
+Extensions=*.*
+[Project tree]
+Kvizzy
+	+Kvizzy
+		appGlobals.h
+		globals.h
+		Kvizzy.ino
+		Kvizzy.md
+		Kvizzy.ppr
+		utils.cpp
+[Open project files]
+0=Kvizzy.ino
+1=appGlobals.h
+2=globals.h
+3=utils.cpp
+[Selected Project Files]
+Main=
+Selected=utils.cpp
+[Kvizzy.ino]
+TopLine=7
+Caret=1,17
+[appGlobals.h]
+TopLine=48
+Caret=24,60
+[globals.h]
+TopLine=50
+Caret=17,61
+[utils.cpp]
+TopLine=3
+Caret=1,19

@@ -1,6 +1,12 @@
-// Глобальные определения
-//
-// s60sc 2021, 2022
+/** Arduino, Esp32-CAM ****************************************** globals.h ***
+ * 
+ *                                                       Глобальные определения 
+ * 
+ * v3.4.0, 11.02.2025                                 Автор:      Труфанов В.Е.
+ * Copyright © 2024 tve                               Дата создания: 31.05.2024
+ * 
+ * 
+**/
 
 #include "esp_arduino_version.h"
 #pragma once
@@ -20,6 +26,7 @@
 /******************** Libraries *******************/
 
 #include "Arduino.h"
+/*
 #include <ESPmDNS.h> 
 #include "lwip/sockets.h"
 #include <vector>
@@ -38,7 +45,27 @@
 #include <WiFiClientSecure.h>
 #include <esp_http_server.h>
 #include <esp_https_server.h>
+*/
 
+// Глобальные определения функций, используемых utils.cpp / utilsFS.cpp / peripherals.cpp 
+void logSetup();
+
+// Определяем глобальные константы
+#define RAM_LOG_LEN  (1024 * 7)            // размер журнала системных сообщений в байтах, хранящегося в медленной оперативной памяти RTC (не более 8 КБАЙТ)
+#define MAGIC_NUM    987654321             // индикатор недостаточного питания
+#define SF_LEN       128                   // длина буфера сообщения
+#define STARTUP_FAIL "Неудачный запуск: "  // префикс сообщения о неудачном запуске
+
+// Определяем переменные приложения, используемые в разных файлах
+extern char     messageLog[];           // массив символов журнала сообщений
+extern uint16_t mlogEnd;                // адрес последнего байта в журнале сообщений
+extern char     startupFailure[];
+
+// Определяем основные макросы приложения
+#define INF_FORMAT(format) "[%s %s] " format "\n", esp_log_system_timestamp(), __FUNCTION__
+#define LOG_INF(format, ...) logPrint(INF_FORMAT(format), ##__VA_ARGS__)
+
+/*
 // ADC
 #define ADC_ATTEN ADC_11db
 #define ADC_SAMPLES 16
@@ -74,16 +101,12 @@
 #define MAX_HOST_LEN 32
 #define MAX_IP_LEN 16
 #define BOUNDARY_VAL "123456789000000000000987654321"
-#define SF_LEN 128
 #define WAV_HDR_LEN 44
-#define RAM_LOG_LEN (1024 * 7)  // размер журнала системных сообщений в байтах, хранящегося в медленной оперативной памяти RTC (не более 8 КБАЙТ)
 #define MIN_STACK_FREE 512
-#define STARTUP_FAIL "Startup Failure: "
 #define MAX_PAYLOAD_LEN 256     // set bigger than any websocket payload
 #define NULL_TEMP -127
 #define OneMHz 1000000
 #define USECS 1000000
-#define MAGIC_NUM 987654321     // индикатор недостаточного питания
 #define MAX_FAIL 5
 
 // global mandatory app specific functions, in appSpecific.cpp 
@@ -142,7 +165,6 @@ bool listDir(const char* fname, char* jsonBuff, size_t jsonBuffLen, const char* 
 bool loadConfig();
 void logLine();
 void logPrint(const char *fmtStr, ...);
-void logSetup();
 void OTAprereq();
 bool parseJson(int rxSize);
 void prepPeripherals();
@@ -199,8 +221,10 @@ bool sendTgramFile(const char* fileName, const char* contentType, const char* ca
 void tgramAlert(const char* subject, const char* message);
 // externalHeartbeat.cpp
 void sendExternalHeartbeat();
+*/
 
 /******************** Global utility declarations *******************/
+/*
 // Указываем компилятору список глобальных переменных, которые будут 
 // использоваться (читаться и записываться) в различных файлах
 extern char AP_SSID[];
@@ -286,7 +310,7 @@ extern const char* hfs_rootCACertificate;
 extern const char* prvtkey_pem; // app https server private key
 extern const char* cacert_pem; // app https server public certificate
 
-// app status
+// Определяем переменные приложения, используемые в разных файлах
 extern char timezone[];
 extern char ntpServer[];
 extern uint8_t alarmHour;
@@ -295,14 +319,11 @@ extern bool dbgVerbose;
 extern bool sdLog;
 extern char alertMsg[];
 extern int logType;
-extern char messageLog[];               // массив символов журнала сообщений
-extern uint16_t mlogEnd;                // адрес последнего байта в журнале сообщений
 extern bool timeSynchronized;
 extern bool monitorOpen; 
 extern const char* setupPage_html;
 extern const char* otaPage_html;
 extern SemaphoreHandle_t wsSendMutex;
-extern char startupFailure[];
 extern time_t currEpoch;
 
 extern UBaseType_t uxHighWaterMarkArr[];
@@ -349,9 +370,11 @@ extern bool formatIfMountFailed ; // Auto format the file system if mount failed
   "UNKNOWN"
 
 enum RemoteFail {SETASSIST, GETEXTIP, TGRAMCONN, FSFTP, EMAILCONN, EXTERNALHB, REMFAILCNT};
+*/
 
 /*********************** Log formatting ************************/
 
+/*
 //#define USE_LOG_COLORS  // uncomment to colorise log messages (eg if using idf.py, but not arduino)
 #ifdef USE_LOG_COLORS
 #define LOG_COLOR_ERR  "\033[0;31m" // red
@@ -365,8 +388,6 @@ enum RemoteFail {SETASSIST, GETEXTIP, TGRAMCONN, FSFTP, EMAILCONN, EXTERNALHB, R
 #define LOG_NO_COLOR
 #endif 
 // Определяем основные макросы приложения
-#define INF_FORMAT(format) "[%s %s] " format "\n", esp_log_system_timestamp(), __FUNCTION__
-#define LOG_INF(format, ...) logPrint(INF_FORMAT(format), ##__VA_ARGS__)
 #define LOG_ALT(format, ...) logPrint(INF_FORMAT(format "~"), ##__VA_ARGS__)
 #define WRN_FORMAT(format) LOG_COLOR_WRN "[%s WARN %s] " format LOG_NO_COLOR "\n", esp_log_system_timestamp(), __FUNCTION__
 #define LOG_WRN(format, ...) logPrint(WRN_FORMAT(format "~"), ##__VA_ARGS__)
@@ -377,3 +398,6 @@ enum RemoteFail {SETASSIST, GETEXTIP, TGRAMCONN, FSFTP, EMAILCONN, EXTERNALHB, R
 #define DBG_FORMAT(format) LOG_COLOR_ERR "[###### DBG @ %s:%u] " format LOG_NO_COLOR "\n", pathToFileName(__FILE__), __LINE__
 #define LOG_DBG(format, ...) do { logPrint(DBG_FORMAT(format), ##__VA_ARGS__); delay(FLUSH_DELAY); } while (0)
 #define LOG_PRT(buff, bufflen) log_print_buf((const uint8_t*)buff, bufflen)
+*/
+
+// ************************************************************** globals.h ***

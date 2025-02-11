@@ -10,24 +10,35 @@
 
 #include "appGlobals.h"
 
+RTC_NOINIT_ATTR uint32_t crashLoop;     // признак обнаруженного аварийного цикла недостаточного питания
+char startupFailure[SF_LEN] = {0};      // разрешение сообщать о любых сбоях при запуске через браузер для удаленных устройств
+
+static SemaphoreHandle_t logSemaphore = NULL;      // флаг того, что сообщение журнала отформатировано
+static SemaphoreHandle_t logMutex = NULL;          // мьютекс контроля доступа к форматировщику сообщений журнала
+TaskHandle_t             logHandle = NULL;
+
+// Определяем переменные ведения журнала на основе оперативной памяти в медленной памяти RTC 
+// (не инициализированные)
+RTC_NOINIT_ATTR char messageLog[RAM_LOG_LEN];  // массив символов журнала сообщений
+RTC_NOINIT_ATTR uint16_t mlogEnd;              // адрес последнего байта в журнале сообщений
+
+/*
 bool dbgVerbose = false;
 bool timeSynchronized = false;
 bool monitorOpen = true;
 bool dataFilesChecked = false;
-// allow any startup failures to be reported via browser for remote devices
-char startupFailure[SF_LEN] = {0};
 size_t alertBufferSize = 0;
 byte* alertBuffer = NULL; // buffer for telegram / smtp alert image
-RTC_NOINIT_ATTR uint32_t crashLoop;     // признак обнаруженного аварийного цикла недостаточного питания
 static void initBrownout(void);
 
 /************************** Wifi **************************/
 
-#include <esp_task_wdt.h>
+//#include <esp_task_wdt.h>
  
 /** Do not hard code anything below here unless you know what you are doing **/
 /** Use the web interface to configure wifi settings **/
 
+/*
 char hostName[MAX_HOST_LEN] = ""; // Default Host name
 char ST_SSID[MAX_HOST_LEN]  = ""; //Default router ssid
 char ST_Pass[MAX_PWD_LEN] = ""; //Default router passd
@@ -260,6 +271,8 @@ static void statusCheck() {
   if (mqtt_active) startMqttClient();
 #endif
 }
+*/
+
 /******************************************************************************
  *       Сбросить признак обнаруженного аварийного цикла недостаточного питания
 **/
@@ -268,6 +281,7 @@ void resetCrashLoop()
    crashLoop = 0;
 }
 
+/*
 static void pingSuccess(esp_ping_handle_t hdl, void *args) {
   //uint32_t elapsed_time;
   //esp_ping_get_profile(hdl, ESP_PING_PROF_TIMEGAP, &elapsed_time, sizeof(elapsed_time));
@@ -369,9 +383,10 @@ void getExtIP() {
     }
   }
 }
+*/
 
 /************** generic WiFiClientSecure functions ******************/
-
+/*
 static uint8_t failCounts[REMFAILCNT] = {0};
 
 void remoteServerClose(WiFiClientSecure& sclient) {
@@ -427,9 +442,11 @@ void remoteServerReset() {
   // reset fail counts
   for (uint8_t i = 0; i < REMFAILCNT; i++) failCounts[i] = 0;
 }
+*/
 
 /************************** NTP  **************************/
 
+/*
 // Needs to be a time zone string from: https://raw.githubusercontent.com/nayarsystems/posix_tz_db/master/zones.csv
 char timezone[FILE_NAME_LEN] = "GMT0";
 char ntpServer[MAX_HOST_LEN] = "pool.ntp.org";
@@ -526,9 +543,11 @@ bool checkAlarm() {
   }
   return false;
 }
+*/
 
 /********************** misc functions ************************/
 
+/*
 bool changeExtension(char* fileName, const char* newExt) {
   // replace original file extension with supplied extension (buffer must be large enough)
   size_t inNamePtr = strlen(fileName);
@@ -716,6 +735,7 @@ float smoothSensor(float latestVal, float smoothedVal, float alpha) {
   // where alpha between 0.0 (max smooth) and 1.0 (no smooth)
   return (latestVal * alpha) + smoothedVal * (1.0 - alpha);
 }
+*/
 
 /*********************** Remote loggging ***********************/
 /*
@@ -725,15 +745,12 @@ float smoothSensor(float latestVal, float smoothedVal, float alpha) {
  *  - To view the log, press Show Log button on the browser
  * - To clear the log file contents, on log web page press Clear Log link
  */
- 
+/* 
 #define MAX_OUT 200
 static va_list arglist;
 static char fmtBuf[MAX_OUT];
 static char outBuf[MAX_OUT];
 char alertMsg[MAX_OUT];
-TaskHandle_t logHandle = NULL;
-static SemaphoreHandle_t logSemaphore = NULL;      // флаг того, что сообщение журнала отформатировано
-static SemaphoreHandle_t logMutex = NULL;          // мьютекс контроля доступа к форматировщику сообщений журнала
 static int logWait = 100; // ms
 bool useLogColors = false;  // true to colorise log messages (eg if using idf.py, but not arduino)
 bool wsLog = false;
@@ -744,11 +761,7 @@ bool sdLog = false; // log to SD
 int logType = 0; // which log contents to display (0 : ram, 1 : sd, 2 : ws)
 static FILE* log_remote_fp = NULL;
 static uint32_t counter_write = 0;
-
-// Определяем переменные ведения журнала на основе оперативной памяти в медленной памяти RTC 
-// (не инициализированные)
-RTC_NOINIT_ATTR char messageLog[RAM_LOG_LEN];  // массив символов журнала сообщений
-RTC_NOINIT_ATTR uint16_t mlogEnd;              // адрес последнего байта в журнале сообщений
+*/
 
 /******************************************************************************
  *                                                    Очистить журнал сообщений
@@ -758,7 +771,7 @@ static void ramLogClear()
    mlogEnd = 0;
    memset(messageLog, 0, RAM_LOG_LEN);
 }
-  
+/*  
 static void ramLogStore(size_t msgLen) {
   // save log entry in ram buffer
   if (mlogEnd + msgLen >= RAM_LOG_LEN) {
@@ -815,6 +828,8 @@ void remote_log_init() {
     remote_log_init_SD(); // store log on sd card
   } else flush_log(true);
 }
+*/
+
 /******************************************************************************
  *                   Регулировать ведение журнала приложения в отдельной задаче  
  *                                для уменьшения размера стека в других задачах
@@ -864,14 +879,18 @@ static void logTask(void *arg)
       // Значение уведомления задачи до его уменьшения или очистки (см. описание xClearCountOnExit).
       // Примеры: https://microsin.net/programming/arm/freertos-task-notifications.html
       
+      /*
       ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
       vsnprintf(outBuf, MAX_OUT, fmtBuf, arglist);
       va_end(arglist);
       xSemaphoreGive(logSemaphore);
+      */
    }
 }
 
-void logPrint(const char *format, ...) {
+void logPrint(const char *format, ...) 
+{
+  /*
   // feeds logTask to format message, then outputs as required
   if (xSemaphoreTake(logMutex, pdMS_TO_TICKS(logWait)) == pdTRUE) {
     strncpy(fmtBuf, format, MAX_OUT);
@@ -906,14 +925,16 @@ void logPrint(const char *format, ...) {
       if (wsLog) wsAsyncSend(outBuf);
     }
     xSemaphoreGive(logMutex);
-  } 
+  }
+  */
 }
+
 /******************************************************************************
  *                        Завершить вывод текущей строки и перейти на следующую
 **/
 void logLine() 
 {
-  logPrint(" \n");
+  //logPrint(" \n");
 }
 /******************************************************************************
  *                                       Подготовить ведение журнала приложения
@@ -978,8 +999,17 @@ void logSetup()
    if (!DBG_ON) esp_log_level_set("*", ESP_LOG_NONE);
    // При повторном запуске основного цикла без перезагрузки
    // выдаем сообщение о недостаточном питании 
-   if (crashLoop == MAGIC_NUM) snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Обнаружен аварийный цикл недостаточного питания");
+   if (crashLoop == MAGIC_NUM) snprintf(startupFailure, SF_LEN, STARTUP_FAIL "обнаружен аварийный цикл недостаточного питания");
    crashLoop = MAGIC_NUM;
+   // Создаем задачу по форматированию строк и ведению лога
+   xTaskCreate(
+      logTask, 
+      "logTask",       // имя задачи
+      LOG_STACK_SIZE,  // размер стека = 1024 * 3
+      NULL,            // входной параметр задачи
+      LOG_PRI,         // приоритет задачи = 1
+      &logHandle       // ссылка на заголовок задачи
+   );    
    // Cоздаём семафор и получаем дескриптор для отметки того, 
    // что сообщение журнала отформатировано 
    logSemaphore = xSemaphoreCreateBinary(); 
@@ -989,19 +1019,13 @@ void logSetup()
    xSemaphoreGive(logSemaphore);
    // Отпускаем семафор для форматирования строк журнала
    xSemaphoreGive(logMutex);
-   // Создаем задачу по форматированию строк и ведению лога
-   xTaskCreate(logTask, 
-      "logTask",       // имя задачи
-      LOG_STACK_SIZE,  // размер стека = 1024 * 3
-      NULL,            // входной параметр задачи
-      LOG_PRI,         // приоритет задачи = 1
-      &logHandle);     // ссылка на заголовок задачи
    // Если размер журнала системных сообщений в байтах превысил размер
    // медленной оперативной памяти RTC, то очищаем его
    if (mlogEnd >= RAM_LOG_LEN) ramLogClear(); 
    // Выводим сообщение после настройки журнала
    LOG_INF("Выполнена настройка журнала, размер %u, начало с %u\n\n",RAM_LOG_LEN,mlogEnd);
    LOG_INF("=============== %s %s ===============", APP_NAME, APP_VER);
+   /*
    //
    initBrownout();
    LOG_INF("Compiled with arduino-esp32 v%d.%d.%d", ESP_ARDUINO_VERSION_MAJOR, ESP_ARDUINO_VERSION_MINOR, ESP_ARDUINO_VERSION_PATCH);
@@ -1009,8 +1033,10 @@ void logSetup()
    wakeupResetReason();
    if (alertBuffer == NULL) alertBuffer = (byte*)ps_malloc(MAX_ALERT); 
    debugMemory("logSetup"); 
+   */
 }
 
+/*
 void formatHex(const char* inData, size_t inLen) {
   // format data as hex bytes for output
   char formatted[(inLen * 3) + 1];
@@ -1033,9 +1059,11 @@ void forceCrash() {
   printf("%u\n", 1/0);
 #pragma GCC diagnostic warning "-Wdiv-by-zero"
 }
+*/
 
 /****************** base 64 ******************/
 
+/*
 #define BASE64 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
 const uint8_t* encode64chunk(const uint8_t* inp, int rem) {
@@ -1065,10 +1093,11 @@ const char* encode64(const char* inp) {
     strncat(encoded, (char*)encode64chunk((uint8_t*)inp + i, min(len - i, 3)), 4);
   return encoded;
 }
-
+*/
 
 /************** qualitive core idle time monitoring *************/
 
+/*
 // not working properly
 #include "esp_freertos_hooks.h"
 
@@ -1109,10 +1138,11 @@ void startIdleMon() {
     esp_register_freertos_idle_hook_for_cpu(hookCallback, i);
   xTaskCreatePinnedToCore(idleMonTask, "idlemon", 1024, NULL, IDLEMON_PRI, NULL, 0);
 }
-
+*/
 
 /****************** send device to sleep (light or deep) & watchdog ******************/
 
+/*
 #include <esp_wifi.h>
 #include <driver/gpio.h>
 
@@ -1240,6 +1270,7 @@ static void initBrownout(void) {
     brownoutStatus = 0; 
   }
 }
+*/
 
 // ************************************************************** utils.cpp ***
 

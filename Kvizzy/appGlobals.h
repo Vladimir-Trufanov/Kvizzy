@@ -1,6 +1,12 @@
-// Global MJPEG2SD declarations
-//
-// s60sc 2021, 2022, 2024
+/** Arduino, Esp32-CAM *************************************** appGlobals.h ***
+ * 
+ *                                                 Global MJPEG2SD declarations 
+ * 
+ * v3.4.0, 11.02.2025                                 Автор:      Труфанов В.Е.
+ * Copyright © 2024 tve                               Дата создания: 31.05.2024
+ * 
+ * 
+**/
 
 #pragma once
 #include "globals.h"
@@ -40,10 +46,24 @@ CAMERA_MODEL_ESP32S3_CAM_LCD
 //#define CAMERA_MODEL_XIAO_ESP32S3 
 #endif
 
+// Фиксируем определения, сохраняемые "как есть"
+ 
+#define APP_NAME       "ESP-CAM_MJPEG" // max 15 chars - имя приложения
+#define APP_VER        "9.9.1"         // версия приложения
+#define DBG_ON         false           // отключили отладочный вывод в журнал приложения
+#define DEBUG_MEM      false           // отключили трассировку использования памяти
+// Определяем размеры стеков задач
+#define LOG_STACK_SIZE (1024 * 3)      // задача по форматированию строк и ведению лога
+// Определяем приоритеты задач
+#define LOG_PRI        1               // задача по форматированию строк и ведению лога
+// Определяем дескрипторы (заголовки) задач
+extern TaskHandle_t    logHandle;      // задача по форматированию строк и ведению лога
+
 /***************************************************************
   To reduce code size by removing unwanted features,
   set relevant defines below to false and optionally delete associated file
 ***************************************************************/
+/*
 #define INCLUDE_FTP_HFS true // ftp.cpp (file upload)
 #define INCLUDE_SMTP true    // smtp.cpp (email)
 #define INCLUDE_MQTT true    // mqtt.cpp 
@@ -58,31 +78,29 @@ CAMERA_MODEL_ESP32S3_CAM_LCD
 
 #define INCLUDE_TINYML false  // if true, requires relevant Edge Impulse TinyML Arduino library to be installed
 #define INCLUDE_DS18B20 false // if true, requires additional libraries: OneWire and DallasTemperature
+*/
 
 /**************************************************************************/
 
+/*
 #define ALLOW_SPACES false       // set true to allow whitespace in configs.txt key values
-
 // web server ports 
 #define HTTP_PORT 80             // insecure app access
 #define HTTPS_PORT 443           // secure app access
+*/
 
 /*********************** Fixed defines leave as is ***********************/ 
 /** Do not change anything below here unless you know what you are doing **/
 
 //#define DEV_ONLY               // leave commented out
 //#define SIDE_ALARM             // leave commented out
+/*
 #define STATIC_IP_OCTAL "133"    // dev only
-#define DEBUG_MEM false          // отключили трассировку использования памяти
 #define FLUSH_DELAY 0            // for debugging crashes
-#define DBG_ON false             // отключили отладочный вывод в журнал приложения
 #define DOT_MAX 50
 #define HOSTNAME_GRP 99
 //#define REPORT_IDLE            // core processor idle time monitoring
 #define USE_IP6 true
- 
-#define APP_NAME "ESP-CAM_MJPEG" // max 15 chars - имя приложения
-#define APP_VER  "9.9.1"         // версия приложения
 
 #define HTTP_CLIENTS 2           // http(s), ws(s)
 #define MAX_STREAMS 4            // (web stream, playback, download), NVR, audio, subtitle
@@ -146,7 +164,6 @@ CAMERA_MODEL_ESP32S3_CAM_LCD
 #define CAPTURE_STACK_SIZE (1024 * 4)
 #define EMAIL_STACK_SIZE (1024 * 6)
 #define FS_STACK_SIZE (1024 * 4)
-#define LOG_STACK_SIZE (1024 * 3)         // задача по форматированию строк и ведению лога
 #define AUDIO_STACK_SIZE (1024 * 4)
 #define MICREM_STACK_SIZE (1024 * 2)
 #define MQTT_STACK_SIZE (1024 * 4)
@@ -169,7 +186,6 @@ CAMERA_MODEL_ESP32S3_CAM_LCD
 #define TGRAM_PRI   1
 #define EMAIL_PRI   1
 #define FTP_PRI     1
-#define LOG_PRI     1   // задача по форматированию строк и ведению лога
 #define MQTT_PRI    1
 #define LED_PRI     1
 #define SERVO_PRI   1
@@ -177,14 +193,16 @@ CAMERA_MODEL_ESP32S3_CAM_LCD
 #define DS18B20_PRI 1
 #define BATT_PRI    1
 #define IDLEMON_PRI 5
+*/
 
 /******************** Libraries *******************/
 
-#include "esp_camera.h"
-#include "camera_pins.h"
+//#include "esp_camera.h"
+//#include "camera_pins.h"
 
 /******************** Function declarations *******************/
 
+/*
 struct mjpegStruct {
   size_t buffLen;
   size_t buffOffset;
@@ -253,9 +271,10 @@ void storeSensorData(bool fromStream);
 void takePhotos(bool startPhotos);
 size_t writeAviIndex(byte* clientBuf, size_t buffSize, bool isTL = false);
 size_t writeWavFile(byte* clientBuf, size_t buffSize);
+*/
 
 /******************** Global app declarations *******************/
-
+/*
 // motion detection parameters
 extern int moveStartChecks; // checks per second for start motion
 extern int moveStopSecs; // secs between each check for stop, also determines post motion time
@@ -440,7 +459,6 @@ extern TaskHandle_t captureHandle;
 extern TaskHandle_t DS18B20handle;
 extern TaskHandle_t emailHandle;
 extern TaskHandle_t fsHandle;
-extern TaskHandle_t logHandle;         // задача по форматированию строк и ведению лога
 extern TaskHandle_t audioHandle;
 extern TaskHandle_t mqttTaskHandle;
 extern TaskHandle_t playbackHandle;
@@ -454,10 +472,11 @@ extern TaskHandle_t uartClientHandle;
 //
 extern SemaphoreHandle_t frameSemaphore[];
 extern SemaphoreHandle_t motionSemaphore;
-
+*/
 
 /************************** structures ********************************/
 
+/*
 struct frameStruct {
   const char* frameSizeStr;
   const uint16_t frameWidth;
@@ -492,3 +511,6 @@ const frameStruct frameData[] = {
   {"P_FHD", 1080, 1920, 5, 4, 1},
   {"QSXGA", 2560, 1920, 4, 4, 1}
 };
+*/
+
+// *********************************************************** appGlobals.h ***
