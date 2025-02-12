@@ -8,18 +8,18 @@
 
 #include "appGlobals.h"
 
+/*
 // Storage settings
-int sdMinCardFreeSpace = 100;     // минимальное количество свободных мегабайт на карте перед включением режима выделения места (свободного)
-int sdFreeSpaceMode = 1;          // режим выделения места: 0-не проверять, 1-удалить старые каталоги, 2-выгрузить по ftp и удалить всё 
-bool formatIfMountFailed = true;  // автоматически форматировать файловую систему в случае сбоя монтирования (false - не выполнять)
-
-static fs::FS fp = STORAGE;       // указатель на файловую систему
-static char fsType[10] = {0};     // место для имени устройства хранения данных
+int sdMinCardFreeSpace = 100; // Minimum amount of card free Megabytes before sdFreeSpaceMode action is enabled
+int sdFreeSpaceMode = 1; // 0 - No Check, 1 - Delete oldest dir, 2 - Upload oldest dir to FTP/HFS and then delete on SD 
+bool formatIfMountFailed = true; // Auto format the file system if mount failed. Set to false to not auto format.
+static fs::FS fp = STORAGE;
 
 // hold sorted list of filenames/folders names in order of newest first
 static std::vector<std::string> fileVec;
 static auto currentDir = "/~current";
 static auto previousDir = "/~previous";
+static char fsType[10] = {0};
 
 static void infoSD() {
 #if !(CONFIG_IDF_TARGET_ESP32C3)
@@ -38,7 +38,7 @@ static void infoSD() {
 static bool prepSD_MMC() {
   bool res = false;
 #if !(CONFIG_IDF_TARGET_ESP32C3)
-  /* open SD card in MMC 1 bit mode
+  / * open SD card in MMC 1 bit mode
      MMC4  MMC1  ESP32 ESP32S3
       D2          12
       D3    ..    13
@@ -46,7 +46,7 @@ static bool prepSD_MMC() {
       CLK  CLK    14    39
       D0   D0     2     40
       D1          4
-  */
+  * /
   if (psramFound()) heap_caps_malloc_extmem_enable(MIN_RAM); // small number to force vector into psram
   fileVec.reserve(1000);
   if (psramFound()) heap_caps_malloc_extmem_enable(MAX_RAM);
@@ -89,70 +89,47 @@ static void listFolder(const char* rootDir) {
   strcpy(totalBytes, fmtSize(STORAGE.totalBytes()));
   LOG_INF("%s: %s used of %s", fsType, fmtSize(STORAGE.usedBytes()), totalBytes);
 }
-/******************************************************************************
- *                Подготовить хранилище на требуемом устройстве хранения данных
- *   
- *       #include "FS.h" - файловая система
- *       #include <SD_MMC.h>  
- *       #include <LittleFS.h>
- *       fs - объект файловой системы, в его обязанности входит структуризация, 
- *                                чтение, хранение, запись данных в виде файлов
-**/
-bool startStorage() 
-{
-   // Запускаем необходимое устройство хранения данных (SD-карту или flash)
-   bool res = false;
-   #if !(CONFIG_IDF_TARGET_ESP32C3)
-   if ((fs::SDMMCFS*)&STORAGE == &SD_MMC) 
-   {
-      strcpy(fsType, "SD_MMC");
-      res = prepSD_MMC();
-      if (res) listFolder(DATA_DIR);
-      else snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Check SD card inserted");
-      debugMemory("startStorage");
-      return res; 
-   }
-   #endif
-   // Если устройство подключено, разбираемся с файловой системой (SPIFFS или LittleFS
-   if (!strlen(fsType)) 
-   {
-      #ifdef _SPIFFS_H_
-      if ((fs::SPIFFSFS*)&STORAGE == &SPIFFS) 
-      {
-         strcpy(fsType, "SPIFFS");
-         res = SPIFFS.begin(formatIfMountFailed);
-      }
-      #endif
-      
-      // Подключаемся к файловой системе LittleFS
-      #ifdef _LITTLEFS_H_
-      if ((fs::LittleFSFS*)&STORAGE == &LittleFS) 
-      {
-         // Формируем название типа памяти
-         strcpy(fsType, "LittleFS");
-         // Монтируем устройство
-         res = LittleFS.begin(formatIfMountFailed);
-         // Cоздаём папку с данными, если она отсутствует
-         if (res) LittleFS.mkdir(DATA_DIR);
-      }
-      #endif
-    
-      if (res) 
-      {  
-         // Выводим сведения о файлах и файловой системе
-         const char* rootDir = !strcmp(fsType, "LittleFS") ? DATA_DIR : "/";
-         listFolder(rootDir);
-      }
-   } 
-   // Если устройство не подключено, выводим сообщение и отключаем помощь
-   else 
-   {
-      snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Ошибка монтирования %s", fsType);  
-      // Отключаем помощь при установке, так как файловая система отсутствует
-      dataFilesChecked = true; 
-   }
-   debugMemory("startStorage");
-   return res;
+
+bool startStorage() {
+  // start required storage device (SD card or flash file system)
+  bool res = false;
+#if !(CONFIG_IDF_TARGET_ESP32C3)
+  if ((fs::SDMMCFS*)&STORAGE == &SD_MMC) {
+    strcpy(fsType, "SD_MMC");
+    res = prepSD_MMC();
+    if (res) listFolder(DATA_DIR);
+    else snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Check SD card inserted");
+    debugMemory("startStorage");
+    return res; 
+  }
+#endif
+  // One of SPIFFS or LittleFS
+  if (!strlen(fsType)) {
+#ifdef _SPIFFS_H_
+    if ((fs::SPIFFSFS*)&STORAGE == &SPIFFS) {
+      strcpy(fsType, "SPIFFS");
+      res = SPIFFS.begin(formatIfMountFailed);
+    }
+#endif
+#ifdef _LITTLEFS_H_
+    if ((fs::LittleFSFS*)&STORAGE == &LittleFS) {
+      strcpy(fsType, "LittleFS");
+      res = LittleFS.begin(formatIfMountFailed);
+      // create data folder if not present
+      if (res) LittleFS.mkdir(DATA_DIR);
+    }
+#endif
+    if (res) {  
+      // list details of files on file system
+      const char* rootDir = !strcmp(fsType, "LittleFS") ? DATA_DIR : "/";
+      listFolder(rootDir);
+    }
+  } else {
+    snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Failed to mount %s", fsType);  
+    dataFilesChecked = true; // disable setupAssist as no file system
+  }
+  debugMemory("startStorage");
+  return res;
 }
 
 static void getOldestDir(char* oldestDir) {
@@ -344,9 +321,9 @@ void deleteFolderOrFile(const char* deleteThis) {
     deleteOthers(deleteThis);
   }
 }
-
+*/
 /************** uncompressed tarball **************/
-
+/*
 #define BLOCKSIZE 512
 
 static esp_err_t writeHeader(File& inFile, httpd_req_t* req) {  
@@ -442,6 +419,7 @@ esp_err_t downloadFile(File& df, httpd_req_t* req) {
   } else res = sendChunks(df, req); // send AVI
   return res;
 }
+*/
 
 // ************************************************************ utilsFS.cpp ***
 

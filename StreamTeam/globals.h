@@ -51,21 +51,21 @@
 #endif
 #define CENTER_ADC (MAX_ADC / 2) 
 
-// data folder defs
-#define DATA_DIR "/data"
-#define HTML_EXT ".htm"
-#define TEXT_EXT ".txt"
-#define JS_EXT ".js"
-#define CSS_EXT ".css"
-#define ICO_EXT ".ico"
-#define SVG_EXT ".svg"
-#define JPG_EXT ".jpg"
-#define CONFIG_FILE_PATH DATA_DIR "/configs" TEXT_EXT
-#define LOG_FILE_PATH DATA_DIR "/log" TEXT_EXT
-#define OTA_FILE_PATH DATA_DIR "/OTA" HTML_EXT
-#define COMMON_JS_PATH DATA_DIR "/common" JS_EXT 
-#define WEBDAV "/webdav"
-#define GITHUB_HOST "raw.githubusercontent.com"
+// Определяем папки и расширения
+#define DATA_DIR          "/data"
+#define HTML_EXT          ".htm"
+#define TEXT_EXT          ".txt"
+#define JS_EXT            ".js"
+#define CSS_EXT           ".css"
+#define ICO_EXT           ".ico"
+#define SVG_EXT           ".svg"
+#define JPG_EXT           ".jpg"
+#define CONFIG_FILE_PATH  DATA_DIR "/configs" TEXT_EXT
+#define LOG_FILE_PATH     DATA_DIR "/log" TEXT_EXT
+#define OTA_FILE_PATH     DATA_DIR "/OTA" HTML_EXT
+#define COMMON_JS_PATH    DATA_DIR "/common" JS_EXT 
+#define WEBDAV            "/webdav"
+#define GITHUB_HOST       "raw.githubusercontent.com"
 
 #define FILLSTAR "****************************************************************"
 #define DELIM '~'
@@ -173,7 +173,7 @@ uint16_t smoothAnalog(int analogPin, int samples = ADC_SAMPLES);
 float smoothSensor(float latestVal, float smoothedVal, float alpha);
 void startOTAtask();
 void startSecTimer(bool startTimer);
-bool startStorage();
+bool startStorage();          // подготовка хранилища на SD-карте
 void startWebServer();
 bool startWifi(bool firstcall = true);
 void stopPing();
@@ -307,10 +307,11 @@ extern time_t currEpoch;
 
 extern UBaseType_t uxHighWaterMarkArr[];
 
-// SD storage
-extern int sdMinCardFreeSpace; // Minimum amount of card free Megabytes before freeSpaceMode action is enabled
-extern int sdFreeSpaceMode; // 0 - No Check, 1 - Delete oldest dir, 2 - Upload to ftp and then delete folder on SD 
-extern bool formatIfMountFailed ; // Auto format the file system if mount failed. Set to false to not auto format.
+// Устройство хранения данных (SD storage)
+extern int sdMinCardFreeSpace;    // минимальное количество свободных мегабайт на карте перед включением режима выделения места (свободного)
+extern int sdFreeSpaceMode;       // режим выделения места: 0-не проверять, 1-удалить старые каталоги, 2-выгрузить по ftp и удалить всё 
+extern bool formatIfMountFailed ; // автоматически форматировать файловую систему в случае сбоя монтирования (false - не выполнять)
+Auto format the file system if mount failed. Set to false to not auto format.
 
 #define HTTP_METHOD_STRING(method) \
   (method == HTTP_DELETE) ? "DELETE" : \

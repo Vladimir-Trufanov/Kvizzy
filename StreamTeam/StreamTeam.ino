@@ -21,7 +21,7 @@
 void setup() 
 {
    logSetup();
-   // prep SD card storage
+   // Подготавливаем хранилище на SD-карте
    if (startStorage()) 
    {
       // Load saved user configuration
