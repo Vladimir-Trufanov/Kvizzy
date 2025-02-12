@@ -13,23 +13,25 @@
 RTC_NOINIT_ATTR uint32_t crashLoop;     // признак обнаруженного аварийного цикла недостаточного питания
 char startupFailure[SF_LEN] = {0};      // разрешение сообщать о любых сбоях при запуске через браузер для удаленных устройств
 
-static SemaphoreHandle_t logSemaphore = NULL;      // флаг того, что сообщение журнала отформатировано
-static SemaphoreHandle_t logMutex = NULL;          // мьютекс контроля доступа к форматировщику сообщений журнала
-TaskHandle_t             logHandle = NULL;
+static SemaphoreHandle_t logSemaphore = NULL;  // флаг того, что сообщение журнала отформатировано
+static SemaphoreHandle_t logMutex     = NULL;  // мьютекс контроля доступа к форматировщику сообщений журнала
+TaskHandle_t             logHandle    = NULL;
+bool                     monitorOpen  = true;  // флаг того, что последовательный порт открыт
 
 // Определяем переменные ведения журнала на основе оперативной памяти в медленной памяти RTC 
 // (не инициализированные)
 RTC_NOINIT_ATTR char messageLog[RAM_LOG_LEN];  // массив символов журнала сообщений
 RTC_NOINIT_ATTR uint16_t mlogEnd;              // адрес последнего байта в журнале сообщений
 
+static void initBrownout(void);
+
+
 /*
 bool dbgVerbose = false;
 bool timeSynchronized = false;
-bool monitorOpen = true;
 bool dataFilesChecked = false;
 size_t alertBufferSize = 0;
 byte* alertBuffer = NULL; // buffer for telegram / smtp alert image
-static void initBrownout(void);
 
 /************************** Wifi **************************/
 
@@ -737,31 +739,32 @@ float smoothSensor(float latestVal, float smoothedVal, float alpha) {
 }
 */
 
-/*********************** Remote loggging ***********************/
-/*
- * Log mode selection in user interface: 
- * false : log to serial / web monitor only
- * true  : also saves log on SD card. To download the log generated, either:
- *  - To view the log, press Show Log button on the browser
- * - To clear the log file contents, on log web page press Clear Log link
- */
-/* 
-#define MAX_OUT 200
-static va_list arglist;
-static char fmtBuf[MAX_OUT];
-static char outBuf[MAX_OUT];
+/**                                                     Удаленный показ журнала
+ * ----------------------------------------------------------------------------                                                     
+ * Выбор режима ведения журнала в пользовательском интерфейсе: 
+ *    false: вывод журнала на последовательный порт или на веб-монитор
+ *    true: дополнительно сохранение журнал на SD-карту. 
+ * Для того, чтобы показать (загрузить) созданный журнал нажмите кнопку 
+ *    "Показать журнал" в браузере.
+ * Для того, чтобы очистить содержимое журнала, на веб-странице журнала 
+ *    нажмите ссылку "Очистить журнал"
+**/
+ 
+#define MAX_OUT 200                            // размер выходного буфера строк журнала
+static va_list arglist;                        // нефиксированный набор параметров форматирования строки
+static char fmtBuf[MAX_OUT];                   // буфер неотформатированных (исходных строк журнала)
+static char outBuf[MAX_OUT];                   // выходной буфер строк журнала
 char alertMsg[MAX_OUT];
-static int logWait = 100; // ms
+static int logWait = 100;                      // интервал ожидания освобождения семафора для строки журнала (ms)
 bool useLogColors = false;  // true to colorise log messages (eg if using idf.py, but not arduino)
 bool wsLog = false;
 
 #define WRITE_CACHE_CYCLE 5
 
-bool sdLog = false; // log to SD
-int logType = 0; // which log contents to display (0 : ram, 1 : sd, 2 : ws)
+bool sdLog = false;                            // изначально запрет лога на CSD
+int logType = 0;                               // which log contents to display (0:ram, 1:sd, 2:ws)
 static FILE* log_remote_fp = NULL;
 static uint32_t counter_write = 0;
-*/
 
 /******************************************************************************
  *                                                    Очистить журнал сообщений
@@ -771,20 +774,33 @@ static void ramLogClear()
    mlogEnd = 0;
    memset(messageLog, 0, RAM_LOG_LEN);
 }
-/*  
-static void ramLogStore(size_t msgLen) {
-  // save log entry in ram buffer
-  if (mlogEnd + msgLen >= RAM_LOG_LEN) {
-    // log needs to roll around cyclic buffer
-    uint16_t firstPart = RAM_LOG_LEN - mlogEnd;
-    memcpy(messageLog + mlogEnd, outBuf, firstPart);
-    msgLen -= firstPart;
-    memcpy(messageLog, outBuf + firstPart, msgLen);
-    mlogEnd = 0;
-  } else memcpy(messageLog + mlogEnd, outBuf, msgLen);
-  mlogEnd += msgLen;
+/******************************************************************************
+ *                          Разместить строку журнала в оперативной памяти rtc,
+ * похоже здесь ошибка с размещением крайнего сообщения в буфере !!! 2025-02-12
+**/
+static void ramLogStore(size_t msgLen) 
+{
+   // Если места в журнале уже не будет хватать,
+   // разбиваем последнее сообщение на 2 части и первую размещаем 
+   // в конце журнала, а вторую переносим в начало
+   if (mlogEnd + msgLen >= RAM_LOG_LEN) 
+   {
+      // Определяем размер свободного кусочка в памяти,
+      // здесь размещаем первую часть сообщения
+      uint16_t firstPart = RAM_LOG_LEN - mlogEnd;
+      memcpy(messageLog + mlogEnd, outBuf, firstPart);
+      // В начало журнала переносим оставшуюся часть сообщения
+      msgLen -= firstPart;
+      memcpy(messageLog, outBuf + firstPart, msgLen);
+      // Настраиваемся на новое начало сообщения
+      mlogEnd = 0;
+   } 
+   // если места хватает, дописываем сообщение в конец буфера
+   else memcpy(messageLog + mlogEnd, outBuf, msgLen);
+   mlogEnd += msgLen;
 }
 
+/*
 void flush_log(bool andClose) {
   if (log_remote_fp != NULL) {
     fsync(fileno(log_remote_fp));  
@@ -833,108 +849,97 @@ void remote_log_init() {
 /******************************************************************************
  *                   Регулировать ведение журнала приложения в отдельной задаче  
  *                                для уменьшения размера стека в других задачах
+ *                   (то есть вместо мьютекса используем прямое уведомление для 
+ *                                 расформатирования выходной строки сообщения)              
 **/
 static void logTask(void *arg) 
 {
    while(true) 
    {
-      // #include "task.h"
-      // uint32_t ulTaskNotifyTake(BaseType_t xClearCountOnExit, TickType_t xTicksToWait); 
-      //    Функция позволяет задаче ждать в состоянии блокировки, пока значение уведомления 
-      // не станет больше нуля, а также либо уменьшает, либо очищает значение уведомления задачи перед возвратом. 
-      //    Каждая задача RTOS имеет 32-битное значение уведомления, которое инициализируется нулём 
-      // при создании задачи RTOS. Уведомление задачи RTOS — это событие, отправляемое непосредственно 
-      // задаче, которая может разблокировать принимающую задачу и при необходимости обновить значение 
-      // уведомления принимающей задачи.
-      //    Функция ulTaskNotifyTake() предназначена для использования, когда уведомление о задаче 
-      // используется в качестве более быстрого и лёгкого двоичного или счётного семафора в качестве альтернативы. 
-      // Семафоры FreeRTOS берутся с помощью функции API xSemaphoreTake(), а ulTaskNotifyTake() является 
-      // эквивалентом, который вместо этого использует уведомление о задаче.
-      //    Когда задача использует значение своего уведомления в качестве двоичного или счётного семафора, 
-      // другие задачи и прерывания должны отправлять ей уведомления с помощью либо макроса xTaskNotifyGive(), 
-      // либо функции xTaskNotify() с параметром eAction, установленным в eIncrement (эти два варианта эквивалентны).
-      //    Функция ulTaskNotifyTake() может либо обнулять значение уведомления задачи при выходе, в этом случае 
-      // значение уведомления действует как двоичный семафор, либо уменьшать значение уведомления 
-      // задачи при выходе, в этом случае значение уведомления действует как счётный семафор.
-      //    Задача RTOS может использовать функцию ulTaskNotifyTake() для [опционального] блокирования в ожидании 
-      // ненулевого значения уведомления задачи. Задача не потребляет процессорное время, пока находится в 
-      // заблокированном состоянии.
-      //    В то время как xTaskNotifyWait() возвращает значение, когда ожидается уведомление, ulTaskNotifyTake() 
-      // возвращает значение, когда значение уведомления задачи не равно нулю, уменьшая значение уведомления 
-      // задачи перед возвратом.
-      //    Параметры: 
-      //    xClearCountOnExit - если получено уведомление о задаче RTOS и для xClearCountOnExit 
-      // установлено значение pdFALSE, то значение уведомления задачи RTOS уменьшается до выхода из функции 
-      // ulTaskNotifyTake(). Это эквивалентно уменьшению значения счётного семафора при успешном вызове xSemaphoreTake().
-      // Если получено уведомление о задаче RTOS и для xClearCountOnExit установлено значение pdTRUE, 
-      // то значение уведомления задачи RTOS сбрасывается до 0 перед выходом из функции ulTaskNotifyTake(). 
-      // Это эквивалентно значению двоичного семафора, оставленному равным нулю (или пустому, или «недоступному») 
-      // после успешного вызова xSemaphoreTake().
-      //    xTicksToWait - максимальное время ожидания в заблокированном состоянии до получения уведомления, 
-      // если уведомление ещё не ожидаемо при вызове ulTaskNotifyTake(). Задача RTOS не потребляет 
-      // процессорное время, когда находится в заблокированном состоянии. Время указывается в периодах 
-      // тиков RTOS. Макрос pdMS_TO_TICKS() можно использовать для преобразования времени, 
-      // указанного в миллисекундах, во время, указанное в тиках.
-      //    ВОЗВРАТ:
-      // Значение уведомления задачи до его уменьшения или очистки (см. описание xClearCountOnExit).
-      // Примеры: https://microsin.net/programming/arm/freertos-task-notifications.html
-      
-      /*
+      // Ожидаем поступления уведомления для форматирования очередной строки
+      // неограниченное время (уведомление используетя, как двоичный семафор и
+      // сбросится в ноль перед завершением работы ulTaskNotifyTake())
       ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-      vsnprintf(outBuf, MAX_OUT, fmtBuf, arglist);
+      // Выводим отформатированный список аргументов в выходной буфер,
+      // преобразуя каждую запись в списке аргументов в соответствии со 
+      // спецификатором формата
+      vsnprintf(outBuf,MAX_OUT,fmtBuf,arglist);
+      // Выходим из функции с переменным списком параметров 
       va_end(arglist);
+      // Занимаем семафор для вывода строки журнала
       xSemaphoreGive(logSemaphore);
-      */
    }
 }
-
+/******************************************************************************
+ *                                     Обеспечить вывод текущей строки в журнал
+ *                                            в защищенном режиме через мьютекс
+**/
 void logPrint(const char *format, ...) 
 {
-  /*
-  // feeds logTask to format message, then outputs as required
-  if (xSemaphoreTake(logMutex, pdMS_TO_TICKS(logWait)) == pdTRUE) {
-    strncpy(fmtBuf, format, MAX_OUT);
-    va_start(arglist, format); 
-    vTaskPrioritySet(logHandle, uxTaskPriorityGet(NULL) + 1);
-    xTaskNotifyGive(logHandle);
-    outBuf[MAX_OUT - 2] = '\n'; 
-    outBuf[MAX_OUT - 1] = 0; // ensure always have ending newline
-    xSemaphoreTake(logSemaphore, portMAX_DELAY); // wait for logTask to complete        
-    // output to monitor console if attached
-    size_t msgLen = strlen(outBuf);
-    if (outBuf[msgLen - 2] == '~') {
-      // set up alert message for browser
-      outBuf[msgLen - 2] = ' ';
-      strncpy(alertMsg, outBuf, MAX_OUT - 1);
-      alertMsg[msgLen - 2] = 0;
-    }
-    ramLogStore(msgLen); // store in rtc ram 
-    if (monitorOpen) Serial.print(outBuf); 
-    else delay(10); // allow time for other tasks
-    if (sdLog) {
-      if (log_remote_fp != NULL) {
-        // output to SD if file opened
-        fwrite(outBuf, sizeof(char), msgLen, log_remote_fp); // log.txt
-        // periodic sync to SD
-        if (counter_write++ % WRITE_CACHE_CYCLE == 0) fsync(fileno(log_remote_fp));
-      } 
-    }
-    // output to web socket if open
-    if (msgLen > 1) {
-      outBuf[msgLen - 1] = 0; // lose final '/n'
-      if (wsLog) wsAsyncSend(outBuf);
-    }
-    xSemaphoreGive(logMutex);
-  }
-  */
+   // Запускаем задачу logTask в защищенном режиме после захвата мьютекса
+   // для форматирования сообщения, а затем выводим по мере необходимости
+   if (xSemaphoreTake(logMutex, pdMS_TO_TICKS(logWait)) == pdTRUE) 
+   {
+      // Перемещаем входную строку в промежуточный буфер для форматирования
+      strncpy(fmtBuf, format, MAX_OUT);
+      // Инициализируем список аргументов для последующего форматирования
+      va_start(arglist,format); 
+      // Увеличиваем на 1 приоритет задачи ведения журнала
+      vTaskPrioritySet(logHandle, uxTaskPriorityGet(NULL) + 1);
+      // Отправляем уведомление, как двоичный семафор, задаче ведения журнала 
+      xTaskNotifyGive(logHandle);
+      // Завершаем формирование выходной строки переходом на новую
+      // и завершающим нулём
+      outBuf[MAX_OUT - 2] = '\n'; 
+      outBuf[MAX_OUT - 1] = 0; 
+      // Освобождаем семафор - дожидаемся завершения задачи ведения журнала logTask
+      xSemaphoreTake(logSemaphore, portMAX_DELAY);    
+      // Cохраняем строку в оперативной памяти rtc
+      size_t msgLen = strlen(outBuf);
+      ramLogStore(msgLen); 
+      // Выводим строку на консоль мониторинга для браузера, 
+      // если она подключена
+      if (outBuf[msgLen - 2] == '~') 
+      {
+         // set up alert message for browser
+         outBuf[msgLen - 2] = ' ';
+         strncpy(alertMsg, outBuf, MAX_OUT - 1);
+         alertMsg[msgLen - 2] = 0;
+      }
+      // Выводим строку в последовательный порт,
+      // если он уже открыт
+      if (monitorOpen) Serial.print(outBuf); 
+      // Иначе выделяем время для других задач
+      else delay(10); 
+      // Выкладываем строку на SD, когда требуется
+      if (sdLog) 
+      {
+         if (log_remote_fp != NULL) 
+         {
+            // output to SD if file opened
+            fwrite(outBuf, sizeof(char), msgLen, log_remote_fp); // log.txt
+            // periodic sync to SD
+            if (counter_write++ % WRITE_CACHE_CYCLE == 0) fsync(fileno(log_remote_fp));
+         } 
+      }
+      // output to web socket if open
+      if (msgLen > 1) 
+      {
+         /*
+         outBuf[msgLen - 1] = 0; // lose final '/n'
+         if (wsLog) wsAsyncSend(outBuf);
+         */
+      }
+      // Отпускаем семафор после завершения вывода
+      xSemaphoreGive(logMutex);
+   } 
 }
-
 /******************************************************************************
  *                        Завершить вывод текущей строки и перейти на следующую
 **/
 void logLine() 
 {
-  //logPrint(" \n");
+  logPrint(" \n");
 }
 /******************************************************************************
  *                                       Подготовить ведение журнала приложения
@@ -999,41 +1004,39 @@ void logSetup()
    if (!DBG_ON) esp_log_level_set("*", ESP_LOG_NONE);
    // При повторном запуске основного цикла без перезагрузки
    // выдаем сообщение о недостаточном питании 
-   if (crashLoop == MAGIC_NUM) snprintf(startupFailure, SF_LEN, STARTUP_FAIL "обнаружен аварийный цикл недостаточного питания");
+   if (crashLoop == MAGIC_NUM) snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Обнаружен аварийный цикл недостаточного питания");
    crashLoop = MAGIC_NUM;
-   // Создаем задачу по форматированию строк и ведению лога
-   xTaskCreate(
-      logTask, 
-      "logTask",       // имя задачи
-      LOG_STACK_SIZE,  // размер стека = 1024 * 3
-      NULL,            // входной параметр задачи
-      LOG_PRI,         // приоритет задачи = 1
-      &logHandle       // ссылка на заголовок задачи
-   );    
-   // Cоздаём семафор и получаем дескриптор для отметки того, 
-   // что сообщение журнала отформатировано 
+   // Cоздаём семафор для защиты процедуры форматирования строки журнала 
    logSemaphore = xSemaphoreCreateBinary(); 
-   // Создаём дескриптор мьютекса контроля доступа к форматировщику сообщений журнала 
+   // Создаём мьютекс для защиты процедуры вывода строки сообщения в послед.порт, на SD, в браузер, в сокет и т.д.
    logMutex = xSemaphoreCreateMutex();   
    // Освобождаем мьютех для захвата очередным сообщением  
    xSemaphoreGive(logSemaphore);
    // Отпускаем семафор для форматирования строк журнала
    xSemaphoreGive(logMutex);
+   // Создаем задачу по форматированию строк и ведению лога
+   xTaskCreate(logTask, 
+      "logTask",       // имя задачи
+      LOG_STACK_SIZE,  // размер стека = 1024 * 3
+      NULL,            // входной параметр задачи
+      LOG_PRI,         // приоритет задачи = 1
+      &logHandle);     // ссылка на заголовок задачи
    // Если размер журнала системных сообщений в байтах превысил размер
    // медленной оперативной памяти RTC, то очищаем его
    if (mlogEnd >= RAM_LOG_LEN) ramLogClear(); 
    // Выводим сообщение после настройки журнала
    LOG_INF("Выполнена настройка журнала, размер %u, начало с %u\n\n",RAM_LOG_LEN,mlogEnd);
    LOG_INF("=============== %s %s ===============", APP_NAME, APP_VER);
-   /*
-   //
+   // Предупреждаем о недостаточном питании
    initBrownout();
-   LOG_INF("Compiled with arduino-esp32 v%d.%d.%d", ESP_ARDUINO_VERSION_MAJOR, ESP_ARDUINO_VERSION_MINOR, ESP_ARDUINO_VERSION_PATCH);
+   LOG_INF("Откомпилировано на arduino-esp32 v%d.%d.%d", ESP_ARDUINO_VERSION_MAJOR, ESP_ARDUINO_VERSION_MINOR, ESP_ARDUINO_VERSION_PATCH);
    ////LOG_INF(" ESP32 Arduino core version: %s", ESP_ARDUINO_VERSION_STR);
-   wakeupResetReason();
-   if (alertBuffer == NULL) alertBuffer = (byte*)ps_malloc(MAX_ALERT); 
-   debugMemory("logSetup"); 
-   */
+   // Переводим контроллер в спящий режим
+   // wakeupResetReason();
+   //
+   // if (alertBuffer == NULL) alertBuffer = (byte*)ps_malloc(MAX_ALERT); 
+   //
+   // debugMemory("logSetup"); 
 }
 
 /*
@@ -1244,33 +1247,44 @@ IRAM_ATTR static void notifyBrownout(void *arg) {
   brownoutStatus = 'B';
   esp_restart_noos();
 }
-
-static void initBrownout(void) {
-  // brownout warning only output once to prevent bootloop
-  if (brownoutStatus == 'R') LOG_WRN("Brownout warning previously notified");
-  else if (brownoutStatus == 'B') {
-    LOG_WRN("Brownout occurred due to inadequate power supply");
-    brownoutStatus = 'R';
-  } else {
-    brownout_hal_config_t cfg = {
-      .threshold = BROWNOUT_DET_LVL,
-      .enabled = true,
-      .reset_enabled = false,
-      .flash_power_down = true,
-      .rf_power_down = true,
-    };
-    brownout_hal_config(&cfg);
-#if ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 0)
-    brownout_ll_intr_clear();
-    rtc_isr_register(notifyBrownout, NULL, RTC_CNTL_BROWN_OUT_INT_ENA_M, RTC_INTR_FLAG_IRAM);
-    brownout_ll_intr_enable(true);
-#else
-    rtc_isr_register(notifyBrownout, NULL, RTC_CNTL_BROWN_OUT_INT_ENA_M);
-#endif
-    brownoutStatus = 0; 
-  }
-}
 */
+
+/******************************************************************************
+ *                          Отключить предупреждение, выводить только один раз, 
+ *                                             чтобы предотвратить перезагрузку
+**/
+static void initBrownout(void) 
+{
+   /*
+   if (brownoutStatus == 'R') 
+      LOG_WRN("Предупреждение об отключении, о котором ранее сообщалось");
+   else if (brownoutStatus == 'B') 
+   {
+      LOG_WRN("Будет произведено отключение из-за недостаточного электроснабжения");
+      brownoutStatus = 'R';
+   } 
+   else 
+   {
+      brownout_hal_config_t cfg = 
+      {
+         .threshold = BROWNOUT_DET_LVL,
+         .enabled = true,
+         .reset_enabled = false,
+         .flash_power_down = true,
+         .rf_power_down = true,
+      };
+      brownout_hal_config(&cfg);
+      #if ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 0)
+         brownout_ll_intr_clear();
+         rtc_isr_register(notifyBrownout, NULL, RTC_CNTL_BROWN_OUT_INT_ENA_M, RTC_INTR_FLAG_IRAM);
+         brownout_ll_intr_enable(true);
+      #else
+         rtc_isr_register(notifyBrownout, NULL, RTC_CNTL_BROWN_OUT_INT_ENA_M);
+      #endif
+      brownoutStatus = 0; 
+   }
+   */
+}
 
 // ************************************************************** utils.cpp ***
 
