@@ -678,11 +678,13 @@ uint32_t checkStackUse(TaskHandle_t thisTask, int taskIdx) {
   return freeStack;
 }
 
-void debugMemory(const char* caller) {
-  if (DEBUG_MEM) {
-    logPrint("%s > Free: heap %u, block: %u, min: %u, pSRAM %u\n", caller, ESP.getFreeHeap(), ESP.getMaxAllocHeap(), ESP.getMinFreeHeap(), ESP.getFreePsram());
-    delay(FLUSH_DELAY);
-  }
+void debugMemory(const char* caller) 
+{
+   if (DEBUG_MEM) 
+   {
+      logPrint("%s > Free: heap %u, block: %u, min: %u, pSRAM %u\n", caller, ESP.getFreeHeap(), ESP.getMaxAllocHeap(), ESP.getMinFreeHeap(), ESP.getFreePsram());
+      delay(FLUSH_DELAY);
+   }
 }
 
 void doRestart(const char* restartStr) {
@@ -742,8 +744,8 @@ bool wsLog = false;
 
 #define WRITE_CACHE_CYCLE 5
 
-bool sdLog = false; // log to SD
-int logType = 0; // which log contents to display (0 : ram, 1 : sd, 2 : ws)
+bool sdLog = false;                            // изначально запрет лога на CSD
+int logType = 0;                               // which log contents to display (0:ram, 1:sd, 2:ws)
 static FILE* log_remote_fp = NULL;
 static uint32_t counter_write = 0;
 
@@ -760,18 +762,30 @@ static void ramLogClear()
    mlogEnd = 0;
    memset(messageLog, 0, RAM_LOG_LEN);
 }
-  
-static void ramLogStore(size_t msgLen) {
-  // save log entry in ram buffer
-  if (mlogEnd + msgLen >= RAM_LOG_LEN) {
-    // log needs to roll around cyclic buffer
-    uint16_t firstPart = RAM_LOG_LEN - mlogEnd;
-    memcpy(messageLog + mlogEnd, outBuf, firstPart);
-    msgLen -= firstPart;
-    memcpy(messageLog, outBuf + firstPart, msgLen);
-    mlogEnd = 0;
-  } else memcpy(messageLog + mlogEnd, outBuf, msgLen);
-  mlogEnd += msgLen;
+/******************************************************************************
+ *                          Разместить строку журнала в оперативной памяти rtc,
+ * похоже здесь ошибка с размещением крайнего сообщения в буфере !!! 2025-02-12
+**/
+static void ramLogStore(size_t msgLen) 
+{
+   // Если места в журнале уже не будет хватать,
+   // разбиваем последнее сообщение на 2 части и первую размещаем 
+   // в конце журнала, а вторую переносим в начало
+   if (mlogEnd + msgLen >= RAM_LOG_LEN) 
+   {
+      // Определяем размер свободного кусочка в памяти,
+      // здесь размещаем первую часть сообщения
+      uint16_t firstPart = RAM_LOG_LEN - mlogEnd;
+      memcpy(messageLog + mlogEnd, outBuf, firstPart);
+      // В начало журнала переносим оставшуюся часть сообщения
+      msgLen -= firstPart;
+      memcpy(messageLog, outBuf + firstPart, msgLen);
+      // Настраиваемся на новое начало сообщения
+      mlogEnd = 0;
+   } 
+   // если места хватает, дописываем сообщение в конец буфера
+   else memcpy(messageLog + mlogEnd, outBuf, msgLen);
+   mlogEnd += msgLen;
 }
 
 void flush_log(bool andClose) {
@@ -864,9 +878,12 @@ void logPrint(const char *format, ...)
       outBuf[MAX_OUT - 2] = '\n'; 
       outBuf[MAX_OUT - 1] = 0; 
       // Освобождаем семафор - дожидаемся завершения задачи ведения журнала logTask
-      xSemaphoreTake(logSemaphore, portMAX_DELAY); // wait for logTask to complete        
-      // output to monitor console if attached
+      xSemaphoreTake(logSemaphore, portMAX_DELAY);    
+      // Cохраняем строку в оперативной памяти rtc
       size_t msgLen = strlen(outBuf);
+      ramLogStore(msgLen); 
+      // Выводим строку на консоль мониторинга для браузера, 
+      // если она подключена
       if (outBuf[msgLen - 2] == '~') 
       {
          // set up alert message for browser
@@ -874,9 +891,12 @@ void logPrint(const char *format, ...)
          strncpy(alertMsg, outBuf, MAX_OUT - 1);
          alertMsg[msgLen - 2] = 0;
       }
-      ramLogStore(msgLen); // store in rtc ram 
+      // Выводим строку в последовательный порт,
+      // если он уже открыт
       if (monitorOpen) Serial.print(outBuf); 
-      else delay(10); // allow time for other tasks
+      // Иначе выделяем время для других задач
+      else delay(10); 
+      // Выкладываем строку на SD, когда требуется
       if (sdLog) 
       {
          if (log_remote_fp != NULL) 
@@ -893,6 +913,7 @@ void logPrint(const char *format, ...)
          outBuf[msgLen - 1] = 0; // lose final '/n'
          if (wsLog) wsAsyncSend(outBuf);
       }
+      // Отпускаем семафор после завершения вывода
       xSemaphoreGive(logMutex);
    } 
 }
@@ -968,10 +989,9 @@ void logSetup()
    // выдаем сообщение о недостаточном питании 
    if (crashLoop == MAGIC_NUM) snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Обнаружен аварийный цикл недостаточного питания");
    crashLoop = MAGIC_NUM;
-   // Cоздаём семафор и получаем дескриптор для отметки того, 
-   // что сообщение журнала отформатировано 
+   // Cоздаём семафор для защиты процедуры форматирования строки журнала 
    logSemaphore = xSemaphoreCreateBinary(); 
-   // Создаём дескриптор мьютекса контроля доступа к форматировщику сообщений журнала 
+   // Создаём мьютекс для защиты процедуры вывода строки сообщения в послед.порт, на SD, в браузер, в сокет и т.д.
    logMutex = xSemaphoreCreateMutex();   
    // Освобождаем мьютех для захвата очередным сообщением  
    xSemaphoreGive(logSemaphore);
@@ -990,12 +1010,15 @@ void logSetup()
    // Выводим сообщение после настройки журнала
    LOG_INF("Выполнена настройка журнала, размер %u, начало с %u\n\n",RAM_LOG_LEN,mlogEnd);
    LOG_INF("=============== %s %s ===============", APP_NAME, APP_VER);
-   //
+   // Предупреждаем о недостаточном питании
    initBrownout();
-   LOG_INF("Compiled with arduino-esp32 v%d.%d.%d", ESP_ARDUINO_VERSION_MAJOR, ESP_ARDUINO_VERSION_MINOR, ESP_ARDUINO_VERSION_PATCH);
+   LOG_INF("Откомпилировано на arduino-esp32 v%d.%d.%d", ESP_ARDUINO_VERSION_MAJOR, ESP_ARDUINO_VERSION_MINOR, ESP_ARDUINO_VERSION_PATCH);
    ////LOG_INF(" ESP32 Arduino core version: %s", ESP_ARDUINO_VERSION_STR);
+   // Переводим контроллер в спящий режим
    wakeupResetReason();
+   //
    if (alertBuffer == NULL) alertBuffer = (byte*)ps_malloc(MAX_ALERT); 
+   //
    debugMemory("logSetup"); 
 }
 
@@ -1101,20 +1124,24 @@ void startIdleMon() {
 
 /****************** send device to sleep (light or deep) & watchdog ******************/
 
+// перевод устройства в спящий режим (легкий или глубокий) и контрольный таймер
+
 #include <esp_wifi.h>
 #include <driver/gpio.h>
 
-static esp_sleep_wakeup_cause_t printWakeupReason() {
-  esp_sleep_wakeup_cause_t wakeup_reason = esp_sleep_get_wakeup_cause();
-  switch(wakeup_reason) {
-    case ESP_SLEEP_WAKEUP_EXT0 : LOG_INF("Wakeup by external signal using RTC_IO"); break;
-    case ESP_SLEEP_WAKEUP_EXT1 : LOG_INF("Wakeup by external signal using RTC_CNTL"); break;
-    case ESP_SLEEP_WAKEUP_TIMER : LOG_INF("Wakeup by internal timer"); break;
-    case ESP_SLEEP_WAKEUP_TOUCHPAD : LOG_INF("Wakeup by touchpad"); break;
-    case ESP_SLEEP_WAKEUP_ULP : LOG_INF("Wakeup by ULP program"); break;
-    case ESP_SLEEP_WAKEUP_GPIO: LOG_INF("Wakeup by GPIO"); break;    
-    case ESP_SLEEP_WAKEUP_UART: LOG_INF("Wakeup by UART"); break; 
-    default : LOG_INF("Wakeup by reset"); break;
+static esp_sleep_wakeup_cause_t printWakeupReason() 
+{
+   esp_sleep_wakeup_cause_t wakeup_reason = esp_sleep_get_wakeup_cause();
+   switch(wakeup_reason) 
+   {
+      case ESP_SLEEP_WAKEUP_EXT0     : LOG_INF("Wakeup by external signal using RTC_IO"); break;
+      case ESP_SLEEP_WAKEUP_EXT1     : LOG_INF("Wakeup by external signal using RTC_CNTL"); break;
+      case ESP_SLEEP_WAKEUP_TIMER    : LOG_INF("Wakeup by internal timer"); break;
+      case ESP_SLEEP_WAKEUP_TOUCHPAD : LOG_INF("Wakeup by touchpad"); break;
+      case ESP_SLEEP_WAKEUP_ULP      : LOG_INF("Wakeup by ULP program"); break;
+      case ESP_SLEEP_WAKEUP_GPIO     : LOG_INF("Wakeup by GPIO"); break;    
+      case ESP_SLEEP_WAKEUP_UART     : LOG_INF("Wakeup by UART"); break; 
+      default                        : LOG_INF("Wakeup by reset"); break;
   }
   return wakeup_reason;
 }
@@ -1145,10 +1172,11 @@ static esp_reset_reason_t printResetReason() {
   return bootReason;
 }
 
-esp_sleep_wakeup_cause_t wakeupResetReason() {
-  printResetReason();
-  esp_sleep_wakeup_cause_t wakeupReason = printWakeupReason();
-  return wakeupReason;
+esp_sleep_wakeup_cause_t wakeupResetReason() 
+{
+   printResetReason();
+   esp_sleep_wakeup_cause_t wakeupReason = printWakeupReason();
+   return wakeupReason;
 }
 
 void goToSleep(int wakeupPin, bool deepSleep) {
@@ -1202,31 +1230,39 @@ IRAM_ATTR static void notifyBrownout(void *arg) {
   brownoutStatus = 'B';
   esp_restart_noos();
 }
-
-static void initBrownout(void) {
-  // brownout warning only output once to prevent bootloop
-  if (brownoutStatus == 'R') LOG_WRN("Brownout warning previously notified");
-  else if (brownoutStatus == 'B') {
-    LOG_WRN("Brownout occurred due to inadequate power supply");
-    brownoutStatus = 'R';
-  } else {
-    brownout_hal_config_t cfg = {
-      .threshold = BROWNOUT_DET_LVL,
-      .enabled = true,
-      .reset_enabled = false,
-      .flash_power_down = true,
-      .rf_power_down = true,
-    };
-    brownout_hal_config(&cfg);
-#if ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 0)
-    brownout_ll_intr_clear();
-    rtc_isr_register(notifyBrownout, NULL, RTC_CNTL_BROWN_OUT_INT_ENA_M, RTC_INTR_FLAG_IRAM);
-    brownout_ll_intr_enable(true);
-#else
-    rtc_isr_register(notifyBrownout, NULL, RTC_CNTL_BROWN_OUT_INT_ENA_M);
-#endif
-    brownoutStatus = 0; 
-  }
+/******************************************************************************
+ *                          Отключить предупреждение, выводить только один раз, 
+ *                                             чтобы предотвратить перезагрузку
+**/
+static void initBrownout(void) 
+{
+   if (brownoutStatus == 'R') 
+      LOG_WRN("Предупреждение об отключении, о котором ранее сообщалось");
+   else if (brownoutStatus == 'B') 
+   {
+      LOG_WRN("Будет произведено отключение из-за недостаточного электроснабжения");
+      brownoutStatus = 'R';
+   } 
+   else 
+   {
+      brownout_hal_config_t cfg = 
+      {
+         .threshold = BROWNOUT_DET_LVL,
+         .enabled = true,
+         .reset_enabled = false,
+         .flash_power_down = true,
+         .rf_power_down = true,
+      };
+      brownout_hal_config(&cfg);
+      #if ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 0)
+         brownout_ll_intr_clear();
+         rtc_isr_register(notifyBrownout, NULL, RTC_CNTL_BROWN_OUT_INT_ENA_M, RTC_INTR_FLAG_IRAM);
+         brownout_ll_intr_enable(true);
+      #else
+         rtc_isr_register(notifyBrownout, NULL, RTC_CNTL_BROWN_OUT_INT_ENA_M);
+      #endif
+      brownoutStatus = 0; 
+   }
 }
 
 // ************************************************************** utils.cpp ***

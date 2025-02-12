@@ -21,6 +21,7 @@
 
 #include "appGlobals.h"
 
+/*
 #if INCLUDE_UART
 #include "driver/uart.h"
 
@@ -230,4 +231,4 @@ void prepUart()
 }
 
 #endif
-
+*/

@@ -17,7 +17,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 StreamTeam
-	+StreamTeam
+	-StreamTeam
 		-BP1
 			BP1\logSetup.bp1
 			BP1\StreamTeam.bp1
@@ -72,13 +72,13 @@ StreamTeam
 6=mjpeg2sd.cpp
 7=globals.h
 8=appGlobals.h
-9=webServer.cpp
+9=data\configs.txt
 [Selected Project Files]
 Main=
 Selected=utils.cpp
 [StreamTeam.ino]
-TopLine=2
-Caret=50,13
+TopLine=13
+Caret=12,23
 [setupAssist.cpp]
 TopLine=75
 Caret=7,96
@@ -86,8 +86,8 @@ Caret=7,96
 TopLine=528
 Caret=48,540
 [utils.cpp]
-TopLine=806
-Caret=18,866
+TopLine=670
+Caret=4,687
 [data\MJPEG2SD.htm]
 TopLine=971
 Caret=35,982
@@ -98,11 +98,11 @@ Caret=13,224
 TopLine=350
 Caret=5,362
 [globals.h]
-TopLine=338
-Caret=38,369
+TopLine=97
+Caret=6,108
 [appGlobals.h]
 TopLine=450
 Caret=40,450
-[webServer.cpp]
-TopLine=53
-Caret=25,65
+[data\configs.txt]
+TopLine=108
+Caret=1,120

@@ -292,13 +292,13 @@ extern char ntpServer[];
 extern uint8_t alarmHour;
 extern char* jsonBuff; 
 extern bool dbgVerbose;
-extern bool sdLog;
+extern bool sdLog;                      // флаг записи лога на cd
 extern char alertMsg[];
 extern int logType;
 extern char messageLog[];               // массив символов журнала сообщений
-extern uint16_t mlogEnd;                // адрес последнего байта в журнале сообщений
+extern uint16_t mlogEnd;                // адрес последнего заполненного байта в журнале сообщений
 extern bool timeSynchronized;
-extern bool monitorOpen; 
+extern bool monitorOpen;                // флаг подключения серийного монитора
 extern const char* setupPage_html;
 extern const char* otaPage_html;
 extern SemaphoreHandle_t wsSendMutex;
