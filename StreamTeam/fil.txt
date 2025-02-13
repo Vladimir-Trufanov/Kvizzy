@@ -1,0 +1,9 @@
+[00:00:00.543 printWakeupReason] Wakeup by reset
+[00:00:00.572 WARN prepSD_MMC] SD card mount failed 
+[00:00:00.773 setWifiSTA] Wifi Station IP from DHCP
+[00:00:00.779 WARN startWifi] SSID  not connected not available, use AP 
+[00:00:04.795 startPing] Started ping monitoring - On
+[00:00:04.799 startWebServer] Starting web server on port: 80
+[00:00:04.799 startWebServer] Remote server certificates not checked
+[00:00:04.810 WARN setup] Startup Failure: Check SD card inserted 
+[00:00:04.810 loop] =============== Total tasks: 13 ===============

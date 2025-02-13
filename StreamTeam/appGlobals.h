@@ -92,8 +92,8 @@ CAMERA_MODEL_ESP32S3_CAM_LCD
 #define JSON_BUFF_LEN (32 * 1024) // set big enough to hold all file names in a folder
 #define MAX_CONFIGS 190 // must be > number of entries in configs.txt
 #define MAX_JPEG (ONEMEG / 2) // UXGA jpeg frame buffer at highest quality 375kB rounded up
-#define MIN_RAM 8 // min object size stored in ram instead of PSRAM default is 4096
-#define MAX_RAM 4096 // max object size stored in ram instead of PSRAM default is 4096
+#define MIN_RAM 8     // минимальный размер объекта, хранящегося в оперативной памяти, вместо параметра по умолчанию (=4096)
+#define MAX_RAM 4096  // максимальный размер объекта, хранящегося в оперативной памяти, вместо параметра по умолчанию равен 4096
 #define TLS_HEAP (64 * 1024) // min free heap for TLS session
 #define WARN_HEAP (32 * 1024) // low free heap warning
 #define WARN_ALLOC (16 * 1024) // low free max allocatable free heap block

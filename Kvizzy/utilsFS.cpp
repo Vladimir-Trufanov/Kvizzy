@@ -8,130 +8,184 @@
 
 #include "appGlobals.h"
 
-/*
-// Storage settings
-int sdMinCardFreeSpace = 100; // Minimum amount of card free Megabytes before sdFreeSpaceMode action is enabled
-int sdFreeSpaceMode = 1; // 0 - No Check, 1 - Delete oldest dir, 2 - Upload oldest dir to FTP/HFS and then delete on SD 
-bool formatIfMountFailed = true; // Auto format the file system if mount failed. Set to false to not auto format.
-static fs::FS fp = STORAGE;
+// Настройки хранилища данных
+int sdMinCardFreeSpace = 100;     // минимальное количество свободных мегабайт на карте перед включением режима выделения места (свободного)
+int sdFreeSpaceMode = 1;          // режим выделения места: 0-не проверять, 1-удалить старые каталоги, 2-выгрузить по ftp и удалить всё 
+bool formatIfMountFailed = true;  // автоматически форматировать файловую систему в случае сбоя монтирования (false - не выполнять)
 
-// hold sorted list of filenames/folders names in order of newest first
-static std::vector<std::string> fileVec;
-static auto currentDir = "/~current";
-static auto previousDir = "/~previous";
-static char fsType[10] = {0};
+static fs::FS fp = STORAGE;       // указатель на файловую систему
+static char fsType[10] = {0};     // место для имени устройства хранения данных
 
-static void infoSD() {
-#if !(CONFIG_IDF_TARGET_ESP32C3)
-  uint8_t cardType = SD_MMC.cardType();
-  if (cardType == CARD_NONE) LOG_WRN("No SD card attached");
-  else {
-    char typeStr[8] = "UNKNOWN";
-    if (cardType == CARD_MMC) strcpy(typeStr, "MMC");
-    else if (cardType == CARD_SD) strcpy(typeStr, "SDSC");
-    else if (cardType == CARD_SDHC) strcpy(typeStr, "SDHC");
-    LOG_INF("SD card type %s, Size: %s", typeStr, fmtSize(SD_MMC.cardSize()));
-  }
-#endif
+// Определяем варианты сортировок папок и файлов
+static std::vector<std::string> fileVec;  // вектор
+static auto currentDir = "/~current";     // по алфавитному возрастанию
+static auto previousDir = "/~previous";   // по алфавитному убыванию
+
+/******************************************************************************
+ *                                                         Вывести данные по SD
+**/
+static void infoSD() 
+{
+   #if !(CONFIG_IDF_TARGET_ESP32C3)
+      uint8_t cardType = SD_MMC.cardType();
+      if (cardType == CARD_NONE) LOG_WRN("No SD card attached");
+      else 
+      {
+         char typeStr[8] = "UNKNOWN";
+         if (cardType == CARD_MMC) strcpy(typeStr, "MMC");
+         else if (cardType == CARD_SD) strcpy(typeStr, "SDSC");
+         else if (cardType == CARD_SDHC) strcpy(typeStr, "SDHC");
+         LOG_INF("Тип SD карты %s, размер: %s", typeStr, fmtSize(SD_MMC.cardSize()));
+      }
+   #endif
 }
-
-static bool prepSD_MMC() {
-  bool res = false;
-#if !(CONFIG_IDF_TARGET_ESP32C3)
-  / * open SD card in MMC 1 bit mode
-     MMC4  MMC1  ESP32 ESP32S3
+/******************************************************************************
+ *                              Подготовить (смонтировать) SD-накопитель SD MMC
+**/
+// Замечание
+// #include "esp32-hal-psram.c"
+// bool ARDUINO_ISR_ATTR psramFound() = true, когда есть внешняя память
+static bool prepSD_MMC() 
+{
+   bool res = false;
+   // Здесь делаем настройку только не для ESP32C3
+   #if !(CONFIG_IDF_TARGET_ESP32C3)
+   
+      // Выполняем настройки: либо по ESP32S3, либо по дрогим ( в том числе ESP32)
+      /* open SD card in MMC 1 bit mode
+      MMC4  MMC1  ESP32 ESP32S3
       D2          12
       D3    ..    13
       CMD  CMD    15    38
       CLK  CLK    14    39
       D0   D0     2     40
       D1          4
-  * /
-  if (psramFound()) heap_caps_malloc_extmem_enable(MIN_RAM); // small number to force vector into psram
-  fileVec.reserve(1000);
-  if (psramFound()) heap_caps_malloc_extmem_enable(MAX_RAM);
-#if CONFIG_IDF_TARGET_ESP32S3
-#if !defined(SD_MMC_CLK)
-  LOG_WRN("SD card pins not defined");
-  return false;
-#else
-  SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
-#endif
-#endif
-  
-  res = SD_MMC.begin("/sdcard", true, formatIfMountFailed);
-#if defined(CAMERA_MODEL_AI_THINKER)
-  pinMode(4, OUTPUT);
-  digitalWrite(4, 0); // set lamp pin fully off as sd_mmc library still initialises pin 4 in 1 line mode
-#endif 
-  if (res) {
-    fp.mkdir(DATA_DIR);
-    infoSD();
-    res = true;
-  } else {
-    LOG_WRN("SD card mount failed");
-    res = false;
-  }
-#endif
-  return res;
+      */
+      // Если есть внешняя память, то определяем лимит (MIN_RAM=8), ниже которого malloc()
+      // будет выделять блоки во внутренней памяти (Heap_caps_malloc_extmem_enable)
+      // (а также верхнее ограничение MAX_RAM=4096)
+      if (psramFound()) heap_caps_malloc_extmem_enable(MIN_RAM); 
+      fileVec.reserve(1000);
+      if (psramFound()) heap_caps_malloc_extmem_enable(MAX_RAM);
+      // ESP32S3
+      #if CONFIG_IDF_TARGET_ESP32S3
+         #if !defined(SD_MMC_CLK)
+            LOG_WRN("SD card pins not defined");
+            return false;
+         #else
+            SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
+         #endif
+      #endif
+      // Автоматически форматируем файловую систему в случае сбоя монтирования
+      res = SD_MMC.begin("/sdcard", true, formatIfMountFailed);
+      // Гасим вспышку, так как библиотека sd_mmc по-прежнему инициализирует вывод 4 
+      #if defined(CAMERA_MODEL_AI_THINKER)
+         pinMode(4,OUTPUT);
+         digitalWrite(4,0); 
+      #endif 
+      // Если все хорошо, выполняем последние действия
+      if (res) 
+      {
+         // Создаем каталог для данных
+         fp.mkdir(DATA_DIR);
+         // Выводим данные по SD
+         infoSD();
+         res = true;
+      } 
+      // Отмечаем, что не удалось смонтировать SD-карту
+      else 
+      {
+         LOG_WRN("Не удалось установить SD-карту");
+         res = false;
+      }
+   #endif
+   return res;
+}
+/******************************************************************************
+ *                                               Показать список файлов в папке
+**/
+static void listFolder(const char* rootDir) 
+{ 
+   LOG_INF("Размер скетча %s", fmtSize(ESP.getSketchSize()));    
+   File root = fp.open(rootDir);
+   File file = root.openNextFile();
+   while (file) 
+   {
+      LOG_INF("Файл: %s, размер: %s", file.path(), fmtSize(file.size()));
+      file = root.openNextFile();
+   }
+   char totalBytes[20];
+   strcpy(totalBytes, fmtSize(STORAGE.totalBytes()));
+   LOG_INF("%s: используется %s, всего %s",fsType,fmtSize(STORAGE.usedBytes()),totalBytes);
+}
+/******************************************************************************
+ *                Подготовить хранилище на требуемом устройстве хранения данных
+ *   
+ *       #include "FS.h" - файловая система
+ *       #include <SD_MMC.h>  
+ *       #include <LittleFS.h>
+ *       fs - объект файловой системы, в его обязанности входит структуризация, 
+ *                                чтение, хранение, запись данных в виде файлов
+**/
+bool startStorage() 
+{
+   // Запускаем необходимое устройство хранения данных (SD-карту или flash)
+   bool res = false;
+   #if !(CONFIG_IDF_TARGET_ESP32C3)
+   if ((fs::SDMMCFS*)&STORAGE == &SD_MMC) 
+   {
+      strcpy(fsType, "SD_MMC");
+      // Готовим (монтируем) SD-накопитель SD MMC
+      res = prepSD_MMC();
+      if (res) listFolder(DATA_DIR);
+      else snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Проверьте, вставлена ли SD-карта");
+      debugMemory("startStorage");
+      return res; 
+   }
+   #endif
+   // Если устройство подключено, разбираемся с файловой системой (SPIFFS или LittleFS
+   if (!strlen(fsType)) 
+   {
+      #ifdef _SPIFFS_H_
+      if ((fs::SPIFFSFS*)&STORAGE == &SPIFFS) 
+      {
+         strcpy(fsType, "SPIFFS");
+         res = SPIFFS.begin(formatIfMountFailed);
+      }
+      #endif
+      
+      // Подключаемся к файловой системе LittleFS
+      #ifdef _LITTLEFS_H_
+      if ((fs::LittleFSFS*)&STORAGE == &LittleFS) 
+      {
+         // Формируем название типа памяти
+         strcpy(fsType, "LittleFS");
+         // Монтируем устройство
+         res = LittleFS.begin(formatIfMountFailed);
+         // Cоздаём папку с данными, если она отсутствует
+         if (res) LittleFS.mkdir(DATA_DIR);
+      }
+      #endif
+    
+      if (res) 
+      {  
+         // Выводим сведения о файлах и файловой системе
+         const char* rootDir = !strcmp(fsType, "LittleFS") ? DATA_DIR : "/";
+         listFolder(rootDir);
+      }
+   } 
+   // Если устройство не подключено, выводим сообщение и отключаем помощь
+   else 
+   {
+      snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Ошибка монтирования %s", fsType);  
+      // Отключаем помощь при установке, так как файловая система отсутствует
+      dataFilesChecked = true; 
+   }
+   debugMemory("startStorage");
+   return res;
 }
 
-static void listFolder(const char* rootDir) { 
-  // list contents of folder
-  LOG_INF("Sketch size %s", fmtSize(ESP.getSketchSize()));    
-  File root = fp.open(rootDir);
-  File file = root.openNextFile();
-  while (file) {
-    LOG_INF("File: %s, size: %s", file.path(), fmtSize(file.size()));
-    file = root.openNextFile();
-  }
-  char totalBytes[20];
-  strcpy(totalBytes, fmtSize(STORAGE.totalBytes()));
-  LOG_INF("%s: %s used of %s", fsType, fmtSize(STORAGE.usedBytes()), totalBytes);
-}
-
-bool startStorage() {
-  // start required storage device (SD card or flash file system)
-  bool res = false;
-#if !(CONFIG_IDF_TARGET_ESP32C3)
-  if ((fs::SDMMCFS*)&STORAGE == &SD_MMC) {
-    strcpy(fsType, "SD_MMC");
-    res = prepSD_MMC();
-    if (res) listFolder(DATA_DIR);
-    else snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Check SD card inserted");
-    debugMemory("startStorage");
-    return res; 
-  }
-#endif
-  // One of SPIFFS or LittleFS
-  if (!strlen(fsType)) {
-#ifdef _SPIFFS_H_
-    if ((fs::SPIFFSFS*)&STORAGE == &SPIFFS) {
-      strcpy(fsType, "SPIFFS");
-      res = SPIFFS.begin(formatIfMountFailed);
-    }
-#endif
-#ifdef _LITTLEFS_H_
-    if ((fs::LittleFSFS*)&STORAGE == &LittleFS) {
-      strcpy(fsType, "LittleFS");
-      res = LittleFS.begin(formatIfMountFailed);
-      // create data folder if not present
-      if (res) LittleFS.mkdir(DATA_DIR);
-    }
-#endif
-    if (res) {  
-      // list details of files on file system
-      const char* rootDir = !strcmp(fsType, "LittleFS") ? DATA_DIR : "/";
-      listFolder(rootDir);
-    }
-  } else {
-    snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Failed to mount %s", fsType);  
-    dataFilesChecked = true; // disable setupAssist as no file system
-  }
-  debugMemory("startStorage");
-  return res;
-}
-
+/*
 static void getOldestDir(char* oldestDir) {
   // get oldest folder by its date name
   File root = fp.open("/");

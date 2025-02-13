@@ -662,18 +662,23 @@ void replaceChar(char* s, char c, char r) {
     reader++;       
   }
 }
+*/
 
-char* fmtSize (uint64_t sizeVal) {
-  // format size according to magnitude
-  // only one call per format string
+/******************************************************************************
+ *                       Преобразовать представление размера некоторой величины 
+ *                  к более удобочитаемому виду (байты, Кбайты, Mбайты, Гбайты)                                              
+**/
+char* fmtSize (uint64_t sizeVal)
+{
   static char returnStr[20];
-  if (sizeVal < 50 * 1024) sprintf(returnStr, "%llu bytes", sizeVal);
+  if (sizeVal < 50 * 1024) sprintf(returnStr, "%llu байт", sizeVal);
   else if (sizeVal < ONEMEG) sprintf(returnStr, "%lluKB", sizeVal / 1024);
   else if (sizeVal < ONEMEG * 1024) sprintf(returnStr, "%0.1fMB", (double)(sizeVal) / ONEMEG);
   else sprintf(returnStr, "%0.1fGB", (double)(sizeVal) / (ONEMEG * 1024));
   return returnStr;
 }
 
+/*
 void checkMemory(const char* source ) {
   LOG_INF("%s Free: heap %u, block: %u, min: %u, pSRAM %u", source, ESP.getFreeHeap(), ESP.getMaxAllocHeap(), ESP.getMinFreeHeap(), ESP.getFreePsram());
   if (ESP.getFreeHeap() < WARN_HEAP) LOG_WRN("Free heap only %u, min %u", ESP.getFreeHeap(), ESP.getMinFreeHeap());
@@ -698,14 +703,20 @@ uint32_t checkStackUse(TaskHandle_t thisTask, int taskIdx) {
   }
   return freeStack;
 }
+*/
 
-void debugMemory(const char* caller) {
-  if (DEBUG_MEM) {
-    logPrint("%s > Free: heap %u, block: %u, min: %u, pSRAM %u\n", caller, ESP.getFreeHeap(), ESP.getMaxAllocHeap(), ESP.getMinFreeHeap(), ESP.getFreePsram());
-    delay(FLUSH_DELAY);
-  }
+void debugMemory(const char* caller) 
+{
+   /*
+   if (DEBUG_MEM) 
+   {
+      logPrint("%s > Free: heap %u, block: %u, min: %u, pSRAM %u\n", caller, ESP.getFreeHeap(), ESP.getMaxAllocHeap(), ESP.getMinFreeHeap(), ESP.getFreePsram());
+      delay(FLUSH_DELAY);
+   }
+   */
 }
 
+/*
 void doRestart(const char* restartStr) {
   LOG_ALT("Controlled restart: %s", restartStr);
 #ifdef ISCAM

@@ -642,11 +642,14 @@ void replaceChar(char* s, char c, char r) {
   }
 }
 
-char* fmtSize (uint64_t sizeVal) {
-  // format size according to magnitude
-  // only one call per format string
+/******************************************************************************
+ *                       Преобразовать представление размера некоторой величины 
+ *                  к более удобочитаемому виду (байты, Кбайты, Mбайты, Гбайты)                                              
+**/
+char* fmtSize (uint64_t sizeVal)
+{
   static char returnStr[20];
-  if (sizeVal < 50 * 1024) sprintf(returnStr, "%llu bytes", sizeVal);
+  if (sizeVal < 50 * 1024) sprintf(returnStr, "%llu байт", sizeVal);
   else if (sizeVal < ONEMEG) sprintf(returnStr, "%lluKB", sizeVal / 1024);
   else if (sizeVal < ONEMEG * 1024) sprintf(returnStr, "%0.1fMB", (double)(sizeVal) / ONEMEG);
   else sprintf(returnStr, "%0.1fGB", (double)(sizeVal) / (ONEMEG * 1024));

@@ -26,7 +26,6 @@
 /******************** Libraries *******************/
 
 #include "Arduino.h"
-/*
 #include <ESPmDNS.h> 
 #include "lwip/sockets.h"
 #include <vector>
@@ -43,27 +42,64 @@
 ////#include <NetworkClientSecure.h> // v3.x only
 #include <WiFiClient.h>
 #include <WiFiClientSecure.h>
+/*
 #include <esp_http_server.h>
 #include <esp_https_server.h>
 */
 
-// Глобальные определения функций, используемых utils.cpp / utilsFS.cpp / peripherals.cpp 
-void logSetup();
-
 // Определяем глобальные константы
-#define RAM_LOG_LEN  (1024 * 7)            // размер журнала системных сообщений в байтах, хранящегося в медленной оперативной памяти RTC (не более 8 КБАЙТ)
 #define MAGIC_NUM    987654321             // индикатор недостаточного питания
+#define MIN_STACK_FREE 512                 // минимальное свободное пространство для стека
+#define ONEMEG (1024 * 1024)               // 1 Мбайт
+#define RAM_LOG_LEN  (1024 * 7)            // размер журнала системных сообщений в байтах, хранящегося в медленной оперативной памяти RTC (не более 8 КБАЙТ)
 #define SF_LEN       128                   // длина буфера сообщения
-#define STARTUP_FAIL "Неудачный запуск: "  // префикс сообщения о неудачном запуске
+#define STARTUP_FAIL "Сбой при запуске! "  // префикс сообщения о неудачном запуске
 
 // Определяем переменные приложения, используемые в разных файлах
-extern char     messageLog[];           // массив символов журнала сообщений
-extern uint16_t mlogEnd;                // адрес последнего байта в журнале сообщений
+extern char     messageLog[];              // массив символов журнала сообщений
+extern uint16_t mlogEnd;                   // адрес последнего байта в журнале сообщений
 extern char     startupFailure[];
+
+// Глобальные переменные, которые будут использоваться 
+// (читаться и записываться) в различных файлах
+extern bool dataFilesChecked;
+
+// Глобальные определения функций, используемых utils.cpp / utilsFS.cpp / peripherals.cpp 
+void  debugMemory(const char* caller);      // Обеспечить трассировку памяти
+char* fmtSize (uint64_t sizeVal);
+void  logPrint(const char *fmtStr, ...);    // Обеспечить вывод текущей строки в журнал в защищенном режиме через мьютекс
+void  logSetup();                           // Подготовить ведение журнала приложения
+bool  startStorage();                       // Подготовить хранилище на требуемом устройстве хранения данных
+
+// Можно раскомментировать, чтобы раскрасить сообщения журнала (если используется idf.py, но не arduino)
+// #define USE_LOG_COLORS   
+
+// Определяем возможную раскраску сообщений
+#ifdef USE_LOG_COLORS
+   #define LOG_COLOR_ERR  "\033[0;31m" // red
+   #define LOG_COLOR_WRN  "\033[0;33m" // yellow
+   #define LOG_COLOR_VRB  "\033[0;36m" // cyan
+   #define LOG_NO_COLOR   "\033[0m"
+#else
+   #define LOG_COLOR_ERR
+   #define LOG_COLOR_WRN
+   #define LOG_COLOR_VRB
+   #define LOG_NO_COLOR
+#endif 
 
 // Определяем основные макросы приложения
 #define INF_FORMAT(format) "[%s %s] " format "\n", esp_log_system_timestamp(), __FUNCTION__
 #define LOG_INF(format, ...) logPrint(INF_FORMAT(format), ##__VA_ARGS__)
+#define LOG_ALT(format, ...) logPrint(INF_FORMAT(format "~"), ##__VA_ARGS__)
+#define WRN_FORMAT(format) LOG_COLOR_WRN "[%s WARN %s] " format LOG_NO_COLOR "\n", esp_log_system_timestamp(), __FUNCTION__
+#define LOG_WRN(format, ...) logPrint(WRN_FORMAT(format "~"), ##__VA_ARGS__)
+#define ERR_FORMAT(format) LOG_COLOR_ERR "[%s ERROR @ %s:%u] " format LOG_NO_COLOR "\n", esp_log_system_timestamp(), pathToFileName(__FILE__), __LINE__
+#define LOG_ERR(format, ...) logPrint(ERR_FORMAT(format "~"), ##__VA_ARGS__)
+#define VRB_FORMAT(format) LOG_COLOR_VRB "[%s VERBOSE @ %s:%u] " format LOG_NO_COLOR "\n", esp_log_system_timestamp(), pathToFileName(__FILE__), __LINE__
+#define LOG_VRB(format, ...) if (dbgVerbose) logPrint(VRB_FORMAT(format), ##__VA_ARGS__)
+#define DBG_FORMAT(format) LOG_COLOR_ERR "[###### DBG @ %s:%u] " format LOG_NO_COLOR "\n", pathToFileName(__FILE__), __LINE__
+#define LOG_DBG(format, ...) do { logPrint(DBG_FORMAT(format), ##__VA_ARGS__); delay(FLUSH_DELAY); } while (0)
+#define LOG_PRT(buff, bufflen) log_print_buf((const uint8_t*)buff, bufflen)
 
 /*
 // ADC
@@ -77,32 +113,32 @@ extern char     startupFailure[];
 #define MAX_ADC 4095 // maximum ADC value at given resolution
 #endif
 #define CENTER_ADC (MAX_ADC / 2) 
+*/
 
-// data folder defs
-#define DATA_DIR "/data"
-#define HTML_EXT ".htm"
-#define TEXT_EXT ".txt"
-#define JS_EXT ".js"
-#define CSS_EXT ".css"
-#define ICO_EXT ".ico"
-#define SVG_EXT ".svg"
-#define JPG_EXT ".jpg"
-#define CONFIG_FILE_PATH DATA_DIR "/configs" TEXT_EXT
-#define LOG_FILE_PATH DATA_DIR "/log" TEXT_EXT
-#define OTA_FILE_PATH DATA_DIR "/OTA" HTML_EXT
-#define COMMON_JS_PATH DATA_DIR "/common" JS_EXT 
-#define WEBDAV "/webdav"
-#define GITHUB_HOST "raw.githubusercontent.com"
+// Определяем папки и расширения
+#define DATA_DIR          "/data"
+#define HTML_EXT          ".htm"
+#define TEXT_EXT          ".txt"
+#define JS_EXT            ".js"
+#define CSS_EXT           ".css"
+#define ICO_EXT           ".ico"
+#define SVG_EXT           ".svg"
+#define JPG_EXT           ".jpg"
+#define CONFIG_FILE_PATH  DATA_DIR "/configs" TEXT_EXT
+#define LOG_FILE_PATH     DATA_DIR "/log" TEXT_EXT
+#define OTA_FILE_PATH     DATA_DIR "/OTA" HTML_EXT
+#define COMMON_JS_PATH    DATA_DIR "/common" JS_EXT 
+#define WEBDAV            "/webdav"
+#define GITHUB_HOST       "raw.githubusercontent.com"
 
+/*
 #define FILLSTAR "****************************************************************"
 #define DELIM '~'
-#define ONEMEG (1024 * 1024)
 #define MAX_PWD_LEN 64
 #define MAX_HOST_LEN 32
 #define MAX_IP_LEN 16
 #define BOUNDARY_VAL "123456789000000000000987654321"
 #define WAV_HDR_LEN 44
-#define MIN_STACK_FREE 512
 #define MAX_PAYLOAD_LEN 256     // set bigger than any websocket payload
 #define NULL_TEMP -127
 #define OneMHz 1000000
@@ -128,7 +164,6 @@ bool checkDataFiles();
 bool checkFreeStorage();
 void checkMemory(const char* source = "");
 uint32_t checkStackUse(TaskHandle_t thisTask, int taskIdx);
-void debugMemory(const char* caller);
 void dateFormat(char* inBuff, size_t inBuffLen, bool isFolder);
 void deleteFolderOrFile(const char* deleteThis);
 void devSetup();
@@ -145,7 +180,6 @@ esp_err_t extractHeaderVal(httpd_req_t *req, const char* variable, char* value);
 esp_err_t extractQueryKeyVal(httpd_req_t *req, char* variable, char* value);
 esp_err_t fileHandler(httpd_req_t* req, bool download = false);
 void flush_log(bool andClose = false);
-char* fmtSize (uint64_t sizeVal);
 void forceCrash();
 void formatElapsedTime(char* timeStr, uint32_t timeVal, bool noDays = false);
 void formatHex(const char* inData, size_t inLen);
@@ -164,7 +198,6 @@ void listBuff(const uint8_t* b, size_t len);
 bool listDir(const char* fname, char* jsonBuff, size_t jsonBuffLen, const char* extension);
 bool loadConfig();
 void logLine();
-void logPrint(const char *fmtStr, ...);
 void OTAprereq();
 bool parseJson(int rxSize);
 void prepPeripherals();
@@ -195,7 +228,6 @@ uint16_t smoothAnalog(int analogPin, int samples = ADC_SAMPLES);
 float smoothSensor(float latestVal, float smoothedVal, float alpha);
 void startOTAtask();
 void startSecTimer(bool startTimer);
-bool startStorage();
 void startWebServer();
 bool startWifi(bool firstcall = true);
 void stopPing();
@@ -223,10 +255,9 @@ void tgramAlert(const char* subject, const char* message);
 void sendExternalHeartbeat();
 */
 
-/******************** Global utility declarations *******************/
 /*
-// Указываем компилятору список глобальных переменных, которые будут 
-// использоваться (читаться и записываться) в различных файлах
+// Глобальных переменных, которые будут использоваться 
+// (читаться и записываться) в различных файлах
 extern char AP_SSID[];
 extern char AP_Pass[];
 extern char AP_ip[];
@@ -255,7 +286,6 @@ extern bool allowAP; // set to true to allow AP to startup if cannot reconnect t
 extern uint32_t wifiTimeoutSecs; // how often to check wifi status
 extern uint8_t percentLoaded;
 extern int refreshVal;
-extern bool dataFilesChecked;
 extern char ipExtAddr[];
 extern bool doGetExtIP;
 extern bool usePing; // set to false if problems related to this issue occur: https://github.com/s60sc/ESP32-CAM_MJPEG2SD/issues/221
@@ -370,34 +400,6 @@ extern bool formatIfMountFailed ; // Auto format the file system if mount failed
   "UNKNOWN"
 
 enum RemoteFail {SETASSIST, GETEXTIP, TGRAMCONN, FSFTP, EMAILCONN, EXTERNALHB, REMFAILCNT};
-*/
-
-/*********************** Log formatting ************************/
-
-/*
-//#define USE_LOG_COLORS  // uncomment to colorise log messages (eg if using idf.py, but not arduino)
-#ifdef USE_LOG_COLORS
-#define LOG_COLOR_ERR  "\033[0;31m" // red
-#define LOG_COLOR_WRN  "\033[0;33m" // yellow
-#define LOG_COLOR_VRB  "\033[0;36m" // cyan
-#define LOG_NO_COLOR   "\033[0m"
-#else
-#define LOG_COLOR_ERR
-#define LOG_COLOR_WRN
-#define LOG_COLOR_VRB
-#define LOG_NO_COLOR
-#endif 
-// Определяем основные макросы приложения
-#define LOG_ALT(format, ...) logPrint(INF_FORMAT(format "~"), ##__VA_ARGS__)
-#define WRN_FORMAT(format) LOG_COLOR_WRN "[%s WARN %s] " format LOG_NO_COLOR "\n", esp_log_system_timestamp(), __FUNCTION__
-#define LOG_WRN(format, ...) logPrint(WRN_FORMAT(format "~"), ##__VA_ARGS__)
-#define ERR_FORMAT(format) LOG_COLOR_ERR "[%s ERROR @ %s:%u] " format LOG_NO_COLOR "\n", esp_log_system_timestamp(), pathToFileName(__FILE__), __LINE__
-#define LOG_ERR(format, ...) logPrint(ERR_FORMAT(format "~"), ##__VA_ARGS__)
-#define VRB_FORMAT(format) LOG_COLOR_VRB "[%s VERBOSE @ %s:%u] " format LOG_NO_COLOR "\n", esp_log_system_timestamp(), pathToFileName(__FILE__), __LINE__
-#define LOG_VRB(format, ...) if (dbgVerbose) logPrint(VRB_FORMAT(format), ##__VA_ARGS__)
-#define DBG_FORMAT(format) LOG_COLOR_ERR "[###### DBG @ %s:%u] " format LOG_NO_COLOR "\n", pathToFileName(__FILE__), __LINE__
-#define LOG_DBG(format, ...) do { logPrint(DBG_FORMAT(format), ##__VA_ARGS__); delay(FLUSH_DELAY); } while (0)
-#define LOG_PRT(buff, bufflen) log_print_buf((const uint8_t*)buff, bufflen)
 */
 
 // ************************************************************** globals.h ***

@@ -46,12 +46,17 @@ CAMERA_MODEL_ESP32S3_CAM_LCD
 //#define CAMERA_MODEL_XIAO_ESP32S3 
 #endif
 
-// Фиксируем определения, сохраняемые "как есть"
+// Фиксируем определения, сохраняемые "как есть" !!!
  
 #define APP_NAME       "ESP-CAM_MJPEG" // max 15 chars - имя приложения
 #define APP_VER        "9.9.1"         // версия приложения
 #define DBG_ON         false           // отключили отладочный вывод в журнал приложения
 #define DEBUG_MEM      false           // отключили трассировку использования памяти
+
+#define MIN_RAM        8               // минимальный размер объекта, хранящегося в оперативной памяти, вместо параметра по умолчанию (=4096)
+#define MAX_RAM        4096            // максимальный размер объекта, хранящегося в оперативной памяти, вместо параметра по умолчанию равен 4096
+
+
 // Определяем размеры стеков задач
 #define LOG_STACK_SIZE (1024 * 3)      // задача по форматированию строк и ведению лога
 // Определяем приоритеты задач
@@ -110,8 +115,6 @@ extern TaskHandle_t    logHandle;      // задача по форматиров
 #define JSON_BUFF_LEN (32 * 1024) // set big enough to hold all file names in a folder
 #define MAX_CONFIGS 190 // must be > number of entries in configs.txt
 #define MAX_JPEG (ONEMEG / 2) // UXGA jpeg frame buffer at highest quality 375kB rounded up
-#define MIN_RAM 8 // min object size stored in ram instead of PSRAM default is 4096
-#define MAX_RAM 4096 // max object size stored in ram instead of PSRAM default is 4096
 #define TLS_HEAP (64 * 1024) // min free heap for TLS session
 #define WARN_HEAP (32 * 1024) // low free heap warning
 #define WARN_ALLOC (16 * 1024) // low free max allocatable free heap block
@@ -119,12 +122,13 @@ extern TaskHandle_t    logHandle;      // задача по форматиров
 #define RGB888_BYTES 3 // number of bytes per pixel
 #define GRAYSCALE_BYTES 1 // number of bytes per pixel 
 #define MAX_ALERT MAX_JPEG
-
+*/
 #ifdef SIDE_ALARM
 #define STORAGE LittleFS
 #else
 #define STORAGE SD_MMC
 #endif
+/*
 #define GITHUB_PATH "/s60sc/ESP32-CAM_MJPEG2SD/master"
 #define RAMSIZE (1024 * 8) // set this to multiple of SD card sector size (512 or 1024 bytes)
 #define CHUNKSIZE (1024 * 4)

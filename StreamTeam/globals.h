@@ -77,8 +77,8 @@
 #define SF_LEN 128
 #define WAV_HDR_LEN 44
 #define RAM_LOG_LEN (1024 * 7)  // размер журнала системных сообщений в байтах, хранящегося в медленной оперативной памяти RTC (не более 8 КБАЙТ)
-#define MIN_STACK_FREE 512
-#define STARTUP_FAIL "Startup Failure: "
+#define MIN_STACK_FREE 512      // минимальное свободное пространство для стека
+#define STARTUP_FAIL "Сбой при запуске! "
 #define MAX_PAYLOAD_LEN 256     // set bigger than any websocket payload
 #define NULL_TEMP -127
 #define OneMHz 1000000
@@ -200,9 +200,8 @@ void tgramAlert(const char* subject, const char* message);
 // externalHeartbeat.cpp
 void sendExternalHeartbeat();
 
-/******************** Global utility declarations *******************/
-// Указываем компилятору список глобальных переменных, которые будут 
-// использоваться (читаться и записываться) в различных файлах
+// Глобальные переменные, которые будут использоваться 
+// (читаться и записываться) в различных файлах
 extern char AP_SSID[];
 extern char AP_Pass[];
 extern char AP_ip[];
@@ -311,7 +310,6 @@ extern UBaseType_t uxHighWaterMarkArr[];
 extern int sdMinCardFreeSpace;    // минимальное количество свободных мегабайт на карте перед включением режима выделения места (свободного)
 extern int sdFreeSpaceMode;       // режим выделения места: 0-не проверять, 1-удалить старые каталоги, 2-выгрузить по ftp и удалить всё 
 extern bool formatIfMountFailed ; // автоматически форматировать файловую систему в случае сбоя монтирования (false - не выполнять)
-Auto format the file system if mount failed. Set to false to not auto format.
 
 #define HTTP_METHOD_STRING(method) \
   (method == HTTP_DELETE) ? "DELETE" : \
@@ -351,20 +349,22 @@ Auto format the file system if mount failed. Set to false to not auto format.
 
 enum RemoteFail {SETASSIST, GETEXTIP, TGRAMCONN, FSFTP, EMAILCONN, EXTERNALHB, REMFAILCNT};
 
-/*********************** Log formatting ************************/
+// Можно раскомментировать, чтобы раскрасить сообщения журнала (если используется idf.py, но не arduino)
+// #define USE_LOG_COLORS   
 
-//#define USE_LOG_COLORS  // uncomment to colorise log messages (eg if using idf.py, but not arduino)
+// Определяем возможную раскраску сообщений
 #ifdef USE_LOG_COLORS
-#define LOG_COLOR_ERR  "\033[0;31m" // red
-#define LOG_COLOR_WRN  "\033[0;33m" // yellow
-#define LOG_COLOR_VRB  "\033[0;36m" // cyan
-#define LOG_NO_COLOR   "\033[0m"
+   #define LOG_COLOR_ERR  "\033[0;31m" // red
+   #define LOG_COLOR_WRN  "\033[0;33m" // yellow
+   #define LOG_COLOR_VRB  "\033[0;36m" // cyan
+   #define LOG_NO_COLOR   "\033[0m"
 #else
-#define LOG_COLOR_ERR
-#define LOG_COLOR_WRN
-#define LOG_COLOR_VRB
-#define LOG_NO_COLOR
+   #define LOG_COLOR_ERR
+   #define LOG_COLOR_WRN
+   #define LOG_COLOR_VRB
+   #define LOG_NO_COLOR
 #endif 
+
 // Определяем основные макросы приложения
 #define INF_FORMAT(format) "[%s %s] " format "\n", esp_log_system_timestamp(), __FUNCTION__
 #define LOG_INF(format, ...) logPrint(INF_FORMAT(format), ##__VA_ARGS__)

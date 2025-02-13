@@ -11,11 +11,33 @@
 
 #include "appGlobals.h"
 
-
 void setup() 
 {
    // Выполняем настройку ведения журнала
    logSetup();
+   // Подготавливаем хранилище на SD-карте
+   if (startStorage()) 
+   {
+      /*
+      // Load saved user configuration
+      if (loadConfig()) 
+      {
+         // Инициализируем камеру. 
+         // Перед этим функцией psramFound() из файла esp32-hal-psram.c проверяем  
+         // spiramDetected — статическую изменяемую переменную, которая указывает на то, 
+         // что внешняя SPIRAM включена (если внешняя поддержка SPIRAM включена в sdkconfig, 
+         // то при обнаружении её включения spiramDetected становится равной true)
+         if (psramFound()) 
+         {
+            LOG_INF("PSRAM size: %s", fmtSize(ESP.getPsramSize()));
+            if (ESP.getPsramSize() > 3 * ONEMEG) prepCam();
+            else snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Insufficient PSRAM for app");
+         }
+         else snprintf(startupFailure, SF_LEN, STARTUP_FAIL "Need PSRAM to be enabled");
+      }
+      */
+   }
+
 }
 
 void loop() 
