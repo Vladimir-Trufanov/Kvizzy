@@ -96,64 +96,81 @@ static void showPlayback(httpd_req_t* req) {
     sustainId = currEpoch;
   }
 }
+/******************************************************************************
+ *                                       Запустить прямую трансляцию в браузере 
+**/
+static void showStream(httpd_req_t* req, uint8_t taskNum) 
+{
+   // LOG_INF("Запустили прямую трансляцию в браузере");
+   int istream=0;
 
-static void showStream(httpd_req_t* req, uint8_t taskNum) {
-  // start live streaming to browser
-  esp_err_t res = ESP_OK; 
-  size_t jpgLen = 0;
-  uint8_t* jpgBuf = NULL;
-  uint32_t startTime = millis();
-  uint32_t frameCnt = 0;
-  uint32_t mjpegLen = 0;
-  isStreaming[taskNum] = true;
-  streamBufferSize[taskNum] = 0;
-  if (!taskNum) motionJpegLen = 0;
-  // output header for streaming request
-  httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
-  httpd_resp_set_type(req, STREAM_CONTENT_TYPE);
-  char hdrBuf[HDR_BUF_LEN];
-  while (isStreaming[taskNum]) {
-    // stream from camera at current frame rate
-    if (xSemaphoreTake(frameSemaphore[taskNum], pdMS_TO_TICKS(MAX_FRAME_WAIT)) == pdFAIL) {
-      // failed to take semaphore, allow retry
-      streamBufferSize[taskNum] = 0;
-      continue;
-    }
-    if (dbgMotion && !taskNum) {
-      // motion tracking stream on task 0 only, wait for new move mapping image
-      if (xSemaphoreTake(motionSemaphore, pdMS_TO_TICKS(MAX_FRAME_WAIT)) == pdFAIL) continue;
-      // use image created by checkMotion()
-      jpgLen = motionJpegLen;
-      if (!jpgLen) continue;
-      jpgBuf = motionJpeg;
-    } else {
-      // live stream 
-      if (!streamBufferSize[taskNum]) continue;
-      jpgLen = streamBufferSize[taskNum];
-      // use frame stored by processFrame()
-      jpgBuf = streamBuffer[taskNum];
-    }
-    if (res == ESP_OK) {
-      // send next frame in stream
-      res = httpd_resp_sendstr_chunk(req, JPEG_BOUNDARY);  
-      snprintf(hdrBuf, HDR_BUF_LEN-1, JPEG_TYPE, jpgLen);
-      if (res == ESP_OK) res = httpd_resp_sendstr_chunk(req, hdrBuf);
-      if (res == ESP_OK) res = httpd_resp_send_chunk(req, (const char*)jpgBuf, jpgLen);
-      frameCnt++;
-    } 
-    mjpegLen += jpgLen;
-    jpgLen = streamBufferSize[taskNum] = 0;
-    if (dbgMotion && !taskNum) motionJpegLen = 0;
-    if (res != ESP_OK) {
-      // get send error when browser closes stream 
-      LOG_VRB("Streaming aborted due to error: %s", espErrMsg(res));
-      isStreaming[taskNum] = false;
-    }     
-  }
+   esp_err_t res = ESP_OK; 
+   size_t jpgLen = 0;
+   uint8_t* jpgBuf = NULL;
+   uint32_t startTime = millis();
+   uint32_t frameCnt = 0;
+   uint32_t mjpegLen = 0;
+   isStreaming[taskNum] = true;
+   streamBufferSize[taskNum] = 0;
+   if (!taskNum) motionJpegLen = 0;
+   // Отправляем заголовки для потокового запроса
+   httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+   httpd_resp_set_type(req, STREAM_CONTENT_TYPE);
+   char hdrBuf[HDR_BUF_LEN];
+   while (isStreaming[taskNum]) 
+   {
+      // Транслируем с камеры с текущей частотой кадров
+      if (xSemaphoreTake(frameSemaphore[taskNum], pdMS_TO_TICKS(MAX_FRAME_WAIT)) == pdFAIL) 
+      {
+         // Не удалось забрать семафор, разрешаем повторную попытку
+         streamBufferSize[taskNum] = 0;
+         continue;
+      }
+      // Если идет поток отслеживания движения
+      if (dbgMotion && !taskNum) 
+      {
+         // Поток отслеживания движения используется только для задачи 0, 
+         // следует дождаться нового изображения отображаемого перемещения
+         if (xSemaphoreTake(motionSemaphore, pdMS_TO_TICKS(MAX_FRAME_WAIT)) == pdFAIL) continue;
+         // Используем изображение, созданное checkMotion()
+         jpgLen = motionJpegLen;
+         if (!jpgLen) continue;
+         jpgBuf = motionJpeg;
+      }
+      // Иначе прямая трансляция 
+      else 
+      {
+         if (!streamBufferSize[taskNum]) continue;
+         jpgLen = streamBufferSize[taskNum];
+         // Используем кадр, сохраненный processFrame()
+         jpgBuf = streamBuffer[taskNum];
+      }
+      if (res == ESP_OK) 
+      {
+         // Отправляем следующий кадр в поток
+         istream++;
+         LOG_INF("Кадр: %lu", istream);
+
+         res = httpd_resp_sendstr_chunk(req, JPEG_BOUNDARY);  
+         snprintf(hdrBuf, HDR_BUF_LEN-1, JPEG_TYPE, jpgLen);
+         if (res == ESP_OK) res = httpd_resp_sendstr_chunk(req, hdrBuf);
+         if (res == ESP_OK) res = httpd_resp_send_chunk(req, (const char*)jpgBuf, jpgLen);
+         frameCnt++;
+      } 
+      mjpegLen += jpgLen;
+      jpgLen = streamBufferSize[taskNum] = 0;
+      if (dbgMotion && !taskNum) motionJpegLen = 0;
+      if (res != ESP_OK) 
+      {
+         // Получили сообщение об ошибке отправки, когда браузер закрыл поток
+         LOG_VRB("Потоковая передача прервана из-за ошибки: %s", espErrMsg(res));
+         isStreaming[taskNum] = false;
+      }     
+   }
   if (res == ESP_OK) httpd_resp_sendstr_chunk(req, NULL);
   uint32_t mjpegTime = millis() - startTime;
   float mjpegTimeF = float(mjpegTime) / 1000; // secs
-  LOG_INF("MJPEG: %u frames, total %s in %0.1fs @ %0.1ffps", frameCnt, fmtSize(mjpegLen), mjpegTimeF, (float)(frameCnt) / mjpegTimeF);
+  LOG_INF("MJPEG: %u кадров, всего %s в %0.1fs @ %0.1ffps", frameCnt, fmtSize(mjpegLen), mjpegTimeF, (float)(frameCnt) / mjpegTimeF);
 }
 
 static void audioStream(httpd_req_t* req, uint8_t taskNum) {
