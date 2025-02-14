@@ -102,7 +102,7 @@ static void showPlayback(httpd_req_t* req) {
 static void showStream(httpd_req_t* req, uint8_t taskNum) 
 {
    // LOG_INF("Запустили прямую трансляцию в браузере");
-   int istream=0;
+   //int istream=0;
 
    esp_err_t res = ESP_OK; 
    size_t jpgLen = 0;
@@ -148,8 +148,8 @@ static void showStream(httpd_req_t* req, uint8_t taskNum)
       if (res == ESP_OK) 
       {
          // Отправляем следующий кадр в поток
-         istream++;
-         LOG_INF("Кадр: %lu", istream);
+         //istream++;
+         //LOG_INF("Кадр: %lu", istream);
 
          res = httpd_resp_sendstr_chunk(req, JPEG_BOUNDARY);  
          snprintf(hdrBuf, HDR_BUF_LEN-1, JPEG_TYPE, jpgLen);

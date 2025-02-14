@@ -73,10 +73,10 @@ StreamTeam
 6=streamServer.cpp
 7=mjpeg2sd.cpp
 8=avi.cpp
-9=Новый1.txt
+9=StreamTeam.html
 [Selected Project Files]
 Main=
-Selected=Новый1.txt
+Selected=StreamTeam.html
 [utils.cpp]
 TopLine=611
 Caret=1,649
@@ -96,14 +96,14 @@ Caret=20,22
 TopLine=1
 Caret=14,35
 [streamServer.cpp]
-TopLine=107
-Caret=1,107
+TopLine=237
+Caret=59,249
 [mjpeg2sd.cpp]
 TopLine=152
 Caret=9,191
 [avi.cpp]
 TopLine=93
 Caret=6,103
-[Новый1.txt]
-TopLine=156
-Caret=33,200
+[StreamTeam.html]
+TopLine=1880
+Caret=1,2524
