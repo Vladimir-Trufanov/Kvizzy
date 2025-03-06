@@ -29,29 +29,9 @@ Kvizzy
 		Новый1.txt
 [Open project files]
 0=Kvizzy.ino
-1=appGlobals.h
-2=globals.h
-3=utils.cpp
-4=utilsFS.cpp
-5=Новый1.txt
 [Selected Project Files]
 Main=
-Selected=utils.cpp
+Selected=Kvizzy.ino
 [Kvizzy.ino]
 TopLine=7
-Caret=1,13
-[appGlobals.h]
-TopLine=8
-Caret=9,104
-[globals.h]
-TopLine=56
-Caret=7,68
-[utils.cpp]
-TopLine=701
-Caret=6,716
-[utilsFS.cpp]
-TopLine=166
-Caret=4,184
-[Новый1.txt]
-TopLine=120
-Caret=70,141
+Caret=63,43

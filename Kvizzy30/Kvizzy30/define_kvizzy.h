@@ -47,6 +47,9 @@ bool fwdtLead = false;
 void vState(void *pvParameters);
 bool fwdtState = false;
 
+void vStream(void *pvParameters);
+bool fwdtStream = false;
+
 void vLed33(void *pvParameters);
 bool fwdtLed33 = false;
 

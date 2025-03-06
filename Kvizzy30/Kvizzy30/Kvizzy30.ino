@@ -47,8 +47,9 @@ TQue queState;                                      // для страницы S
 #include "common_kvizzy.h"   // общие функции  
 
 // Подключаем задачи и деятельности
-#include "Lead.h"            // 10-897 запрос контроллера на изменение состояний устройств
-#include "State.h"           //  9-986 выборка сообщений о состоянии и отправка 
+#include "Lead.h"            //  9-897 запрос контроллера на изменение состояний устройств
+#include "State.h"           //  8-986 выборка сообщений о состоянии и отправка 
+#include "tStream.h"         // 10-42  фотографирование и отправка изображения
 #include "Led33.h"           // обработка контрольного светодиода 
 
 // Определяем заголовок для объекта таймера
@@ -59,27 +60,28 @@ portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
 // Обработка прерывания от таймера
 void IRAM_ATTR onTimer() 
 {
-   portENTER_CRITICAL_ISR(&timerMux);
-   // Если флаги всех задач установлены в 1, 
-   // то сбрасываем флаги задач и счетчик сторожевого таймера
-   if (fwdtLoop==true && fwdtLed33==true &&  
-   fwdtLead==true && fwdtState==true && fwdtPrint==true) 
-   {
-      // Сбрасываем флаги задач
-      fwdtLoop  = false;
-      fwdtLed33 = false;
-      fwdtLead = false;
-      fwdtState = false;
-      fwdtPrint = false;
-      // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
-      timerWrite(timer, 0);
-   }
-   // Иначе перезагружаем контроллер
-   else 
-   {
-      ESP.restart();
-   }
-   portEXIT_CRITICAL_ISR(&timerMux);
+  portENTER_CRITICAL_ISR(&timerMux);
+  // Если флаги всех задач установлены в 1, 
+  // то сбрасываем флаги задач и счетчик сторожевого таймера
+  if (fwdtLoop==true && fwdtLed33==true &&  
+  fwdtLead==true && fwdtState==true && fwdtStream==true && fwdtPrint==true) 
+  {
+    // Сбрасываем флаги задач
+    fwdtLoop  = false;
+    fwdtLed33 = false;
+    fwdtLead = false;
+    fwdtState = false;
+    fwdtStream = false;
+    fwdtPrint = false;
+    // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
+    timerWrite(timer, 0);
+  }
+  // Иначе перезагружаем контроллер
+  else 
+  {
+    ESP.restart();
+  }
+  portEXIT_CRITICAL_ISR(&timerMux);
 }
 // Обработка прерывания для вспышки при изменении состояние 4 контакта с LOW на HIGH (RISING).
 void IRAM_ATTR onLedFlash()
@@ -157,7 +159,7 @@ void setup()
       "Lead",                 // Task name
       2048,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      10,                     // Priority
+      9,                      // Priority
       NULL,                   // Task handle
       1);
    // Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
@@ -167,7 +169,17 @@ void setup()
       "State",                // Task name
       3072,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      9,                      // Priority
+      8,                      // Priority
+      NULL,                   // Task handle
+      1);
+   // Сделать фото и отправить Base24 изображения на страницу Stream c *
+   // частотой почти 24 кадра в секунду 
+   xTaskCreatePinnedToCore(
+      vStream,                // Task function
+      "Stream",               // Task name
+      3072,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      10,                     // Priority
       NULL,                   // Task handle
       1);
    // Выбрать из очереди и вывести сообщения в последовательный порт

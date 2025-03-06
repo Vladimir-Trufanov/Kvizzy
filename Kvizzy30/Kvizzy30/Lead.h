@@ -90,6 +90,7 @@ void vLead(void* pvParameters)
          getJsonLead(tQuery.httpText);
       }
       // Реагируем на ошибку Post-запроса
+      else
       {
          // Пока ничего не делаем, сообщения об ошибках отправлены в postQuery   
       }
