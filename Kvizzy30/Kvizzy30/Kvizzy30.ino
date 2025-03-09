@@ -30,6 +30,11 @@ const char* password = "b277a4ee84e8";
 
 // Определяем директивы отладки
 // #define tmr_TRACEMEMORY
+
+// Управляем включением задач
+// #define tmr_LEAD
+#define tmr_STATE   // 2025-03-08, state не отключаем, пусть сообщения обрабатываются
+#define tmr_STREAM
 // Определяем объект для синхронизации времени 
 TAttachSNTP oSNTP;
 // Определяем объект для работs с документом JSON

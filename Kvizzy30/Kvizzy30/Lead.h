@@ -71,35 +71,36 @@ void getJsonLead(String httpText)
 // ****************************************************************************
 void vLead(void* pvParameters) 
 {
-   // Готовим запрос к странице Lead
-   String ehttp=shttp+"Lead/";                   // запрос
-   String queryString = "cycle="+String(iLead);  // параметры
-   tQueryMessage tQuery;                         // ответ
-   String httpText;                              // текст ответного сообщения
-   // Зацикливаем задачу
-   for (;;)
-   {
-      //Serial.println("*** vLead ***");
+  // Готовим запрос к странице Lead
+  String ehttp=shttp+"Lead/";                   // запрос
+  String queryString = "cycle="+String(iLead);  // параметры
+  tQueryMessage tQuery;                         // ответ
+  String httpText;                              // текст ответного сообщения
+  // Зацикливаем задачу
+  for (;;)
+  {
+    //Serial.println("*** vLead ***");
+    #ifdef tmr_LEAD
       iLead++;
       // Делаем запрос к Lead
       tQuery = postQuery(ehttp, queryString);
       // Обрабатываем успешный запрос 
       if (tQuery.httpCode == HTTP_CODE_OK) 
       {
-         // Выбираем json-сообщения из ответа Lead 
-         getJsonLead(tQuery.httpText);
+        // Выбираем json-сообщения из ответа Lead 
+        getJsonLead(tQuery.httpText);
       }
       // Реагируем на ошибку Post-запроса
       else
       {
-         // Пока ничего не делаем, сообщения об ошибках отправлены в postQuery   
+        // Пока ничего не делаем, сообщения об ошибках отправлены в postQuery   
       }
-      
-      // Отмечаем флагом, что цикл задачи успешно завершен   
-      fwdtLead = true;
-      // Пропускаем интервал 897 мсек
-      vTaskDelay(897/portTICK_PERIOD_MS); 
-   }
+    #endif  
+    // Отмечаем флагом, что цикл задачи успешно завершен   
+    fwdtLead = true;
+    // Пропускаем интервал 897 мсек
+    vTaskDelay(897/portTICK_PERIOD_MS); 
+  }
 }
 
 // **************************************************************** Lead.h ***

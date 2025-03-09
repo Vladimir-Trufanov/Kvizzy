@@ -28,7 +28,10 @@ Kvizzy30
 			Kvizzy30\Kvizzy30_Message.h
 			Kvizzy30\Lead.h
 			Kvizzy30\Led33.h
-			Kvizzy30\State1.h
+			Kvizzy30\QueMessage.cpp
+			Kvizzy30\QueMessage.h
+			Kvizzy30\State.h
+			Kvizzy30\tStream.h
 		-Ревизия
 			-2024-09-04 Kvizzy
 				-Test06_Obmen_Esp32
@@ -1869,21 +1872,41 @@ Kvizzy30
 		Stream.h
 [Open project files]
 0=Kvizzy30\Kvizzy30.ino
-1=Kvizzy30\common_kvizzy.h
-2=Kvizzy30\define_kvizzy.h
-3=Stream.h
+1=Kvizzy30\define_kvizzy.h
+2=Stream.h
+3=Kvizzy30\Lead.h
+4=Kvizzy30\jsonBase.h
+5=Kvizzy30\tStream.h
+6=Kvizzy30\Kvizzy30_Message.h
+7=Kvizzy30\common_kvizzy.h
+8=Kvizzy30\QueMessage.cpp
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\Kvizzy30.ino
+Selected=Kvizzy30\QueMessage.cpp
 [Kvizzy30\Kvizzy30.ino]
-TopLine=44
-Caret=17,52
-[Kvizzy30\common_kvizzy.h]
-TopLine=94
-Caret=1,1
+TopLine=13
+Caret=19,36
 [Kvizzy30\define_kvizzy.h]
-TopLine=49
+TopLine=50
 Caret=13,50
 [Stream.h]
 TopLine=13
 Caret=13,18
+[Kvizzy30\Lead.h]
+TopLine=58
+Caret=30,82
+[Kvizzy30\jsonBase.h]
+TopLine=169
+Caret=1,1
+[Kvizzy30\tStream.h]
+TopLine=11
+Caret=29,32
+[Kvizzy30\Kvizzy30_Message.h]
+TopLine=20
+Caret=41,30
+[Kvizzy30\common_kvizzy.h]
+TopLine=49
+Caret=11,62
+[Kvizzy30\QueMessage.cpp]
+TopLine=51
+Caret=51,79
