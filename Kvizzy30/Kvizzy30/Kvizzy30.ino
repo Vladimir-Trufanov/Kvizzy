@@ -164,7 +164,7 @@ void setup()
       "Lead",                 // Task name
       2048,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      9,                      // Priority
+      8,                      // Priority
       NULL,                   // Task handle
       1);
    // Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
@@ -184,7 +184,7 @@ void setup()
       "Stream",               // Task name
       3072,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      10,                     // Priority
+      9,                     // Priority
       NULL,                   // Task handle
       1);
    // Выбрать из очереди и вывести сообщения в последовательный порт
@@ -193,7 +193,7 @@ void setup()
       "Print",                // Task name
       2048,                   // Stack size
       NULL,                   // Parameters passed to the task function
-      8,                      // Priority
+      6,                      // Priority
       NULL,                   // Task handle
       1);
    // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
