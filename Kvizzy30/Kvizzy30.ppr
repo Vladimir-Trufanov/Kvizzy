@@ -1877,10 +1877,10 @@ Kvizzy30
 5=Kvizzy30\common_kvizzy.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\common_kvizzy.h
+Selected=Kvizzy30\Kvizzy30.ino
 [Kvizzy30\Kvizzy30.ino]
-TopLine=203
-Caret=1,23
+TopLine=104
+Caret=4,118
 [Kvizzy30\State.h]
 TopLine=9
 Caret=1,1
@@ -1894,5 +1894,5 @@ Caret=1,1
 TopLine=43
 Caret=1,1
 [Kvizzy30\common_kvizzy.h]
-TopLine=1
+TopLine=33
 Caret=1,1

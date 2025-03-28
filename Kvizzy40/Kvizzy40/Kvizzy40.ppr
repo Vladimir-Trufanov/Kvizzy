@@ -18,7 +18,9 @@ Extensions=*.*
 [Project tree]
 Kvizzy40
 	+Kvizzy40
+		common_kvizzy.h
 		define_kvizzy.h
+		kviPrint.h
 		kviStream.h
 		Kvizzy40.ino
 		Kvizzy40.ppr
@@ -26,15 +28,23 @@ Kvizzy40
 0=Kvizzy40.ino
 1=define_kvizzy.h
 2=kviStream.h
+3=kviPrint.h
+4=common_kvizzy.h
 [Selected Project Files]
 Main=
 Selected=Kvizzy40.ino
 [Kvizzy40.ino]
-TopLine=7
-Caret=1,14
+TopLine=191
+Caret=66,223
 [define_kvizzy.h]
-TopLine=10
-Caret=42,22
+TopLine=1
+Caret=1,12
 [kviStream.h]
-TopLine=41
-Caret=7,72
+TopLine=1
+Caret=1,6
+[kviPrint.h]
+TopLine=1
+Caret=19,25
+[common_kvizzy.h]
+TopLine=40
+Caret=1,79

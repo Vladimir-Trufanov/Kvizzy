@@ -13,12 +13,15 @@
 #include <WiFi.h>
 
 #include "define_kvizzy.h"   // общие определения 
-//#include "common_kvizzy.h"   // общие функции  
-
+#include "common_kvizzy.h"   // общие функции  
 
 // Подключаем задачи
-#include "kviStream.h"       // 8-2971  фотографирование и отправка изображения
+#include "kviPrint.h"        // 7-983  выборка из очереди и вывод сообщения на периферию
+#include "kviStream.h"       // 8-2971 фотографирование и отправка изображения
 
+// Определяем объект для синхронизации времени 
+#include "AttachSNTP.h"
+TAttachSNTP oSNTP;
 
 // Определяем заголовок для сторожевого таймера
 hw_timer_t *timer = NULL;
@@ -30,20 +33,21 @@ void IRAM_ATTR onTimer()
   portENTER_CRITICAL_ISR(&timerMux);
   // Если флаги всех задач установлены в 1, 
   // то сбрасываем флаги задач и счетчик сторожевого таймера
-  if (fwdtLoop==true 
+  if (fwdtLoop==true
+  && fwdtPrint==true 
     /* 
     && fwdtLed33==true &&  
-    fwdtLead==true && fwdtState==true && fwdtPrint==true
+    fwdtLead==true && fwdtState==true 
     */
   && fwdtStream==true) 
   {
     // Сбрасываем флаги задач
     fwdtLoop  = false;
+    fwdtPrint = false;
       /*
       fwdtLed33 = false;
       fwdtLead = false;
       fwdtState = false;
-      fwdtPrint = false;
       */
     fwdtStream = false;
     // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
@@ -61,7 +65,6 @@ void IRAM_ATTR onTimer()
 /*
 #include <HTTPClient.h>
 
-#include "AttachSNTP.h"
 #include "jsonBase.h"       
 
 // Определяем директивы отладки
@@ -71,8 +74,6 @@ void IRAM_ATTR onTimer()
 // #define tmr_LEAD
 #define tmr_STATE   // 2025-03-08, state не отключаем, пусть сообщения обрабатываются
 #define tmr_STREAM
-// Определяем объект для синхронизации времени 
-TAttachSNTP oSNTP;
 // Определяем объект для работs с документом JSON
 TJsonBase oJSON;
 
@@ -90,7 +91,6 @@ TQue queState;                                      // для страницы S
 // Подключаем задачи и деятельности
 #include "Lead.h"            //  9-897 запрос контроллера на изменение состояний устройств
 #include "State.h"           //  8-986 выборка сообщений о состоянии и отправка 
-#include "tStream.h"         // 10-42  фотографирование и отправка изображения
 #include "Led33.h"           // обработка контрольного светодиода 
 // Обработка прерывания для вспышки при изменении состояние 4 контакта с LOW на HIGH (RISING).
 void IRAM_ATTR onLedFlash()
@@ -110,7 +110,7 @@ void setup()
   // Подключаемся к Wi-Fi сети
   WiFi.disconnect();
   WiFi.begin(ssid, password);
-  Serial.print("Соединяемся с Wi-Fi .");
+  Serial.print("Соединяемся с Wi-Fi.");
   while (WiFi.status() != WL_CONNECTED) 
   {
     delay(500);
@@ -118,7 +118,19 @@ void setup()
   }
   Serial.println("");
   Serial.println("К Wi-Fi сети подключились!");
-  
+  // Проверяем системное время, если время еще не установлено, производим его 
+  // синхронизацию по протоколу SNTP с серверами точного времени,
+  oSNTP.Create();
+
+  // Подключаем задачу по выборке из очереди и отправке сообщения на периферию
+  xTaskCreatePinnedToCore(
+    vPrint,                 // Task function
+    "Print",                // Task name
+    2048,                   // Stack size
+    NULL,                   // Parameters passed to the task function
+    7,                      // Priority
+    NULL,                   // Task handle
+    1);
   // Подключаем задачу по фотографированию и отправке Base24-изображения на страницу Stream
   xTaskCreatePinnedToCore(
     vStream,                // Task function
@@ -137,10 +149,6 @@ void setup()
   */
   
   /*
-   // Проверяем системное время, если время еще не установлено, производим его 
-   // синхронизацию по протоколу SNTP с серверами точного времени,
-   oSNTP.Create();
-   Serial.println("");
    
    // Создаем очередь сообщений на периферию                                                                   
    String inMess=queMessa.Create();                                                      
@@ -202,25 +210,16 @@ void setup()
       NULL,                   // Task handle
       1);
   */
-  /*
-   // Выбрать из очереди и вывести сообщения в последовательный порт
-   xTaskCreatePinnedToCore(
-      vPrint,                 // Task function
-      "Print",                // Task name
-      2048,                   // Stack size
-      NULL,                   // Parameters passed to the task function
-      6,                      // Priority
-      NULL,                   // Task handle
-      1);
-   // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
-   timer = timerBegin(1000000);
-   // Подключаем функцию обработчика прерывания от таймера - onTimer
-   timerAttachInterrupt(timer, &onTimer);
-   // Настраиваем таймер: интервал перезапуска - 20 секунд (20000000 микросекунд),
-   // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
-   // раз (четвертый параметр = 0) 
-   timerAlarm(timer, 20000000, true, 0);
-*/
+
+  // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
+  timer = timerBegin(1000000);
+  // Подключаем функцию обработчика прерывания от таймера - onTimer
+  timerAttachInterrupt(timer, &onTimer);
+  // Настраиваем таймер: интервал перезапуска - 20 секунд (20000000 микросекунд),
+  // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
+  // раз (четвертый параметр = 0) 
+  timerAlarm(timer, 20000000, true, 0);
+  Serial.println("Установлен тайм-аут сторожевого таймера 20 сек.");
 }
 
 // Инициируем прием кодов и заполнение строки

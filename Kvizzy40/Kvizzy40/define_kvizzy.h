@@ -10,7 +10,6 @@
 #pragma once            
 #include <Arduino.h>
 
-
 // Вводим имя и пароль точки доступа
 // const char* ssid     = "OPPO A9 2020";
 // const char* password = "b277a4ee84e8";
@@ -20,21 +19,18 @@ const char* password = "18009217";
 String shttp="http://probatv.ru/"; 
 
 // Назначаем задачи, инициируем флаги для сторожевого таймера
+void vPrint(void *pvParameters);
+bool fwdtPrint = false;
+void vStream(void *pvParameters);
+bool fwdtStream = false;
 //void vLead(void *pvParameters);
 //bool fwdtLead = false;
 //void vState(void *pvParameters);
 //bool fwdtState = false;
-void vStream(void *pvParameters);
-bool fwdtStream = false;
 //void vLed33(void *pvParameters);
 //bool fwdtLed33 = false;
-//void vPrint(void *pvParameters);
-//bool fwdtPrint = false;
 // Сбрасываем флаг базового цикла приложения
 bool fwdtLoop = false;
-
-   
-
 
 /*
 String inMess="";                      // метка отправленного сообщения
