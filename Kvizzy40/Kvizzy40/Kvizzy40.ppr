@@ -1,0 +1,40 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.CompileOnBackground=0
+Compilator.ProgSaveAll=0
+Compilator.ProgRunSelection=0
+Compilator.LogType=0
+Compilator.LogEncoding=0
+DefaultDir=C:\Kvizzy\Kvizzy40\Kvizzy40
+DefaultCP=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+HTServer=localhost
+Extensions=*.*
+[Project tree]
+Kvizzy40
+	+Kvizzy40
+		define_kvizzy.h
+		kviStream.h
+		Kvizzy40.ino
+		Kvizzy40.ppr
+[Open project files]
+0=Kvizzy40.ino
+1=define_kvizzy.h
+2=kviStream.h
+[Selected Project Files]
+Main=
+Selected=Kvizzy40.ino
+[Kvizzy40.ino]
+TopLine=7
+Caret=1,14
+[define_kvizzy.h]
+TopLine=10
+Caret=42,22
+[kviStream.h]
+TopLine=41
+Caret=7,72
