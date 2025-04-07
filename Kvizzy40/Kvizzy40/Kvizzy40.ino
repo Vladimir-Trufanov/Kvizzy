@@ -11,6 +11,19 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
+#include <HTTPClient.h>
+
+// Определяем объект для синхронизации времени 
+#include "AttachSNTP.h"
+TAttachSNTP oSNTP;
+
+// Подключаем файлы обеспечения передачи и приёма сообщений через очередь                
+#include "Kvizzy40_Message.h" // сообщения приложения  
+#include "QueMessage.h"       // заголовочный файл класса TQueMessage                    
+#include "QueChar.h"          // заголовочный файл класса TQueChar                        
+// Назначаем объекты работы с сообщениями через очередь                                   
+TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);    // для периферии                                     
+TQue queState;                                      // для страницы State
 
 #include "define_kvizzy.h"   // общие определения 
 #include "common_kvizzy.h"   // общие функции  
@@ -18,10 +31,6 @@
 // Подключаем задачи
 #include "kviPrint.h"        // 7-983  выборка из очереди и вывод сообщения на периферию
 #include "kviStream.h"       // 8-2971 фотографирование и отправка изображения
-
-// Определяем объект для синхронизации времени 
-#include "AttachSNTP.h"
-TAttachSNTP oSNTP;
 
 // Определяем заголовок для сторожевого таймера
 hw_timer_t *timer = NULL;
@@ -63,27 +72,14 @@ void IRAM_ATTR onTimer()
 
 
 /*
-#include <HTTPClient.h>
 
 #include "jsonBase.h"       
 
 // Определяем директивы отладки
 // #define tmr_TRACEMEMORY
-
-// Управляем включением задач
-// #define tmr_LEAD
-#define tmr_STATE   // 2025-03-08, state не отключаем, пусть сообщения обрабатываются
-#define tmr_STREAM
 // Определяем объект для работs с документом JSON
 TJsonBase oJSON;
 
-// Подключаем файлы обеспечения передачи и приёма сообщений через очередь                
-#include "Kvizzy30_Message.h" // сообщения приложения  
-#include "QueMessage.h"       // заголовочный файл класса TQueMessage                    
-#include "QueChar.h"          // заголовочный файл класса TQueChar                        
-// Назначаем объекты работы с сообщениями через очередь                                   
-TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);    // для периферии                                     
-TQue queState;                                      // для страницы State
 
 #include "define_kvizzy.h"   // общие определения 
 #include "common_kvizzy.h"   // общие функции  

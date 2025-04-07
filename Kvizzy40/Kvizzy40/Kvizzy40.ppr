@@ -20,31 +20,37 @@ Kvizzy40
 	+Kvizzy40
 		common_kvizzy.h
 		define_kvizzy.h
+		FQBN_ esp32_esp32_esp32cam.txt
 		kviPrint.h
 		kviStream.h
 		Kvizzy40.ino
 		Kvizzy40.ppr
+		Kvizzy40_Message.h
 [Open project files]
 0=Kvizzy40.ino
 1=define_kvizzy.h
 2=kviStream.h
 3=kviPrint.h
 4=common_kvizzy.h
+5=FQBN_ esp32_esp32_esp32cam.txt
 [Selected Project Files]
 Main=
 Selected=Kvizzy40.ino
 [Kvizzy40.ino]
-TopLine=191
-Caret=66,223
+TopLine=10
+Caret=1,34
 [define_kvizzy.h]
-TopLine=1
-Caret=1,12
+TopLine=57
+Caret=3,78
 [kviStream.h]
-TopLine=1
-Caret=1,6
+TopLine=16
+Caret=32,28
 [kviPrint.h]
 TopLine=1
 Caret=19,25
 [common_kvizzy.h]
-TopLine=40
-Caret=1,79
+TopLine=22
+Caret=12,61
+[FQBN_ esp32_esp32_esp32cam.txt]
+TopLine=43
+Caret=61,143

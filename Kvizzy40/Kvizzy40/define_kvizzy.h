@@ -10,6 +10,11 @@
 #pragma once            
 #include <Arduino.h>
 
+// Управляем включением задач
+// #define tmr_LEAD
+// #define tmr_STATE   // 2025-03-08, state не отключаем, пусть сообщения обрабатываются
+#define tmr_STREAM
+
 // Вводим имя и пароль точки доступа
 // const char* ssid     = "OPPO A9 2020";
 // const char* password = "b277a4ee84e8";
@@ -61,6 +66,7 @@ bool Led33Start=true;   // включить режим работы контро
 volatile int lastLedWork = millis();  // прошлое время смены состояния контрольного светодиода
 volatile int millLedWork = 3017;      // текущий интервал смены состояния контрольного светодиода (чуть более 3 секунд)
 #define PinLedFlash      4            // контакт светодиода-вспышки
+*/
 
 // Определяем структуру информации по запросу к странице сайта
 struct tQueryMessage
@@ -69,6 +75,7 @@ struct tQueryMessage
    String httpText;      // текст ответа (max 32768 символов)
 };
 
+/*
 // Определяем число, которое будет считываться в основном цикле
 // с последовательного порта - команду инициирования зависания процессора
 volatile int iCreateSit;
