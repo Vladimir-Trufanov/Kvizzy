@@ -10,6 +10,31 @@
 **/
 
 #include <Arduino.h>
+
+// для проверки фотогр ------------------------------------------------------
+#include "OV2640.h"
+#include "SD_MMC.h"            
+#include <EEPROM.h>        
+
+// Определяем число байт для хранения в постоянной памяти
+#define EEPROM_SIZE 1
+// Определяем пин вспышки
+#define BUILTIN_LED 4
+// Инициализируем переменную, обеспечивающую генерацию названий фотографий:
+// picture1.jpg, picture2.jpg ...
+int pictureNumber = 0;
+// Инициируем объект для фотографирования
+OV2640 cam;
+// Определяем режим записи на SD
+#define SD_MODE_NORMAL 4  // обычный по 4 контактам со вспышкой
+#define SD_MODE_1BIT   1  // однобитовый, медленный, без вспышки
+
+#define SD_MODE SD_MODE_1BIT  
+// для проверки фотогр ------------------------------------------------------
+
+
+
+
 #include <WiFi.h>
 #include <HTTPClient.h>
 
@@ -103,6 +128,7 @@ void setup()
   Serial.begin(115200);
   while (!Serial) continue;
   Serial.println("Последовательный порт работает!");
+
   // Подключаемся к Wi-Fi сети
   WiFi.disconnect();
   WiFi.begin(ssid, password);
@@ -207,6 +233,73 @@ void setup()
       1);
   */
 
+
+// для проверки фотогр ------------------------------------------------------
+
+// Инициируем постоянную память заданного размера
+  EEPROM.begin(EEPROM_SIZE);
+  // Назначаем номер первой сохраняемой фотографии
+  EEPROM.write(0, 254);
+  EEPROM.commit();
+  Serial.println("Инициирована постоянная память\n");
+
+  Serial.println("Подключаем SD-карту");
+  // Настраиваем обычный или однобитовый режим работы
+  #if (SD_MODE==SD_MODE_NORMAL)
+    if(!SD_MMC.begin())
+  #else
+    if (!SD_MMC.begin("/sdcard", true))
+  #endif
+  {
+    Serial.println("SD-карта не смонтирована");
+    return;
+  }
+  else Serial.println("SD карта смонтирована");
+  // Гасим вспышку в однобитовом режиме
+  #if (SD_MODE==SD_MODE_1BIT)
+    pinMode(BUILTIN_LED, OUTPUT);
+    digitalWrite(BUILTIN_LED, LOW);
+  #endif 
+  // Подключаем устройство
+  uint8_t cardType = SD_MMC.cardType();
+  if(cardType == CARD_NONE)
+  {
+    Serial.println("SD карта не подключена");
+    return;
+  }
+  else Serial.println("SD карта подключена");
+  
+  // Инициируем камеру 
+  cam.init(esp32cam_aithinker_config);
+  // Определяем дополнительную задачу
+  xTaskCreatePinnedToCore (
+    instream,       // название функции, которая будет запускаться, как параллельная задача
+    "instream",     // название задачи
+    4096,           // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
+                    // ей потребуется сохранить временные переменные и результаты. Для задач с 
+                    // большим объемом памяти потребуется больший размер стека.
+    NULL,           // указатель на параметр, который будет передан новой задаче. 
+                    // NULL, если параметр не передаётся.
+    9,              // приоритет задачи
+    NULL,           // дескриптор или указатель на задачу. Его можно использовать для вызова задачи.
+                    // Если это не требуется, то NULL.
+    1               // идентификатор ядра процессора, на котором требуется запустить задачу. 
+                    // У ESP32 есть два ядра, обозначенные как 0 и 1.
+  );
+
+// для проверки фотогр ------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
   // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
   timer = timerBegin(1000000);
   // Подключаем функцию обработчика прерывания от таймера - onTimer
@@ -276,5 +369,89 @@ void loop()
   // Ничего не делаем пол секунды
   vTaskDelay(521/portTICK_PERIOD_MS); 
 }
+
+// ****************************************************************************
+// *              Выполнять фотографирование в некоторых циклах               *
+// * !!! Если задача завершится (не будет циклится),контроллер перезагрузится *
+// ****************************************************************************
+void instream (void* pvParameters) 
+{
+  while (1) 
+  {
+    cam.run();
+    size_t SizeFR = cam.getSize();
+    callphoto(cam.getfb(),SizeFR);
+
+    readFile("/Arduino.txt");
+
+    vTaskDelay(1200/portTICK_PERIOD_MS);
+  }
+}
+int nCikl=0;
+void callphoto(uint8_t *payload, uint16_t len)
+{
+
+
+
+
+
+  nCikl++;
+  Serial.print("Цикл: "); Serial.println(nCikl);
+
+  if ((nCikl>1) && (nCikl<15))
+  {
+    pictureNumber = EEPROM.read(0) + 1;
+    // Определяем имя своего файла фотографии в каталоге карты microSD
+    String path = "/picture" + String(pictureNumber) +".jpg";
+    // Сохраняем фотографию на карту microSD
+    fs::FS & fs = SD_MMC; 
+    Serial.printf("Название фото: %s\n", path.c_str());
+    File file = fs.open(path.c_str(), FILE_WRITE);
+    if(!file)
+    {
+      Serial.println("Ошибка открытия файла в режиме записи");
+    } 
+    else 
+    {
+      file.write(payload, len); 
+      Serial.printf("Сохранено изображение: %s\n", path.c_str());
+      // Cохраняем текущий номер снимка во флэш-памяти, 
+      // чтобы отслеживать количество сделанных фотографий.
+      EEPROM.write(0, pictureNumber);
+      EEPROM.commit();
+    }
+    file.close();
+  }
+}
+
+void readFile(const char *path) 
+{
+  Serial.printf("Reading file: %s\n", path);
+  // ----Сохраняем фотографию на карту microSD
+  fs::FS & fs = SD_MMC; 
+
+  File file = fs.open(path);
+  if (!file) 
+  {
+    Serial.println("Failed to open file for reading");
+    return;
+  }
+
+  Serial.print("Read from file: ");
+  Serial.println("***");
+  for (int i = 0; i <=8; i++) 
+  {
+    unsigned char x = file.read();
+    Serial.println(x);
+  }
+  Serial.println("***");
+
+  while (file.available()) 
+  {
+    Serial.write(file.read());
+            // size_t read(uint8_t *buf, size_t size);
+  }
+}
+
 
 // *********************************************************** Kvizzy40.ino ***

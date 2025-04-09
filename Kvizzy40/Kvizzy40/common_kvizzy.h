@@ -15,6 +15,8 @@
 // ****************************************************************************
 tQueryMessage postQuery(String ehttp, String queryString) 
 {
+  Serial.print("Передаём запрос: "); Serial.print(ehttp); Serial.println(queryString);
+
   String inMess;
   tQueryMessage tQuery;
   tQuery.httpCode=1001;
@@ -24,16 +26,24 @@ tQueryMessage postQuery(String ehttp, String queryString)
   {
     HTTPClient http;
     http.begin(ehttp);
+    //http.begin("http://probatv.ru/Stream40/");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    tQuery.httpCode = http.POST(queryString);
+    tQuery.httpCode = http.POST(queryString); 
+    //tQuery.httpCode = http.POST("");  
     if (tQuery.httpCode > 0) 
     {
       // Если запрос успешно отправлен
-      if (tQuery.httpCode == HTTP_CODE_OK) inMess = http.getString();
+      if (tQuery.httpCode == HTTP_CODE_OK) 
+      {
+        inMess = http.getString();
+        Serial.println("Запрос успешно отправлен: "); Serial.println(inMess);
+        //Serial.print("queryString: "); Serial.println(queryString);
+      }
       // Если ошибка после того, как HTTP-заголовок был отправлен
       // и заголовок ответа сервера был обработан
       else 
       {
+        Serial.println("запрос c ошибкой");
         // Если сообщение о ненайденной странице, указываем её
         if (tQuery.httpCode==404) 
         {

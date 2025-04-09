@@ -18,39 +18,36 @@ Extensions=*.*
 [Project tree]
 Kvizzy40
 	+Kvizzy40
+		Arduino.txt
 		common_kvizzy.h
 		define_kvizzy.h
-		FQBN_ esp32_esp32_esp32cam.txt
 		kviPrint.h
 		kviStream.h
 		Kvizzy40.ino
 		Kvizzy40.ppr
 		Kvizzy40_Message.h
+		png5.jpg
 [Open project files]
 0=Kvizzy40.ino
 1=define_kvizzy.h
-2=kviStream.h
-3=kviPrint.h
-4=common_kvizzy.h
-5=FQBN_ esp32_esp32_esp32cam.txt
+2=kviPrint.h
+3=common_kvizzy.h
+4=kviStream.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy40.ino
+Selected=kviStream.h
 [Kvizzy40.ino]
-TopLine=10
-Caret=1,34
+TopLine=87
+Caret=42,112
 [define_kvizzy.h]
 TopLine=57
 Caret=3,78
-[kviStream.h]
-TopLine=16
-Caret=32,28
 [kviPrint.h]
 TopLine=1
 Caret=19,25
 [common_kvizzy.h]
 TopLine=22
-Caret=12,61
-[FQBN_ esp32_esp32_esp32cam.txt]
-TopLine=43
-Caret=61,143
+Caret=6,61
+[kviStream.h]
+TopLine=68
+Caret=1,86
