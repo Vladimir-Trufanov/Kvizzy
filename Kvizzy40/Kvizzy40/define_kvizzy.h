@@ -13,7 +13,7 @@
 // Управляем включением задач
 // #define tmr_LEAD
 // #define tmr_STATE   // 2025-03-08, state не отключаем, пусть сообщения обрабатываются
-#define tmr_STREAM
+// #define tmr_STREAM
 
 // Вводим имя и пароль точки доступа
 // const char* ssid     = "OPPO A9 2020";

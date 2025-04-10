@@ -376,13 +376,28 @@ void loop()
 // ****************************************************************************
 void instream (void* pvParameters) 
 {
+
+  time_t nTime;      // время отправки фрэйма (секунда с начала эпохи)
+  time_t nTimeOld;   // время отправки предыдущего фрэйма
+  int nFrame=0;      // номер кадра в секунде
+
+  // Инициируем метки времени
+  time(&nTime);                    // время отправки фрэйма (секунда с начала эпохи)
+  time(&nTimeOld);                 // время отправки предыдущего фрэйма
+
   while (1) 
   {
+    // Пересчитываем время и номер кадра
+    time(&nTime); 
+    if (nTime==nTimeOld) nFrame=nFrame+1;
+    else {nTimeOld=nTime; nFrame=0;}
+
     cam.run();
     size_t SizeFR = cam.getSize();
     callphoto(cam.getfb(),SizeFR);
 
     readFile("/Arduino.txt");
+    sendhttp(nTime, nFrame);
 
     vTaskDelay(1200/portTICK_PERIOD_MS);
   }
@@ -390,9 +405,6 @@ void instream (void* pvParameters)
 int nCikl=0;
 void callphoto(uint8_t *payload, uint16_t len)
 {
-
-
-
 
 
   nCikl++;
@@ -438,18 +450,88 @@ void readFile(const char *path)
   }
 
   Serial.print("Read from file: ");
-  Serial.println("***");
-  for (int i = 0; i <=8; i++) 
-  {
-    unsigned char x = file.read();
-    Serial.println(x);
-  }
-  Serial.println("***");
 
+  uint8_t bufi[20];
+  int rlen = file.available();
+  file.read(bufi, rlen); 
+
+  char *str;
+  str = (char*)bufi;
+
+  String stringOne = String(str);
+  Serial.println(stringOne);
+
+  char message[] =  {'H', 'e', 'l', 'l', 'o',0};
+  stringOne =  String(message);
+  Serial.println(stringOne);
+
+  /*
   while (file.available()) 
   {
-    Serial.write(file.read());
-            // size_t read(uint8_t *buf, size_t size);
+    char ch = file.read();    // read the first character
+    Serial.print(ch);
+    //Serial.write(file.read());
+  }
+  */
+  Serial.println(" ");
+}
+
+void sendhttp(time_t nTime, int nFrame) 
+{
+  String inMess;
+  if ((WiFi.status() == WL_CONNECTED)) 
+  {
+    HTTPClient http;
+    //http.begin(ehttp);
+    http.begin("http://probatv.ru/Stream40/");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    
+    String frame="Pirelli";
+    frame="data:image/jpeg;base64,"+frame;
+    String queryString = "src="+frame;      
+    // Добавляем время с начала эпохи в параметры
+    String stime="&time="+String(nTime);
+    queryString=queryString+stime;
+    // Добавляем номер кадра в параметры
+    String sframe="&frame="+String(nFrame);
+    queryString=queryString+sframe;
+    
+    int tQuery_httpCode = http.POST(queryString); 
+    //tQuery.httpCode = http.POST("");  
+    if (tQuery_httpCode > 0) 
+    {
+      // Если запрос успешно отправлен
+      if (tQuery_httpCode == HTTP_CODE_OK) 
+      {
+        inMess = http.getString();
+        Serial.println("Запрос успешно отправлен: "); Serial.println(inMess);
+        //Serial.print("queryString: "); Serial.println(queryString);
+      }
+      // Если ошибка после того, как HTTP-заголовок был отправлен
+      // и заголовок ответа сервера был обработан
+      else 
+      {
+        // Если сообщение о ненайденной странице, указываем её
+        if (tQuery_httpCode==404) inMess="404";
+        else inMess="Не 404";
+        Serial.print("Запрос c ошибкой "); Serial.println(inMess);
+      }
+    }
+    // Если ошибка при отправке POST-запроса
+    //    Ошибка POST-запроса: "read Timeout"       - "истекло время ожидания чтения"
+    //    Ошибка POST-запроса: "connection refused" - "В соединении отказано"
+    else 
+    {
+      inMess=http.errorToString(tQuery_httpCode);
+      Serial.printf("Ошибка POST-запроса: %s\n", inMess.c_str());
+    }
+    http.end();
+  }
+  // Если "Нет подключения к WiFi перед передачей POST-запроса"
+  else
+  {
+    inMess="Нет подключения к WiFi перед передачей POST-запроса";
+    Serial.println(inMess);
   }
 }
 
