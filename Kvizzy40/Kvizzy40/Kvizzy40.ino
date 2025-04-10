@@ -12,6 +12,12 @@
 #include <Arduino.h>
 
 // для проверки фотогр ------------------------------------------------------
+
+// Инициируем объект преобразования изображения base64
+#include <base64.h>
+base64 b;
+
+
 #include "OV2640.h"
 #include "SD_MMC.h"            
 #include <EEPROM.h>        
@@ -275,7 +281,7 @@ void setup()
   xTaskCreatePinnedToCore (
     instream,       // название функции, которая будет запускаться, как параллельная задача
     "instream",     // название задачи
-    4096,           // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
+    24480,          // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
                     // ей потребуется сохранить временные переменные и результаты. Для задач с 
                     // большим объемом памяти потребуется больший размер стека.
     NULL,           // указатель на параметр, который будет передан новой задаче. 
@@ -396,8 +402,7 @@ void instream (void* pvParameters)
     size_t SizeFR = cam.getSize();
     callphoto(cam.getfb(),SizeFR);
 
-    readFile("/Arduino.txt");
-    sendhttp(nTime, nFrame);
+    sendhttp(nTime, nFrame, "/Arduino1.txt");
 
     vTaskDelay(1200/portTICK_PERIOD_MS);
   }
@@ -436,8 +441,10 @@ void callphoto(uint8_t *payload, uint16_t len)
   }
 }
 
-void readFile(const char *path) 
+String readFile(const char *path) 
 {
+  char *str;
+
   Serial.printf("Reading file: %s\n", path);
   // ----Сохраняем фотографию на карту microSD
   fs::FS & fs = SD_MMC; 
@@ -446,24 +453,21 @@ void readFile(const char *path)
   if (!file) 
   {
     Serial.println("Failed to open file for reading");
-    return;
+    return "Failed to open file for reading";
   }
 
-  Serial.print("Read from file: ");
-
-  uint8_t bufi[20];
+  Serial.print("Read from file, rlen = ");
+  uint8_t bufi[20000];
   int rlen = file.available();
+  Serial.println(rlen);
   file.read(bufi, rlen); 
+  bufi[rlen]=0;
 
-  char *str;
+  //char *str;
   str = (char*)bufi;
 
   String stringOne = String(str);
-  Serial.println(stringOne);
-
-  char message[] =  {'H', 'e', 'l', 'l', 'o',0};
-  stringOne =  String(message);
-  Serial.println(stringOne);
+  //Serial.println(stringOne);
 
   /*
   while (file.available()) 
@@ -473,10 +477,11 @@ void readFile(const char *path)
     //Serial.write(file.read());
   }
   */
-  Serial.println(" ");
+  //Serial.println(" ");
+  return stringOne;
 }
 
-void sendhttp(time_t nTime, int nFrame) 
+void sendhttp(time_t nTime, int nFrame, const char *path) 
 {
   String inMess;
   if ((WiFi.status() == WL_CONNECTED)) 
@@ -486,8 +491,10 @@ void sendhttp(time_t nTime, int nFrame)
     http.begin("http://probatv.ru/Stream40/");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     
-    String frame="Pirelli";
-    frame="data:image/jpeg;base64,"+frame;
+    //String frame="Pirelli";
+    //String frame=readFile(path);
+    String frame="data:image/jpeg;base64,"+b.encode(readFile(path));
+    //frame="data:image/jpeg;base64,"+frame;
     String queryString = "src="+frame;      
     // Добавляем время с начала эпохи в параметры
     String stime="&time="+String(nTime);
@@ -495,6 +502,7 @@ void sendhttp(time_t nTime, int nFrame)
     // Добавляем номер кадра в параметры
     String sframe="&frame="+String(nFrame);
     queryString=queryString+sframe;
+    Serial.println("queryString: "); Serial.println(queryString);
     
     int tQuery_httpCode = http.POST(queryString); 
     //tQuery.httpCode = http.POST("");  

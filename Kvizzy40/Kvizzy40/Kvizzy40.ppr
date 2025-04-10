@@ -37,8 +37,8 @@ Kvizzy40
 Main=
 Selected=Kvizzy40.ino
 [Kvizzy40.ino]
-TopLine=489
-Caret=5,522
+TopLine=393
+Caret=18,487
 [define_kvizzy.h]
 TopLine=7
 Caret=4,16
@@ -49,5 +49,5 @@ Caret=19,25
 TopLine=9
 Caret=1,21
 [kviStream.h]
-TopLine=62
+TopLine=24
 Caret=1,24
