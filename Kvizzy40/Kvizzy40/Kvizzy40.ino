@@ -281,7 +281,7 @@ void setup()
   xTaskCreatePinnedToCore (
     instream,       // название функции, которая будет запускаться, как параллельная задача
     "instream",     // название задачи
-    24480,          // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
+    48480,          // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
                     // ей потребуется сохранить временные переменные и результаты. Для задач с 
                     // большим объемом памяти потребуется больший размер стека.
     NULL,           // указатель на параметр, который будет передан новой задаче. 
@@ -400,17 +400,23 @@ void instream (void* pvParameters)
 
     cam.run();
     size_t SizeFR = cam.getSize();
-    callphoto(cam.getfb(),SizeFR);
+    //const char * bb = callphoto(cam.getfb(),SizeFR);
+    String imgname = callphoto(cam.getfb(),SizeFR);
+    Serial.print("imgname = "); Serial.println(imgname);
 
-    sendhttp(nTime, nFrame, "/Arduino1.txt");
-
+    //sendhttp(nTime, nFrame, *bb);
+    //sendhttp(nTime, nFrame, "/vga640x480.jpg");
+    sendhttp(nTime, nFrame, imgname);
+    //sendhttp(nTime, nFrame, "/fil1.jpg");
+    //sendhttp(nTime, nFrame, callphoto(cam.getfb(),cam.getSize()));
     vTaskDelay(1200/portTICK_PERIOD_MS);
   }
 }
 int nCikl=0;
-void callphoto(uint8_t *payload, uint16_t len)
+//const char * callphoto(uint8_t *payload, uint16_t len)
+String callphoto(uint8_t *payload, uint16_t len)
 {
-
+  String path;
 
   nCikl++;
   Serial.print("Цикл: "); Serial.println(nCikl);
@@ -419,7 +425,7 @@ void callphoto(uint8_t *payload, uint16_t len)
   {
     pictureNumber = EEPROM.read(0) + 1;
     // Определяем имя своего файла фотографии в каталоге карты microSD
-    String path = "/picture" + String(pictureNumber) +".jpg";
+    path = "/picture" + String(pictureNumber) +".jpg";
     // Сохраняем фотографию на карту microSD
     fs::FS & fs = SD_MMC; 
     Serial.printf("Название фото: %s\n", path.c_str());
@@ -439,9 +445,12 @@ void callphoto(uint8_t *payload, uint16_t len)
     }
     file.close();
   }
+  //return path.c_str();
+  return path;
 }
 
-String readFile(const char *path) 
+//String readFile(const char *path) 
+String readFile(String path) 
 {
   char *str;
 
@@ -481,7 +490,8 @@ String readFile(const char *path)
   return stringOne;
 }
 
-void sendhttp(time_t nTime, int nFrame, const char *path) 
+//void sendhttp(time_t nTime, int nFrame, const char *path) 
+void sendhttp(time_t nTime, int nFrame, String path) 
 {
   String inMess;
   if ((WiFi.status() == WL_CONNECTED)) 
@@ -502,7 +512,7 @@ void sendhttp(time_t nTime, int nFrame, const char *path)
     // Добавляем номер кадра в параметры
     String sframe="&frame="+String(nFrame);
     queryString=queryString+sframe;
-    Serial.println("queryString: "); Serial.println(queryString);
+    //Serial.println("queryString: "); Serial.println(queryString);
     
     int tQuery_httpCode = http.POST(queryString); 
     //tQuery.httpCode = http.POST("");  

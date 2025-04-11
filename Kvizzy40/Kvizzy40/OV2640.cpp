@@ -1,3 +1,4 @@
+
 #include "OV2640.h"
 #define TAG "OV2640"
 
@@ -27,11 +28,11 @@ camera_config_t esp32cam_aithinker_config
   .ledc_timer = LEDC_TIMER_1,
   .ledc_channel = LEDC_CHANNEL_1,
   .pixel_format = PIXFORMAT_JPEG,
-  // .frame_size = FRAMESIZE_UXGA, // needs 234K of framebuffer space
-  // .frame_size = FRAMESIZE_SXGA, // needs 160K for framebuffer
-  // .frame_size = FRAMESIZE_XGA,  // needs 96K or even smaller FRAMESIZE_SVGA - can work if using only 1 fb
-  // .frame_size = FRAMESIZE_SVGA,
-  .frame_size = FRAMESIZE_VGA,     // 640x480
+  // .frame_size = FRAMESIZE_UXGA, // 1600x1200 [38k] needs 234K of framebuffer space 
+  // .frame_size = FRAMESIZE_SXGA, // 1280x1024 [38k] needs 160K for framebuffer
+  // .frame_size = FRAMESIZE_XGA,  // 1024x768  [22k] needs 96K or even smaller FRAMESIZE_SVGA - can work if using only 1 fb
+  // .frame_size = FRAMESIZE_SVGA, // 
+  .frame_size = FRAMESIZE_VGA,     // 640x480   [14k]
   .jpeg_quality = 12,              // 0-63 lower numbers are higher quality
   .fb_count = 1 // if more than one i2s runs in continous mode.  Use only with jpeg
 };
