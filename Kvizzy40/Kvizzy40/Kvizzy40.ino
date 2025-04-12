@@ -20,26 +20,11 @@ base64 b;
 
 #include "OV2640.h"
 #include "SD_MMC.h"            
-#include <EEPROM.h>        
 
-// Определяем число байт для хранения в постоянной памяти
-#define EEPROM_SIZE 1
 // Определяем пин вспышки
 #define BUILTIN_LED 4
-// Инициализируем переменную, обеспечивающую генерацию названий фотографий:
-// picture1.jpg, picture2.jpg ...
-int pictureNumber = 0;
 // Инициируем объект для фотографирования
 OV2640 cam;
-// Определяем режим записи на SD
-#define SD_MODE_NORMAL 4  // обычный по 4 контактам со вспышкой
-#define SD_MODE_1BIT   1  // однобитовый, медленный, без вспышки
-
-#define SD_MODE SD_MODE_1BIT  
-// для проверки фотогр ------------------------------------------------------
-
-
-
 
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -240,32 +225,16 @@ void setup()
   */
 
 
-// для проверки фотогр ------------------------------------------------------
-
-// Инициируем постоянную память заданного размера
-  EEPROM.begin(EEPROM_SIZE);
-  // Назначаем номер первой сохраняемой фотографии
-  EEPROM.write(0, 254);
-  EEPROM.commit();
-  Serial.println("Инициирована постоянная память\n");
-
-  Serial.println("Подключаем SD-карту");
-  // Настраиваем обычный или однобитовый режим работы
-  #if (SD_MODE==SD_MODE_NORMAL)
-    if(!SD_MMC.begin())
-  #else
-    if (!SD_MMC.begin("/sdcard", true))
-  #endif
+  // Включаем однобитовый, медленный, без вспышки режим работы с SD-картой
+  if (!SD_MMC.begin("/sdcard", true))
   {
     Serial.println("SD-карта не смонтирована");
     return;
   }
   else Serial.println("SD карта смонтирована");
-  // Гасим вспышку в однобитовом режиме
-  #if (SD_MODE==SD_MODE_1BIT)
-    pinMode(BUILTIN_LED, OUTPUT);
-    digitalWrite(BUILTIN_LED, LOW);
-  #endif 
+  // Гасим вспышку (вдруг она горит)
+  pinMode(BUILTIN_LED, OUTPUT);
+  digitalWrite(BUILTIN_LED, LOW);
   // Подключаем устройство
   uint8_t cardType = SD_MMC.cardType();
   if(cardType == CARD_NONE)
@@ -292,19 +261,6 @@ void setup()
     1               // идентификатор ядра процессора, на котором требуется запустить задачу. 
                     // У ESP32 есть два ядра, обозначенные как 0 и 1.
   );
-
-// для проверки фотогр ------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
 
   // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
   timer = timerBegin(1000000);
@@ -386,6 +342,7 @@ void instream (void* pvParameters)
   time_t nTime;      // время отправки фрэйма (секунда с начала эпохи)
   time_t nTimeOld;   // время отправки предыдущего фрэйма
   int nFrame=0;      // номер кадра в секунде
+  int nCikl=0;       // счетчик фотографирований за сеанс
 
   // Инициируем метки времени
   time(&nTime);                    // время отправки фрэйма (секунда с начала эпохи)
@@ -397,12 +354,15 @@ void instream (void* pvParameters)
     time(&nTime); 
     if (nTime==nTimeOld) nFrame=nFrame+1;
     else {nTimeOld=nTime; nFrame=0;}
-
+    // Фотографируем (при необходимости со вспышкой) и увеличиваем счетчик фотографий в сеансе
+    //digitalWrite(BUILTIN_LED, HIGH);
     cam.run();
-    size_t SizeFR = cam.getSize();
-    //const char * bb = callphoto(cam.getfb(),SizeFR);
-    String imgname = callphoto(cam.getfb(),SizeFR);
-    Serial.print("imgname = "); Serial.println(imgname);
+    nCikl++;
+    //digitalWrite(BUILTIN_LED, LOW);
+
+    // Записываем фото на CD-карту                 
+    String imgname = WritePhoto(cam.getfb(),cam.getSize(),nTime,nFrame,nCikl);
+    //Serial.print("imgname = "); Serial.println(imgname);
 
     //sendhttp(nTime, nFrame, *bb);
     //sendhttp(nTime, nFrame, "/vga640x480.jpg");
@@ -413,87 +373,45 @@ void instream (void* pvParameters)
     vTaskDelay(1200/portTICK_PERIOD_MS);
   }
 }
-int nCikl=0;
-//const char * callphoto(uint8_t *payload, uint16_t len)
-String callphoto(uint8_t *payload, uint16_t len)
+// ****************************************************************************
+// *                         Записать фото на CD-карту                        *
+// ****************************************************************************
+String WritePhoto(uint8_t *payload,uint16_t len,time_t nTime,int nFrame,int nCikl)
 {
-  String path;
-
-  nCikl++;
-  Serial.print("Цикл: "); Serial.println(nCikl);
-
-  if ((nCikl>1) && (nCikl<15))
+  // Определяем имя файла фотографии в каталоге карты microSD
+  String path = "/pic"+String(nTime)+"_"+String(nFrame)+".jpg";
+  // Сохраняем фотографию на карту microSD
+  fs::FS & fs = SD_MMC; 
+  File file = fs.open(path.c_str(), FILE_WRITE);
+  if(!file)
   {
-    pictureNumber = EEPROM.read(0) + 1;
-    // Определяем имя своего файла фотографии в каталоге карты microSD
-    path = "/picture" + String(pictureNumber) +".jpg";
-    // Сохраняем фотографию на карту microSD
-    fs::FS & fs = SD_MMC; 
-    Serial.printf("Название фото: %s\n", path.c_str());
-    File file = fs.open(path.c_str(), FILE_WRITE);
-    if(!file)
-    {
-      Serial.println("Ошибка открытия файла в режиме записи");
-    } 
-    else 
-    {
-      file.write(payload, len); 
-      Serial.printf("Сохранено изображение: %s\n", path.c_str());
-      // Cохраняем текущий номер снимка во флэш-памяти, 
-      // чтобы отслеживать количество сделанных фотографий.
-      EEPROM.write(0, pictureNumber);
-      EEPROM.commit();
-    }
-    file.close();
+    Serial.println("Ошибка открытия файла в режиме записи");
+  } 
+  else 
+  {
+    file.write(payload, len); 
+    Serial.printf("Сохранено изображение [%d]: %s\n",nCikl,path.c_str());
   }
-  //return path.c_str();
+  file.close();
   return path;
 }
 
 String readFile(String path) 
 {
-  char *str;
   uint8_t bufi[20000];
-  //encode(const uint8_t *data, size_t length)
-
-
   Serial.printf("Reading file: %s\n", path);
   // ----Сохраняем фотографию на карту microSD
   fs::FS & fs = SD_MMC; 
-
   File file = fs.open(path);
   if (!file) 
   {
     Serial.println("Failed to open file for reading");
     return "Failed to open file for reading";
   }
-
   int rlen = file.available();
   Serial.print("Read from file, rlen = "); Serial.println(rlen);
   file.read(bufi, rlen); 
   String stringOne = b.encode(bufi, rlen);
-
-
-  //bufi[rlen]=0;
-
-  //char *str;
-  //str = (char*)bufi;
-
-  //String stringOne = String(str);
-  //Serial.println(stringOne);
-
-  /*
-  while (file.available()) 
-  {
-    char ch = file.read();    // read the first character
-    Serial.print(ch);
-    //Serial.write(file.read());
-  }
-  */
-  //Serial.println(" ");
-  
-  //Serial.print("stringOne, len = "); Serial.println(stringOne.length());
-  //Serial.print("***"); Serial.print(stringOne); Serial.println("***"); 
   return stringOne;
 }
 
