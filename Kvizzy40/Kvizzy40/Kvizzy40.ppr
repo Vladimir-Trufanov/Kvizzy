@@ -33,12 +33,13 @@ Kvizzy40
 2=kviPrint.h
 3=common_kvizzy.h
 4=kviStream.h
+5=Kvizzy40_Message.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy40.ino
+Selected=Kvizzy40_Message.h
 [Kvizzy40.ino]
-TopLine=395
-Caret=7,402
+TopLine=377
+Caret=1,401
 [define_kvizzy.h]
 TopLine=7
 Caret=4,16
@@ -51,3 +52,6 @@ Caret=1,21
 [kviStream.h]
 TopLine=24
 Caret=1,24
+[Kvizzy40_Message.h]
+TopLine=31
+Caret=63,59

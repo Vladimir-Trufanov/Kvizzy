@@ -361,7 +361,7 @@ void instream (void* pvParameters)
     //digitalWrite(BUILTIN_LED, LOW);
 
     // Записываем фото на CD-карту                 
-    String imgname = WritePhoto(cam.getfb(),cam.getSize(),nTime,nFrame,nCikl);
+    String imgname = writePhoto(cam.getfb(),cam.getSize(),nTime,nFrame,nCikl);
     //Serial.print("imgname = "); Serial.println(imgname);
 
     //sendhttp(nTime, nFrame, *bb);
@@ -376,42 +376,68 @@ void instream (void* pvParameters)
 // ****************************************************************************
 // *                         Записать фото на CD-карту                        *
 // ****************************************************************************
-String WritePhoto(uint8_t *payload,uint16_t len,time_t nTime,int nFrame,int nCikl)
+#define defSavedPhoto "Сохранено изображение [%s]: %s"
+String writePhoto(uint8_t *payload,uint16_t len,time_t nTime,int nFrame,int nCikl)
 {
+  char bufm[128];                // буфер сообщения
+  String Result="nowritePhoto";  // возвращаемый результат
+   
   // Определяем имя файла фотографии в каталоге карты microSD
   String path = "/pic"+String(nTime)+"_"+String(nFrame)+".jpg";
   // Сохраняем фотографию на карту microSD
   fs::FS & fs = SD_MMC; 
-  File file = fs.open(path.c_str(), FILE_WRITE);
+  File file = fs.open(path, FILE_WRITE);
+  // Если не удалось открыть файл для записи
   if(!file)
   {
-    Serial.println("Ошибка открытия файла в режиме записи");
+    Serial.println(wrfErrOpenWritePhoto);
+    return Result;
   } 
+  // Записываем изображение
   else 
   {
     file.write(payload, len); 
-    Serial.printf("Сохранено изображение [%d]: %s\n",nCikl,path.c_str());
+    sprintf(bufm,defSavedPhoto,String(nCikl),path.c_str()); // "Сохранено изображение [%s]: %s"
+    wrfSavedPhoto=bufm;
+    Serial.println(wrfSavedPhoto); 
   }
   file.close();
   return path;
 }
-
-String readFile(String path) 
+// ****************************************************************************
+// *        Проверить размер файла фотографии, загрузить фото в буфер,        *
+// *          преобразовать изображение в строку Base64 и вернуть её          *
+// ****************************************************************************
+String readPhoto(String path) 
 {
-  uint8_t bufi[20000];
-  Serial.printf("Reading file: %s\n", path);
-  // ----Сохраняем фотографию на карту microSD
+  int bufSize=20000;      // максимальный размер файла изображения 
+  uint8_t bufi[bufSize];  // буфер изображения
+  char bufm[128];         // буфер сообщения
+
+  String stringOne="noBase64";  
+
+  // Открываем файл фото для чтения
   fs::FS & fs = SD_MMC; 
   File file = fs.open(path);
+  // Если не удалось открыть файл фото для чтения
   if (!file) 
   {
-    Serial.println("Failed to open file for reading");
-    return "Failed to open file for reading";
+    Serial.println(rdfNotOpenPhotoFile); // "Не удалось открыть файл фото для чтения" 
+    return stringOne;
   }
+  // Если размер файла превышает размер буфера
   int rlen = file.available();
-  Serial.print("Read from file, rlen = "); Serial.println(rlen);
+  if (rlen>bufSize)
+  {
+    sprintf(bufm,rdfSizePhotoLargeBuffer,String(rlen),String(bufSize)); // "Размер файла фото:%s больше размера буфера:%s"
+    Serial.println(bufm); 
+    return stringOne;
+  }
+  // Загружаем фото в буфер, преобразовываем изображение в строку Base64
   file.read(bufi, rlen); 
-  String stringOne = b.encode(bufi, rlen);
+  stringOne = b.encode(bufi, rlen);
+  sprintf(bufm,rdfPhotoHasBeenRead,String(rlen)); // "Cчитан файл фото: размер %s" 
+  Serial.println(bufm); 
   return stringOne;
 }
 
@@ -429,7 +455,7 @@ void sendhttp(time_t nTime, int nFrame, String path)
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     //http.addHeader("Content-Type", "multipart/form-data");
     
-    String frame="data:image/jpeg;base64,"+readFile(path);
+    String frame="data:image/jpeg;base64,"+readPhoto(path);
 
     //String frame="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADhSURBVChTVZA9TwJBEIb350pCL1BYoIUFITbE2tAYCxPobGwvEgpsIIaDgkJjtBLI5di7e8w7e0ugmMzXu8/MjivzAgqgOrHyPJfGWVHmgUPO3yrFf35bbIC67yyRZXvY7hi32rwO7kMexVUtFIV0Cb8/JNddvkZji7PZu9HDaI8RRFrfdJm3Lo9eNXvkRTzkYafkje1dn49mg0XjAoYPVhM5ELWDdkmXRpE4UiWyXQtwUlel57F3y8tVBzYrmCY2dvL8FCD6jE5l98r24VMixLgWqe00OQpFVjP6eHhflfwDul9tENLGFW4AAAAASUVORK5CYII=";
     //         ***data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADhSURBVChTVZA9TwJBEIb350pCL1BYoIUFITbE2tAYCxPobGwvEgpsIIaDgkJjtBLI5di7e8w7e0ugmMzXu8/MjivzAgqgOrHyPJfGWVHmgUPO3yrFf35bbIC67yyRZXvY7hi32rwO7kMexVUtFIV0Cb8/JNddvkZji7PZu9HDaI8RRFrfdJm3Lo9eNXvkRTzkYafkje1dn49mg0XjAoYPVhM5ELWDdkmXRpE4UiWyXQtwUlel57F3y8tVBzYrmCY2dvL8FCD6jE5l98r24VMixLgWqe00OQpFVjP6eHhflfwDul9tENLGFW4AAAAASUVORK5CYII=***
