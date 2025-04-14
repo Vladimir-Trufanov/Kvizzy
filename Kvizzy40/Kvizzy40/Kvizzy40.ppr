@@ -36,13 +36,13 @@ Kvizzy40
 5=Kvizzy40_Message.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy40_Message.h
+Selected=define_kvizzy.h
 [Kvizzy40.ino]
-TopLine=377
-Caret=1,401
+TopLine=295
+Caret=1,333
 [define_kvizzy.h]
-TopLine=7
-Caret=4,16
+TopLine=13
+Caret=1,21
 [kviPrint.h]
 TopLine=1
 Caret=19,25
