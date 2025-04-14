@@ -110,6 +110,7 @@ void setup(void) {
     Serial.print(".");
   }
   Serial.println("");
+  Serial.println("Это старый файл!");
   Serial.print("Соединение: ");
   Serial.println(ssid);
   Serial.print("IP адрес: ");
@@ -158,7 +159,7 @@ void setup(void) {
   });
   server.begin();
 }
-// Всем привет!
+// Это старый файл!
 void loop(void) 
 {
   server.handleClient();

@@ -38,7 +38,7 @@ void loop()
   // Ничего не делаем секунду
   vTaskDelay(1024/portTICK_PERIOD_MS); 
 
-  Serial.println("Опять Последовательный порт работает дальше!");
+  Serial.println("Опять и опять продолжаем!");
 }
 
 

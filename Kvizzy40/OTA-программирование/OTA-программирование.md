@@ -37,5 +37,6 @@ const char* password = "Password";
 
 #### [The EASY guide to Over-the-Air (OTA) Updates With ArduinoOTA](https://www.programmingelectronics.com/arduinoota/)
 
+#### [Управление светодиодами (LEDC)](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/ledc.html)
 
 
