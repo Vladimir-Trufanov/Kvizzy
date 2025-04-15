@@ -1,8 +1,6 @@
 ## [OTA-программирование](#) 
 
-
-
-
+#### "пример запуска ota esp32 в отдельной задаче"
 
 ### Библиография
 
@@ -39,4 +37,5 @@ const char* password = "Password";
 
 #### [Управление светодиодами (LEDC)](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/ledc.html)
 
+#### [Secure ESP32 OTA through HTTPS](https://github.com/PBearson/Get-Started-With-ESP32-OTA/tree/main)
 

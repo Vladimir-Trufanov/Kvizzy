@@ -28,6 +28,8 @@ void vPrint(void *pvParameters);
 bool fwdtPrint = false;
 void vStream(void *pvParameters);
 bool fwdtStream = false;
+void vOTA(void *pvParameters);
+bool fwdtOTA = false;
 //void vLead(void *pvParameters);
 //bool fwdtLead = false;
 //void vState(void *pvParameters);

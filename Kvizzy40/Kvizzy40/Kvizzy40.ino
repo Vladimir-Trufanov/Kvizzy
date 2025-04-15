@@ -4,12 +4,13 @@
  *          ESP32-CAM для управления светодиодом, снятия показаний температуры,
  *             влажности и формирования потока изображений наблюдаемого объекта
  * 
- * v4.0.0, 28.03.2025                                 Автор:      Труфанов В.Е.
+ * v4.0.1, 15.04.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 31.05.2024
  * 
 **/
 
 #include <Arduino.h>
+//#include <ArduinoOTA.h>   
 
 // для проверки фотогр ------------------------------------------------------
 
@@ -64,6 +65,7 @@ void IRAM_ATTR onTimer()
     && fwdtLed33==true &&  
     fwdtLead==true && fwdtState==true 
     */
+  //&& fwdtOTA==true 
   && fwdtStream==true) 
   {
     // Сбрасываем флаги задач
@@ -75,6 +77,7 @@ void IRAM_ATTR onTimer()
       fwdtState = false;
       */
     fwdtStream = false;
+    //fwdtOTA = false;
     // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
     timerWrite(timer, 0);
   }
@@ -131,6 +134,10 @@ void setup()
   }
   Serial.println("");
   Serial.println("К Wi-Fi сети подключились!");
+  // Запускаем OTA
+  //ArduinoOTA.begin(); 
+  //Serial.println("OTA включено!");
+
   // Проверяем системное время, если время еще не установлено, производим его 
   // синхронизацию по протоколу SNTP с серверами точного времени,
   oSNTP.Create();
@@ -261,6 +268,23 @@ void setup()
     1               // идентификатор ядра процессора, на котором требуется запустить задачу. 
                     // У ESP32 есть два ядра, обозначенные как 0 и 1.
   );
+  /*
+  // Определяем дополнительную задачу
+  xTaskCreatePinnedToCore (
+    vOTA,           // название функции, которая будет запускаться, как параллельная задача
+    "OTA",          // название задачи
+    8192,           // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
+                    // ей потребуется сохранить временные переменные и результаты. Для задач с 
+                    // большим объемом памяти потребуется больший размер стека.
+    NULL,           // указатель на параметр, который будет передан новой задаче. 
+                    // NULL, если параметр не передаётся.
+    1,             // приоритет задачи
+    NULL,           // дескриптор или указатель на задачу. Его можно использовать для вызова задачи.
+                    // Если это не требуется, то NULL.
+    1               // идентификатор ядра процессора, на котором требуется запустить задачу. 
+                    // У ESP32 есть два ядра, обозначенные как 0 и 1.
+  );
+  */
 
   // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
   timer = timerBegin(1000000);
@@ -283,7 +307,10 @@ void setup()
 // ****************************************************************************
 void loop() 
 {
-  Serial.println("*** loop ***");
+  //Serial.println("*** v4.0.1, 15.04.2025 ***");
+  // Запускаем обработку запроса на обновление кода
+  //ArduinoOTA.handle(); 
+
   /*
    // Проверяем, есть ли байты в последовательном порту
    if (Serial.available() > 0) 
@@ -362,14 +389,11 @@ void instream (void* pvParameters)
 
     // Записываем фото на CD-карту                 
     String imgname = writePhoto(cam.getfb(),cam.getSize(),nTime,nFrame,nCikl);
-    //Serial.print("imgname = "); Serial.println(imgname);
-
-    //sendhttp(nTime, nFrame, *bb);
+    // Отправляем кадр на страницу сайта "https://probatv.ru/Stream40/"
     //sendhttp(nTime, nFrame, "/vga640x480.jpg");
     sendhttp(nTime, nFrame, imgname);
     
-    //sendhttp(nTime, nFrame, "/fil1.jpg");
-    //sendhttp(nTime, nFrame, callphoto(cam.getfb(),cam.getSize()));
+    // Делаем задержку перед следующим кадром
     vTaskDelay(1200/portTICK_PERIOD_MS);
   }
 }
@@ -440,28 +464,26 @@ String readPhoto(String path)
   Serial.println(bufm); 
   return stringOne;
 }
-
-
-
-//void sendhttp(time_t nTime, int nFrame, const char *path) 
+// ****************************************************************************
+// *    Отправить кадр на страницу сайта "https://probatv.ru/Stream40/"       *
+// ****************************************************************************
 void sendhttp(time_t nTime, int nFrame, String path) 
 {
+  // Объявляем строку ответного сообщения со страницы сайта
   String inMess;
+  // Если есть WiFi, отправляем сообщение
   if ((WiFi.status() == WL_CONNECTED)) 
   {
+    // Готовим запрос к странице "https://probatv.ru/Stream40/"
     HTTPClient http;
-    //http.begin(ehttp);
-    http.begin("https://probatv.ru/Stream40/");
+    String ehttp=urlHome+"/Stream40/";  
+    http.begin(ehttp);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    //http.addHeader("Content-Type", "multipart/form-data");
-    
     String frame="data:image/jpeg;base64,"+readPhoto(path);
 
     //String frame="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADhSURBVChTVZA9TwJBEIb350pCL1BYoIUFITbE2tAYCxPobGwvEgpsIIaDgkJjtBLI5di7e8w7e0ugmMzXu8/MjivzAgqgOrHyPJfGWVHmgUPO3yrFf35bbIC67yyRZXvY7hi32rwO7kMexVUtFIV0Cb8/JNddvkZji7PZu9HDaI8RRFrfdJm3Lo9eNXvkRTzkYafkje1dn49mg0XjAoYPVhM5ELWDdkmXRpE4UiWyXQtwUlel57F3y8tVBzYrmCY2dvL8FCD6jE5l98r24VMixLgWqe00OQpFVjP6eHhflfwDul9tENLGFW4AAAAASUVORK5CYII=";
-    //         ***data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADhSURBVChTVZA9TwJBEIb350pCL1BYoIUFITbE2tAYCxPobGwvEgpsIIaDgkJjtBLI5di7e8w7e0ugmMzXu8/MjivzAgqgOrHyPJfGWVHmgUPO3yrFf35bbIC67yyRZXvY7hi32rwO7kMexVUtFIV0Cb8/JNddvkZji7PZu9HDaI8RRFrfdJm3Lo9eNXvkRTzkYafkje1dn49mg0XjAoYPVhM5ELWDdkmXRpE4UiWyXQtwUlel57F3y8tVBzYrmCY2dvL8FCD6jE5l98r24VMixLgWqe00OQpFVjP6eHhflfwDul9tENLGFW4AAAAASUVORK5CYII=***
-           
-
     //frame="data:image/jpeg;base64,"+frame;
+
     String queryString = "src="+frame;      
     // Добавляем время с начала эпохи в параметры
     String stime="&time="+String(nTime);
@@ -469,10 +491,8 @@ void sendhttp(time_t nTime, int nFrame, String path)
     // Добавляем номер кадра в параметры
     String sframe="&frame="+String(nFrame);
     queryString=queryString+sframe;
-    //Serial.println("queryString: "); Serial.println(queryString);
-    
+     
     int tQuery_httpCode = http.POST(queryString); 
-    //tQuery.httpCode = http.POST("");  
     if (tQuery_httpCode > 0) 
     {
       // Если запрос успешно отправлен
@@ -487,9 +507,9 @@ void sendhttp(time_t nTime, int nFrame, String path)
       else 
       {
         // Если сообщение о ненайденной странице, указываем её
-        if (tQuery_httpCode==404) inMess="404";
-        else inMess="Не 404";
-        Serial.print("Запрос c ошибкой "); Serial.println(inMess);
+        if (tQuery_httpCode==404) inMess="Ошибка 404 запроса страницы Stream40: Страница не найдена";
+        else inMess="Ошибка "+String(tQuery_httpCode)+" запроса страницы Stream40";
+        Serial.println(inMess);
       }
     }
     // Если ошибка при отправке POST-запроса
@@ -510,5 +530,22 @@ void sendhttp(time_t nTime, int nFrame, String path)
   }
 }
 
+/*
+// * Задача FreRTOS ***********************************************************
+// *               ------Выбрать из очереди и вывести сообщения на периферию        *
+// ****************************************************************************
+void vOTA(void* pvParameters) 
+{
+  for (;;)
+  {
+    Serial.println("*** vOTA ***");
+    // Запускаем обработку запроса на обновление кода
+    ArduinoOTA.handle(); 
+    // Отмечаем флагом, что цикл задачи успешно завершен   
+    fwdtOTA = true;
+    vTaskDelay(700/portTICK_PERIOD_MS); 
+ }
+}
+*/
 
 // *********************************************************** Kvizzy40.ino ***

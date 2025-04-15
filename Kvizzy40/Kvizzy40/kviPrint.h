@@ -16,7 +16,7 @@ void vPrint(void* pvParameters)
 {
   for (;;)
   {
-    Serial.println("*** vPrint ***");
+    //Serial.println("*** vPrint ***");
     /*
     queMessa.PostAll();
     */

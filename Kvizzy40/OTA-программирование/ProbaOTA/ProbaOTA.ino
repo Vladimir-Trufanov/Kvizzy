@@ -19,7 +19,7 @@ void setup()
   {
     delay(500);
   }
-  // Запускает OTA
+  // Запускаем OTA
   ArduinoOTA.begin(); 
 
   // Включаем последовательный порт
@@ -31,9 +31,8 @@ void setup()
 
 void loop() 
 {
-  // Обрабатывает запрос на обновление кода
+  // Запускаем обработку запроса на обновление кода
   ArduinoOTA.handle(); 
-  // All loop you're code goes here.
 
   // Ничего не делаем секунду
   vTaskDelay(1024/portTICK_PERIOD_MS); 
