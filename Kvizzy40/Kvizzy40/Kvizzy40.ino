@@ -10,7 +10,7 @@
 **/
 
 #include <Arduino.h>
-//#include <ArduinoOTA.h>   
+#include <ArduinoOTA.h>   
 
 // для проверки фотогр ------------------------------------------------------
 
@@ -135,8 +135,8 @@ void setup()
   Serial.println("");
   Serial.println("К Wi-Fi сети подключились!");
   // Запускаем OTA
-  //ArduinoOTA.begin(); 
-  //Serial.println("OTA включено!");
+  ArduinoOTA.begin(); 
+  Serial.println("OTA включено!");
 
   // Проверяем системное время, если время еще не установлено, производим его 
   // синхронизацию по протоколу SNTP с серверами точного времени,
@@ -495,20 +495,29 @@ void sendhttp(time_t nTime, int nFrame, String path)
     int tQuery_httpCode = http.POST(queryString); 
     if (tQuery_httpCode > 0) 
     {
+      // Не получилось выбрать заголовки
+      /*
+      for(int i = 0; i< http.headers(); i++)
+      {
+        Serial.print("http.header(i) = ");
+        Serial.println(i);
+        Serial.println(http.header(i));
+      }
+      */
       // Если запрос успешно отправлен
       if (tQuery_httpCode == HTTP_CODE_OK) 
       {
         inMess = http.getString();
         Serial.println("Запрос успешно отправлен: "); Serial.println(inMess);
-        //Serial.print("queryString: "); Serial.println(queryString);
       }
       // Если ошибка после того, как HTTP-заголовок был отправлен
       // и заголовок ответа сервера был обработан
       else 
       {
         // Если сообщение о ненайденной странице, указываем её
-        if (tQuery_httpCode==404) inMess="Ошибка 404 запроса страницы Stream40: Страница не найдена";
-        else inMess="Ошибка "+String(tQuery_httpCode)+" запроса страницы Stream40";
+        if (tQuery_httpCode==301)      inMess="Ошибка 301 к странице Stream40: документ перенесен на новый URI";
+        else if (tQuery_httpCode==404) inMess="Ошибка 404 к странице Stream40: страница не найдена";
+        else                           inMess="Ошибка "+String(tQuery_httpCode)+" запроса страницы Stream40";
         Serial.println(inMess);
       }
     }

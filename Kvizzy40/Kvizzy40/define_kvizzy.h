@@ -22,7 +22,7 @@ const char* ssid     = "TP-Link_B394";
 const char* password = "18009217";
 // Определяем сайт умного хозяйства  
 //String SiteHost="/home/u542632";
-String urlHome="http://probatv.ru";
+String urlHome="https://probatv.ru";
 // Назначаем задачи, инициируем флаги для сторожевого таймера
 void vPrint(void *pvParameters);
 bool fwdtPrint = false;
