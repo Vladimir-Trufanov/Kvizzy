@@ -4,29 +4,14 @@
  *          ESP32-CAM для управления светодиодом, снятия показаний температуры,
  *             влажности и формирования потока изображений наблюдаемого объекта
  * 
- * v4.0.1, 15.04.2025                                 Автор:      Труфанов В.Е.
- * Copyright © 2024 tve                               Дата создания: 31.05.2024
- * 
 **/
 
 #include <Arduino.h>
+String ver="v4.0.2, 18.04.2025";                   // Автор:      Труфанов В.Е.
+// Copyright © 2024 tve                            // Дата создания: 31.05.2024
+
 #include <ArduinoOTA.h>   
-
-// для проверки фотогр ------------------------------------------------------
-
-// Инициируем объект преобразования изображения base64
-#include <base64.h>
-base64 b;
-
-
-//#include "OV2640.h"
 #include "SD_MMC.h"            
-
-// Определяем пин вспышки
-#define BUILTIN_LED 4
-// Инициируем объект для фотографирования
-//OV2640 cam;
-
 #include <WiFi.h>
 #include <HTTPClient.h>
 
@@ -42,12 +27,12 @@ TAttachSNTP oSNTP;
 TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);    // для периферии                                     
 TQue queState;                                      // для страницы State
 
-#include "define_kvizzy.h"   // общие определения 
-#include "common_kvizzy.h"   // общие функции  
+#include "define_kvizzy.h"    // общие определения 
+#include "common_kvizzy.h"    // общие функции  
 
 // Подключаем задачи
-#include "kviPrint.h"        // 7-983  выборка из очереди и вывод сообщения на периферию
-#include "kviStream.h"       // 8-2971 фотографирование и отправка изображения
+#include "kviPrint.h"         // 7-983  выборка из очереди и вывод сообщения на периферию
+#include "kviStream.h"        // 8-2971 фотографирование и отправка изображения
 
 // Определяем заголовок для сторожевого таймера
 hw_timer_t *timer = NULL;
@@ -99,10 +84,6 @@ void IRAM_ATTR onTimer()
 // Определяем объект для работs с документом JSON
 TJsonBase oJSON;
 
-
-#include "define_kvizzy.h"   // общие определения 
-#include "common_kvizzy.h"   // общие функции  
-
 // Подключаем задачи и деятельности
 #include "Lead.h"            //  9-897 запрос контроллера на изменение состояний устройств
 #include "State.h"           //  8-986 выборка сообщений о состоянии и отправка 
@@ -122,7 +103,6 @@ void setup()
   Serial.begin(115200);
   while (!Serial) continue;
   Serial.println("Последовательный порт работает!");
-
   // Подключаемся к Wi-Fi сети
   WiFi.disconnect();
   WiFi.begin(ssid, password);
@@ -137,7 +117,6 @@ void setup()
   // Запускаем OTA
   ArduinoOTA.begin(); 
   Serial.println("OTA включено!");
-
   // Проверяем системное время, если время еще не установлено, производим его 
   // синхронизацию по протоколу SNTP с серверами точного времени,
   oSNTP.Create();
@@ -232,7 +211,6 @@ void setup()
       1);
   */
 
-
   // Включаем однобитовый, медленный, без вспышки режим работы с SD-картой
   if (!SD_MMC.begin("/sdcard", true))
   {
@@ -252,24 +230,6 @@ void setup()
   }
   else Serial.println("SD карта подключена");
   
-  // Инициируем камеру 
-  //cam.init(esp32cam_aithinker_config);
-  // Определяем дополнительную задачу
-  xTaskCreatePinnedToCore (
-    instream,       // название функции, которая будет запускаться, как параллельная задача
-    "instream",     // название задачи
-    //48480,        // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
-    24576,          // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
-                    // ей потребуется сохранить временные переменные и результаты. Для задач с 
-                    // большим объемом памяти потребуется больший размер стека.
-    NULL,           // указатель на параметр, который будет передан новой задаче. 
-                    // NULL, если параметр не передаётся.
-    9,              // приоритет задачи
-    NULL,           // дескриптор или указатель на задачу. Его можно использовать для вызова задачи.
-                    // Если это не требуется, то NULL.
-    1               // идентификатор ядра процессора, на котором требуется запустить задачу. 
-                    // У ESP32 есть два ядра, обозначенные как 0 и 1.
-  );
   /*
   // Определяем дополнительную задачу
   xTaskCreatePinnedToCore (
@@ -295,8 +255,8 @@ void setup()
   // Настраиваем таймер: интервал перезапуска - 20 секунд (20000000 микросекунд),
   // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
   // раз (четвертый параметр = 0) 
-  timerAlarm(timer, 20000000, true, 0);
-  Serial.println("Установлен тайм-аут сторожевого таймера 20 сек.");
+  timerAlarm(timer, 30000000, true, 0);
+  Serial.println("Установлен тайм-аут сторожевого таймера 30 сек.");
 }
 
 // Инициируем прием кодов и заполнение строки
@@ -309,7 +269,7 @@ void setup()
 // ****************************************************************************
 void loop() 
 {
-  //Serial.println("*** v4.0.1, 15.04.2025 ***");
+  // Serial.println("*** "+ver+" ***");
   // Запускаем обработку запроса на обновление кода
   ArduinoOTA.handle(); 
 
@@ -360,212 +320,5 @@ void loop()
   // Ничего не делаем пол секунды
   vTaskDelay(521/portTICK_PERIOD_MS); 
 }
-
-// ****************************************************************************
-// *              Выполнять фотографирование в некоторых циклах               *
-// * !!! Если задача завершится (не будет циклится),контроллер перезагрузится *
-// ****************************************************************************
-void instream (void* pvParameters) 
-{
-  time_t nTime;      // время отправки фрэйма (секунда с начала эпохи)
-  time_t nTimeOld;   // время отправки предыдущего фрэйма
-  int nFrame=0;      // номер кадра в секунде
-  int nCikl=0;       // счетчик фотографирований за сеанс
-  // Инициируем метки времени
-  time(&nTime);                    // время отправки фрэйма (секунда с начала эпохи)
-  time(&nTimeOld);                 // время отправки предыдущего фрэйма
-  // Инициируем объект для фотографирования
-  //OV2640 cam;
-  //cam.init(esp32cam_aithinker_config);
-
-  while (true) 
-  {
-    // Пересчитываем время и номер кадра
-    time(&nTime); 
-    if (nTime==nTimeOld) nFrame=nFrame+1;
-    else {nTimeOld=nTime; nFrame=0;}
-    // Фотографируем (при необходимости со вспышкой) и увеличиваем счетчик фотографий в сеансе
-    //digitalWrite(BUILTIN_LED, HIGH);
-    //cam.run();
-    nCikl++;
-    //digitalWrite(BUILTIN_LED, LOW);
-
-    /*
-    // Записываем фото на CD-карту                 
-    String imgname = writePhoto(cam.getfb(),cam.getSize(),nTime,nFrame,nCikl);
-    // Отправляем кадр на страницу сайта "https://probatv.ru/Stream40/"
-    //sendhttp(nTime, nFrame, "/vga640x480.jpg");
-    sendhttp(nTime, nFrame, imgname);
-    */
-
-    // Делаем задержку перед следующим кадром
-    vTaskDelay(1200/portTICK_PERIOD_MS);
-  }
-}
-
-/*
-// ****************************************************************************
-// *                         Записать фото на CD-карту                        *
-// ****************************************************************************
-#define defSavedPhoto "Сохранено изображение [%s]: %s"
-String writePhoto(uint8_t *payload,uint16_t len,time_t nTime,int nFrame,int nCikl)
-{
-  char bufm[128];                // буфер сообщения
-  String Result="nowritePhoto";  // возвращаемый результат
-   
-  // Определяем имя файла фотографии в каталоге карты microSD
-  String path = "/pic"+String(nTime)+"_"+String(nFrame)+".jpg";
-  // Сохраняем фотографию на карту microSD
-  fs::FS & fs = SD_MMC; 
-  File file = fs.open(path, FILE_WRITE);
-  // Если не удалось открыть файл для записи
-  if(!file)
-  {
-    Serial.println(wrfErrOpenWritePhoto);
-    return Result;
-  } 
-  // Записываем изображение
-  else 
-  {
-    file.write(payload, len); 
-    sprintf(bufm,defSavedPhoto,String(nCikl),path.c_str()); // "Сохранено изображение [%s]: %s"
-    wrfSavedPhoto=bufm;
-    Serial.println(wrfSavedPhoto); 
-  }
-  file.close();
-  return path;
-}
-*/
-
-/*
-// ****************************************************************************
-// *        Проверить размер файла фотографии, загрузить фото в буфер,        *
-// *          преобразовать изображение в строку Base64 и вернуть её          *
-// ****************************************************************************
-String readPhoto(String path) 
-{
-  int bufSize=20000;      // максимальный размер файла изображения 
-  uint8_t bufi[bufSize];  // буфер изображения
-  char bufm[128];         // буфер сообщения
-
-  String stringOne="noBase64";  
-
-  // Открываем файл фото для чтения
-  fs::FS & fs = SD_MMC; 
-  File file = fs.open(path);
-  // Если не удалось открыть файл фото для чтения
-  if (!file) 
-  {
-    Serial.println(rdfNotOpenPhotoFile); // "Не удалось открыть файл фото для чтения" 
-    return stringOne;
-  }
-  // Если размер файла превышает размер буфера
-  int rlen = file.available();
-  if (rlen>bufSize)
-  {
-    sprintf(bufm,rdfSizePhotoLargeBuffer,String(rlen),String(bufSize)); // "Размер файла фото:%s больше размера буфера:%s"
-    Serial.println(bufm); 
-    return stringOne;
-  }
-  // Загружаем фото в буфер, преобразовываем изображение в строку Base64
-  file.read(bufi, rlen); 
-  stringOne = b.encode(bufi, rlen);
-  sprintf(bufm,rdfPhotoHasBeenRead,String(rlen)); // "Cчитан файл фото: размер %s" 
-  Serial.println(bufm); 
-  return stringOne;
-}
-// ****************************************************************************
-// *    Отправить кадр на страницу сайта "https://probatv.ru/Stream40/"       *
-// ****************************************************************************
-void sendhttp(time_t nTime, int nFrame, String path) 
-{
-  // Объявляем строку ответного сообщения со страницы сайта
-  String inMess;
-  // Если есть WiFi, отправляем сообщение
-  if ((WiFi.status() == WL_CONNECTED)) 
-  {
-    // Готовим запрос к странице "https://probatv.ru/Stream40/"
-    HTTPClient http;
-    String ehttp=urlHome+"/Stream40/";  
-    http.begin(ehttp);
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    String frame="data:image/jpeg;base64,"+readPhoto(path);
-
-    //String frame="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADhSURBVChTVZA9TwJBEIb350pCL1BYoIUFITbE2tAYCxPobGwvEgpsIIaDgkJjtBLI5di7e8w7e0ugmMzXu8/MjivzAgqgOrHyPJfGWVHmgUPO3yrFf35bbIC67yyRZXvY7hi32rwO7kMexVUtFIV0Cb8/JNddvkZji7PZu9HDaI8RRFrfdJm3Lo9eNXvkRTzkYafkje1dn49mg0XjAoYPVhM5ELWDdkmXRpE4UiWyXQtwUlel57F3y8tVBzYrmCY2dvL8FCD6jE5l98r24VMixLgWqe00OQpFVjP6eHhflfwDul9tENLGFW4AAAAASUVORK5CYII=";
-    //frame="data:image/jpeg;base64,"+frame;
-
-    String queryString = "src="+frame;      
-    // Добавляем время с начала эпохи в параметры
-    String stime="&time="+String(nTime);
-    queryString=queryString+stime;
-    // Добавляем номер кадра в параметры
-    String sframe="&frame="+String(nFrame);
-    queryString=queryString+sframe;
-     
-    int tQuery_httpCode = http.POST(queryString); 
-    if (tQuery_httpCode > 0) 
-    {
-      // Не получилось выбрать заголовки
-      / *
-      for(int i = 0; i< http.headers(); i++)
-      {
-        Serial.print("http.header(i) = ");
-        Serial.println(i);
-        Serial.println(http.header(i));
-      }
-      * /
-      // Если запрос успешно отправлен
-      if (tQuery_httpCode == HTTP_CODE_OK) 
-      {
-        inMess = http.getString();
-        Serial.println("Запрос успешно отправлен: "); Serial.println(inMess);
-      }
-      // Если ошибка после того, как HTTP-заголовок был отправлен
-      // и заголовок ответа сервера был обработан
-      else 
-      {
-        // Если сообщение о ненайденной странице, указываем её
-        if (tQuery_httpCode==301)      inMess="Ошибка 301 к странице Stream40: документ перенесен на новый URI";
-        else if (tQuery_httpCode==404) inMess="Ошибка 404 к странице Stream40: страница не найдена";
-        else                           inMess="Ошибка "+String(tQuery_httpCode)+" запроса страницы Stream40";
-        Serial.println(inMess);
-      }
-    }
-    // Если ошибка при отправке POST-запроса
-    //    Ошибка POST-запроса: "read Timeout"       - "истекло время ожидания чтения"
-    //    Ошибка POST-запроса: "connection refused" - "В соединении отказано"
-    else 
-    {
-      inMess=http.errorToString(tQuery_httpCode);
-      Serial.printf("Ошибка POST-запроса: %s\n", inMess.c_str());
-    }
-    http.end();
-  }
-  // Если "Нет подключения к WiFi перед передачей POST-запроса"
-  else
-  {
-    inMess="Нет подключения к WiFi перед передачей POST-запроса";
-    Serial.println(inMess);
-  }
-}
-*/
-
-/*
-// * Задача FreRTOS ***********************************************************
-// *               ------Выбрать из очереди и вывести сообщения на периферию        *
-// ****************************************************************************
-void vOTA(void* pvParameters) 
-{
-  for (;;)
-  {
-    Serial.println("*** vOTA ***");
-    // Запускаем обработку запроса на обновление кода
-    ArduinoOTA.handle(); 
-    // Отмечаем флагом, что цикл задачи успешно завершен   
-    fwdtOTA = true;
-    vTaskDelay(700/portTICK_PERIOD_MS); 
- }
-}
-*/
 
 // *********************************************************** Kvizzy40.ino ***

@@ -2,7 +2,7 @@
  * 
  *               Сделать фото и отправить Base24 изображения на страницу Stream  
  * 
- * v4.0.0, 28.03.2025                                 Автор:      Труфанов В.Е.
+ * v4.1.0, 18.04.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2025 tve                               Дата создания: 26.02.2025
  *
 **/
@@ -10,25 +10,10 @@
 #pragma once            
 #include <Arduino.h>
 #include "OV2640.h"
+#include <base64.h>
 
 // Инициируем объект преобразования изображения base64
-//#include <base64.h>
-//base64 b;
-
-//time_t nTime;      // время отправки фрэйма (секунда с начала эпохи)
-//time_t nTimeOld;   // время отправки предыдущего фрэйма
-//int nFrame=0;      // номер кадра в секунде
-
-
-
-/*
-void makephoto(OV2640 cam)
-{
-  cam.run();
-  size_t SizeFR = cam.getSize();
-  callphoto(cam.getfb(),SizeFR);
-}
-*/
+base64 b;
 
 // ****************************************************************************
 // *                         Записать фото на CD-карту                        *
@@ -173,38 +158,26 @@ void sendhttp(time_t nTime, int nFrame, String path)
   }
 }
 
-
 // * Задача FreRTOS ***********************************************************
 // *           Сделать фото и отправить Base24 изображения на страницу Stream *
 // ****************************************************************************
 void vStream(void* pvParameters) 
 {
-
   time_t nTime;      // время отправки фрэйма (секунда с начала эпохи)
   time_t nTimeOld;   // время отправки предыдущего фрэйма
   int nFrame=0;      // номер кадра в секунде
   int nCikl=0;       // счетчик фотографирований за сеанс
-
   // Инициируем метки времени
   time(&nTime);                    // время отправки фрэйма (секунда с начала эпохи)
   time(&nTimeOld);                 // время отправки предыдущего фрэйма
-
   // Инициируем камеру 
   OV2640 cam;
   cam.init(esp32cam_aithinker_config);
   Serial.println("Камера инициализирована!");
-
-  
-  // Готовим запрос к странице Stream: http://probatv.ru/Stream40/
-  //String ehttp=urlHome+"/Stream40/";  
-  //tQueryMessage tQuery;            // ответ
-  //String httpText;                 // текст ответного сообщения
-
   // Зацикливаем задачу
   while (true) 
   {
-    Serial.println("*** vStream ***");
-
+    //Serial.println("*** vStream ***");
     #ifdef tmr_STREAM
       // Пересчитываем время и номер кадра
       time(&nTime); 
@@ -220,102 +193,12 @@ void vStream(void* pvParameters)
       // Отправляем кадр на страницу сайта "https://probatv.ru/Stream40/"
       // sendhttp(nTime, nFrame, "/vga640x480.jpg");
       sendhttp(nTime, nFrame, imgname);
-      /*
-
-      // Делаем фото
-      //makephoto(cam);
-      // Пересчитываем время и номер кадра
-      time(&nTime); 
-      if (nTime==nTimeOld) nFrame=nFrame+1;
-      else {nTimeOld=nTime; nFrame=0;}
-      // Включаем кадр в запрос
-      */  
-      /*
-      //String frame="Firame";
-      frame="data:image/jpeg;base64,"+frame;
-      String queryString = "src="+frame;      
-      // Добавляем время с начала эпохи в параметры
-      String stime="&time="+String(nTime);
-      queryString=queryString+stime;
-      // Добавляем номер кадра в параметры
-      String sframe="&frame="+String(nFrame);
-      queryString=queryString+sframe;
-      //Serial.print("queryString: "); Serial.println(queryString);
-
-      // Делаем запрос к Stream
-      
-      tQuery = postQuery(ehttp, queryString);
-      // Обрабатываем успешный запрос 
-      if (tQuery.httpCode == HTTP_CODE_OK) 
-      {
-        // Выбираем json-сообщения из ответа Stream 
-        // getJsonLead(tQuery.httpText);
-        Serial.println(tQuery.httpText);
-      }
-      // Реагируем на ошибку Post-запроса
-      else
-      {
-        Serial.print("vStream: ");
-        Serial.println(tQuery.httpCode);
-        // Пока ничего не делаем, сообщения об ошибках отправлены в postQuery   
-      }
-      */ 
-     
     #endif 
-     // Отмечаем флагом, что цикл задачи успешно завершен   
+    // Отмечаем флагом, что цикл задачи успешно завершен   
     fwdtStream = true;
     // Пропускаем интервал 2971 мсек
     vTaskDelay(2971/portTICK_PERIOD_MS); 
   }
- 
 }
-
-/*
-#include <base64.h>
-base64 b;
-
-void setup()
-{
-	Serial.begin(115200);
-	Serial.println("12345678 = " + b.encode("12345678"));
-	delay(1000);
-	Serial.println("123456 = " + b.encode("123456"));
-	delay(1000);
-	Serial.println("1234567 = " + b.encode("1234567")); //THIS LINE WILL CRASH ESP32
-}
-
-void loop()
-{
-
-}
-*/
-
-/*
-#include <SD.h>
-#define PIN_SPI_CS 4
-
-void probasd() 
-{
-  Serial.begin(9600);
-
-  if (!SD.begin(PIN_SPI_CS)) {
-    Serial.println(F("SD CARD FAILED, OR NOT PRESENT!"));
-    while (1); // don't do anything more:
-  }
-
-  // open file for reading
-  file = SD.open("arduino.txt", FILE_READ);
-  if (file) {
-    if ( file.available()) {
-      String data = file.readString();
-      Serial.println(data);
-    }
-
-    file.close();
-  } else {
-    Serial.print(F("SD Card: error on opening file"));
-  }
-}
-*/
 
 // ************************************************************ kviStream.h ***

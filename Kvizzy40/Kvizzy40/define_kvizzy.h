@@ -20,6 +20,10 @@
 // const char* password = "b277a4ee84e8";
 const char* ssid     = "TP-Link_B394";
 const char* password = "18009217";
+
+// Определяем пин вспышки
+#define BUILTIN_LED 4
+
 // Определяем сайт умного хозяйства  
 //String SiteHost="/home/u542632";
 String urlHome="https://probatv.ru";
