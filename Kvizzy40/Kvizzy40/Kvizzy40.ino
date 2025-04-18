@@ -19,13 +19,13 @@
 base64 b;
 
 
-#include "OV2640.h"
+//#include "OV2640.h"
 #include "SD_MMC.h"            
 
 // Определяем пин вспышки
 #define BUILTIN_LED 4
 // Инициируем объект для фотографирования
-OV2640 cam;
+//OV2640 cam;
 
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -155,9 +155,10 @@ void setup()
   xTaskCreatePinnedToCore(
     vStream,                // Task function
     "Stream",               // Task name
-    3072,                   // Stack size
+    //8480,                   // Stack size
+    24576,
     NULL,                   // Parameters passed to the task function
-    8,                      // Priority
+    10,                      // Priority
     NULL,                   // Task handle
     1);
 
@@ -252,12 +253,13 @@ void setup()
   else Serial.println("SD карта подключена");
   
   // Инициируем камеру 
-  cam.init(esp32cam_aithinker_config);
+  //cam.init(esp32cam_aithinker_config);
   // Определяем дополнительную задачу
   xTaskCreatePinnedToCore (
     instream,       // название функции, которая будет запускаться, как параллельная задача
     "instream",     // название задачи
-    48480,          // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
+    //48480,        // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
+    24576,          // размер стека в байтах. Задача будет использовать этот объем памяти, когда 
                     // ей потребуется сохранить временные переменные и результаты. Для задач с 
                     // большим объемом памяти потребуется больший размер стека.
     NULL,           // указатель на параметр, который будет передан новой задаче. 
@@ -365,17 +367,18 @@ void loop()
 // ****************************************************************************
 void instream (void* pvParameters) 
 {
-
   time_t nTime;      // время отправки фрэйма (секунда с начала эпохи)
   time_t nTimeOld;   // время отправки предыдущего фрэйма
   int nFrame=0;      // номер кадра в секунде
   int nCikl=0;       // счетчик фотографирований за сеанс
-
   // Инициируем метки времени
   time(&nTime);                    // время отправки фрэйма (секунда с начала эпохи)
   time(&nTimeOld);                 // время отправки предыдущего фрэйма
+  // Инициируем объект для фотографирования
+  //OV2640 cam;
+  //cam.init(esp32cam_aithinker_config);
 
-  while (1) 
+  while (true) 
   {
     // Пересчитываем время и номер кадра
     time(&nTime); 
@@ -383,20 +386,24 @@ void instream (void* pvParameters)
     else {nTimeOld=nTime; nFrame=0;}
     // Фотографируем (при необходимости со вспышкой) и увеличиваем счетчик фотографий в сеансе
     //digitalWrite(BUILTIN_LED, HIGH);
-    cam.run();
+    //cam.run();
     nCikl++;
     //digitalWrite(BUILTIN_LED, LOW);
 
+    /*
     // Записываем фото на CD-карту                 
     String imgname = writePhoto(cam.getfb(),cam.getSize(),nTime,nFrame,nCikl);
     // Отправляем кадр на страницу сайта "https://probatv.ru/Stream40/"
     //sendhttp(nTime, nFrame, "/vga640x480.jpg");
     sendhttp(nTime, nFrame, imgname);
-    
+    */
+
     // Делаем задержку перед следующим кадром
     vTaskDelay(1200/portTICK_PERIOD_MS);
   }
 }
+
+/*
 // ****************************************************************************
 // *                         Записать фото на CD-карту                        *
 // ****************************************************************************
@@ -428,6 +435,9 @@ String writePhoto(uint8_t *payload,uint16_t len,time_t nTime,int nFrame,int nCik
   file.close();
   return path;
 }
+*/
+
+/*
 // ****************************************************************************
 // *        Проверить размер файла фотографии, загрузить фото в буфер,        *
 // *          преобразовать изображение в строку Base64 и вернуть её          *
@@ -496,14 +506,14 @@ void sendhttp(time_t nTime, int nFrame, String path)
     if (tQuery_httpCode > 0) 
     {
       // Не получилось выбрать заголовки
-      /*
+      / *
       for(int i = 0; i< http.headers(); i++)
       {
         Serial.print("http.header(i) = ");
         Serial.println(i);
         Serial.println(http.header(i));
       }
-      */
+      * /
       // Если запрос успешно отправлен
       if (tQuery_httpCode == HTTP_CODE_OK) 
       {
@@ -538,6 +548,7 @@ void sendhttp(time_t nTime, int nFrame, String path)
     Serial.println(inMess);
   }
 }
+*/
 
 /*
 // * Задача FreRTOS ***********************************************************
