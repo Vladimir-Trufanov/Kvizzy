@@ -33,6 +33,7 @@ TQue queState;                                      // для страницы S
 // Подключаем задачи
 #include "kviPrint.h"         // 7-983  выборка из очереди и вывод сообщения на периферию
 #include "kviStream.h"        // 8-2971 фотографирование и отправка изображения
+#include "kviLed4.h"          // 5-1500
 
 // Определяем заголовок для сторожевого таймера
 hw_timer_t *timer = NULL;
@@ -51,6 +52,7 @@ void IRAM_ATTR onTimer()
     fwdtLead==true && fwdtState==true 
     */
   //&& fwdtOTA==true 
+  && fwdtLed4==true 
   && fwdtStream==true) 
   {
     // Сбрасываем флаги задач
@@ -61,6 +63,7 @@ void IRAM_ATTR onTimer()
       fwdtLead = false;
       fwdtState = false;
       */
+    fwdtLed4 = false;
     fwdtStream = false;
     //fwdtOTA = false;
     // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
@@ -120,6 +123,34 @@ void setup()
   // Проверяем системное время, если время еще не установлено, производим его 
   // синхронизацию по протоколу SNTP с серверами точного времени,
   oSNTP.Create();
+  // Включаем однобитовый, медленный, без вспышки режим работы с SD-картой
+  if (!SD_MMC.begin("/sdcard", true))
+  {
+    Serial.println("\nSD-карта не смонтирована");
+    return;
+  }
+  else Serial.println("\nSD карта смонтирована");
+  // Гасим вспышку (вдруг она горит)
+  pinMode(BUILTIN_LED, OUTPUT);
+  digitalWrite(BUILTIN_LED, LOW);
+  // Подключаем устройство
+  uint8_t cardType = SD_MMC.cardType();
+  if(cardType == CARD_NONE)
+  {
+    Serial.println("SD карта не подключена");
+    return;
+  }
+  else Serial.println("SD карта подключена");
+  // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
+  timer = timerBegin(1000000);
+  // Подключаем функцию обработчика прерывания от таймера - onTimer
+  timerAttachInterrupt(timer, &onTimer);
+  // Настраиваем таймер: интервал перезапуска - 20 секунд (20000000 микросекунд),
+  // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
+  // раз (четвертый параметр = 0) 
+  timerAlarm(timer, 20000000, true, 0);
+  Serial.println("Установлен тайм-аут сторожевого таймера 20 сек.");
+
 
   // Подключаем задачу по выборке из очереди и отправке сообщения на периферию
   xTaskCreatePinnedToCore(
@@ -140,6 +171,16 @@ void setup()
     10,                      // Priority
     NULL,                   // Task handle
     1);
+   // -----Подключаем задачу определения состояния контрольного светодиода ESP32-CAM 
+   // ("горит - не горит") и передачу данных на страницу сайта State  
+   xTaskCreatePinnedToCore(
+      vLed4,                 // Task function
+      "Led4",                // Task name
+      4096,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      5,                      // Priority
+      NULL,                   // Task handle
+      1); 
 
  
   /*
@@ -178,17 +219,6 @@ void setup()
    attachInterrupt(PinLedWork,toggleLedWork,CHANGE);
    pinMode(PinLedFlash,OUTPUT);   // вспышка
    attachInterrupt(PinLedFlash,onLedFlash,RISING);
-
-   // Подключаем задачу определения состояния контрольного светодиода ESP32-CAM 
-   // ("горит - не горит") и передачу данных на страницу сайта State  
-   xTaskCreatePinnedToCore(
-      vLed33,                 // Task function
-      "Led33",                // Task name
-      4096,                   // Stack size
-      NULL,                   // Parameters passed to the task function
-      5,                      // Priority
-      NULL,                   // Task handle
-      1); 
    // Выполнить регулярный (по таймеру) запрос контроллера на изменение   
    // состояний его устройств к странице Lead             
    xTaskCreatePinnedToCore(
@@ -210,25 +240,6 @@ void setup()
       NULL,                   // Task handle
       1);
   */
-
-  // Включаем однобитовый, медленный, без вспышки режим работы с SD-картой
-  if (!SD_MMC.begin("/sdcard", true))
-  {
-    Serial.println("SD-карта не смонтирована");
-    return;
-  }
-  else Serial.println("SD карта смонтирована");
-  // Гасим вспышку (вдруг она горит)
-  pinMode(BUILTIN_LED, OUTPUT);
-  digitalWrite(BUILTIN_LED, LOW);
-  // Подключаем устройство
-  uint8_t cardType = SD_MMC.cardType();
-  if(cardType == CARD_NONE)
-  {
-    Serial.println("SD карта не подключена");
-    return;
-  }
-  else Serial.println("SD карта подключена");
   
   /*
   // Определяем дополнительную задачу
@@ -247,16 +258,6 @@ void setup()
                     // У ESP32 есть два ядра, обозначенные как 0 и 1.
   );
   */
-
-  // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
-  timer = timerBegin(1000000);
-  // Подключаем функцию обработчика прерывания от таймера - onTimer
-  timerAttachInterrupt(timer, &onTimer);
-  // Настраиваем таймер: интервал перезапуска - 20 секунд (20000000 микросекунд),
-  // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
-  // раз (четвертый параметр = 0) 
-  timerAlarm(timer, 30000000, true, 0);
-  Serial.println("Установлен тайм-аут сторожевого таймера 30 сек.");
 }
 
 // Инициируем прием кодов и заполнение строки

@@ -13,12 +13,10 @@ DontOpen=0
 AbsolutePath=0
 FileFormat=0
 ProjectFilesOnly=0
-HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy40
 	+Kvizzy40
-		Arduino.txt
 		common_kvizzy.h
 		define_kvizzy.h
 		kviPrint.h
@@ -26,32 +24,22 @@ Kvizzy40
 		Kvizzy40.ino
 		Kvizzy40.ppr
 		Kvizzy40_Message.h
-		png5.jpg
+		led4.h
+		OV2640.cpp
+		OV2640.h
 [Open project files]
-0=Kvizzy40.ino
-1=define_kvizzy.h
-2=kviPrint.h
-3=common_kvizzy.h
-4=kviStream.h
-5=Kvizzy40_Message.h
+0=define_kvizzy.h
+1=led4.h
+2=Kvizzy40.ino
 [Selected Project Files]
 Main=
 Selected=Kvizzy40.ino
-[Kvizzy40.ino]
-TopLine=484
-Caret=9,515
 [define_kvizzy.h]
-TopLine=3
-Caret=1,21
-[kviPrint.h]
+TopLine=27
+Caret=14,36
+[led4.h]
+TopLine=77
+Caret=13,112
+[Kvizzy40.ino]
 TopLine=1
-Caret=19,25
-[common_kvizzy.h]
-TopLine=21
-Caret=1,21
-[kviStream.h]
-TopLine=50
-Caret=1,50
-[Kvizzy40_Message.h]
-TopLine=64
-Caret=119,70
+Caret=13,65
