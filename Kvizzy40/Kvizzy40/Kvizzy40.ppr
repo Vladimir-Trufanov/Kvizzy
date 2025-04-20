@@ -13,33 +13,34 @@ DontOpen=0
 AbsolutePath=0
 FileFormat=0
 ProjectFilesOnly=0
+HTServer=localhost
 Extensions=*.*
 [Project tree]
 Kvizzy40
 	+Kvizzy40
 		common_kvizzy.h
 		define_kvizzy.h
+		kviDHT11.h
 		kviPrint.h
 		kviStream.h
 		Kvizzy40.ino
 		Kvizzy40.ppr
 		Kvizzy40_Message.h
-		led4.h
 		OV2640.cpp
 		OV2640.h
 [Open project files]
 0=define_kvizzy.h
-1=led4.h
-2=Kvizzy40.ino
+1=Kvizzy40.ino
+2=kviDHT11.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy40.ino
+Selected=kviDHT11.h
 [define_kvizzy.h]
-TopLine=27
-Caret=14,36
-[led4.h]
-TopLine=77
-Caret=13,112
+TopLine=15
+Caret=15,38
 [Kvizzy40.ino]
-TopLine=1
-Caret=13,65
+TopLine=70
+Caret=14,69
+[kviDHT11.h]
+TopLine=33
+Caret=80,20

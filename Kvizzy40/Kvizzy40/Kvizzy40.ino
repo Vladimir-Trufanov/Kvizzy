@@ -34,6 +34,7 @@ TQue queState;                                      // для страницы S
 #include "kviPrint.h"         // 7-983  выборка из очереди и вывод сообщения на периферию
 #include "kviStream.h"        // 8-2971 фотографирование и отправка изображения
 #include "kviLed4.h"          // 5-1500
+#include "kviDHT11.h"         // 6-2100
 
 // Определяем заголовок для сторожевого таймера
 hw_timer_t *timer = NULL;
@@ -53,6 +54,7 @@ void IRAM_ATTR onTimer()
     */
   //&& fwdtOTA==true 
   && fwdtLed4==true 
+  && fwdtDHT11==true 
   && fwdtStream==true) 
   {
     // Сбрасываем флаги задач
@@ -64,6 +66,7 @@ void IRAM_ATTR onTimer()
       fwdtState = false;
       */
     fwdtLed4 = false;
+    fwdtDHT11 = false;
     fwdtStream = false;
     //fwdtOTA = false;
     // "Пинаем собаку" - сбрасываем счетчик сторожевого таймера
@@ -141,6 +144,7 @@ void setup()
     return;
   }
   else Serial.println("SD карта подключена");
+
   // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
   timer = timerBegin(1000000);
   // Подключаем функцию обработчика прерывания от таймера - onTimer
@@ -179,6 +183,16 @@ void setup()
       4096,                   // Stack size
       NULL,                   // Parameters passed to the task function
       5,                      // Priority
+      NULL,                   // Task handle
+      1); 
+   // Обеспечиваем взаимодействие датчика DHT11 c контроллером ESP32-CAM по GPIO12 
+   // и передачу данных о температуре и влажности на страницу сайта State 
+   xTaskCreatePinnedToCore(
+      vDHT11,                 // Task function
+      "DHT11",                // Task name
+      2048,                   // Stack size
+      NULL,                   // Parameters passed to the task function
+      6,                      // Priority
       NULL,                   // Task handle
       1); 
 

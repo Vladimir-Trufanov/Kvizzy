@@ -34,6 +34,8 @@ void vStream(void *pvParameters);
 bool fwdtStream = false;
 void vLed4(void *pvParameters);
 bool fwdtLed4 = false;
+void vDHT11(void *pvParameters);
+bool fwdtDHT11 = false;
 void vOTA(void *pvParameters);
 bool fwdtOTA = false;
 //void vLead(void *pvParameters);
