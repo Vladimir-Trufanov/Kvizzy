@@ -1,9 +1,11 @@
 /** Arduino, Esp32-CAM ********************************************* Led4.h ***
  * 
- *           ----Обеспечить определение состояния контрольного светодиода ESP32-CAM
- *               ----("горит - не горит") и передачу данных на страницу сайта State
+ *    Обеспечить управление 4 сведодиодом ESP32-CAM в режиме "горит - не горит" 
+ *                                    и передачу данных на страницу сайта State
+ *                                    
+ * https://docs.espressif.com/projects/arduino-esp32/en/latest/api/ledc.html
  * 
- * v2.0.0, 19.04.2025                                 Автор:      Труфанов В.Е.
+ * v2.0.2, 23.04.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -11,15 +13,6 @@
 
 #include <Arduino.h>
 #include "define_kvizzy.h"   
-
-// Задаём 8-битную точность для светодиодного таймера
-#define LEDC_TIMER_8_BIT 8
-// Используем базовую частоту 8000 Гц 
-#define LEDC_BASE_FREQ 8000
-// LED pins
-#define LED_PIN_1 4
-// Назначаем светодиодный канал
-#define LEDC_CHANNEL 0
 
 #define shimHIGH 1  // яркость включенной вспышки
 #define shimLOW  0  // яркость выключенной вспышки
@@ -29,22 +22,6 @@
 // Определяем время последнего учтенного (отправленного) состояния светодиода
 //volatile int mitсLed33=millis();
 
-// ****************************************************************************
-// *  Обработать прерывание для контрольного светодиода  при смене состояния  *
-// *     33 пина (CHANGE)  и передать в очередь новое состояние контакта      *
-// ****************************************************************************
-
-/*
-void IRAM_ATTR toggleLedWork()
-{
-   String inMess;
-   // Выбираем состояние устройства
-   int Led33Status=digitalRead(PinLedWork);
-   if (Led33Status==inHIGH) inMess=queState.SendISR(s33_HIGH);
-   else inMess=queState.SendISR(s33_LOW);  
-   if (inMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendISRled33,tmk_Queue);
-}
-*/
 // * Задача FreRTOS ***********************************************************
 // *     Отработать заданный режим работы контрольного светодиода ESP32-CAM   *
 // *               ("горит - не горит") или отключить его работу              *
@@ -65,8 +42,6 @@ void vLed4(void* pvParameters)
 }
 */
 {
-  // Подключаем нулевой светодиодный канал
-  ledcAttachChannel(LED_PIN_1, LEDC_BASE_FREQ, LEDC_TIMER_8_BIT, LEDC_CHANNEL);
 
   /*
   int iTime;           // длительность цикла "горит - не горит" (мсек)
@@ -115,13 +90,13 @@ void vLed4(void* pvParameters)
     // Отрабатываем режим
     if (fLight==shimHIGH)
     {
-      ledcWriteChannel(LEDC_CHANNEL, shimHIGH);
+      analogWrite(LED_PIN_4, shimHIGH);
       vTaskDelay(nLight/portTICK_PERIOD_MS); 
       fLight=shimLOW;    
     }
     else
     {
-      ledcWriteChannel(LEDC_CHANNEL, shimLOW);
+      analogWrite(LED_PIN_4, shimLOW);
       vTaskDelay(nNoLight/portTICK_PERIOD_MS); 
       fLight=shimHIGH;    
     }

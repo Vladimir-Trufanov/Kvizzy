@@ -49,8 +49,7 @@ void IRAM_ATTR onTimer()
   if (fwdtLoop==true
   && fwdtPrint==true 
     /* 
-    && fwdtLed33==true &&  
-    fwdtLead==true && fwdtState==true 
+    && fwdtLead==true && fwdtState==true 
     */
   //&& fwdtOTA==true 
   && fwdtLed4==true 
@@ -61,7 +60,6 @@ void IRAM_ATTR onTimer()
     fwdtLoop  = false;
     fwdtPrint = false;
       /*
-      fwdtLed33 = false;
       fwdtLead = false;
       fwdtState = false;
       */
@@ -93,11 +91,6 @@ TJsonBase oJSON;
 // Подключаем задачи и деятельности
 #include "Lead.h"            //  9-897 запрос контроллера на изменение состояний устройств
 #include "State.h"           //  8-986 выборка сообщений о состоянии и отправка 
-#include "Led33.h"           // обработка контрольного светодиода 
-// Обработка прерывания для вспышки при изменении состояние 4 контакта с LOW на HIGH (RISING).
-void IRAM_ATTR onLedFlash()
-{
-}
 */
 
 // ****************************************************************************
@@ -134,8 +127,7 @@ void setup()
   }
   else Serial.println("\nSD карта смонтирована");
   // Гасим вспышку (вдруг она горит)
-  pinMode(BUILTIN_LED, OUTPUT);
-  digitalWrite(BUILTIN_LED, LOW);
+  analogWrite(LED_PIN_4, 0);
   // Подключаем устройство
   uint8_t cardType = SD_MMC.cardType();
   if(cardType == CARD_NONE)
@@ -154,7 +146,6 @@ void setup()
   // раз (четвертый параметр = 0) 
   timerAlarm(timer, 20000000, true, 0);
   Serial.println("Установлен тайм-аут сторожевого таймера 20 сек.");
-
 
   // Подключаем задачу по выборке из очереди и отправке сообщения на периферию
   xTaskCreatePinnedToCore(
@@ -175,8 +166,8 @@ void setup()
     10,                      // Priority
     NULL,                   // Task handle
     1);
-   // -----Подключаем задачу определения состояния контрольного светодиода ESP32-CAM 
-   // ("горит - не горит") и передачу данных на страницу сайта State  
+   // Подключаем задачу управление 4 сведодиодом ESP32-CAM в режиме "горит - не горит"
+   // и передачу данных на страницу сайта State
    xTaskCreatePinnedToCore(
       vLed4,                 // Task function
       "Led4",                // Task name
@@ -228,11 +219,6 @@ void setup()
 
    Serial.println("");
 
-   // Переводим контакты лампочек в режим вывода и подключаем обработку прерываний
-   pinMode(PinLedWork,OUTPUT);    // контрольный светодиод
-   attachInterrupt(PinLedWork,toggleLedWork,CHANGE);
-   pinMode(PinLedFlash,OUTPUT);   // вспышка
-   attachInterrupt(PinLedFlash,onLedFlash,RISING);
    // Выполнить регулярный (по таймеру) запрос контроллера на изменение   
    // состояний его устройств к странице Lead             
    xTaskCreatePinnedToCore(

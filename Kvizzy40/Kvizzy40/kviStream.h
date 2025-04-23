@@ -184,10 +184,10 @@ void vStream(void* pvParameters)
       if (nTime==nTimeOld) nFrame=nFrame+1;
       else {nTimeOld=nTime; nFrame=0;}
       // Фотографируем (при необходимости со вспышкой) и увеличиваем счетчик фотографий в сеансе
-      // digitalWrite(BUILTIN_LED, HIGH);
+      // analogWrite(LED_PIN_4,255);
       cam.run();
       nCikl++;
-      // digitalWrite(BUILTIN_LED, LOW);
+      // analogWrite(LED_PIN_4,0);
       // Записываем фото на CD-карту                 
       String imgname = writePhoto(cam.getfb(),cam.getSize(),nTime,nFrame,nCikl);
       // Отправляем кадр на страницу сайта "https://probatv.ru/Stream40/"

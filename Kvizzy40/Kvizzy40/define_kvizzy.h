@@ -22,7 +22,7 @@ const char* ssid     = "TP-Link_B394";
 const char* password = "18009217";
 
 // Определяем пин вспышки
-#define BUILTIN_LED 4
+#define LED_PIN_4 4
 
 // Определяем сайт умного хозяйства  
 //String SiteHost="/home/u542632";
@@ -42,8 +42,6 @@ bool fwdtOTA = false;
 //bool fwdtLead = false;
 //void vState(void *pvParameters);
 //bool fwdtState = false;
-//void vLed33(void *pvParameters);
-//bool fwdtLed33 = false;
 // Сбрасываем флаг базового цикла приложения
 bool fwdtLoop = false;
 

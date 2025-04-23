@@ -21,6 +21,7 @@ Kvizzy40
 		common_kvizzy.h
 		define_kvizzy.h
 		kviDHT11.h
+		kviLed4.h
 		kviPrint.h
 		kviStream.h
 		Kvizzy40.ino
@@ -29,18 +30,26 @@ Kvizzy40
 		OV2640.cpp
 		OV2640.h
 [Open project files]
-0=define_kvizzy.h
-1=Kvizzy40.ino
-2=kviDHT11.h
+0=Kvizzy40.ino
+1=kviDHT11.h
+2=kviLed4.h
+3=kviStream.h
+4=define_kvizzy.h
 [Selected Project Files]
 Main=
-Selected=kviDHT11.h
+Selected=kviLed4.h
+[Kvizzy40.ino]
+TopLine=121
+Caret=16,133
+[kviDHT11.h]
+TopLine=20
+Caret=80,20
+[kviLed4.h]
+TopLine=88
+Caret=9,107
+[kviStream.h]
+TopLine=179
+Caret=23,190
 [define_kvizzy.h]
 TopLine=15
-Caret=15,38
-[Kvizzy40.ino]
-TopLine=69
-Caret=14,69
-[kviDHT11.h]
-TopLine=29
-Caret=80,20
+Caret=18,25
