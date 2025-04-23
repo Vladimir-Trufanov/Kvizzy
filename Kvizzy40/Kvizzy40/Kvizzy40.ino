@@ -49,9 +49,10 @@ void IRAM_ATTR onTimer()
   // Если флаги всех задач установлены в 1, 
   // то сбрасываем флаги задач и счетчик сторожевого таймера
   if (fwdtLoop==true
-  && fwdtPrint==true 
+  && fwdtPrint==true
+  && fwdtState==true  
     /* 
-    && fwdtLead==true && fwdtState==true 
+    && fwdtLead==true 
     */
   //&& fwdtOTA==true 
   && fwdtLed4==true 
@@ -61,9 +62,9 @@ void IRAM_ATTR onTimer()
     // Сбрасываем флаги задач
     fwdtLoop  = false;
     fwdtPrint = false;
+    fwdtState = false;
       /*
       fwdtLead = false;
-      fwdtState = false;
       */
     fwdtLed4 = false;
     fwdtDHT11 = false;
@@ -164,27 +165,36 @@ void setup()
     10,                     // Priority
     NULL,                   // Task handle
     1);
-   // Подключаем задачу управление 4 сведодиодом ESP32-CAM в режиме "горит - не горит"
-   // и передачу данных на страницу сайта State
-   xTaskCreatePinnedToCore(
-      vLed4,                 // Task function
-      "Led4",                // Task name
-      4096,                   // Stack size
-      NULL,                   // Parameters passed to the task function
-      5,                      // Priority
-      NULL,                   // Task handle
-      1); 
-   // Обеспечиваем взаимодействие датчика DHT11 c контроллером ESP32-CAM по GPIO12 
-   // и передачу данных о температуре и влажности на страницу сайта State 
-   xTaskCreatePinnedToCore(
-      vDHT11,                 // Task function
-      "DHT11",                // Task name
-      2048,                   // Stack size
-      NULL,                   // Parameters passed to the task function
-      6,                      // Priority
-      NULL,                   // Task handle
-      1); 
-
+  // Подключаем задачу управления 4 сведодиодом ESP32-CAM в режиме "горит - не горит"
+  // и передачу данных на страницу сайта State
+  xTaskCreatePinnedToCore(
+    vLed4,                  // Task function
+    "Led4",                 // Task name
+    4096,                   // Stack size
+    NULL,                   // Parameters passed to the task function
+    5,                      // Priority
+    NULL,                   // Task handle
+    1); 
+  // Обеспечиваем взаимодействие датчика DHT11 c контроллером ESP32-CAM по GPIO12 
+  // и передачу данных о температуре и влажности на страницу сайта State 
+  xTaskCreatePinnedToCore(
+    vDHT11,                 // Task function
+    "DHT11",                // Task name
+    2048,                   // Stack size
+    NULL,                   // Parameters passed to the task function
+    6,                      // Priority
+    NULL,                   // Task handle
+    1); 
+  // Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
+  // и показаниях датчиков из очереди и отправить их на страницу State 
+  xTaskCreatePinnedToCore(
+    vState,                 // Task function
+    "State",                // Task name
+    8192,                   // Stack size
+    NULL,                   // Parameters passed to the task function
+    8,                      // Priority
+    NULL,                   // Task handle
+    1);
  
   /*
   // Создаём объект и строку всего JSON-документа         
@@ -222,16 +232,6 @@ void setup()
       vLead,                  // Task function
       "Lead",                 // Task name
       2048,                   // Stack size
-      NULL,                   // Parameters passed to the task function
-      8,                      // Priority
-      NULL,                   // Task handle
-      1);
-   // Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
-   // и показаниях датчиков из очереди и отправить их на страницу State 
-   xTaskCreatePinnedToCore(
-      vState,                 // Task function
-      "State",                // Task name
-      3072,                   // Stack size
       NULL,                   // Parameters passed to the task function
       8,                      // Priority
       NULL,                   // Task handle

@@ -93,7 +93,7 @@ void vLed4(void* pvParameters)
     if (fLight==shimHIGH)
     {
       analogWrite(LED_PIN_4, shimHIGH);
-      jMess=queState.SendISR(s4_HIGH);
+      jMess=queState.Send(s4_HIGH);
       if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
 
       vTaskDelay(nLight/portTICK_PERIOD_MS); 
@@ -102,7 +102,7 @@ void vLed4(void* pvParameters)
     else
     {
       analogWrite(LED_PIN_4, shimLOW);
-      jMess=queState.SendISR(s4_LOW);
+      jMess=queState.Send(s4_LOW);
       if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
 
       vTaskDelay(nNoLight/portTICK_PERIOD_MS); 
@@ -112,5 +112,8 @@ void vLed4(void* pvParameters)
     fwdtLed4 = true;
   }
 }
+
+// Передаём запрос: https://probatv.ru/State40/cycle=31&sjson={"led4":[{"status":"shimHIGH"}]}
+// Запрос успешно отправлен: 
 
 // ***************************************************************** Led4.h ***

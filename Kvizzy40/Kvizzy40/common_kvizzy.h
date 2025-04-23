@@ -16,7 +16,6 @@
 tQueryMessage postQuery(String ehttp, String queryString) 
 {
   Serial.print("Передаём запрос: "); Serial.print(ehttp); Serial.println(queryString);
-
   String inMess;
   tQueryMessage tQuery;
   tQuery.httpCode=1001;
@@ -29,7 +28,6 @@ tQueryMessage postQuery(String ehttp, String queryString)
     //http.begin("http://probatv.ru/Stream40/");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     tQuery.httpCode = http.POST(queryString); 
-    //tQuery.httpCode = http.POST("");  
     if (tQuery.httpCode > 0) 
     {
       // Если запрос успешно отправлен

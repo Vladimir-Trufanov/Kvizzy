@@ -41,7 +41,7 @@ String writePhoto(uint8_t *payload,uint16_t len,time_t nTime,int nFrame,int nCik
     file.write(payload, len); 
     sprintf(bufm,defSavedPhoto,String(nCikl),path.c_str()); // "Сохранено изображение [%s]: %s"
     wrfSavedPhoto=bufm;
-    Serial.println(wrfSavedPhoto); 
+    // Serial.println(wrfSavedPhoto); 
   }
   file.close();
   return path;
@@ -80,7 +80,7 @@ String readPhoto(String path)
   file.read(bufi, rlen); 
   stringOne = b.encode(bufi, rlen);
   sprintf(bufm,rdfPhotoHasBeenRead,String(rlen)); // "Cчитан файл фото: размер %s" 
-  Serial.println(bufm); 
+  // Serial.println(bufm); 
   return stringOne;
 }
 // ****************************************************************************
@@ -127,7 +127,8 @@ void sendhttp(time_t nTime, int nFrame, String path)
       if (tQuery_httpCode == HTTP_CODE_OK) 
       {
         inMess = http.getString();
-        Serial.println("Запрос успешно отправлен: "); Serial.println(inMess);
+        //Serial.println("Запрос успешно отправлен: "); Serial.println(inMess);
+        Serial.print("Изображение отправлено: "); Serial.println(path);
       }
       // Если ошибка после того, как HTTP-заголовок был отправлен
       // и заголовок ответа сервера был обработан

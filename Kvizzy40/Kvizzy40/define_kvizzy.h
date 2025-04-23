@@ -14,7 +14,7 @@
 
 // Управляем включением задач
 // #define tmr_LEAD
-// #define tmr_STATE   // 2025-03-08, state не отключаем, пусть сообщения обрабатываются
+#define tmr_STATE   
 #define tmr_STREAM
 
 // Вводим имя и пароль точки доступа
@@ -42,14 +42,12 @@ void vOTA(void *pvParameters);
 bool fwdtOTA = false;
 //void vLead(void *pvParameters);
 //bool fwdtLead = false;
-//void vState(void *pvParameters);
-//bool fwdtState = false;
+void vState(void *pvParameters);
+bool fwdtState = false;
 // Сбрасываем флаг базового цикла приложения
 bool fwdtLoop = false;
 
 /*
-String inMess="";                      // метка отправленного сообщения
-
 // Значения чисел, считанных из последовательного порта, 
 // иммитирующие ошибочные ситуации 
 #define loopingLed33     1     // зацикливание задачи vLed33

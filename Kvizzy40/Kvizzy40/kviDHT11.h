@@ -41,7 +41,7 @@ void vDHT11(void* pvParameters)
 
   for (;;)
   {
-    Serial.println("*** vDHT11 ***");
+    //Serial.println("*** vDHT11 ***");
     
     // Считываем влажность
     float humi  = dht11.readHumidity();
@@ -54,6 +54,7 @@ void vDHT11(void* pvParameters)
     } 
     else 
     {
+      /*
       Serial.print("Влажность: ");
       Serial.print(humi);
       Serial.print("%");
@@ -63,6 +64,7 @@ void vDHT11(void* pvParameters)
       Serial.print("Tемпература: ");
       Serial.print(tempC);
       Serial.println("°C");
+      */
     }
 
     // Отмечаем флагом, что цикл задачи успешно завершен   

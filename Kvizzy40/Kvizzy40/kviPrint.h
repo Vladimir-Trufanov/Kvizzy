@@ -16,10 +16,9 @@ void vPrint(void* pvParameters)
 {
   for (;;)
   {
-    //Serial.println("*** vPrint ***");
-    /*
+    // Serial.println("*** vPrint ***");
+    // Сбрасываем все сообщения на периферию через transPrint
     queMessa.PostAll();
-    */
     // Отмечаем флагом, что цикл задачи успешно завершен   
     fwdtPrint = true;
     vTaskDelay(983/portTICK_PERIOD_MS); 

@@ -1858,6 +1858,7 @@ Kvizzy30
 				Ревизия\Все про память Esp32\Карта памяти Esp32.xls
 			-Отладка ошибок Arduino с помощью декодера исключений ESP32
 				Ревизия\Отладка ошибок Arduino с помощью декодера исключений ESP32\ Отладка ошибок Arduino с помощью декодера исключений ESP32.md
+				Ревизия\Отладка ошибок Arduino с помощью декодера исключений ESP32\EspExceptionDecoder-2.0.3.zip
 			-Почему в win11 не идет поток изображений
 				Ревизия\Почему в win11 не идет поток изображений\Почему в win11 не идет поток изображений.md
 			-Работа с прерываниями
@@ -1877,7 +1878,7 @@ Kvizzy30
 5=Kvizzy30\common_kvizzy.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy30\define_kvizzy.h
+Selected=Kvizzy30\common_kvizzy.h
 [Kvizzy30\Kvizzy30.ino]
 TopLine=106
 Caret=38,137
@@ -1894,5 +1895,5 @@ Caret=1,1
 TopLine=22
 Caret=10,34
 [Kvizzy30\common_kvizzy.h]
-TopLine=61
-Caret=1,1
+TopLine=25
+Caret=15,37

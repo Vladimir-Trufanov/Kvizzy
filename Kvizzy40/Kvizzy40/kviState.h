@@ -51,7 +51,7 @@ void vState(void* pvParameters)
     // Пропускаем интервал 986 мсек
     vTaskDelay(986/portTICK_PERIOD_MS); 
     // Отмечаем флагом, что цикл задачи успешно завершен   
-    // fwdtState = true;
+    fwdtState = true;
   }
 }
 
