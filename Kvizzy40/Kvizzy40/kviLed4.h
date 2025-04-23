@@ -51,6 +51,8 @@ void vLed4(void* pvParameters)
   int nLight;          // время (мсек) свечения в цикле 
   int nNoLight;        // время (мсек) НЕ свечения в цикле 
   int fLight=shimLOW;  // флаг свечения светодиода
+  String jMess;        // отправляемое json-сообщение
+
 
   for (;;)
   {
@@ -91,12 +93,18 @@ void vLed4(void* pvParameters)
     if (fLight==shimHIGH)
     {
       analogWrite(LED_PIN_4, shimHIGH);
+      jMess=queState.SendISR(s4_HIGH);
+      if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
+
       vTaskDelay(nLight/portTICK_PERIOD_MS); 
       fLight=shimLOW;    
     }
     else
     {
       analogWrite(LED_PIN_4, shimLOW);
+      jMess=queState.SendISR(s4_LOW);
+      if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
+
       vTaskDelay(nNoLight/portTICK_PERIOD_MS); 
       fLight=shimHIGH;    
     }

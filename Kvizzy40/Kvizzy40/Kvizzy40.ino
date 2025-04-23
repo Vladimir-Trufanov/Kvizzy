@@ -29,12 +29,14 @@ TQue queState;                                      // для страницы S
 
 #include "define_kvizzy.h"    // общие определения 
 #include "common_kvizzy.h"    // общие функции  
+#include "jsonBase.h"         // общий json-документ
 
 // Подключаем задачи
-#include "kviPrint.h"         // 7-983  выборка из очереди и вывод сообщения на периферию
-#include "kviStream.h"        // 8-2971 фотографирование и отправка изображения
-#include "kviLed4.h"          // 5-1500
-#include "kviDHT11.h"         // 6-2100
+#include "kviPrint.h"         //  7-983  выборка из очереди и вывод сообщения на периферию
+#include "kviStream.h"        // 10-2971 фотографирование и отправка изображения
+#include "kviLed4.h"          //  5-1500
+#include "kviDHT11.h"         //  6-2100
+#include "kviState.h"         //  8-986 выборка сообщений о состоянии и отправка 
 
 // Определяем заголовок для сторожевого таймера
 hw_timer_t *timer = NULL;
@@ -80,9 +82,6 @@ void IRAM_ATTR onTimer()
 
 
 /*
-
-#include "jsonBase.h"       
-
 // Определяем директивы отладки
 // #define tmr_TRACEMEMORY
 // Определяем объект для работs с документом JSON
@@ -90,7 +89,6 @@ TJsonBase oJSON;
 
 // Подключаем задачи и деятельности
 #include "Lead.h"            //  9-897 запрос контроллера на изменение состояний устройств
-#include "State.h"           //  8-986 выборка сообщений о состоянии и отправка 
 */
 
 // ****************************************************************************
@@ -160,10 +158,10 @@ void setup()
   xTaskCreatePinnedToCore(
     vStream,                // Task function
     "Stream",               // Task name
-    //8480,                   // Stack size
+    //8480,                 // Stack size
     24576,
     NULL,                   // Parameters passed to the task function
-    10,                      // Priority
+    10,                     // Priority
     NULL,                   // Task handle
     1);
    // Подключаем задачу управление 4 сведодиодом ESP32-CAM в режиме "горит - не горит"
@@ -194,8 +192,6 @@ void setup()
    Serial.println("");
   */
   
-  /*
-   
    // Создаем очередь сообщений на периферию                                                                   
    String inMess=queMessa.Create();                                                      
    // Если не получилось, сообщаем "Очередь не была создана и не может использоваться"    
@@ -219,6 +215,7 @@ void setup()
 
    Serial.println("");
 
+  /*
    // Выполнить регулярный (по таймеру) запрос контроллера на изменение   
    // состояний его устройств к странице Lead             
    xTaskCreatePinnedToCore(

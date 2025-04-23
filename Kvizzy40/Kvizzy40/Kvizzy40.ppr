@@ -20,9 +20,11 @@ Kvizzy40
 	+Kvizzy40
 		common_kvizzy.h
 		define_kvizzy.h
+		jsonBase.h
 		kviDHT11.h
 		kviLed4.h
 		kviPrint.h
+		kviState.h
 		kviStream.h
 		Kvizzy40.ino
 		Kvizzy40.ppr
@@ -35,21 +37,29 @@ Kvizzy40
 2=kviLed4.h
 3=kviStream.h
 4=define_kvizzy.h
+5=common_kvizzy.h
+6=kviState.h
 [Selected Project Files]
 Main=
-Selected=kviLed4.h
+Selected=kviState.h
 [Kvizzy40.ino]
-TopLine=121
-Caret=16,133
+TopLine=211
+Caret=28,211
 [kviDHT11.h]
 TopLine=20
 Caret=80,20
 [kviLed4.h]
-TopLine=88
-Caret=9,107
+TopLine=76
+Caret=36,105
 [kviStream.h]
-TopLine=179
+TopLine=165
 Caret=23,190
 [define_kvizzy.h]
-TopLine=15
-Caret=18,25
+TopLine=11
+Caret=1,11
+[common_kvizzy.h]
+TopLine=89
+Caret=1,1
+[kviState.h]
+TopLine=65
+Caret=7,101

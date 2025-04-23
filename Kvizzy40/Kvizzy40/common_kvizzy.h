@@ -80,9 +80,9 @@ tQueryMessage postQuery(String ehttp, String queryString)
 // ****************************************************************************
 uint32_t incUINT32T(uint32_t value)
 {
-   value++;
-   if (value>4294967290) value=0;
-   return value;  
+  value++;
+  if (value>4294967290) value=0;
+  return value;  
 }
 
 /*

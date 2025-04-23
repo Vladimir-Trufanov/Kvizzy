@@ -22,8 +22,8 @@ typedef enum {
    WifiEstablished,        // 0 
    SendFromISR,            // 1 
    SendFromTask,           // 2 
-   NoSendISRled33,         // 3
-   NoSend33_MODE0,         // 4
+   NoSendled4,             // 3
+   NoSend4_MODE0,          // 4
 }; 
 // Определяем перечисления ошибок http-запросов
 #define tmk_HTTP "HTTP" 
@@ -49,8 +49,8 @@ tmessAPP amessAPP[] =
     {WifiEstablished, tvm_simpmes, "Соединение с Wi-Fi установлено"},    
     {SendFromISR,     tvm_1intmes, "Передано %s сообщение из прерывания"},
     {SendFromTask,    tvm_2intmes, "Передано %s сообщение из задачи на %s миллисекунде"},
-    {NoSendISRled33,  tvm_simpmes, "Не удалось отправить сообщение из прерывания led33"},
-    {NoSend33_MODE0,  tvm_simpmes, "Не отправлено на State - режим контр.светодиода выключен"},
+    {NoSendled4,      tvm_simpmes, "Не удалось отправить сообщение от led4"},
+    {NoSend4_MODE0,   tvm_simpmes, "Не отправлено на State - режим контр.светодиода выключен"},
 
     {rdf010,          tvm_simpmes, rdfNotOpenPhotoFile},      // "Не удалось открыть файл фото для чтения"
     {rdf011,          tvm_2intmes, rdfSizePhotoLargeBuffer},  // "Размер файла фото:%s больше размера буфера:%s" 

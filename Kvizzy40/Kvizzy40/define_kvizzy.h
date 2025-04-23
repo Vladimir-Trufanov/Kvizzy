@@ -7,6 +7,8 @@
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
+// https://calculat.io/ru/number/prime/1--3000 (Источник: https://calculat.io/ru/number/prime/1--3000)
+
 #pragma once            
 #include <Arduino.h>
 
@@ -60,20 +62,20 @@ String inMess="";                      // метка отправленного 
 // Управление трассировкой сообщений к State 
 #define enabTrassState   53    // включение трассировки сообщений к State
 #define disaTrassState   54    // отключение 
+*/
 bool toTrassState=false;       // "выключена трассировка сообщений к State" 
 bool fromTrassState=false;     // "выключена трассировка ответов от State" 
 
 // Инициируем счетчики циклов задач (от 0 до 4 294 967 295)
 // и флаги включения режимов работы 
-uint32_t iLead=0;       // запрос к странице Lead
+// uint32_t iLead=0;       // запрос к странице Lead
 uint32_t iState=0;      // запрос к странице State
-bool Led33Start=true;   // включить режим работы контрольного светодиода
+// bool Led4Start=true;   // включить режим работы контрольного светодиода
 
+/*
 // Управление светодиодами
-#define PinLedWork      33            // контакт рабочего светодиода
 volatile int lastLedWork = millis();  // прошлое время смены состояния контрольного светодиода
 volatile int millLedWork = 3017;      // текущий интервал смены состояния контрольного светодиода (чуть более 3 секунд)
-#define PinLedFlash      4            // контакт светодиода-вспышки
 */
 
 // Определяем структуру информации по запросу к странице сайта
