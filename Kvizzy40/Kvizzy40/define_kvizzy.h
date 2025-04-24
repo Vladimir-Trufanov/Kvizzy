@@ -4,7 +4,7 @@
  *                                    умного хозяйства на контроллере ESP32-CAM
  * 
  * v4.0.0, 28.03.2025                                 Автор:      Труфанов В.Е.
- * Copyright © 2024 tve                               Дата создания: 26.10.2024
+ * Copyright © 2024 tve      sla6en9edged             Дата создания: 26.10.2024
 **/
 
 // https://calculat.io/ru/number/prime/1--3000 (Источник: https://calculat.io/ru/number/prime/1--3000)

@@ -88,6 +88,7 @@ String readPhoto(String path)
 // ****************************************************************************
 void sendhttp(time_t nTime, int nFrame, String path) 
 {
+  /*
   // Объявляем строку ответного сообщения со страницы сайта
   String inMess;
   // Если есть WiFi, отправляем сообщение
@@ -115,14 +116,14 @@ void sendhttp(time_t nTime, int nFrame, String path)
     if (tQuery_httpCode > 0) 
     {
       // Не получилось выбрать заголовки
-      /*
+      / *
       for(int i = 0; i< http.headers(); i++)
       {
         Serial.print("http.header(i) = ");
         Serial.println(i);
         Serial.println(http.header(i));
       }
-      */
+      * /
       // Если запрос успешно отправлен
       if (tQuery_httpCode == HTTP_CODE_OK) 
       {
@@ -157,6 +158,7 @@ void sendhttp(time_t nTime, int nFrame, String path)
     inMess="Нет подключения к WiFi перед передачей POST-запроса";
     Serial.println(inMess);
   }
+  */
 }
 
 // * Задача FreRTOS ***********************************************************

@@ -15,7 +15,7 @@
 // ****************************************************************************
 tQueryMessage postQuery(String ehttp, String queryString) 
 {
-  Serial.print("Передаём запрос: "); Serial.print(ehttp); Serial.println(queryString);
+  //Serial.print("Передаём запрос: "); Serial.print(ehttp); Serial.println(queryString);
   String inMess;
   tQueryMessage tQuery;
   tQuery.httpCode=1001;
@@ -34,7 +34,7 @@ tQueryMessage postQuery(String ehttp, String queryString)
       if (tQuery.httpCode == HTTP_CODE_OK) 
       {
         inMess = http.getString();
-        Serial.println("Запрос успешно отправлен: "); Serial.println(inMess);
+        Serial.print("Запрос успешно отправлен: "); Serial.println(inMess);
         //Serial.print("queryString: "); Serial.println(queryString);
       }
       // Если ошибка после того, как HTTP-заголовок был отправлен
