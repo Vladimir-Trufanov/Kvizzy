@@ -27,7 +27,11 @@ tQueryMessage postQuery(String ehttp, String queryString)
     http.begin(ehttp);
     //http.begin("http://probatv.ru/Stream40/");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    int last = millis();     // текущее время (уходящее в прошлое)
     tQuery.httpCode = http.POST(queryString); 
+    Serial.print("Время ответа (мс): "); Serial.println(millis() - last);
+ 
     if (tQuery.httpCode > 0) 
     {
       // Если запрос успешно отправлен

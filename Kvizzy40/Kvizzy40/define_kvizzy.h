@@ -38,12 +38,10 @@ void vLed4(void *pvParameters);
 bool fwdtLed4 = false;
 void vDHT11(void *pvParameters);
 bool fwdtDHT11 = false;
-void vOTA(void *pvParameters);
-bool fwdtOTA = false;
+//void vOTA(void *pvParameters);
+//bool fwdtOTA = false;
 //void vLead(void *pvParameters);
 //bool fwdtLead = false;
-void vState(void *pvParameters);
-bool fwdtState = false;
 // Сбрасываем флаг базового цикла приложения
 bool fwdtLoop = false;
 

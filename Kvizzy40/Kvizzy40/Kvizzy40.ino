@@ -22,21 +22,21 @@ TAttachSNTP oSNTP;
 // Подключаем файлы обеспечения передачи и приёма сообщений через очередь                
 #include "Kvizzy40_Message.h" // сообщения приложения  
 #include "QueMessage.h"       // заголовочный файл класса TQueMessage                    
-#include "QueChar.h"          // заголовочный файл класса TQueChar                        
-// Назначаем объекты работы с сообщениями через очередь                                   
+// Назначаем объект работы с сообщениями через очередь                                   
 TQueMessage queMessa(amessAPP,SizeMess,tmk_APP);    // для периферии                                     
-TQue queState;                                      // для страницы State
 
 #include "define_kvizzy.h"    // общие определения 
 #include "common_kvizzy.h"    // общие функции  
 #include "jsonBase.h"         // общий json-документ
+
+// Определяем объект мьютекса - дескриптор для регулирования доступа к Http запросам
+SemaphoreHandle_t HttpMutex = NULL;  
 
 // Подключаем задачи
 #include "kviPrint.h"         //  7-983  выборка из очереди и вывод сообщения на периферию
 #include "kviStream.h"        // 10-2971 фотографирование и отправка изображения
 #include "kviLed4.h"          //  5-1500
 #include "kviDHT11.h"         //  6-2100
-#include "kviState.h"         //  8-986 выборка сообщений о состоянии и отправка 
 
 // Определяем заголовок для сторожевого таймера
 hw_timer_t *timer = NULL;
@@ -50,7 +50,6 @@ void IRAM_ATTR onTimer()
   // то сбрасываем флаги задач и счетчик сторожевого таймера
   if (fwdtLoop==true
   && fwdtPrint==true
-  && fwdtState==true  
     /* 
     && fwdtLead==true 
     */
@@ -62,7 +61,6 @@ void IRAM_ATTR onTimer()
     // Сбрасываем флаги задач
     fwdtLoop  = false;
     fwdtPrint = false;
-    fwdtState = false;
       /*
       fwdtLead = false;
       */
@@ -136,6 +134,9 @@ void setup()
   }
   else Serial.println("SD карта подключена");
 
+  // Создаем мьютекс доступа к Http-запросам
+  HttpMutex = xSemaphoreCreateMutex();  
+
   // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
   timer = timerBegin(1000000);
   // Подключаем функцию обработчика прерывания от таймера - onTimer
@@ -185,16 +186,6 @@ void setup()
     6,                      // Priority
     NULL,                   // Task handle
     1); 
-  // Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
-  // и показаниях датчиков из очереди и отправить их на страницу State 
-  xTaskCreatePinnedToCore(
-    vState,                 // Task function
-    "State",                // Task name
-    8192,                   // Stack size
-    NULL,                   // Parameters passed to the task function
-    8,                      // Priority
-    NULL,                   // Task handle
-    1);
  
   /*
   // Создаём объект и строку всего JSON-документа         
@@ -202,28 +193,20 @@ void setup()
    Serial.println("");
   */
   
-   // Создаем очередь сообщений на периферию                                                                   
-   String inMess=queMessa.Create();                                                      
-   // Если не получилось, сообщаем "Очередь не была создана и не может использоваться"    
-   if (inMess==QueueNotCreate) Serial.println(QueueNotCreate);                           
-   // Если очередь получилась, то отмечаем  "Очередь сформирована"                       
-   else {Serial.print(QueueBeformed); Serial.println(" для сообщений на периферию");}                                                   
-   // Подключаем функцию передачи сообщения на периферию                                 
-   queMessa.attachFunction(transPrint);  
+  // Создаем очередь сообщений на периферию                                                                   
+  String inMess=queMessa.Create();                                                      
+  // Если не получилось, сообщаем "Очередь не была создана и не может использоваться"    
+  if (inMess==QueueNotCreate) Serial.println(QueueNotCreate);                           
+  // Если очередь получилась, то отмечаем  "Очередь сформирована"                       
+  else {Serial.print(QueueBeformed); Serial.println(" для сообщений на периферию");}                                                   
+  // Подключаем функцию передачи сообщения на периферию                                 
+  queMessa.attachFunction(transPrint);  
 
-   // Создаем очередь сообщений на страницу State                                                                    
-   inMess=queState.Create();                                                      
-   // Если не получилось, сообщаем "Очередь не была создана и не может использоваться"    
-   if (inMess==tQueueNotCreate) Serial.println(tQueueNotCreate);                         
-   // Если очередь получилась, то отмечаем  "Очередь сформирована"                      
-   else  {Serial.print(QueueBeformed); Serial.println(" для сообщений на страницу State");}         
-   // Подключаем функцию передачи сообщения на страницу State                                
-   queState.attachFunction(transState);                                                  
-   // Отмечаем, что соединение с Wi-Fi установлено
-   inMess=queMessa.Send(tmt_NOTICE,WifiEstablished,tmk_Queue);
-   if (inMess!=isOk) Serial.println(inMess); 
+  // Отмечаем, что соединение с Wi-Fi установлено
+  inMess=queMessa.Send(tmt_NOTICE,WifiEstablished,tmk_Queue);
+  if (inMess!=isOk) Serial.println(inMess); 
 
-   Serial.println("");
+  Serial.println("");
 
   /*
    // Выполнить регулярный (по таймеру) запрос контроллера на изменение   
@@ -270,6 +253,24 @@ void loop()
   // Serial.println("*** "+ver+" ***");
   // Запускаем обработку запроса на обновление кода
   ArduinoOTA.handle(); 
+  
+  // Если разрешено, трассируем память контроллера
+  #ifdef tmr_TRACEMEMORY
+    // Получаем полный размер кучи в памяти
+    printf("Общий размер ВСТРОЕННОЙ памяти:     %u\n", ESP.getHeapSize());
+    // Количество доступной кучи в памяти
+    printf("Оставшаяся доступная память в куче: %u\n", ESP.getFreeHeap());
+    // Самый низкий уровень свободной кучи с момента загрузки
+    printf("Минимальная свободная с загрузки:   %u\n", ESP.getMinFreeHeap());
+    // Размер общей кучи SPI PSRAM
+    printf("Общий размер SPI PSRAM:             %u\n", ESP.getPsramSize());
+    // Количество свободной PSRAM
+    printf("Количество свободной PSRAM:         %d\n", ESP.getFreePsram());
+    // Минимальный размер свободной памяти в SPI RAM
+    printf("Минимум свободной SPI PSRAM:        %d\n", ESP.getMinFreePsram());
+    // Размер самого большого блока PSRAM, который может быть выделен
+    printf("Самый большой блок для выделения:   %d\n", ESP.getMaxAllocPsram());
+  #endif
 
   /*
    // Проверяем, есть ли байты в последовательном порту

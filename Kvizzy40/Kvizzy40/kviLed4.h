@@ -1,11 +1,11 @@
-/** Arduino, Esp32-CAM ********************************************* Led4.h ***
+/** Arduino, Esp32-CAM ****************************************** kviLed4.h ***
  * 
  *    Обеспечить управление 4 сведодиодом ESP32-CAM в режиме "горит - не горит" 
  *                                    и передачу данных на страницу сайта State
  *                                    
  * https://docs.espressif.com/projects/arduino-esp32/en/latest/api/ledc.html
  * 
- * v2.0.2, 23.04.2025                                 Автор:      Труфанов В.Е.
+ * v2.1.0, 24.04.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -17,14 +17,13 @@
 #define shimHIGH 1  // яркость включенной вспышки
 #define shimLOW  0  // яркость выключенной вспышки
 
-
-
 // ****************************************************************************
 // *                    Передать сообщения на страницу State                  *
 // *     и показаниях датчиков из очереди и отправить их на страницу State    *
 // ****************************************************************************
 void Led4State(String inJson) 
 {
+  
   // Готовим запрос к странице State
   String ehttp=urlHome+"/State40/";
   // Изменяем значение счетчика и включаем его в параметр запроса к странице State
@@ -53,10 +52,8 @@ void Led4State(String inJson)
   {
     Serial.print("Ошибка Post-запроса: "); Serial.println(tQuery.httpCode);
   }
-  // Делаем паузу 10 тиков - дать наверху серверу передохнуть
-  // vTaskDelay(10/portTICK_PERIOD_MS); 
+  
 }
-
 
 // Определяем переменную прежнего состояния светодиода
 //volatile int oLed33Status=inLOW; 
@@ -97,7 +94,14 @@ void vLed4(void* pvParameters)
 
   for (;;)
   {
-    Serial.println("*** vLed4 ***");
+    // Serial.println("*** vLed4 ***");
+
+    // В vLed4 конкурируем за Http-запросы. Будем до 3 секунд ждать освобождения запроса.
+    // По опыту от 24.04.2025 на запрос к probatv.ru может уйти до полутора секунд.
+    // Если захватить блокировку не получается в течение этого периода времени, прекращаем попытки 
+    // и вместо отработки задачи выводим сообщение. 
+    if (xSemaphoreTake (HttpMutex, (3000 * portTICK_PERIOD_MS))) 
+    { 
       /*
       // Имитируем зависание микроконтроллера с помощью опознанного числа,
       // принятого в последовательном порту
@@ -126,29 +130,37 @@ void vLed4(void* pvParameters)
       }
       */
 
-    // Рассчитываем времена свечения и несвечения контрольного светодиода в миллисекундах
-    nLight=200;
-    nNoLight=1800;
+      // Рассчитываем времена свечения и несвечения контрольного светодиода в миллисекундах
+      nLight=200;
+      nNoLight=1800;
 
-    // Отрабатываем режим
+      // Отрабатываем режим
+      if (fLight==shimHIGH)
+      {
+        analogWrite(LED_PIN_4, shimHIGH);
+        Led4State(s4_HIGH);
+      }
+      else
+      {
+        analogWrite(LED_PIN_4, shimLOW);
+        Led4State(s4_LOW);
+      }
+      // Освобождаем мьютекс
+      xSemaphoreGive(HttpMutex);  
+    }
+    else 
+    {  
+      Serial.println("vLed4: HttpMutex не был захвачен!");
+    }
+    // Отрабатываем задержку
     if (fLight==shimHIGH)
     {
-      analogWrite(LED_PIN_4, shimHIGH);
-      //jMess=queState.Send(s4_HIGH);
-      //if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
-      Led4State(s4_HIGH);
-
       vTaskDelay(nLight/portTICK_PERIOD_MS); 
       fLight=shimLOW;    
     }
     else
     {
-      analogWrite(LED_PIN_4, shimLOW);
-      //jMess=queState.Send(s4_LOW);
-      //if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
-      Led4State(s4_LOW);
-
-      vTaskDelay(nNoLight/portTICK_PERIOD_MS); 
+     vTaskDelay(nNoLight/portTICK_PERIOD_MS); 
       fLight=shimHIGH;    
     }
     // Отмечаем флагом, что цикл задачи успешно завершен   
@@ -159,6 +171,4 @@ void vLed4(void* pvParameters)
 // Передаём запрос: https://probatv.ru/State40/cycle=31&sjson={"led4":[{"status":"shimHIGH"}]}
 // Запрос успешно отправлен: 
 
-
-
-// ***************************************************************** Led4.h ***
+// ************************************************************** kviLed4.h ***

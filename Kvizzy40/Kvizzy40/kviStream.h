@@ -88,9 +88,22 @@ String readPhoto(String path)
 // ****************************************************************************
 void sendhttp(time_t nTime, int nFrame, String path) 
 {
-
-  //String jMess=queState.Send(s4_HIGH);
-  //if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
+  // Готовим запрос к странице "https://probatv.ru/Stream40/"
+  String ehttp=urlHome+"/Stream40/";  
+  // Готовим параметры запроса
+  String frame="data:image/jpeg;base64,"+readPhoto(path);
+  String queryString = "src="+frame;      
+  // Добавляем время с начала эпохи в параметры
+  String stime="&time="+String(nTime);
+  queryString=queryString+stime;
+  // Добавляем номер кадра в параметры
+  String sframe="&frame="+String(nFrame);
+  queryString=queryString+sframe;
+  
+  // Готовим структуру для ответа
+  tQueryMessage tQuery;   
+  // Делаем запрос                           
+  tQuery = postQuery(ehttp, queryString);
 
 
 
@@ -118,7 +131,9 @@ void sendhttp(time_t nTime, int nFrame, String path)
     String sframe="&frame="+String(nFrame);
     queryString=queryString+sframe;
      
+    int last = millis();     // текущее время (уходящее в прошлое)
     int tQuery_httpCode = http.POST(queryString); 
+    Serial.print("2. Время ответа (мс): "); Serial.println(millis() - last);
     if (tQuery_httpCode > 0) 
     {
       // Не получилось выбрать заголовки
@@ -186,7 +201,13 @@ void vStream(void* pvParameters)
   // Зацикливаем задачу
   while (true) 
   {
-    //Serial.println("*** vStream ***");
+    // Serial.println("*** vStream ***");
+    // В vStream конкурируем за Http-запросы. Будем до 3 секунд ждать освобождения запроса.
+    // По опыту от 24.04.2025 на запрос к probatv.ru может уйти до полутора секунд.
+    // Если захватить блокировку не получается в течение этого периода времени, прекращаем попытки 
+    // и вместо отработки задачи выводим сообщение. 
+    if (xSemaphoreTake (HttpMutex, (3000 * portTICK_PERIOD_MS))) 
+    { 
     #ifdef tmr_STREAM
       // Пересчитываем время и номер кадра
       time(&nTime); 
@@ -202,7 +223,14 @@ void vStream(void* pvParameters)
       // Отправляем кадр на страницу сайта "https://probatv.ru/Stream40/"
       // sendhttp(nTime, nFrame, "/vga640x480.jpg");
       sendhttp(nTime, nFrame, imgname);
+      // Освобождаем мьютекс
+      xSemaphoreGive(HttpMutex);  
     #endif 
+    }
+    else 
+    {  
+      Serial.println("vStream: HttpMutex не был захвачен!");
+    }
     // Отмечаем флагом, что цикл задачи успешно завершен   
     fwdtStream = true;
     // Пропускаем интервал 2971 мсек
