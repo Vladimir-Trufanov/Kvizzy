@@ -88,6 +88,12 @@ String readPhoto(String path)
 // ****************************************************************************
 void sendhttp(time_t nTime, int nFrame, String path) 
 {
+
+  //String jMess=queState.Send(s4_HIGH);
+  //if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
+
+
+
   /*
   // Объявляем строку ответного сообщения со страницы сайта
   String inMess;

@@ -17,6 +17,47 @@
 #define shimHIGH 1  // яркость включенной вспышки
 #define shimLOW  0  // яркость выключенной вспышки
 
+
+
+// ****************************************************************************
+// *                    Передать сообщения на страницу State                  *
+// *     и показаниях датчиков из очереди и отправить их на страницу State    *
+// ****************************************************************************
+void Led4State(String inJson) 
+{
+  // Готовим запрос к странице State
+  String ehttp=urlHome+"/State40/";
+  // Изменяем значение счетчика и включаем его в параметр запроса к странице State
+  iState=incUINT32T(iState);
+  String queryString = "cycle="+String(iState);    
+  // Готовим структуру для ответа
+  tQueryMessage tQuery;                              
+  // Инициируем счетчик нечастой трассировки успешных запросов
+  int iTrass=0;
+  // Включаем в параметр запроса json-сообщение
+  String sjson="&sjson="+inJson;
+  queryString=queryString+sjson;
+  // Трассируем запрос к State
+  if (toTrassState) {Serial.print("To State: "); Serial.println(queryString);}  
+  tQuery = postQuery(ehttp, queryString);
+  // Обрабатываем успешный запрос 
+  if (tQuery.httpCode == HTTP_CODE_OK) 
+  {
+    // Трассируем ответ от State
+    if (fromTrassState) {Serial.print("<= State: "); Serial.println(tQuery.httpText);}
+    // Обновляем json-документ
+    // oJSON.UpdateDoc(String(mess));
+  }
+  else
+  // Реагируем на ошибку Post-запроса
+  {
+    Serial.print("Ошибка Post-запроса: "); Serial.println(tQuery.httpCode);
+  }
+  // Делаем паузу 10 тиков - дать наверху серверу передохнуть
+  // vTaskDelay(10/portTICK_PERIOD_MS); 
+}
+
+
 // Определяем переменную прежнего состояния светодиода
 //volatile int oLed33Status=inLOW; 
 // Определяем время последнего учтенного (отправленного) состояния светодиода
@@ -93,8 +134,9 @@ void vLed4(void* pvParameters)
     if (fLight==shimHIGH)
     {
       analogWrite(LED_PIN_4, shimHIGH);
-      jMess=queState.Send(s4_HIGH);
-      if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
+      //jMess=queState.Send(s4_HIGH);
+      //if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
+      Led4State(s4_HIGH);
 
       vTaskDelay(nLight/portTICK_PERIOD_MS); 
       fLight=shimLOW;    
@@ -102,8 +144,9 @@ void vLed4(void* pvParameters)
     else
     {
       analogWrite(LED_PIN_4, shimLOW);
-      jMess=queState.Send(s4_LOW);
-      if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
+      //jMess=queState.Send(s4_LOW);
+      //if (jMess!=tisOk) queMessa.Send(tmt_WARNING,NoSendled4,tmk_Queue);
+      Led4State(s4_LOW);
 
       vTaskDelay(nNoLight/portTICK_PERIOD_MS); 
       fLight=shimHIGH;    
