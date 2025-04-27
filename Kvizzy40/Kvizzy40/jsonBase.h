@@ -15,13 +15,9 @@ const String s4_HIGH    = "{\"led4\":[{\"status\":\"shimHIGH\"}]}";             
 const String s4_LOW     = "{\"led4\":[{\"status\":\"shimLOW\"}]}";                  // "вспышка ВЫКЛЮЧЕНА"
 const String s4_MODE0   = "{\"led4\":[{\"regim\":0}]}";                             // "режим работы вспышки отключен"
 const String s4_MODEini = "{\"led4\":[{\"regim\":1,\"light\":10,\"time\":2000}]}";  // "начальный режим работы вспышки"
-// Назначаем действующий режим работы вспышки
-int jlight=10;   // процент времени свечения в цикле 
-int jtime=2000;  // длительность цикла "горит - не горит" (мсек)      
-String s4_MODE = "{\"led4\":[{\"regim\":1,\"light\":"+String(jlight)+",\"time\":"+String(jtime)"+"}]}";  
 
-String jempty = "{}";  // пустая json-строка
-String sjson;          // выборка из json-документа
+String jempty = "{}"; // пустая json-строка
+String sjson;         // выборка из json-документа
 
 /*
 sla6en9edged

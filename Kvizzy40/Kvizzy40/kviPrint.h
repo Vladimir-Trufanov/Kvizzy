@@ -17,6 +17,16 @@ void vPrint(void* pvParameters)
   for (;;)
   {
     // Serial.println("*** vPrint ***");
+
+    /*
+    Prefs.begin("KvizzyPrefs", false);
+      //Led4Start=Prefs.getBool("Led4Start");
+    jlight=Prefs.getInt("jlight");
+    jlight++;
+    Prefs.putInt("jlight",jlight);
+    Prefs.end();
+    */
+
     // Сбрасываем все сообщения на периферию через transPrint
     queMessa.PostAll();
     // Отмечаем флагом, что цикл задачи успешно завершен   

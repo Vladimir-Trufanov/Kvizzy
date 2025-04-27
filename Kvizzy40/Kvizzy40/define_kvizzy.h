@@ -7,10 +7,12 @@
  * Copyright © 2024 tve      sla6en9edged             Дата создания: 26.10.2024
 **/
 
-// https://calculat.io/ru/number/prime/1--3000 (Источник: https://calculat.io/ru/number/prime/1--3000)
+// Простые числа: https://calculat.io/ru/number/prime/1--3000
+// Preferences:   https://docs.espressif.com/projects/arduino-esp32/en/latest/tutorials/preferences.html
 
 #pragma once            
 #include <Arduino.h>
+#include <Preferences.h>
 
 // Управляем включением задач
 // #define tmr_LEAD
@@ -66,7 +68,6 @@ bool fromTrassState=false;     // "выключена трассировка о�
 // и флаги включения режимов работы 
 // uint32_t iLead=0;       // запрос к странице Lead
 uint32_t iState=0;      // запрос к странице State
-// bool Led4Start=true;   // включить режим работы контрольного светодиода
 
 /*
 // Управление светодиодами
@@ -102,5 +103,20 @@ void MimicMCUhangEvent(String NameTask)
    }
 }
 */
+
+// Назначаем действующий режим работы вспышки
+bool Led4Start;   // true - включить режим работы вспышки
+int jlight;       // процент времени свечения в цикле 
+int jtime;        // длительность цикла "горит - не горит" (мсек)      
+// String s4_MODE = "{\"led4\":[{\"regim\":1,\"light\":"+String(jlight)+",\"time\":"+String(jtime)"+"}]}";  
+void iniPMem(Preferences Prefs) 
+{
+  Prefs.begin("KvizzyPrefs", false);
+  Led4Start=Prefs.getBool("Led4Start",true);
+  jlight=Prefs.getInt("jlight",10);
+  Prefs.putInt("jlight",10);
+  jtime=Prefs.getInt("jtime",2000);
+  Prefs.end();
+}
 
 // ******************************************************** define_kvizzy.h ***

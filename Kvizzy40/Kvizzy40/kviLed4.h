@@ -18,8 +18,7 @@
 #define shimLOW  0  // яркость выключенной вспышки
 
 // ****************************************************************************
-// *                    Передать сообщения на страницу State                  *
-// *     и показаниях датчиков из очереди и отправить их на страницу State    *
+// *               Передать режим работы вспышки на страницу State            *
 // ****************************************************************************
 void Led4State(String inJson) 
 {
@@ -65,37 +64,17 @@ void Led4State(String inJson)
 // *               ("горит - не горит") или отключить его работу              *
 // ****************************************************************************
 void vLed4(void* pvParameters)
-/*
-{
-  "led4": [
-    {
-      "nicdev": "led33",
-      "tiddev": 1,
-      "light": 55,
-      "time": 2004,
-      "regim": 0,
-      "status": "inLOW"
-    }
-  ]
-}
-*/
 {
 
-  /*
-  int iTime;           // длительность цикла "горит - не горит" (мсек)
-  int iLight;          // процент времени свечения в цикле 
-  */
-
-  int nLight;          // время (мсек) свечения в цикле 
-  int nNoLight;        // время (мсек) НЕ свечения в цикле 
-  int fLight=shimLOW;  // флаг свечения светодиода
-  String jMess;        // отправляемое json-сообщение
-
+  int nLight;            // время (мсек) свечения в цикле 
+  int nNoLight;          // время (мсек) НЕ свечения в цикле 
+  int fLight=shimLOW;    // флаг свечения светодиода
+  //String s4_MODE;      // отправляемое json-сообщение
+  int last=millis();     // текущее время (уходящее в прошлое)
 
   for (;;)
   {
     // Serial.println("*** vLed4 ***");
-
     // В vLed4 конкурируем за Http-запросы. Будем до 3 секунд ждать освобождения запроса.
     // По опыту от 24.04.2025 на запрос к probatv.ru может уйти до полутора секунд.
     // Если захватить блокировку не получается в течение этого периода времени, прекращаем попытки 
@@ -107,43 +86,46 @@ void vLed4(void* pvParameters)
       // принятого в последовательном порту
       if (iCreateSit == loopingLed33) MimicMCUhangEvent("Led33");   
       */
-      /*
+      // Извлекаем постоянные данные
+      //Preferences Prefs;
+      //Prefs.begin("KvizzyPrefs", false);
+      //Led4Start=Prefs.getBool("Led4Start");
+      //jlight=Prefs.getInt("jlight");
+      //jtime=Prefs.getInt("jtime");
+      //Serial.println(jlight);
+      //Serial.println(jtime);
+      //Prefs.end();
       // Если поступила команда на включение режима работы контрольного светодиода
       // (или произошла перезагрузка контроллера)
-      if (Led33Start)
+      /*
+      if (Led4Start)
       {
-         sjson=oJSON.jsongetLed33();
-         // Serial.print("sjson:  "); Serial.println(sjson); 
-         JsonDocument docL33;
-         deserializeJson(docL33, sjson);
-         iTime  = docL33["led33"][0]["time"];
-         iLight = docL33["led33"][0]["light"];
-         // Рассчитываем времена свечения и несвечения контрольного светодиода
-         nLight=iTime*iLight/100;  // 2000*10/100=200
-         nNoLight=iTime-nLight;    // 2000-200=1800
-         // Устанавливаем флаг свечения светодиода
-         fLight=inHIGH;
-         Serial.print("nLight:   "); Serial.println(nLight); 
-         Serial.print("nNoLight: "); Serial.println(nNoLight);
-         // Сбрасываем флаг включения режима
-         Led33Start=false; 
+      */
+        // Рассчитываем времена свечения и несвечения контрольного светодиода
+        nLight=jtime*jlight/100;  // 2000*10/100=200
+        nNoLight=jtime-nLight;    // 2000-200=1800
+        // Формируем json-сообщение для отправки на State
+        // s4_MODE = "{\"led4\":[{\"regim\":1,\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}]}";
+      /*    
+        // Устанавливаем флаг свечения светодиода
+        fLight=inHIGH;
+        // Сбрасываем флаг включения режима
+        Led4Start=false; 
       }
       */
-
-      // Рассчитываем времена свечения и несвечения контрольного светодиода в миллисекундах
-      nLight=200;
-      nNoLight=1800;
 
       // Отрабатываем режим
       if (fLight==shimHIGH)
       {
+        Serial.print("Не горело (мс): "); Serial.println(millis() - last);
+        last=millis();  // текущее время (уходящее в прошлое)
         analogWrite(LED_PIN_4, shimHIGH);
-        Led4State(s4_HIGH);
       }
       else
       {
+        Serial.print("Светилось (мс): "); Serial.println(millis()-last);
+        last=millis();  // текущее время (уходящее в прошлое)
         analogWrite(LED_PIN_4, shimLOW);
-        Led4State(s4_LOW);
       }
       // Освобождаем мьютекс
       xSemaphoreGive(HttpMutex);  
@@ -160,15 +142,14 @@ void vLed4(void* pvParameters)
     }
     else
     {
-     vTaskDelay(nNoLight/portTICK_PERIOD_MS); 
+      vTaskDelay(nNoLight/portTICK_PERIOD_MS); 
       fLight=shimHIGH;    
     }
+    // Передаём запрос
+    // Led4State(s4_MODE);
     // Отмечаем флагом, что цикл задачи успешно завершен   
     fwdtLed4 = true;
   }
 }
-
-// Передаём запрос: https://probatv.ru/State40/cycle=31&sjson={"led4":[{"status":"shimHIGH"}]}
-// Запрос успешно отправлен: 
 
 // ************************************************************** kviLed4.h ***
