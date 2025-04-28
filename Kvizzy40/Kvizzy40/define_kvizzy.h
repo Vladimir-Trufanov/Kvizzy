@@ -105,9 +105,9 @@ void MimicMCUhangEvent(String NameTask)
 */
 
 // Назначаем действующий режим работы вспышки
-bool Led4Start;   // true - включить режим работы вспышки
-int jlight;       // процент времени свечения в цикле 
-int jtime;        // длительность цикла "горит - не горит" (мсек)      
+bool Led4Start=true;   // true - включить режим работы вспышки
+int jlight=10;         // процент времени свечения в цикле 
+int jtime=2000;        // длительность цикла "горит - не горит" (мсек)      
 // String s4_MODE = "{\"led4\":[{\"regim\":1,\"light\":"+String(jlight)+",\"time\":"+String(jtime)"+"}]}";  
 void iniPMem(Preferences Prefs) 
 {

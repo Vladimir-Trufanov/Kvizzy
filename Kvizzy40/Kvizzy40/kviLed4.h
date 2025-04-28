@@ -17,6 +17,34 @@
 #define shimHIGH 1  // яркость включенной вспышки
 #define shimLOW  0  // яркость выключенной вспышки
 
+// Определяем заголовок для таймера вспышки
+hw_timer_t *timerLed4 = NULL;
+int nLight=5000;        // время (мсек) свечения в цикле 
+int nNoLight=5000;      // время (мсек) НЕ свечения в цикле 
+int fLight=shimLOW;     // флаг свечения светодиода
+int lastled4=millis();  // текущее время (уходящее в прошлое)
+void ARDUINO_ISR_ATTR onTimerLed4() 
+{
+  // Отрабатываем режим
+  if (fLight==shimHIGH)
+  {
+    Serial.print("Не горело (мс): "); Serial.println(millis() - lastled4);
+    analogWrite(LED_PIN_4, shimHIGH);
+    fLight=shimLOW;  
+    lastled4=millis(); 
+    timerAlarm(timerLed4, 200000, true, 0);
+  }
+  else
+  {
+    Serial.print("Светилось (мс): "); Serial.println(millis()-lastled4);
+    analogWrite(LED_PIN_4, shimLOW);
+    fLight=shimHIGH;  
+    lastled4=millis(); 
+    timerAlarm(timerLed4, 1800000, true, 0);
+  }
+}
+
+
 // ****************************************************************************
 // *               Передать режим работы вспышки на страницу State            *
 // ****************************************************************************
@@ -65,16 +93,9 @@ void Led4State(String inJson)
 // ****************************************************************************
 void vLed4(void* pvParameters)
 {
-
-  int nLight;            // время (мсек) свечения в цикле 
-  int nNoLight;          // время (мсек) НЕ свечения в цикле 
-  int fLight=shimLOW;    // флаг свечения светодиода
-  //String s4_MODE;      // отправляемое json-сообщение
-  int last=millis();     // текущее время (уходящее в прошлое)
-
   for (;;)
   {
-    // Serial.println("*** vLed4 ***");
+    Serial.println("*** vLed4 ***");
     // В vLed4 конкурируем за Http-запросы. Будем до 3 секунд ждать освобождения запроса.
     // По опыту от 24.04.2025 на запрос к probatv.ru может уйти до полутора секунд.
     // Если захватить блокировку не получается в течение этого периода времени, прекращаем попытки 
@@ -87,33 +108,30 @@ void vLed4(void* pvParameters)
       if (iCreateSit == loopingLed33) MimicMCUhangEvent("Led33");   
       */
       // Извлекаем постоянные данные
-      //Preferences Prefs;
-      //Prefs.begin("KvizzyPrefs", false);
-      //Led4Start=Prefs.getBool("Led4Start");
-      //jlight=Prefs.getInt("jlight");
-      //jtime=Prefs.getInt("jtime");
+      Prefs.begin("KvizzyPrefs", false);
+      Led4Start=Prefs.getBool("Led4Start");
+      jlight=Prefs.getInt("jlight");
+      jtime=Prefs.getInt("jtime");
       //Serial.println(jlight);
       //Serial.println(jtime);
-      //Prefs.end();
+      Prefs.end();
       // Если поступила команда на включение режима работы контрольного светодиода
       // (или произошла перезагрузка контроллера)
-      /*
       if (Led4Start)
       {
-      */
         // Рассчитываем времена свечения и несвечения контрольного светодиода
         nLight=jtime*jlight/100;  // 2000*10/100=200
         nNoLight=jtime-nLight;    // 2000-200=1800
         // Формируем json-сообщение для отправки на State
         // s4_MODE = "{\"led4\":[{\"regim\":1,\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}]}";
-      /*    
-        // Устанавливаем флаг свечения светодиода
-        fLight=inHIGH;
         // Сбрасываем флаг включения режима
+        Prefs.begin("KvizzyPrefs", false);
         Led4Start=false; 
+        Prefs.putBool("Led4Start",Led4Start);
+        Prefs.end();
       }
-      */
 
+      /*
       // Отрабатываем режим
       if (fLight==shimHIGH)
       {
@@ -127,6 +145,7 @@ void vLed4(void* pvParameters)
         last=millis();  // текущее время (уходящее в прошлое)
         analogWrite(LED_PIN_4, shimLOW);
       }
+      */
       // Освобождаем мьютекс
       xSemaphoreGive(HttpMutex);  
     }
@@ -134,6 +153,7 @@ void vLed4(void* pvParameters)
     {  
       Serial.println("vLed4: HttpMutex не был захвачен!");
     }
+    /*
     // Отрабатываем задержку
     if (fLight==shimHIGH)
     {
@@ -145,8 +165,10 @@ void vLed4(void* pvParameters)
       vTaskDelay(nNoLight/portTICK_PERIOD_MS); 
       fLight=shimHIGH;    
     }
+    */
     // Передаём запрос
     // Led4State(s4_MODE);
+    vTaskDelay(2000/portTICK_PERIOD_MS); 
     // Отмечаем флагом, что цикл задачи успешно завершен   
     fwdtLed4 = true;
   }

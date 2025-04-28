@@ -80,7 +80,32 @@ void IRAM_ATTR onTimer()
   }
   portEXIT_CRITICAL_ISR(&timerMux);
 }
-
+/*
+// Определяем заголовок для таймера вспышки
+hw_timer_t *timerLed4 = NULL;
+int fLight=shimLOW;     // флаг свечения светодиода
+int lastled4=millis();  // текущее время (уходящее в прошлое)
+void ARDUINO_ISR_ATTR onTimerLed4() 
+{
+  // Отрабатываем режим
+  if (fLight==shimHIGH)
+  {
+    //Serial.print("Не горело (мс): "); Serial.println(millis() - lastled4);
+    analogWrite(LED_PIN_4, shimHIGH);
+    fLight=shimLOW;  
+    //lastled4=millis(); 
+    timerAlarm(timerLed4, 200000, true, 0);
+  }
+  else
+  {
+    //Serial.print("Светилось (мс): "); Serial.println(millis()-lastled4);
+    analogWrite(LED_PIN_4, shimLOW);
+    fLight=shimHIGH;  
+    //lastled4=millis(); 
+    timerAlarm(timerLed4, 1800000, true, 0);
+  }
+}
+*/
 
 /*
 // Определяем директивы отладки
@@ -141,15 +166,6 @@ void setup()
   // Создаем мьютекс доступа к Http-запросам
   HttpMutex = xSemaphoreCreateMutex();  
 
-  // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
-  timer = timerBegin(1000000);
-  // Подключаем функцию обработчика прерывания от таймера - onTimer
-  timerAttachInterrupt(timer, &onTimer);
-  // Настраиваем таймер: интервал перезапуска - 20 секунд (20000000 микросекунд),
-  // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
-  // раз (четвертый параметр = 0) 
-  timerAlarm(timer, 20000000, true, 0);
-  Serial.println("Установлен тайм-аут сторожевого таймера 20 сек.");
 
   // Подключаем задачу по выборке из очереди и отправке сообщения на периферию
   xTaskCreatePinnedToCore(
@@ -242,6 +258,28 @@ void setup()
                     // У ESP32 есть два ядра, обозначенные как 0 и 1.
   );
   */
+
+
+  // Создаём объект таймера, устанавливаем его частоту отсчёта (1Mhz)
+  timer = timerBegin(1000000);
+  // Подключаем функцию обработчика прерывания от таймера - onTimer
+  timerAttachInterrupt(timer, &onTimer);
+  // Настраиваем таймер: интервал перезапуска - 20 секунд (20000000 микросекунд),
+  // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
+  // раз (четвертый параметр = 0) 
+  timerAlarm(timer, 20000000, true, 0);
+  Serial.println("Установлен тайм-аут сторожевого таймера 20 сек.");
+
+  // Создаём объект таймера вспышки, устанавливаем его частоту отсчёта (1Mhz)
+  timerLed4 = timerBegin(1000000);
+   // Подключаем функцию обработчика прерывания от таймера - onTimer
+   timerAttachInterrupt(timerLed4, &onTimerLed4);
+   // Настраиваем таймер: интервал перезапуска - 5 секунд (для первого запуска, далее по расчету),
+   // всегда повторяем перезапуск (третий параметр = true), неограниченное число 
+   // раз (четвертый параметр = 0) 
+   timerAlarm(timerLed4, 5000000, true, 0);
+
+
 }
 
 // Инициируем прием кодов и заполнение строки
