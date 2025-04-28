@@ -16,6 +16,44 @@ const String s4_LOW     = "{\"led4\":[{\"status\":\"shimLOW\"}]}";              
 const String s4_MODE0   = "{\"led4\":[{\"regim\":0}]}";                             // "режим работы вспышки отключен"
 const String s4_MODEini = "{\"led4\":[{\"regim\":1,\"light\":10,\"time\":2000}]}";  // "начальный режим работы вспышки"
 
+// Назначаем параметры действующего режима работы вспышки
+bool Led4Start=true;     // true - включить режим работы вспышки
+int jlight=10;           // процент времени свечения в цикле 
+int jtime=2000;          // длительность цикла "горит - не горит" (мсек)      
+int nLight=5000000;      // время (5 сек) свечения в цикле, далее пересчитывается 
+int nNoLight=5000000;    // время (5 сек) НЕ свечения в цикле, далее пересчитывается  
+
+String s4_MODE = "{\"led4\":[{\"regim\":1,\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}]}";  
+
+// ****************************************************************************
+// *        Инициировать параметры действующего режима работы вспышки         *
+// ****************************************************************************
+void iniPMem(Preferences Prefs) 
+{
+  //Prefs.begin("KvizzyPrefs", false);
+  //Led4Start=Prefs.getBool("Led4Start",true);
+  //Prefs.putBool("Led4Start",Led4Start);
+  //jlight=Prefs.getInt("jlight",10);
+  //Prefs.putInt("jlight",jlight);
+  //jtime=Prefs.getInt("jtime",2000);
+  //Prefs.putInt("jtime",jtime);
+  //Prefs.end();
+
+  // Извлекаем постоянные данные
+  Prefs.begin("KvizzyPrefs", false);
+  Led4Start=Prefs.getBool("Led4Start",true);
+  jlight=Prefs.getInt("jlight",10);
+  jtime=Prefs.getInt("jtime",2000);
+  Prefs.end();
+  // Рассчитываем времена свечения и несвечения контрольного светодиода
+  nLight=jtime*jlight/100;  // 2000*10/100=200
+  nNoLight=jtime-nLight;    // 2000-200=1800
+  nLight=nLight*1000;       // 200000 мкс
+  nNoLight=nNoLight*1000;   // 1800000 мкс
+  // Формируем json-сообщение для отправки на State
+  s4_MODE = "{\"led4\":[{\"regim\":1,\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}]}";
+}
+
 String jempty = "{}"; // пустая json-строка
 String sjson;         // выборка из json-документа
 

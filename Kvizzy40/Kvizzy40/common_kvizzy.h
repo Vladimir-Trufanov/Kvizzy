@@ -34,6 +34,15 @@ tQueryMessage postQuery(String ehttp, String queryString)
  
     if (tQuery.httpCode > 0) 
     {
+      // Не получилось выбрать заголовки
+      /*
+      for(int i = 0; i< http.headers(); i++)
+      {
+        Serial.print("http.header(i) = ");
+        Serial.println(i);
+        Serial.println(http.header(i));
+      }
+      */
       // Если запрос успешно отправлен
       if (tQuery.httpCode == HTTP_CODE_OK) 
       {

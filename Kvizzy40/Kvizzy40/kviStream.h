@@ -91,6 +91,8 @@ void sendhttp(time_t nTime, int nFrame, String path)
   // Готовим запрос к странице "https://probatv.ru/Stream40/"
   String ehttp=urlHome+"/Stream40/";  
   // Готовим параметры запроса
+  //frame="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADhSURBVChTVZA9TwJBEIb350pCL1BYoIUFITbE2tAYCxPobGwvEgpsIIaDgkJjtBLI5di7e8w7e0ugmMzXu8/MjivzAgqgOrHyPJfGWVHmgUPO3yrFf35bbIC67yyRZXvY7hi32rwO7kMexVUtFIV0Cb8/JNddvkZji7PZu9HDaI8RRFrfdJm3Lo9eNXvkRTzkYafkje1dn49mg0XjAoYPVhM5ELWDdkmXRpE4UiWyXQtwUlel57F3y8tVBzYrmCY2dvL8FCD6jE5l98r24VMixLgWqe00OQpFVjP6eHhflfwDul9tENLGFW4AAAAASUVORK5CYII=";
+  //frame="data:image/jpeg;base64,"+frame;
   String frame="data:image/jpeg;base64,"+readPhoto(path);
   String queryString = "src="+frame;      
   // Добавляем время с начала эпохи в параметры
@@ -104,82 +106,6 @@ void sendhttp(time_t nTime, int nFrame, String path)
   tQueryMessage tQuery;   
   // Делаем запрос                           
   tQuery = postQuery(ehttp, queryString);
-
-
-
-  /*
-  // Объявляем строку ответного сообщения со страницы сайта
-  String inMess;
-  // Если есть WiFi, отправляем сообщение
-  if ((WiFi.status() == WL_CONNECTED)) 
-  {
-    // Готовим запрос к странице "https://probatv.ru/Stream40/"
-    HTTPClient http;
-    String ehttp=urlHome+"/Stream40/";  
-    http.begin(ehttp);
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    String frame="data:image/jpeg;base64,"+readPhoto(path);
-
-    //String frame="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADhSURBVChTVZA9TwJBEIb350pCL1BYoIUFITbE2tAYCxPobGwvEgpsIIaDgkJjtBLI5di7e8w7e0ugmMzXu8/MjivzAgqgOrHyPJfGWVHmgUPO3yrFf35bbIC67yyRZXvY7hi32rwO7kMexVUtFIV0Cb8/JNddvkZji7PZu9HDaI8RRFrfdJm3Lo9eNXvkRTzkYafkje1dn49mg0XjAoYPVhM5ELWDdkmXRpE4UiWyXQtwUlel57F3y8tVBzYrmCY2dvL8FCD6jE5l98r24VMixLgWqe00OQpFVjP6eHhflfwDul9tENLGFW4AAAAASUVORK5CYII=";
-    //frame="data:image/jpeg;base64,"+frame;
-
-    String queryString = "src="+frame;      
-    // Добавляем время с начала эпохи в параметры
-    String stime="&time="+String(nTime);
-    queryString=queryString+stime;
-    // Добавляем номер кадра в параметры
-    String sframe="&frame="+String(nFrame);
-    queryString=queryString+sframe;
-     
-    int last = millis();     // текущее время (уходящее в прошлое)
-    int tQuery_httpCode = http.POST(queryString); 
-    Serial.print("2. Время ответа (мс): "); Serial.println(millis() - last);
-    if (tQuery_httpCode > 0) 
-    {
-      // Не получилось выбрать заголовки
-      / *
-      for(int i = 0; i< http.headers(); i++)
-      {
-        Serial.print("http.header(i) = ");
-        Serial.println(i);
-        Serial.println(http.header(i));
-      }
-      * /
-      // Если запрос успешно отправлен
-      if (tQuery_httpCode == HTTP_CODE_OK) 
-      {
-        inMess = http.getString();
-        //Serial.println("Запрос успешно отправлен: "); Serial.println(inMess);
-        Serial.print("Изображение отправлено: "); Serial.println(path);
-      }
-      // Если ошибка после того, как HTTP-заголовок был отправлен
-      // и заголовок ответа сервера был обработан
-      else 
-      {
-        // Если сообщение о ненайденной странице, указываем её
-        if (tQuery_httpCode==301)      inMess="Ошибка 301 к странице Stream40: документ перенесен на новый URI";
-        else if (tQuery_httpCode==404) inMess="Ошибка 404 к странице Stream40: страница не найдена";
-        else                           inMess="Ошибка "+String(tQuery_httpCode)+" запроса страницы Stream40";
-        Serial.println(inMess);
-      }
-    }
-    // Если ошибка при отправке POST-запроса
-    //    Ошибка POST-запроса: "read Timeout"       - "истекло время ожидания чтения"
-    //    Ошибка POST-запроса: "connection refused" - "В соединении отказано"
-    else 
-    {
-      inMess=http.errorToString(tQuery_httpCode);
-      Serial.printf("Ошибка POST-запроса: %s\n", inMess.c_str());
-    }
-    http.end();
-  }
-  // Если "Нет подключения к WiFi перед передачей POST-запроса"
-  else
-  {
-    inMess="Нет подключения к WiFi перед передачей POST-запроса";
-    Serial.println(inMess);
-  }
-  */
 }
 
 // * Задача FreRTOS ***********************************************************
