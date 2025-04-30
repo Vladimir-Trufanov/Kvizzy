@@ -45,7 +45,7 @@ void iniPMem(Preferences Prefs)
   jlight=Prefs.getInt("jlight",10);
   jtime=Prefs.getInt("jtime",2000);
   Prefs.end();
-  // Рассчитываем времена свечения и несвечения контрольного светодиода
+  // Рассчитываем времена свечения и несвечения вспышки
   nLight=jtime*jlight/100;  // 2000*10/100=200
   nNoLight=jtime-nLight;    // 2000-200=1800
   nLight=nLight*1000;       // 200000 мкс

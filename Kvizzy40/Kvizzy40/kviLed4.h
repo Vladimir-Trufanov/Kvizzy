@@ -60,7 +60,9 @@ void Led4State(String inJson)
   queryString=queryString+sjson;
   // Трассируем запрос к State
   if (toTrassState) {Serial.print("To State: "); Serial.println(queryString);}  
+
   tQuery = postQuery(ehttp, queryString);
+
   // Обрабатываем успешный запрос 
   if (tQuery.httpCode == HTTP_CODE_OK) 
   {
@@ -107,6 +109,8 @@ void vLed4(void* pvParameters)
         Prefs.putBool("Led4Start",Led4Start);
         Prefs.end();
       }
+      // Передаём запрос
+      Led4State(s4_MODE);
       // Освобождаем мьютекс
       xSemaphoreGive(HttpMutex);  
     }
@@ -120,8 +124,6 @@ void vLed4(void* pvParameters)
     //Serial.println(nLight);
     //Serial.println(nNoLight);
 
-    // Передаём запрос
-    Led4State(s4_MODE);
     vTaskDelay(2000/portTICK_PERIOD_MS); 
     // Отмечаем флагом, что цикл задачи успешно завершен   
     fwdtLed4 = true;
