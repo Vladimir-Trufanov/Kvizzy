@@ -38,6 +38,7 @@ SemaphoreHandle_t HttpMutex = NULL;
 #include "kviPrint.h"         //  7-983  выборка из очереди и вывод сообщения на периферию
 #include "kviStream.h"        // 10-2971 фотографирование и отправка изображения
 #include "kviLed4.h"          // 12-1500
+#include "kviLead.h"          // 13-997 
 #include "kviDHT11.h"         //  6-2100
 
 // Определяем заголовок для сторожевого таймера
@@ -52,9 +53,7 @@ void IRAM_ATTR onTimer()
   // то сбрасываем флаги задач и счетчик сторожевого таймера
   if (fwdtLoop==true
   && fwdtPrint==true
-    /* 
-    && fwdtLead==true 
-    */
+  && fwdtLead==true 
   //&& fwdtOTA==true 
   && fwdtLed4==true 
   && fwdtDHT11==true 
@@ -63,9 +62,7 @@ void IRAM_ATTR onTimer()
     // Сбрасываем флаги задач
     fwdtLoop  = false;
     fwdtPrint = false;
-      /*
-      fwdtLead = false;
-      */
+    fwdtLead = false;
     fwdtLed4 = false;
     fwdtDHT11 = false;
     fwdtStream = false;
@@ -80,42 +77,10 @@ void IRAM_ATTR onTimer()
   }
   portEXIT_CRITICAL_ISR(&timerMux);
 }
-/*
-// Определяем заголовок для таймера вспышки
-hw_timer_t *timerLed4 = NULL;
-int fLight=shimLOW;     // флаг свечения светодиода
-int lastled4=millis();  // текущее время (уходящее в прошлое)
-void ARDUINO_ISR_ATTR onTimerLed4() 
-{
-  // Отрабатываем режим
-  if (fLight==shimHIGH)
-  {
-    //Serial.print("Не горело (мс): "); Serial.println(millis() - lastled4);
-    analogWrite(LED_PIN_4, shimHIGH);
-    fLight=shimLOW;  
-    //lastled4=millis(); 
-    timerAlarm(timerLed4, 200000, true, 0);
-  }
-  else
-  {
-    //Serial.print("Светилось (мс): "); Serial.println(millis()-lastled4);
-    analogWrite(LED_PIN_4, shimLOW);
-    fLight=shimHIGH;  
-    //lastled4=millis(); 
-    timerAlarm(timerLed4, 1800000, true, 0);
-  }
-}
-*/
-
-/*
 // Определяем директивы отладки
 // #define tmr_TRACEMEMORY
 // Определяем объект для работs с документом JSON
-TJsonBase oJSON;
-
-// Подключаем задачи и деятельности
-#include "Lead.h"            //  9-897 запрос контроллера на изменение состояний устройств
-*/
+//TJsonBase oJSON;
 
 // ****************************************************************************
 // *                         Начальная настройка                              *
@@ -206,6 +171,16 @@ void setup()
     6,                      // Priority
     NULL,                   // Task handle
     1); 
+  // Выполнить регулярный (по таймеру) запрос контроллера на изменение   
+  // состояний его устройств к странице Lead             
+  xTaskCreatePinnedToCore(
+    vLead,                  // Task function
+    "Lead",                 // Task name
+    4096,                   // Stack size
+    NULL,                   // Parameters passed to the task function
+    13,                      // Priority
+    NULL,                   // Task handle
+    1);
  
   /*
   // Создаём объект и строку всего JSON-документа         
@@ -227,19 +202,6 @@ void setup()
   if (inMess!=isOk) Serial.println(inMess); 
 
   Serial.println("");
-
-  /*
-   // Выполнить регулярный (по таймеру) запрос контроллера на изменение   
-   // состояний его устройств к странице Lead             
-   xTaskCreatePinnedToCore(
-      vLead,                  // Task function
-      "Lead",                 // Task name
-      2048,                   // Stack size
-      NULL,                   // Parameters passed to the task function
-      8,                      // Priority
-      NULL,                   // Task handle
-      1);
-  */
   
   /*
   // Определяем дополнительную задачу
