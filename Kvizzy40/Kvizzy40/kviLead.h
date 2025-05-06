@@ -73,15 +73,10 @@ void getJsonLead(String httpText)
 // ****************************************************************************
 void vLead(void* pvParameters) 
 {
-  // Готовим запрос к странице Lead
-  //String ehttp=shttp+"Lead/";                   // запрос
-  //String queryString = "cycle="+String(iLead);  // параметры
-  //tQueryMessage tQuery;                         // ответ
-  //String httpText;                              // текст ответного сообщения
   // Зацикливаем задачу
   for (;;)
   {
-    Serial.println("*** vLead ***");
+    //Serial.println("*** vLead ***");
     #ifdef tmr_LEAD
       // В vLead конкурируем за Http-запросы. Будем до 3 секунд ждать освобождения запроса.
       // По опыту от 24.04.2025 на запрос к probatv.ru может уйти до полутора секунд.
@@ -105,8 +100,8 @@ void vLead(void* pvParameters)
         // Готовим структуру для ответа
         tQueryMessage tQuery;                              
         // Включаем в параметр запроса json-сообщение
-        // String sjson="&sjson="+inJson;
-        // queryString=queryString+sjson;
+        String sjson="&sjson="+s_COMMON;
+        queryString=queryString+sjson;
         tQuery = postQuery(ehttp, queryString);
         // Обрабатываем успешный запрос 
         if (tQuery.httpCode == HTTP_CODE_OK) 
