@@ -47,13 +47,25 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
   //Serial.print("mode4: "); Serial.println(mode4);
   */
 
-  // {{"led4":{"light":25,"time":1996}},{"intrv":{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}
-  sjson = '{{"led4":{"light":25,"time":1996}},{"intrv":{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}';
-  Serial.print("sjson: "); Serial.println(sjson); 
+  // {"led4":{"light":25,"time":1996},"intrv":{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}
+  //sjson = "{\"led4\":{\"light\":25,\"time\":1996},\"intrv\":{\"mode4\":6900,\"img\":1001,\"tempvl\":3003,\"lumin\":2002,\"bar\":5005}}";
+  //Serial.print("sjson: "); Serial.println(sjson); 
 
   JsonDocument doc;
   deserializeJson(doc, sjson);
 
+  String led4=doc["led4"];
+  Serial.print("led4: "); Serial.println(led4);
+  int light = doc["led4"]["light"];
+  Serial.print("light: "); Serial.println(light);
+
+  String intrv=doc["intrv"];
+  Serial.print("intrv: "); Serial.println(intrv);
+  int mode4 = doc["intrv"]["mode4"];
+  Serial.print("mode4: "); Serial.println(mode4);
+
+  String vintrv = doc["vintrv"];
+  Serial.print("vintrv: "); Serial.println(vintrv);
 
  
    // Обрабатываем очередной найденный фрагмент
