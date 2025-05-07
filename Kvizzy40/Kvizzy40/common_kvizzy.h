@@ -30,6 +30,7 @@ tQueryMessage postQuery(String ehttp, String queryString)
 
     int last = millis();     // текущее время (уходящее в прошлое)
     tQuery.httpCode = http.POST(queryString); 
+    //Serial.print("Запрос: "); Serial.println(ehttp+"?"+queryString);
     Serial.print("Время ответа (мс): "); Serial.println(millis() - last);
  
     if (tQuery.httpCode > 0) 
@@ -47,8 +48,7 @@ tQueryMessage postQuery(String ehttp, String queryString)
       if (tQuery.httpCode == HTTP_CODE_OK) 
       {
         inMess = http.getString();
-        Serial.print("Запрос успешно отправлен: "); Serial.println(inMess);
-        //Serial.print("queryString: "); Serial.println(queryString);
+        // Serial.print("Запрос успешно отправлен: "); Serial.println(inMess);
       }
       // Если ошибка после того, как HTTP-заголовок был отправлен
       // и заголовок ответа сервера был обработан

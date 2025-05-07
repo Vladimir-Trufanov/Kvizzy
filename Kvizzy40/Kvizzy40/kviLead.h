@@ -10,21 +10,56 @@
 #pragma once            
 #include <Arduino.h>
 #include <Regexp.h>
+#include <ArduinoJson.h>
 
-/*
 // ****************************************************************************
 // *    Выбрать и обработать текущее json-сообщение из ответа страницы Lead   *
 // ****************************************************************************
 void match_callback(const char * match,const unsigned int length,const MatchState & ms)
 {
-   // Выбираем очередной найденный фрагмент
-   // {"led33":[{"regim":0}]}
-   String sjson = String(match);
-   sjson = sjson.substring(0,length);
-   
+  // Выбираем очередной найденный фрагмент
+  // {"led33":[{"regim":0}]}
+  String sjson = String(match);
+  sjson = sjson.substring(0,length);
+  Serial.print("sjson: "); Serial.println(sjson); 
+
+  //JsonDocument doc;
+  //deserializeJson(doc, sjson);
+
+  /*
+  // {"lead":[{"led4":[{"light":25,"time":1996}]},{"intrv":[{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}]}]}
+
+  String lead=doc["lead"];
+  Serial.print("lead: "); Serial.println(lead);
+  
+  // lead: [{"led4":[{"light":25,"time":1996}]},{"intrv":[{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}]}]
+  String led4=doc["lead"][0]["led4"];
+  Serial.print("led4: "); Serial.println(led4);
+  // led4: [{"light":25,"time":1996}]
+  int light = doc["lead"][0]["led4"][0]["light"];
+  Serial.print("light: "); Serial.println(light);
+
+  // lead: [{"led4":[{"light":25,"time":1996}]},{"intrv":[{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}]}]
+  String intrv=doc["lead"][1]["intrv"];
+  Serial.print("intrv: "); Serial.println(intrv);
+
+  //int mode4 = doc["lead"][0]["intrv"][0]["mode4"];
+  //Serial.print("mode4: "); Serial.println(mode4);
+  */
+
+  // {{"led4":{"light":25,"time":1996}},{"intrv":{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}
+  sjson = '{{"led4":{"light":25,"time":1996}},{"intrv":{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}';
+  Serial.print("sjson: "); Serial.println(sjson); 
+
+  JsonDocument doc;
+  deserializeJson(doc, sjson);
+
+
+ 
    // Обрабатываем очередной найденный фрагмент
    
    // "режим контрольного светодиода выключен"
+   /*
    if (sjson==s33_MODE0) 
    {
       Serial.println(); 
@@ -46,6 +81,7 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
       Serial.println(); 
       Serial.print(sjson); Serial.println(" -> match_callback.ELSE"); 
    }
+   */
 }
 // ****************************************************************************
 // *      Выполнить выборку всех json-сообщений из ответа страницы Lead       *
@@ -66,7 +102,60 @@ void getJsonLead(String httpText)
   // Выполняем поиск по соответствию
   count = ms.GlobalMatch(match,match_callback);
 }
+
+// ****************************************************************************
+// *      Выполнить выборку всех json-сообщений из ответа страницы Lead       *
+// ****************************************************************************
+void Deser(String httpText)
+{
+
+  
+  
+  
+  
+  
+  // Готовим ответ для парс
+  int str_len = httpText.length()+1; 
+  char json[str_len];
+  httpText.toCharArray(json, str_len);
+  // Трассируем ответ от Lead
+  Serial.print("json: "); Serial.println(json);
+
+  // Создаем объект поиска соответствий
+  MatchState ms(json);
+  // Формируем регулярное выражение ("соответствие") для поиска json-сообщений:
+  // <Lead>{"lead":[{"led4":[{"light":25,"time":1996}]},{"intrv":[{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}]}]}</Lead>
+  const char * match="{[{\"a-z0-9:,%[}%]]*}";
+  // Выполняем поиск по соответствию
+  int count = ms.GlobalMatch(match,match_callback);
+  Serial.print("count: "); Serial.println(count);
+
+
+  /*
+  charBuf[stringOne.length()+1] –
+  
+  char json[512] = httpText;
+  JsonDocument doc;
+//deserializeJson(doc, json);
 */
+
+
+/*
+char json[] = "{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
+
+JsonDocument doc;
+deserializeJson(doc, json);
+
+const char* sensor = doc["sensor"];
+long time          = doc["time"];
+double latitude    = doc["data"][0];
+double longitude   = doc["data"][1];
+*/
+
+
+
+}
+
 // * Задача FreRTOS ***********************************************************
 // *      Отправить регулярный (по таймеру) запрос контроллера на изменение   *
 // *                  состояний его устройств к странице Lead                 *
@@ -104,13 +193,9 @@ void vLead(void* pvParameters)
         queryString=queryString+sjson;
         tQuery = postQuery(ehttp, queryString);
         // Обрабатываем успешный запрос 
-        if (tQuery.httpCode == HTTP_CODE_OK) 
-        {
-          // Трассируем ответ от Lead
-          Serial.print("Lead40: "); Serial.println(tQuery.httpText);
-        }
+        if (tQuery.httpCode == HTTP_CODE_OK) Deser(tQuery.httpText);
+        // Иначе реагируем на ошибку Post-запроса
         else
-        // Реагируем на ошибку Post-запроса
         {
           Serial.print("Ошибка Post-запроса от Lead40: "); Serial.println(tQuery.httpCode);
         }
