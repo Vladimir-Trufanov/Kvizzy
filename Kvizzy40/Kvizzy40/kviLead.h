@@ -13,7 +13,103 @@
 #include <ArduinoJson.h>
 
 // ****************************************************************************
-// *    Выбрать и обработать текущее json-сообщение из ответа страницы Lead:   *
+// *  Проверить, изменились ли параметры действующего режима работы вспышки   *
+// ****************************************************************************
+bool isChangeLed4(String sjson)
+{
+  JsonDocument doc;
+  deserializeJson(doc, sjson);
+
+  inlight = doc["led4"]["light"];
+  if (inlight==jlight)
+  {
+    Serial.print("inlight: "); Serial.println(inlight);
+  }
+  else
+  {
+    Serial.print("inlight: "); Serial.print(inlight); Serial.print(" jlight: "); Serial.println(jlight);
+    return true;
+  }
+  intime = doc["led4"]["time"];
+  if (intime==jtime)
+  {
+    Serial.print("intime: "); Serial.println(intime);
+  }
+  else
+  {
+    Serial.print("intime: "); Serial.print(intime); Serial.print(" jtime: "); Serial.println(jtime);
+    return true;
+  }
+  return false;
+}
+// ****************************************************************************
+// *    Проверить, изменились ли интервалы подачи сообщений от контроллера    *
+// ****************************************************************************
+bool isChangeIntrv(String sjson)
+{
+  JsonDocument doc;
+  deserializeJson(doc, sjson);
+
+  // mode4 - принятый режим работы Led4 
+  mode4 = doc["intrv"]["mode4"];
+  if (mode4==jmode4)
+  {
+    Serial.print("mode4: "); Serial.println(mode4);
+  }
+  else
+  {
+    Serial.print("mode4: "); Serial.print(mode4); Serial.print(" jmode4: "); Serial.println(jmode4);
+    return true;
+  }
+  // img - принятая подача изображения 
+  img = doc["intrv"]["img"];
+  if (img==jimg)
+  {
+    Serial.print("img: "); Serial.println(img);
+  }
+  else
+  {
+    Serial.print("img: "); Serial.print(img); Serial.print(" jimg: "); Serial.println(jimg);
+    return true;
+  }
+  // tempvl - принятые температура и влажность 
+  tempvl = doc["intrv"]["tempvl"];
+  if (tempvl==jtempvl)
+  {
+    Serial.print("tempvl: "); Serial.println(tempvl);
+  }
+  else
+  {
+    Serial.print("tempvl: "); Serial.print(tempvl); Serial.print(" jtempvl: "); Serial.println(jtempvl);
+    return true;
+  }
+  // lumin - принятая освещённость камеры
+  lumin = doc["intrv"]["lumin"];
+  if (lumin==jlumin)
+  {
+    Serial.print("lumin: "); Serial.println(lumin);
+  }
+  else
+  {
+    Serial.print("lumin: "); Serial.print(lumin); Serial.print(" jlumin: "); Serial.println(jlumin);
+    return true;
+  }
+  // bar - принятое атмосферное давление
+  bar = doc["intrv"]["bar"];
+  if (bar==jbar)
+  {
+    Serial.print("bar: "); Serial.println(bar);
+  }
+  else
+  {
+    Serial.print("bar: "); Serial.print(bar); Serial.print(" jbar: "); Serial.println(jbar);
+    return true;
+  }
+  return false;
+}
+
+// ****************************************************************************
+// *    Выбрать и обработать текущее json-сообщение из ответа страницы Lead   *
 // ****************************************************************************
 void match_callback(const char * match,const unsigned int length,const MatchState & ms)
 {
@@ -21,37 +117,22 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
   // {"led4":{"light":25,"time":1996},"intrv":{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}
   String sjson = String(match);
   sjson = sjson.substring(0,length);
-  // Serial.print("sjson: "); Serial.println(sjson); 
+  Serial.print("sjson: "); Serial.println(sjson); 
 
   JsonDocument doc;
   deserializeJson(doc, sjson);
 
   // Определяемся и обрабатываем команду по режиму вспышки
   String led4=doc["led4"];
-  //Serial.print("led4: "); Serial.println(led4);
-  //Serial.print("led4.length(): "); Serial.println(led4.length());
   if (led4 != "null")
   {
-    int light = doc["led4"]["light"];
-    Serial.print("light: "); Serial.println(light);
-    int time = doc["led4"]["time"];
-    Serial.print("time: "); Serial.println(time);
+    Led4Start=isChangeLed4(sjson);
   }
   // Определяемся и обрабатываем команду по интервалам сообщений
   String intrv=doc["intrv"];
   if (intrv != "null")
   {
-    //Serial.print("intrv: "); Serial.println(intrv);
-    int mode4  = doc["intrv"]["mode4"];
-    Serial.print("mode4: "); Serial.println(mode4);
-    int img    = doc["intrv"]["img"];
-    Serial.print("img: "); Serial.println(img);
-    int tempvl = doc["intrv"]["tempvl"];
-    Serial.print("tempvl: "); Serial.println(tempvl);
-    int lumin  = doc["intrv"]["lumin"];
-    Serial.print("lumin: "); Serial.println(lumin);
-    int bar    = doc["intrv"]["bar"];
-    Serial.print("bar: "); Serial.println(bar);
+    intrvStart=isChangeIntrv(sjson);
   }
 
   //String vintrv=doc["vintrv"];
@@ -116,12 +197,14 @@ void vLead(void* pvParameters)
         {
           s_MODE4 = "{\"led4\":{\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}}"; 
           sjson="&sjson="+s_MODE4;
+          Serial.println("Отправляем s_MODE4"); 
         }
         // Если изменены интервалы отправки сообщений
         else if (intrvStart) 
         {
           s_INTRV = "{\"intrv\":{\"mode4\":"+String(jmode4)+",\"img\":"+String(jimg)+",\"tempvl\":"+String(jtempvl)+",\"lumin\":"+String(jlumin)+",\"bar\":"+String(jbar)+"}}"; 
           sjson="&sjson="+s_INTRV;
+          Serial.println("Отправляем s_INTRV"); 
         }
 
         queryString=queryString+sjson;
