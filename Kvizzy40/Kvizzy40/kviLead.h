@@ -1,9 +1,9 @@
-/** Arduino, Esp32-CAM ******************************************** Lead.h ***
+/** Arduino, Esp32-CAM ****************************************** kviLead.h ***
  * 
  *        Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
  *            и показаниях датчиков из очереди и отправить их на страницу State 
  * 
- * v3.3.4, 28.01.2025                                 Автор:      Труфанов В.Е.
+ * v3.3.5, 15.05.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -117,6 +117,7 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
   // {"led4":{"light":25,"time":1996},"intrv":{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}
   String sjson = String(match);
   sjson = sjson.substring(0,length);
+  // Трассируем выбранный json
   Serial.print("sjson: "); Serial.println(sjson); 
 
   JsonDocument doc;
@@ -149,7 +150,7 @@ void Deser(String httpText)
   char json[str_len];
   httpText.toCharArray(json, str_len);
   // Трассируем ответ от Lead
-  // Serial.print("json: "); Serial.println(json);
+  // Serial.print("httpText: "); Serial.println(httpText);
   // Создаем объект поиска соответствий
   MatchState ms(json);
   // Формируем регулярное выражение ("соответствие") для поиска json-сообщений:
@@ -195,6 +196,7 @@ void vLead(void* pvParameters)
         // Если изменен режим работы вспышки
         if (Led4Start) 
         {
+          queryString = "cycle=-1";    
           s_MODE4 = "{\"led4\":{\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}}"; 
           sjson="&sjson="+s_MODE4;
           Serial.println("Отправляем s_MODE4"); 
@@ -202,6 +204,7 @@ void vLead(void* pvParameters)
         // Если изменены интервалы отправки сообщений
         else if (intrvStart) 
         {
+          queryString = "cycle=-2";    
           s_INTRV = "{\"intrv\":{\"mode4\":"+String(jmode4)+",\"img\":"+String(jimg)+",\"tempvl\":"+String(jtempvl)+",\"lumin\":"+String(jlumin)+",\"bar\":"+String(jbar)+"}}"; 
           sjson="&sjson="+s_INTRV;
           Serial.println("Отправляем s_INTRV"); 
@@ -231,4 +234,4 @@ void vLead(void* pvParameters)
   }
 }
 
-// **************************************************************** Lead.h ***
+// ************************************************************* kviLead.h ***
