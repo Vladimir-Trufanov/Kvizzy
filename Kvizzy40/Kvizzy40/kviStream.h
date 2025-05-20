@@ -2,7 +2,7 @@
  * 
  *               Сделать фото и отправить Base24 изображения на страницу Stream  
  * 
- * v4.1.0, 18.04.2025                                 Автор:      Труфанов В.Е.
+ * v4.1.1, 20.05.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2025 tve                               Дата создания: 26.02.2025
  *
 **/
@@ -88,11 +88,9 @@ String readPhoto(String path)
 // ****************************************************************************
 void sendhttp(time_t nTime, int nFrame, String path) 
 {
-  // Готовим запрос к странице "https://probatv.ru/Stream40/"
-  String ehttp=urlHome+"/Stream40/";  
-  // Готовим параметры запроса
-  //frame="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADhSURBVChTVZA9TwJBEIb350pCL1BYoIUFITbE2tAYCxPobGwvEgpsIIaDgkJjtBLI5di7e8w7e0ugmMzXu8/MjivzAgqgOrHyPJfGWVHmgUPO3yrFf35bbIC67yyRZXvY7hi32rwO7kMexVUtFIV0Cb8/JNddvkZji7PZu9HDaI8RRFrfdJm3Lo9eNXvkRTzkYafkje1dn49mg0XjAoYPVhM5ELWDdkmXRpE4UiWyXQtwUlel57F3y8tVBzYrmCY2dvL8FCD6jE5l98r24VMixLgWqe00OQpFVjP6eHhflfwDul9tENLGFW4AAAAASUVORK5CYII=";
-  //frame="data:image/jpeg;base64,"+frame;
+  // Готовим запрос к странице: "https://probatv.ru/Stream40/"
+  // frame="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAADhSURBVChTVZA9TwJBEIb350pCL1BYoIUFITbE2tAYCxPobGwvEgpsIIaDgkJjtBLI5di7e8w7e0ugmMzXu8/MjivzAgqgOrHyPJfGWVHmgUPO3yrFf35bbIC67yyRZXvY7hi32rwO7kMexVUtFIV0Cb8/JNddvkZji7PZu9HDaI8RRFrfdJm3Lo9eNXvkRTzkYafkje1dn49mg0XjAoYPVhM5ELWDdkmXRpE4UiWyXQtwUlel57F3y8tVBzYrmCY2dvL8FCD6jE5l98r24VMixLgWqe00OQpFVjP6eHhflfwDul9tENLGFW4AAAAASUVORK5CYII=";
+  // frame="data:image/jpeg;base64,"+frame;
   String frame="data:image/jpeg;base64,"+readPhoto(path);
   String queryString = "src="+frame;      
   // Добавляем время с начала эпохи в параметры
@@ -105,7 +103,7 @@ void sendhttp(time_t nTime, int nFrame, String path)
   // Готовим структуру для ответа
   tQueryMessage tQuery;   
   // Делаем запрос                           
-  tQuery = postQuery(ehttp, queryString);
+  tQuery = postQuery(urlStream, queryString);
 }
 
 // * Задача FreRTOS ***********************************************************

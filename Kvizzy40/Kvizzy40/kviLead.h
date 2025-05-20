@@ -3,7 +3,7 @@
  *        Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
  *            и показаниях датчиков из очереди и отправить их на страницу State 
  * 
- * v3.3.5, 15.05.2025                                 Автор:      Труфанов В.Е.
+ * v3.3.6, 20.05.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -23,21 +23,21 @@ bool isChangeLed4(String sjson)
   inlight = doc["led4"]["light"];
   if (inlight==jlight)
   {
-    Serial.print("inlight: "); Serial.println(inlight);
+    //Serial.print("inlight: "); Serial.println(inlight);
   }
   else
   {
-    Serial.print("inlight: "); Serial.print(inlight); Serial.print(" jlight: "); Serial.println(jlight);
+    //Serial.print("inlight: "); Serial.print(inlight); Serial.print(" jlight: "); Serial.println(jlight);
     return true;
   }
   intime = doc["led4"]["time"];
   if (intime==jtime)
   {
-    Serial.print("intime: "); Serial.println(intime);
+    //Serial.print("intime: "); Serial.println(intime);
   }
   else
   {
-    Serial.print("intime: "); Serial.print(intime); Serial.print(" jtime: "); Serial.println(jtime);
+    //Serial.print("intime: "); Serial.print(intime); Serial.print(" jtime: "); Serial.println(jtime);
     return true;
   }
   return false;
@@ -54,55 +54,55 @@ bool isChangeIntrv(String sjson)
   mode4 = doc["intrv"]["mode4"];
   if (mode4==jmode4)
   {
-    Serial.print("mode4: "); Serial.println(mode4);
+    //Serial.print("mode4: "); Serial.println(mode4);
   }
   else
   {
-    Serial.print("mode4: "); Serial.print(mode4); Serial.print(" jmode4: "); Serial.println(jmode4);
+    //Serial.print("mode4: "); Serial.print(mode4); Serial.print(" jmode4: "); Serial.println(jmode4);
     return true;
   }
   // img - принятая подача изображения 
   img = doc["intrv"]["img"];
   if (img==jimg)
   {
-    Serial.print("img: "); Serial.println(img);
+    //Serial.print("img: "); Serial.println(img);
   }
   else
   {
-    Serial.print("img: "); Serial.print(img); Serial.print(" jimg: "); Serial.println(jimg);
+    //Serial.print("img: "); Serial.print(img); Serial.print(" jimg: "); Serial.println(jimg);
     return true;
   }
   // tempvl - принятые температура и влажность 
   tempvl = doc["intrv"]["tempvl"];
   if (tempvl==jtempvl)
   {
-    Serial.print("tempvl: "); Serial.println(tempvl);
+    //Serial.print("tempvl: "); Serial.println(tempvl);
   }
   else
   {
-    Serial.print("tempvl: "); Serial.print(tempvl); Serial.print(" jtempvl: "); Serial.println(jtempvl);
+    //Serial.print("tempvl: "); Serial.print(tempvl); Serial.print(" jtempvl: "); Serial.println(jtempvl);
     return true;
   }
   // lumin - принятая освещённость камеры
   lumin = doc["intrv"]["lumin"];
   if (lumin==jlumin)
   {
-    Serial.print("lumin: "); Serial.println(lumin);
+    //Serial.print("lumin: "); Serial.println(lumin);
   }
   else
   {
-    Serial.print("lumin: "); Serial.print(lumin); Serial.print(" jlumin: "); Serial.println(jlumin);
+    //Serial.print("lumin: "); Serial.print(lumin); Serial.print(" jlumin: "); Serial.println(jlumin);
     return true;
   }
   // bar - принятое атмосферное давление
   bar = doc["intrv"]["bar"];
   if (bar==jbar)
   {
-    Serial.print("bar: "); Serial.println(bar);
+    //Serial.print("bar: "); Serial.println(bar);
   }
   else
   {
-    Serial.print("bar: "); Serial.print(bar); Serial.print(" jbar: "); Serial.println(jbar);
+    //Serial.print("bar: "); Serial.print(bar); Serial.print(" jbar: "); Serial.println(jbar);
     return true;
   }
   return false;
@@ -118,7 +118,7 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
   String sjson = String(match);
   sjson = sjson.substring(0,length);
   // Трассируем выбранный json
-  Serial.print("sjson: "); Serial.println(sjson); 
+  //Serial.print("sjson: "); Serial.println(sjson); 
 
   JsonDocument doc;
   deserializeJson(doc, sjson);
@@ -149,8 +149,6 @@ void Deser(String httpText)
   int str_len = httpText.length()+1; 
   char json[str_len];
   httpText.toCharArray(json, str_len);
-  // Трассируем ответ от Lead
-  // Serial.print("httpText: "); Serial.println(httpText);
   // Создаем объект поиска соответствий
   MatchState ms(json);
   // Формируем регулярное выражение ("соответствие") для поиска json-сообщений:
@@ -183,9 +181,7 @@ void vLead(void* pvParameters)
         // принятого в последовательном порту
         if (iCreateSit == loopingLed4) MimicMCUhangEvent("Led4");   
         */
-        // Готовим запрос к странице Lead
-        String ehttp=urlHome+"/Lead40/";
-        // Изменяем значение счетчика и включаем его в параметр запроса к странице State
+        // Изменяем значение счетчика и включаем его в параметр запроса к странице Lead
         iLead=incUINT32T(iLead);
         String queryString = "cycle="+String(iLead);    
         // Готовим структуру для ответа
@@ -199,7 +195,6 @@ void vLead(void* pvParameters)
           queryString = "cycle=-1";    
           s_MODE4 = "{\"led4\":{\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}}"; 
           sjson="&sjson="+s_MODE4;
-          Serial.println("Отправляем s_MODE4"); 
         }
         // Если изменены интервалы отправки сообщений
         else if (intrvStart) 
@@ -207,18 +202,12 @@ void vLead(void* pvParameters)
           queryString = "cycle=-2";    
           s_INTRV = "{\"intrv\":{\"mode4\":"+String(jmode4)+",\"img\":"+String(jimg)+",\"tempvl\":"+String(jtempvl)+",\"lumin\":"+String(jlumin)+",\"bar\":"+String(jbar)+"}}"; 
           sjson="&sjson="+s_INTRV;
-          Serial.println("Отправляем s_INTRV"); 
         }
-
         queryString=queryString+sjson;
-        tQuery = postQuery(ehttp, queryString);
-        // Обрабатываем успешный запрос 
+        // Делаем запрос к странице: "https://probatv.ru/Lead40/"
+        tQuery = postQuery(urlLead, queryString);
+        // Обрабатываем успешный запрос (неуспешный обработан в postQuery)
         if (tQuery.httpCode == HTTP_CODE_OK) Deser(tQuery.httpText);
-        // Иначе реагируем на ошибку Post-запроса
-        else
-        {
-          Serial.print("Ошибка Post-запроса от Lead40: "); Serial.println(tQuery.httpCode);
-        }
         // Освобождаем мьютекс
         xSemaphoreGive(HttpMutex);  
       }

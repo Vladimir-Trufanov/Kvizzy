@@ -29,7 +29,10 @@ const char* password = "18009217";
 
 // Определяем сайт умного хозяйства  
 //String SiteHost="/home/u542632";
-String urlHome="https://probatv.ru";
+String urlHome   = "https://probatv.ru";
+String urlLead   = "Lead40";
+String urlStream = "Stream40";
+String urlState  = "State40";
 // Назначаем задачи, инициируем флаги для сторожевого таймера
 void vPrint(void *pvParameters);
 bool fwdtPrint = false;

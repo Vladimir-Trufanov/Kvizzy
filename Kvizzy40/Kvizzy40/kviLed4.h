@@ -5,7 +5,7 @@
  *                                    
  * https://docs.espressif.com/projects/arduino-esp32/en/latest/api/ledc.html
  * 
- * v2.1.1, 28.04.2025                                 Автор:      Труфанов В.Е.
+ * v2.1.2, 20.04.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -48,8 +48,6 @@ void ARDUINO_ISR_ATTR onTimerLed4()
 // ****************************************************************************
 void Led4State(String inJson) 
 {
-  // Готовим запрос к странице State
-  String ehttp=urlHome+"/State40/";
   // Изменяем значение счетчика и включаем его в параметр запроса к странице State
   iState=incUINT32T(iState);
   String queryString = "cycle="+String(iState);    
@@ -58,10 +56,8 @@ void Led4State(String inJson)
   // Включаем в параметр запроса json-сообщение
   String sjson="&sjson="+inJson;
   queryString=queryString+sjson;
-  // Трассируем запрос к State
-  if (toTrassState) {Serial.print("To State: "); Serial.println(queryString);}  
-
-  tQuery = postQuery(ehttp, queryString);
+  // Делаем запрос к странице: "https://probatv.ru/State40/"
+  tQuery = postQuery(urlState, queryString);
 
   // Обрабатываем успешный запрос 
   if (tQuery.httpCode == HTTP_CODE_OK) 
