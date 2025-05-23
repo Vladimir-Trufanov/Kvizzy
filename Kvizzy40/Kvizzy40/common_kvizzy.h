@@ -58,8 +58,8 @@ tQueryMessage postQuery(String urlPage, String queryString)
       else 
       {
         // Выводим страницу и часть параметров запроса перед ошибкой 
-        String greeting = urlPage+":"+queryString;
-        tQuery.httpText=queMessa.Send(tmt_WARNING,m1001,greeting.substring(0,32));
+        Serial.print("Запрос: "); Serial.println(URI);
+        tQuery.httpText=queMessa.Send(tmt_WARNING,m1001,queryString.substring(0,32));
         if (tQuery.httpText!=isOk) Serial.println(tQuery.httpText);  
         // Если сообщение о ненайденной странице, указываем её
         if (tQuery.httpCode==404) tQuery.httpText=queMessa.Send(tmt_WARNING,tQuery.httpCode,ehttp);
