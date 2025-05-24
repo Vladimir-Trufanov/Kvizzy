@@ -1,7 +1,7 @@
 /** Arduino, Esp32-CAM ****************************************** kviLead.h ***
  * 
- *        Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
- *            и показаниях датчиков из очереди и отправить их на страницу State 
+ *        ---- Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
+ *            ---- и показаниях датчиков из очереди и отправить их на страницу State 
  * 
  * v3.3.6, 20.05.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
@@ -19,28 +19,13 @@ bool isChangeLed4(String sjson)
 {
   JsonDocument doc;
   deserializeJson(doc, sjson);
-
   inlight = doc["led4"]["light"];
-  if (inlight==jlight)
-  {
-    //Serial.print("inlight: "); Serial.println(inlight);
-  }
-  else
-  {
-    //Serial.print("inlight: "); Serial.print(inlight); Serial.print(" jlight: "); Serial.println(jlight);
-    return true;
-  }
+  //Serial.print("inlight: "); Serial.print(inlight); Serial.print(" jlight: "); Serial.println(jlight);
+  if (inlight!=jlight) return false; 
   intime = doc["led4"]["time"];
-  if (intime==jtime)
-  {
-    //Serial.print("intime: "); Serial.println(intime);
-  }
-  else
-  {
-    //Serial.print("intime: "); Serial.print(intime); Serial.print(" jtime: "); Serial.println(jtime);
-    return true;
-  }
-  return false;
+  //Serial.print("intime: "); Serial.print(intime); Serial.print(" jtime: "); Serial.println(jtime);
+  if (intime!=jtime) return false; 
+  return true;
 }
 // ****************************************************************************
 // *    Проверить, изменились ли интервалы подачи сообщений от контроллера    *
@@ -49,63 +34,27 @@ bool isChangeIntrv(String sjson)
 {
   JsonDocument doc;
   deserializeJson(doc, sjson);
-
   // mode4 - принятый режим работы Led4 
   mode4 = doc["intrv"]["mode4"];
-  if (mode4==jmode4)
-  {
-    //Serial.print("mode4: "); Serial.println(mode4);
-  }
-  else
-  {
-    //Serial.print("mode4: "); Serial.print(mode4); Serial.print(" jmode4: "); Serial.println(jmode4);
-    return true;
-  }
+  //Serial.print("mode4: "); Serial.print(mode4); Serial.print(" jmode4: "); Serial.println(jmode4);
+  if (mode4!=jmode4) return false; 
   // img - принятая подача изображения 
   img = doc["intrv"]["img"];
-  if (img==jimg)
-  {
-    //Serial.print("img: "); Serial.println(img);
-  }
-  else
-  {
-    //Serial.print("img: "); Serial.print(img); Serial.print(" jimg: "); Serial.println(jimg);
-    return true;
-  }
+  //Serial.print("img: "); Serial.print(img); Serial.print(" jimg: "); Serial.println(jimg);
+  if (img!=jimg) return false;
   // tempvl - принятые температура и влажность 
   tempvl = doc["intrv"]["tempvl"];
-  if (tempvl==jtempvl)
-  {
-    //Serial.print("tempvl: "); Serial.println(tempvl);
-  }
-  else
-  {
-    //Serial.print("tempvl: "); Serial.print(tempvl); Serial.print(" jtempvl: "); Serial.println(jtempvl);
-    return true;
-  }
+  //Serial.print("tempvl: "); Serial.print(tempvl); Serial.print(" jtempvl: "); Serial.println(jtempvl);
+  if (tempvl!=jtempvl) return false;
   // lumin - принятая освещённость камеры
   lumin = doc["intrv"]["lumin"];
-  if (lumin==jlumin)
-  {
-    //Serial.print("lumin: "); Serial.println(lumin);
-  }
-  else
-  {
-    //Serial.print("lumin: "); Serial.print(lumin); Serial.print(" jlumin: "); Serial.println(jlumin);
-    return true;
-  }
+  //Serial.print("lumin: "); Serial.print(lumin); Serial.print(" jlumin: "); Serial.println(jlumin);
+  if (lumin!=jlumin) return false;
   // bar - принятое атмосферное давление
   bar = doc["intrv"]["bar"];
-  if (bar==jbar)
-  {
-    //Serial.print("bar: "); Serial.println(bar);
-  }
-  else
-  {
-    //Serial.print("bar: "); Serial.print(bar); Serial.print(" jbar: "); Serial.println(jbar);
-    return true;
-  }
-  return false;
+  //Serial.print("bar: "); Serial.print(bar); Serial.print(" jbar: "); Serial.println(jbar);
+  if (bar!=jbar) return false;
+  return true;
 }
 
 // ****************************************************************************
@@ -127,13 +76,13 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
   String led4=doc["led4"];
   if (led4 != "null")
   {
-    Led4Start=isChangeLed4(sjson);
+    Led4Chang=isChangeLed4(sjson);
   }
   // Определяемся и обрабатываем команду по интервалам сообщений
   String intrv=doc["intrv"];
   if (intrv != "null")
   {
-    intrvStart=isChangeIntrv(sjson);
+    intrvChang=isChangeIntrv(sjson);
   }
 
   //String vintrv=doc["vintrv"];
@@ -190,14 +139,14 @@ void vLead(void* pvParameters)
         // По умолчанию включаем в параметр запрос изменений
         String sjson="&sjson="+s_COMMON;
         // Если изменен режим работы вспышки
-        if (Led4Start) 
+        if (Led4Chang) 
         {
           queryString = "cycle=-1";    
           s_MODE4 = "{\"led4\":{\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}}"; 
           sjson="&sjson="+s_MODE4;
         }
         // Если изменены интервалы отправки сообщений
-        else if (intrvStart) 
+        else if (intrvChang) 
         {
           queryString = "cycle=-2";    
           s_INTRV = "{\"intrv\":{\"mode4\":"+String(jmode4)+",\"img\":"+String(jimg)+",\"tempvl\":"+String(jtempvl)+",\"lumin\":"+String(jlumin)+",\"bar\":"+String(jbar)+"}}"; 
