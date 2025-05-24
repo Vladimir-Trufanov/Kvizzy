@@ -1,0 +1,48 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.CompileOnBackground=0
+Compilator.ProgSaveAll=0
+Compilator.ProgRunSelection=0
+Compilator.LogType=0
+Compilator.LogEncoding=0
+DefaultDir=C:\Kvizzy\Kvizzy44\Kvizzy44
+DefaultCP=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+HTServer=localhost
+Extensions=*.*
+[Project tree]
+Kvizzy44
+	+Kvizzy44
+		common_kvizzy.h
+		define_kvizzy.h
+		jsonBase.h
+		kviDHT11.h
+		kviLead.h
+		kviLed4.h
+		kviMessage.h
+		kviPrint.h
+		kviStream.h
+		Kvizzy44.ino
+		OV2640.cpp
+		OV2640.h
+[Open project files]
+0=Новый1.txt
+1=Kvizzy44.ino
+2=kviMessage.h
+[Selected Project Files]
+Main=
+Selected=Kvizzy44.ino
+[Новый1.txt]
+TopLine=1
+Caret=1,1
+[Kvizzy44.ino]
+TopLine=1
+Caret=26,9
+[kviMessage.h]
+TopLine=1
+Caret=14,7

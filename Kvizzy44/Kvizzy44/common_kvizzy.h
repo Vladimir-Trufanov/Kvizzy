@@ -1,68 +1,71 @@
 /** Arduino, Esp32-CAM ************************************ common_kvizzy.h ***
  * 
- * Определить общие функции нижнего уровня умного хозяйства на двух светодиодах
+ *                          Определить общие функции исполнительного приложения 
+ *                                    умного хозяйства на контроллере ESP32-CAM
  * 
- * v1.1.4, 27.01.2025                                 Автор:      Труфанов В.Е.
+ * v4.0.2, 20.05.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
 #pragma once            
 #include <Arduino.h>
 
-// * Задача FreRTOS ***********************************************************
-// *               Выбрать из очереди и вывести сообщения на периферию        *
-// ****************************************************************************
-void vPrint(void* pvParameters) 
-{
-   for (;;)
-   {
-      // Serial.println("*** vPrint ***");
-      queMessa.PostAll();
-      // Отмечаем флагом, что цикл задачи успешно завершен   
-      fwdtPrint = true;
-      vTaskDelay(439/portTICK_PERIOD_MS); 
-   }
-}
-// ****************************************************************************
-// *                        Передать сообщение на периферию                   *
-// ****************************************************************************
-inline void transPrint(char *mess, char *prefix="") 
-{
-  Serial.println(mess);  // передали сообщение
-}
-
 // ****************************************************************************
 // *                     Выполнить POST-запрос к странице сайта               *
 // ****************************************************************************
-tQueryMessage postQuery(String ehttp, String queryString) 
+tQueryMessage postQuery(String urlPage, String queryString) 
 {
-  String inMess;
-  tQueryMessage tQuery;
-  tQuery.httpCode=1001;
-  tQuery.httpText="1001";
+  tQueryMessage tQuery; tQuery.httpCode=1001; tQuery.httpText="Только инициализировано";
   // Выполняем проверку подключения к беспроводной сети
   if ((WiFi.status() == WL_CONNECTED)) 
   {
     HTTPClient http;
+    // Назначаем страницу запроса: http.begin("http://probatv.ru/Stream40/");
+    String ehttp=urlHome+"/"+urlPage+"/";
     http.begin(ehttp);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    tQuery.httpCode = http.POST(queryString);
+
+    int last = millis();     // текущее время (уходящее в прошлое)
+    tQuery.httpCode = http.POST(queryString); 
+ 
     if (tQuery.httpCode > 0) 
     {
+      // Не получилось выбрать заголовки
+      /*
+      for(int i = 0; i< http.headers(); i++)
+      {
+        Serial.print("http.header(i) = ");
+        Serial.println(i);
+        Serial.println(http.header(i));
+      }
+      */
+      // Для трассировки формируем URI
+      String URI=ehttp+"?"+queryString;
       // Если запрос успешно отправлен
-      if (tQuery.httpCode == HTTP_CODE_OK) inMess = http.getString();
+      if (tQuery.httpCode == HTTP_CODE_OK) 
+      {
+        tQuery.httpText=http.getString();
+        // Трассируем успешный запрос и ответ
+        if (urlPage==urlLead)
+        {
+          Serial.print("Запрос: "); Serial.println(URI);
+          Serial.print(" Ответ: "); Serial.println(tQuery.httpText);
+          Serial.print(" Время: "); Serial.print(millis() - last); Serial.println(" (мс)");
+        }
+      }
       // Если ошибка после того, как HTTP-заголовок был отправлен
       // и заголовок ответа сервера был обработан
       else 
       {
+        // Выводим страницу и часть параметров запроса перед ошибкой 
+        Serial.print("Запрос: "); Serial.println(URI);
+        tQuery.httpText=queMessa.Send(tmt_WARNING,m1001,queryString.substring(0,32));
+        if (tQuery.httpText!=isOk) Serial.println(tQuery.httpText);  
         // Если сообщение о ненайденной странице, указываем её
-        if (tQuery.httpCode==404) 
-        {
-          inMess=queMessa.Send(tmt_WARNING,tQuery.httpCode,ehttp);
-        }
-        // Иначе выводим указанное сообщение
-        else inMess=queMessa.Send(tmt_WARNING,tQuery.httpCode,tmk_HTTP);
-        if (inMess!=isOk) Serial.println(inMess); 
+        if (tQuery.httpCode==404) tQuery.httpText=queMessa.Send(tmt_WARNING,tQuery.httpCode,ehttp);
+        // Иначе выводим указанное сообщение об ошибке
+        else tQuery.httpText=queMessa.Send(tmt_WARNING,tQuery.httpCode,tmk_HTTP);
+        if (tQuery.httpText!=isOk) Serial.println(tQuery.httpText); 
       }
     }
     // Если ошибка при отправке POST-запроса
@@ -70,8 +73,8 @@ tQueryMessage postQuery(String ehttp, String queryString)
     //    Ошибка POST-запроса: "connection refused" - "В соединении отказано"
     else 
     {
-      inMess=http.errorToString(tQuery.httpCode);
-      Serial.printf("Ошибка POST-запроса: %s\n", inMess.c_str());
+      tQuery.httpText=http.errorToString(tQuery.httpCode);
+      Serial.printf("Ошибка POST-запроса: %s\n", tQuery.httpText.c_str());
     }
     http.end();
   }
@@ -79,21 +82,20 @@ tQueryMessage postQuery(String ehttp, String queryString)
   else
   {
     tQuery.httpCode=http997;
-    inMess=queMessa.Send(tmt_WARNING,http997,tmk_HTTP);
-    if (inMess!=isOk) Serial.println(inMess); 
+    tQuery.httpText=queMessa.Send(tmt_WARNING,http997,tmk_HTTP);
+    if (tQuery.httpText!=isOk) Serial.println(tQuery.httpText); 
   }
-  // Вкладываем ответное сообщение в возвращаемую структуру
-  tQuery.httpText=inMess;
   return tQuery;
 }
+
 // ****************************************************************************
 // *        Инкрементировать значение счетчика с контролем максимума          *
 // ****************************************************************************
 uint32_t incUINT32T(uint32_t value)
 {
-   value++;
-   if (value>4294967290) value=0;
-   return value;  
+  value++;
+  if (value>4294967290) value=0;
+  return value;  
 }
 
 /*
@@ -137,4 +139,5 @@ void schastr()
    Serial.println("-----");
 }
 */
+
 // ******************************************************** common_kvizzy.h ***
