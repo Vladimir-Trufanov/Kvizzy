@@ -11,66 +11,22 @@
 #include <Regexp.h>
 #include <ArduinoJson.h>
 
-/*
 // ****************************************************************************
-// *  Проверить, изменились ли параметры действующего режима работы вспышки   *
-// ****************************************************************************
-bool isChangeLed4(String sjson)
-{
-  JsonDocument doc;
-  deserializeJson(doc, sjson);
-  inlight = doc["led4"]["light"];
-  //Serial.print("inlight: "); Serial.print(inlight); Serial.print(" jlight: "); Serial.println(jlight);
-  if (inlight!=jlight) return false; 
-  intime = doc["led4"]["time"];
-  //Serial.print("intime: "); Serial.print(intime); Serial.print(" jtime: "); Serial.println(jtime);
-  if (intime!=jtime) return false; 
-  return true;
-}
-// ****************************************************************************
-// *    Проверить, изменились ли интервалы подачи сообщений от контроллера    *
-// ****************************************************************************
-bool isChangeIntrv(String sjson)
-{
-  JsonDocument doc;
-  deserializeJson(doc, sjson);
-  // mode4 - принятый режим работы Led4 
-  mode4 = doc["intrv"]["mode4"];
-  //Serial.print("mode4: "); Serial.print(mode4); Serial.print(" jmode4: "); Serial.println(jmode4);
-  if (mode4!=jmode4) return false; 
-  // img - принятая подача изображения 
-  img = doc["intrv"]["img"];
-  //Serial.print("img: "); Serial.print(img); Serial.print(" jimg: "); Serial.println(jimg);
-  if (img!=jimg) return false;
-  // tempvl - принятые температура и влажность 
-  tempvl = doc["intrv"]["tempvl"];
-  //Serial.print("tempvl: "); Serial.print(tempvl); Serial.print(" jtempvl: "); Serial.println(jtempvl);
-  if (tempvl!=jtempvl) return false;
-  // lumin - принятая освещённость камеры
-  lumin = doc["intrv"]["lumin"];
-  //Serial.print("lumin: "); Serial.print(lumin); Serial.print(" jlumin: "); Serial.println(jlumin);
-  if (lumin!=jlumin) return false;
-  // bar - принятое атмосферное давление
-  bar = doc["intrv"]["bar"];
-  //Serial.print("bar: "); Serial.print(bar); Serial.print(" jbar: "); Serial.println(jbar);
-  if (bar!=jbar) return false;
-  return true;
-}
-*/
-
-// ****************************************************************************
-// *    Выбрать и обработать текущее json-сообщение из ответа страницы Lead   *
+// *    Выбрать и разобрать текущее json-сообщение из ответа страницы Lead,   *
+// *                 сохранить значения в постоянной памяти                   *
 // ****************************************************************************
 void match_callback(const char * match,const unsigned int length,const MatchState & ms)
 {
+  // Назначаем промежуточную величину выбираемого параметра, открываемсвойства
+  int value = 0;       
+  Prefs.begin("KvizzyPrefs", false);
   // Выбираем очередной найденный фрагмент
   // {"led4":{"light":25,"time":1996},"intrv":{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}
   String sjson = String(match);
   sjson = sjson.substring(0,length);
   // Трассируем выбранный json
-  Serial.print("sjson: "); Serial.println(sjson); 
+  // Serial.print("sjson: "); Serial.println(sjson); 
 
-  /*
   JsonDocument doc;
   deserializeJson(doc, sjson);
 
@@ -78,15 +34,40 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
   String led4=doc["led4"];
   if (led4 != "null")
   {
-    Led4Chang=isChangeLed4(sjson);
+    value = doc["led4"]["light"];
+    Prefs.putInt("inlight",value);
+    // Serial.print("Prefs.inlight: "); Serial.println(Prefs.getInt("inlight"));
+
+    value = doc["led4"]["time"];
+    Prefs.putInt("intime",value);
+    // Serial.print("Prefs.intime: "); Serial.println(Prefs.getInt("intime"));
   }
   // Определяемся и обрабатываем команду по интервалам сообщений
   String intrv=doc["intrv"];
   if (intrv != "null")
   {
-    intrvChang=isChangeIntrv(sjson);
+    value = doc["intrv"]["mode4"];
+    Prefs.putInt("mode4",value);
+    // Serial.print("Prefs.mode4: "); Serial.println(Prefs.getInt("mode4"));
+
+    value = doc["intrv"]["img"];
+    Prefs.putInt("img",value);
+    // Serial.print("Prefs.img: "); Serial.println(Prefs.getInt("img"));
+
+    value = doc["intrv"]["tempvl"];
+    Prefs.putInt("tempvl",value);
+    // Serial.print("Prefs.tempvl: "); Serial.println(Prefs.getInt("tempvl"));
+
+    value = doc["intrv"]["lumin"];
+    Prefs.putInt("lumin",value);
+    // Serial.print("Prefs.lumin: "); Serial.println(Prefs.getInt("lumin"));
+
+    value = doc["intrv"]["bar"];
+    Prefs.putInt("bar",value);
+    // Serial.print("Prefs.bar: "); Serial.println(Prefs.getInt("bar"));
   }
-  */
+  // Закрываем свойства
+  Prefs.end();
   
   //String vintrv=doc["vintrv"];
   //Serial.print("vintrv: "); Serial.println(vintrv);
