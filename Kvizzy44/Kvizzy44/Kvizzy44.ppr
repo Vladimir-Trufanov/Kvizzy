@@ -31,18 +31,22 @@ Kvizzy44
 		OV2640.cpp
 		OV2640.h
 [Open project files]
-0=Новый1.txt
-1=Kvizzy44.ino
-2=kviMessage.h
+0=Kvizzy44.ino
+1=kviMessage.h
+2=kviLead.h
+3=common_kvizzy.h
 [Selected Project Files]
 Main=
-Selected=Kvizzy44.ino
-[Новый1.txt]
-TopLine=1
-Caret=1,1
+Selected=kviLead.h
 [Kvizzy44.ino]
 TopLine=1
 Caret=26,9
 [kviMessage.h]
 TopLine=1
 Caret=14,7
+[kviLead.h]
+TopLine=29
+Caret=1,60
+[common_kvizzy.h]
+TopLine=59
+Caret=1,1

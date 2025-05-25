@@ -1,9 +1,8 @@
 /** Arduino, Esp32-CAM ****************************************** kviLead.h ***
  * 
- *        ---- Выбрать накопившиеся json-сообщения о состоянии устройств контроллера 
- *            ---- и показаниях датчиков из очереди и отправить их на страницу State 
+ *                    Выполнить запрос управляющих изменений на страницу Lead40
  * 
- * v3.3.6, 20.05.2025                                 Автор:      Труфанов В.Е.
+ * v4.4.0, 25.05.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -12,6 +11,7 @@
 #include <Regexp.h>
 #include <ArduinoJson.h>
 
+/*
 // ****************************************************************************
 // *  Проверить, изменились ли параметры действующего режима работы вспышки   *
 // ****************************************************************************
@@ -56,6 +56,7 @@ bool isChangeIntrv(String sjson)
   if (bar!=jbar) return false;
   return true;
 }
+*/
 
 // ****************************************************************************
 // *    Выбрать и обработать текущее json-сообщение из ответа страницы Lead   *
@@ -67,8 +68,9 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
   String sjson = String(match);
   sjson = sjson.substring(0,length);
   // Трассируем выбранный json
-  //Serial.print("sjson: "); Serial.println(sjson); 
+  Serial.print("sjson: "); Serial.println(sjson); 
 
+  /*
   JsonDocument doc;
   deserializeJson(doc, sjson);
 
@@ -84,7 +86,8 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
   {
     intrvChang=isChangeIntrv(sjson);
   }
-
+  */
+  
   //String vintrv=doc["vintrv"];
   //Serial.print("vintrv: "); Serial.println(vintrv);
   //Serial.print("vintrv.length(): "); Serial.println(vintrv.length());
@@ -138,6 +141,7 @@ void vLead(void* pvParameters)
 
         // По умолчанию включаем в параметр запрос изменений
         String sjson="&sjson="+s_COMMON;
+        /*
         // Если изменен режим работы вспышки
         if (Led4Chang) 
         {
@@ -152,6 +156,7 @@ void vLead(void* pvParameters)
           s_INTRV = "{\"intrv\":{\"mode4\":"+String(jmode4)+",\"img\":"+String(jimg)+",\"tempvl\":"+String(jtempvl)+",\"lumin\":"+String(jlumin)+",\"bar\":"+String(jbar)+"}}"; 
           sjson="&sjson="+s_INTRV;
         }
+        */
         queryString=queryString+sjson;
         // Делаем запрос к странице: "https://probatv.ru/Lead40/"
         tQuery = postQuery(urlLead, queryString);
