@@ -20,7 +20,6 @@ Kvizzy44
 	+Kvizzy44
 		common_kvizzy.h
 		define_kvizzy.h
-		jsonBase.h
 		kviDHT11.h
 		kviLead.h
 		kviLed4.h
@@ -28,29 +27,34 @@ Kvizzy44
 		kviPrint.h
 		kviStream.h
 		Kvizzy44.ino
+		Kvizzy44.ppr
 		OV2640.cpp
 		OV2640.h
 [Open project files]
 0=kviMessage.h
 1=common_kvizzy.h
-2=jsonBase.h
+2=define_kvizzy.h
 3=kviLed4.h
-4=Kvizzy44.ino
+4=kviLead.h
+5=Kvizzy44.ino
 [Selected Project Files]
 Main=
-Selected=jsonBase.h
+Selected=kviLed4.h
 [kviMessage.h]
 TopLine=1
 Caret=14,7
 [common_kvizzy.h]
-TopLine=4
-Caret=15,16
-[jsonBase.h]
-TopLine=45
-Caret=33,63
+TopLine=17
+Caret=68,79
+[define_kvizzy.h]
+TopLine=97
+Caret=11,104
 [kviLed4.h]
-TopLine=89
-Caret=9,101
+TopLine=109
+Caret=8,104
+[kviLead.h]
+TopLine=31
+Caret=1,41
 [Kvizzy44.ino]
-TopLine=89
-Caret=3,95
+TopLine=212
+Caret=1,242

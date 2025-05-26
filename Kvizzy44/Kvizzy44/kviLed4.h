@@ -58,20 +58,6 @@ void Led4State(String inJson)
   queryString=queryString+sjson;
   // Делаем запрос к странице: "https://probatv.ru/State40/"
   tQuery = postQuery(urlState, queryString);
-
-  // Обрабатываем успешный запрос 
-  if (tQuery.httpCode == HTTP_CODE_OK) 
-  {
-    // Трассируем ответ от State
-    if (fromTrassState) {Serial.print("<= State: "); Serial.println(tQuery.httpText);}
-    // Обновляем json-документ
-    // oJSON.UpdateDoc(String(mess));
-  }
-  else
-  // Реагируем на ошибку Post-запроса
-  {
-    Serial.print("Ошибка Post-запроса: "); Serial.println(tQuery.httpCode);
-  }
 }
 // * Задача FreRTOS ***********************************************************
 // *          Обеспечить управление 4 сведодиодом ESP32-CAM в режиме "горит - *
@@ -79,6 +65,7 @@ void Led4State(String inJson)
 // ****************************************************************************
 void vLed4(void* pvParameters)
 {
+  int last = millis();     // текущее время (уходящее в прошлое)
   for (;;)
   {
     // Serial.println("*** vLed4 ***");
@@ -93,20 +80,51 @@ void vLed4(void* pvParameters)
       // принятого в последовательном порту
       if (iCreateSit == loopingLed4) MimicMCUhangEvent("Led4");   
       */
-      // Если поступила команда на включение режима работы контрольного светодиода
-      // (или произошла перезагрузка контроллера)
+      // Выбираем для проверки прежние и новые данные режима работы вспышки
+      // (изменились ли параметры режима работы)
+      Prefs.begin("KvizzyPrefs", false);
+      jlight=Prefs.getInt("jlight",10);
+      inlight=Prefs.getInt("inlight",10);
+      jtime=Prefs.getInt("jtime",2000);
+      intime=Prefs.getInt("intime",2000);
+      Prefs.end();
+      // Проверяем, поступила ли команда на изменение режима работы вспышки
+      // (не изменились ли параметры режима работы)
+      bool Led4Start=false;    // true - изменён режим работы вспышки 
+      if (jtime!=intime) Led4Start=true;
+      if (jlight!=inlight) Led4Start=true;
+      // Если команда поступила
       if (Led4Start)
       {
-        // Выбираем и пересчитываем параметры действующего режима работы вспышки
-        iniPMem(Prefs); 
-        // Сбрасываем флаг включения режима
+        // Устанавливаем новые значения параметров
         Prefs.begin("KvizzyPrefs", false);
-        Led4Start=false; 
-        Prefs.putBool("Led4Start",Led4Start);
+        Prefs.putInt("jlight",inlight);
+        jlight=Prefs.getInt("jlight",10);
+        Prefs.putInt("jtime",intime);
+        jtime=Prefs.getInt("jtime",2000);
         Prefs.end();
+        // Рассчитываем времена свечения и несвечения вспышки
+        nLight=jtime*jlight/100;  // 2000*10/100=200
+        nNoLight=jtime-nLight;    // 2000-200=1800
+        nLight=nLight*1000;       // 200000 мкс
+        nNoLight=nNoLight*1000;   // 1800000 мкс
+        // Формируем json-сообщение для отправки на State
+        s_MODE4 = "{\"led4\":{\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}}"; 
+        // Передаём запрос с режимом работы вспышки на страницу State    
+        Led4State(s_MODE4);
+        // Начинаем отсчет времени для передачи сообщения при неизменном состоянии
+        last = millis();     // текущее время (уходящее в прошлое)
       }
-      // Передаём запрос
-      Led4State(s4_MODE);
+      // Если истекло контрольное время неизменного состояния режима работы вспышки
+      if ((millis()-last)>jmode4)
+      {
+        // Формируем json-сообщение для отправки на State
+        s_MODE4 = "{\"led4\":{\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}}"; 
+        // Передаём запрос с режимом работы вспышки на страницу State    
+        Led4State(s_MODE4);
+        // Начинаем отсчет времени для передачи сообщения при неизменном состоянии
+        last = millis();     // текущее время (уходящее в прошлое)
+      }
       // Освобождаем мьютекс
       xSemaphoreGive(HttpMutex);  
     }

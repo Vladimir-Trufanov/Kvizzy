@@ -2,7 +2,7 @@
  * 
  *                    Выполнить запрос управляющих изменений на страницу Lead40
  * 
- * v4.4.0, 25.05.2025                                 Автор:      Труфанов В.Е.
+ * v4.4.1, 26.05.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -17,8 +17,6 @@
 // ****************************************************************************
 void match_callback(const char * match,const unsigned int length,const MatchState & ms)
 {
-  // Назначаем промежуточную величину выбираемого параметра, открываемсвойства
-  int value = 0;       
   Prefs.begin("KvizzyPrefs", false);
   // Выбираем очередной найденный фрагмент
   // {"led4":{"light":25,"time":1996},"intrv":{"mode4":6900,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}
@@ -34,36 +32,36 @@ void match_callback(const char * match,const unsigned int length,const MatchStat
   String led4=doc["led4"];
   if (led4 != "null")
   {
-    value = doc["led4"]["light"];
-    Prefs.putInt("inlight",value);
+    inlight = doc["led4"]["light"];
+    Prefs.putInt("inlight",inlight);
     // Serial.print("Prefs.inlight: "); Serial.println(Prefs.getInt("inlight"));
 
-    value = doc["led4"]["time"];
-    Prefs.putInt("intime",value);
+    intime = doc["led4"]["time"];
+    Prefs.putInt("intime",intime);
     // Serial.print("Prefs.intime: "); Serial.println(Prefs.getInt("intime"));
   }
   // Определяемся и обрабатываем команду по интервалам сообщений
   String intrv=doc["intrv"];
   if (intrv != "null")
   {
-    value = doc["intrv"]["mode4"];
-    Prefs.putInt("mode4",value);
+    mode4 = doc["intrv"]["mode4"];
+    Prefs.putInt("mode4",mode4);
     // Serial.print("Prefs.mode4: "); Serial.println(Prefs.getInt("mode4"));
 
-    value = doc["intrv"]["img"];
-    Prefs.putInt("img",value);
+    img = doc["intrv"]["img"];
+    Prefs.putInt("img",img);
     // Serial.print("Prefs.img: "); Serial.println(Prefs.getInt("img"));
 
-    value = doc["intrv"]["tempvl"];
-    Prefs.putInt("tempvl",value);
+    tempvl = doc["intrv"]["tempvl"];
+    Prefs.putInt("tempvl",tempvl);
     // Serial.print("Prefs.tempvl: "); Serial.println(Prefs.getInt("tempvl"));
 
-    value = doc["intrv"]["lumin"];
-    Prefs.putInt("lumin",value);
+    lumin = doc["intrv"]["lumin"];
+    Prefs.putInt("lumin",lumin);
     // Serial.print("Prefs.lumin: "); Serial.println(Prefs.getInt("lumin"));
 
-    value = doc["intrv"]["bar"];
-    Prefs.putInt("bar",value);
+    bar = doc["intrv"]["bar"];
+    Prefs.putInt("bar",bar);
     // Serial.print("Prefs.bar: "); Serial.println(Prefs.getInt("bar"));
   }
   // Закрываем свойства
@@ -122,22 +120,6 @@ void vLead(void* pvParameters)
 
         // По умолчанию включаем в параметр запрос изменений
         String sjson="&sjson="+s_COMMON;
-        /*
-        // Если изменен режим работы вспышки
-        if (Led4Chang) 
-        {
-          queryString = "cycle=-1";    
-          s_MODE4 = "{\"led4\":{\"light\":"+String(jlight)+",\"time\":"+String(jtime)+"}}"; 
-          sjson="&sjson="+s_MODE4;
-        }
-        // Если изменены интервалы отправки сообщений
-        else if (intrvChang) 
-        {
-          queryString = "cycle=-2";    
-          s_INTRV = "{\"intrv\":{\"mode4\":"+String(jmode4)+",\"img\":"+String(jimg)+",\"tempvl\":"+String(jtempvl)+",\"lumin\":"+String(jlumin)+",\"bar\":"+String(jbar)+"}}"; 
-          sjson="&sjson="+s_INTRV;
-        }
-        */
         queryString=queryString+sjson;
         // Делаем запрос к странице: "https://probatv.ru/Lead40/"
         tQuery = postQuery(urlLead, queryString);

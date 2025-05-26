@@ -3,12 +3,38 @@
  *                          Определить общие функции исполнительного приложения 
  *                                    умного хозяйства на контроллере ESP32-CAM
  * 
- * v4.0.2, 20.05.2025                                 Автор:      Труфанов В.Е.
+ * v4.4.0, 26.05.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
 #pragma once            
 #include <Arduino.h>
+
+// ****************************************************************************
+// *        Инициировать параметры действующего режима работы вспышки и       *
+// *                интервалов подачи сообщений от контроллера                *
+// ****************************************************************************
+void iniPMem(Preferences Prefs) 
+{
+  // Извлекаем постоянные данные
+  Prefs.begin("KvizzyPrefs", false);
+  jlight=Prefs.getInt("jlight",10);
+  inlight=Prefs.getInt("inlight",10);
+  jtime=Prefs.getInt("jtime",2000);
+  intime=Prefs.getInt("intime",2000);
+
+  jmode4=Prefs.getInt("jmode4",7007);
+  mode4=Prefs.getInt("mode4",7007);
+  jimg=Prefs.getInt("jimg",1001);
+  img=Prefs.getInt("img",1001);
+  jtempvl=Prefs.getInt("jtempvl",3003);
+  tempvl=Prefs.getInt("tempvl",3003);
+  jlumin=Prefs.getInt("jlumin",2002);
+  lumin=Prefs.getInt("lumin",2002);
+  jbar=Prefs.getInt("jbar",5005);
+  bar=Prefs.getInt("bar",5005);
+  Prefs.end();
+}
 
 // ****************************************************************************
 // *                     Выполнить POST-запрос к странице сайта               *
@@ -48,9 +74,9 @@ tQueryMessage postQuery(String urlPage, String queryString)
         // Трассируем успешный запрос и ответ
         if (urlPage==urlLead)
         {
-          Serial.print("Запрос: "); Serial.println(URI);
-          Serial.print(" Ответ: "); Serial.println(tQuery.httpText);
-          Serial.print(" Время: "); Serial.print(millis() - last); Serial.println(" (мс)");
+          Serial.print("Lead-запрос: "); Serial.println(URI);
+          Serial.print("Lead- ответ: "); Serial.println(tQuery.httpText);
+          Serial.print("Lead- время: "); Serial.print(millis()-last); Serial.println(" (мс)");
         }
       }
       // Если ошибка после того, как HTTP-заголовок был отправлен
