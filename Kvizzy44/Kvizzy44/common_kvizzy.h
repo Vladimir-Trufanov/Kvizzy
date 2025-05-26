@@ -34,6 +34,12 @@ void iniPMem(Preferences Prefs)
   jbar=Prefs.getInt("jbar",5005);
   bar=Prefs.getInt("bar",5005);
   Prefs.end();
+
+  // Рассчитываем времена свечения и несвечения вспышки
+  nLight=jtime*jlight/100;  // 2000*10/100=200
+  nNoLight=jtime-nLight;    // 2000-200=1800
+  nLight=nLight*1000;       // 200000 мкс
+  nNoLight=nNoLight*1000;   // 1800000 мкс
 }
 
 // ****************************************************************************
@@ -72,11 +78,19 @@ tQueryMessage postQuery(String urlPage, String queryString)
       {
         tQuery.httpText=http.getString();
         // Трассируем успешный запрос и ответ
+        /*
         if (urlPage==urlLead)
         {
           Serial.print("Lead-запрос: "); Serial.println(URI);
           Serial.print("Lead- ответ: "); Serial.println(tQuery.httpText);
           Serial.print("Lead- время: "); Serial.print(millis()-last); Serial.println(" (мс)");
+        }
+        */
+        if (urlPage==urlState)
+        {
+          Serial.print("State-запрос: "); Serial.println(URI);
+          Serial.print("State- ответ: "); Serial.println(tQuery.httpText);
+          Serial.print("State- время: "); Serial.print(millis()-last); Serial.println(" (мс)");
         }
       }
       // Если ошибка после того, как HTTP-заголовок был отправлен

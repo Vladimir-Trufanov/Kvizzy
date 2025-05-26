@@ -5,7 +5,7 @@
  *                                    
  * https://docs.espressif.com/projects/arduino-esp32/en/latest/api/ledc.html
  * 
- * v2.1.2, 20.04.2025                                 Автор:      Труфанов В.Е.
+ * v4.4.1, 26.05.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -26,7 +26,25 @@ int lastled4=millis();       // текущее время (уходящее в �
 // ****************************************************************************
 void ARDUINO_ISR_ATTR onTimerLed4() 
 {
-  if (fLight==shimHIGH)
+  // Если время горения определено, как менее 10 мсек, то выключаем вспышку на весь период
+  if (nLight<=10000)
+  {
+    //Serial.print("Светилось (мс): "); Serial.println(millis()-lastled4);
+    analogWrite(LED_PIN_4, shimLOW);
+    fLight=shimHIGH;  
+    lastled4=millis(); 
+    timerAlarm(timerLed4, nNoLight+nLight, true, 0);
+  } 
+  // Если время горения определено, как менее 10 мсек, то ВКЛЮЧАЕМ ВСПЫШКУ вспышку на весь период
+  else if (nNoLight<=10000)
+  {
+    //Serial.print("Не горело (мс): "); Serial.println(millis() - lastled4);
+    analogWrite(LED_PIN_4, shimHIGH);
+    fLight=shimLOW;  
+    lastled4=millis(); 
+    timerAlarm(timerLed4, nNoLight+nLight, true, 0);
+  }
+  else if (fLight==shimHIGH)
   {
     //Serial.print("Не горело (мс): "); Serial.println(millis() - lastled4);
     analogWrite(LED_PIN_4, shimHIGH);
@@ -42,6 +60,7 @@ void ARDUINO_ISR_ATTR onTimerLed4()
     lastled4=millis(); 
     timerAlarm(timerLed4, nNoLight, true, 0);
   }
+  Serial.print("nLight: "); Serial.println(nLight);
 }
 // ****************************************************************************
 // *               Передать режим работы вспышки на страницу State            *
