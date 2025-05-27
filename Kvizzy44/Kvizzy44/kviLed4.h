@@ -5,7 +5,7 @@
  *                                    
  * https://docs.espressif.com/projects/arduino-esp32/en/latest/api/ledc.html
  * 
- * v4.4.1, 26.05.2025                                 Автор:      Труфанов В.Е.
+ * v4.4.2, 27.05.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
 
@@ -60,7 +60,7 @@ void ARDUINO_ISR_ATTR onTimerLed4()
     lastled4=millis(); 
     timerAlarm(timerLed4, nNoLight, true, 0);
   }
-  Serial.print("nLight: "); Serial.println(nLight);
+  //Serial.print("nLight: "); Serial.println(nLight);
 }
 // ****************************************************************************
 // *               Передать режим работы вспышки на страницу State            *
@@ -72,6 +72,10 @@ void Led4State(String inJson)
   String queryString = "cycle="+String(iState);    
   // Готовим структуру для ответа
   tQueryMessage tQuery;                              
+  // Включаем в параметр запроса номер управляющей json-команды 
+  // num ::= номер управляющей json-команды (-1 -> s4_MODE,-2 -> s_INTRV)
+  String numm="&num=-1";
+  queryString=queryString+numm;
   // Включаем в параметр запроса json-сообщение
   String sjson="&sjson="+inJson;
   queryString=queryString+sjson;
