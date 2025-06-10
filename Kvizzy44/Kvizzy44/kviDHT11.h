@@ -40,7 +40,6 @@ void vDHT11(void* pvParameters)
     } 
     else 
     {
-      /*
       Serial.print("Влажность: ");
       Serial.print(humi);
       Serial.print("%");
@@ -50,7 +49,6 @@ void vDHT11(void* pvParameters)
       Serial.print("Tемпература: ");
       Serial.print(tempC);
       Serial.println("°C");
-      */
     }
 
     // Отмечаем флагом, что цикл задачи успешно завершен   

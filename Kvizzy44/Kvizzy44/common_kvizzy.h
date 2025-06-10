@@ -3,9 +3,15 @@
  *                          Определить общие функции исполнительного приложения 
  *                                    умного хозяйства на контроллере ESP32-CAM
  * 
- * v4.4.0, 26.05.2025                                 Автор:      Труфанов В.Е.
+ * v4.5.0, 10.06.2025                                 Автор:      Труфанов В.Е.
  * Copyright © 2024 tve                               Дата создания: 26.10.2024
 **/
+
+// Реестр json-сообщений:
+//
+// sjson={"intrv":{"mode4":7007,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}
+// sjson={"led4":{"light":13,"time":2000}}
+// sjson={"dht11":{"humidity":46,"temperature":248}} - Влажность = 46%, Температура = 24.8°C  
 
 #pragma once            
 #include <Arduino.h>
@@ -45,7 +51,11 @@ void iniPMem(Preferences Prefs)
 // ****************************************************************************
 // *                     Выполнить POST-запрос к странице сайта               *
 // ****************************************************************************
-tQueryMessage postQuery(String urlPage, String queryString) 
+
+// qKey - ключевое слово трассировки запроса по показаниям:
+//                                            "dht11" - температура и влажность
+
+tQueryMessage postQuery(String urlPage, String queryString, String qKey="led4") 
 {
   tQueryMessage tQuery; tQuery.httpCode=1001; tQuery.httpText="Только инициализировано";
   // Выполняем проверку подключения к беспроводной сети
