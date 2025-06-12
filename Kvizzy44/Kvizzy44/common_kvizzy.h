@@ -11,7 +11,7 @@
 //
 // sjson={"intrv":{"mode4":7007,"img":1001,"tempvl":3003,"lumin":2002,"bar":5005}}
 // sjson={"led4":{"light":13,"time":2000}}
-// sjson={"dht11":{"humidity":46,"temperature":248}} - Влажность = 46%, Температура = 24.8°C  
+// sjson={"dht11":{"humi":46,"tempC":248}} - Влажность = 46%, Температура = 24.8°C  
 
 #pragma once            
 #include <Arduino.h>
@@ -137,7 +137,6 @@ tQueryMessage postQuery(String urlPage, String queryString, String qKey="led4")
   }
   return tQuery;
 }
-
 // ****************************************************************************
 // *        Инкрементировать значение счетчика с контролем максимума          *
 // ****************************************************************************
@@ -146,6 +145,28 @@ uint32_t incUINT32T(uint32_t value)
   value++;
   if (value>4294967290) value=0;
   return value;  
+}
+// ****************************************************************************
+// *  Передать json-сообщение на страницу State, где num ::= номер сообщения  *
+// *             -1 -> s4_MODE,-2 -> s_INTRV, -3 -> s_DHT11                   *
+// ****************************************************************************
+void JsonQueryState(String inJson, int num) 
+{
+  // Изменяем значение счетчика и включаем его в параметр запроса к странице State
+  iState=incUINT32T(iState);
+  String queryString = "cycle="+String(iState);    
+  // Готовим структуру для ответа
+  tQueryMessage tQuery;                              
+  // Включаем в параметр запроса номер управляющей json-команды 
+  // num ::= номер управляющей json-команды (-1 -> s4_MODE,-2 -> s_INTRV)
+  String numm="&num="+String(num);
+  queryString=queryString+numm;
+  // Включаем в параметр запроса json-сообщение
+  String sjson="&sjson="+inJson;
+  queryString=queryString+sjson;
+  // Делаем запрос к странице: "https://probatv.ru/State40/"
+  // Serial.print("queryString: "); Serial.println(queryString);
+  tQuery = postQuery(urlState, queryString);
 }
 
 /*

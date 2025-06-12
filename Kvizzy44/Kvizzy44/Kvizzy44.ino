@@ -165,7 +165,7 @@ void setup()
   xTaskCreatePinnedToCore(
     vDHT11,                 // Task function
     "DHT11",                // Task name
-    2048,                   // Stack size
+    4096,                   // Stack size
     NULL,                   // Parameters passed to the task function
     6,                      // Priority
     NULL,                   // Task handle

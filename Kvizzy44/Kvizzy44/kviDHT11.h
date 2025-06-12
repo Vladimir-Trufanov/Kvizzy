@@ -21,40 +21,68 @@ DHT dht11(DHT11_PIN, DHT11);
 // ****************************************************************************
 void vDHT11(void* pvParameters)
 {
+  // Инициируем текущее время (уходящее в прошлое)
+  int last = millis();  
   // Активируем датчик температуры и влажности
   dht11.begin(); 
   Serial.println("DHT11 - датчик температуры и влажности активирован");
 
   for (;;)
   {
-    //Serial.println("*** vDHT11 ***");
-    
-    // Считываем влажность
-    float humi  = dht11.readHumidity();
-    // Считываем температуру
-    float tempC = dht11.readTemperature();
-    // Проверяем, успешно ли выполнено считывание
-    if (isnan(tempC) || isnan(humi)) 
-    {
-      Serial.println("Ошибка чтения датчика DHT11!");
-    } 
-    else 
-    {
-      Serial.print("Влажность: ");
-      Serial.print(humi);
-      Serial.print("%");
-
-      Serial.print("  |  ");
-
-      Serial.print("Tемпература: ");
-      Serial.print(tempC);
-      Serial.println("°C");
+    // Serial.println("*** vDHT11 ***");
+    // В vDHT11 конкурируем за Http-запросы. Будем до 3 секунд ждать освобождения запроса.
+    // По опыту от 24.04.2025 на запрос к probatv.ru может уйти до полутора секунд.
+    // Если захватить блокировку не получается в течение этого периода времени, прекращаем попытки 
+    // и вместо отработки задачи выводим сообщение. 
+    if (xSemaphoreTake (HttpMutex, (3000 * portTICK_PERIOD_MS))) 
+    { 
+      /*
+      // Имитируем зависание микроконтроллера с помощью опознанного числа,
+      // принятого в последовательном порту
+      if (iCreateSit == loopingLed4) MimicMCUhangEvent("Led4");   
+      */
+      // Считываем влажность
+      float humi  = dht11.readHumidity();
+      // Считываем температуру
+      float tempC = dht11.readTemperature();
+      // Проверяем, успешно ли выполнено считывание
+      if (isnan(tempC) || isnan(humi)) 
+      {
+        Serial.println("Ошибка чтения датчика DHT11!");
+      } 
+      else 
+      {
+        /*
+        Serial.print("Влажность: ");
+        Serial.print(humi);
+        Serial.print("%");
+        Serial.print("  |  ");
+        Serial.print("Tемпература: ");
+        Serial.print(tempC);
+        Serial.println("°C");
+        */
+        // Вычисляем параметры и формируем json-сообщение для отправки на State 
+        // - "{\"dht11\":{\"humi\":46,\"tempC\":248}}"
+        jhumi = (int)humi;     
+        jtempC = (int)(tempC*10);     
+        s_DHT11 = "{\"dht11\":{\"humi\":"+String(jhumi)+",\"tempC\":"+String(jtempC)+"}}";  
+        // Serial.print("s_DHT11: "); Serial.println(s_DHT11);
+        // Передаём запрос с режимом работы вспышки на страницу State    
+        JsonQueryState(s_DHT11,-3);
+        // Начинаем отсчет времени для передачи сообщения при неизменном состоянии
+        last = millis();     // текущее время (уходящее в прошлое)
+      }
+      // Освобождаем мьютекс
+      xSemaphoreGive(HttpMutex);  
     }
-
-    // Отмечаем флагом, что цикл задачи успешно завершен   
-    fwdtDHT11 = true;
+    else 
+    {  
+      Serial.println("vDHT11: HttpMutex не был захвачен!");
+    }
     // Ничего не делаем 2 секунды
     vTaskDelay(2123/portTICK_PERIOD_MS); 
+    // Отмечаем флагом, что цикл задачи успешно завершен   
+    fwdtDHT11 = true;
   }
 }
 
